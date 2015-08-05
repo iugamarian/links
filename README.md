@@ -23,7 +23,7 @@ avrdude -c avrusb500 -p atmega8 -u -U hfuse:w:0xc9:m -U lfuse:w:0xef:m
 avrdude -c avrusb500 -p atmega8 -U flash:w:usbasp.atmega8.2011-05-28.hex
 
 
-Configuring the programmer in Ubuntu Linux 14.04 and newer(changed default parallel and "" between type):
+# ... Configuring the programmer in Ubuntu Linux 14.04 and newer(changed default parallel and "" between type):
 gedit /etc/avrdude.conf
 
 default_parallel     = "/dev/ttyUSB0";
@@ -42,6 +42,9 @@ Create a script to program fast (usage = sudo compavr (file without .c extension
 touch compavr && chmod +x compavr && gedit compavr
 
 avr-gcc -mmcu=atmega32 -Wall -Os -o $1.elf $1.c
+
 avr-objcopy -j .text -j .data -O ihex $1.elf $1.hex
+
 avrdude -c avrusb500 -p atmega32 -u -U hfuse:w:0xc9:m -U lfuse:w:0xe3:m
+
 avrdude -c avrusb500 -p atmega32 -U flash:w:$1.hex
