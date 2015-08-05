@@ -13,7 +13,7 @@ http://images.tuxgraphics.org/iso/sysresccd.org/systemrescuecd-x86-2.8.1.iso
 http://www.tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
 
 
-# ... configuring the programmer in Ubuntu Linux 14.04 and newer(changed default parallel and "" between type):
+# ... configuring the programmer in Ubuntu Linux 14.04 and newer (changed default parallel and "" between type):
 
 gedit /etc/avrdude.conf
 
