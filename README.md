@@ -1,15 +1,19 @@
-# Avrusb500v2 has worked for me, I recommend it:
+
+# Avrusb500v2 avr programmer has worked for me, I recommend it:
 
 http://www.tuxgraphics.org/electronics/200705/article07052.shtml
 
-# Avrusb500v2 fixing from a pc without another programmer:
 
-http://www.tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
+# fixing a bricked one from a pc without another programmer by using a Linux live cd:
 
 http://tuxgraphics.org/common/src2/article07052/avrusb500-upd.html
 
+http://images.tuxgraphics.org/iso/sysresccd.org/systemrescuecd-x86-2.8.1.iso
 
-# ... Configuring the programmer in Ubuntu Linux 14.04 and newer(changed default parallel and "" between type):
+http://www.tuxgraphics.org/common/src2/article07052/avrusb500v2-1.5.tar.gz
+
+
+# ... configuring the programmer in Ubuntu Linux 14.04 and newer(changed default parallel and "" between type):
 
 gedit /etc/avrdude.conf
 
@@ -19,6 +23,7 @@ default_serial     = "/dev/ttyUSB0";
 
 
 # ... and further down:
+
 programmer
   id    = "avrusb500";
   desc  = "Atmel AVR ISP V2 programmer from tuxgraphics";
@@ -26,7 +31,7 @@ programmer
 ;
 #
 
-Create a script to program fast (usage = sudo compavr (file without .c extension)):
+# Create a script to program fast (usage = sudo compavr (file without .c extension)):
 touch compavr && chmod +x compavr && gedit compavr
 
 avr-gcc -mmcu=atmega32 -Wall -Os -o $1.elf $1.c
@@ -38,7 +43,7 @@ avrdude -c avrusb500 -p atmega32 -u -U hfuse:w:0xc9:m -U lfuse:w:0xe3:m
 avrdude -c avrusb500 -p atmega32 -U flash:w:$1.hex
 
 
-# ... Usbasp has failed for me, not working:
+# Usbasp has failed for me, not working, I don't recommend it:
 
 0. Verify that you have a USBasp V2.0, and that it has a 12MHz crystal and an ATMEGA8 or ATMEGA8A MCU onboard. DO NOT CONNECT IT TO THE USB PORT OF YOUR COMPUTER.
 
