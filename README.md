@@ -4,7 +4,7 @@
 http://www.tuxgraphics.org/electronics/200705/article07052.shtml
 
 
-# fixing a bricked one from a pc without another programmer by using a Linux live cd:
+# ... fixing a bricked one from a pc without another programmer by using a Linux live cd:
 
 http://tuxgraphics.org/common/src2/article07052/avrusb500-upd.html
 
@@ -31,7 +31,7 @@ programmer
 ;
 #
 
-# Create a script to program fast (usage = sudo compavr (file without .c extension)):
+# ... create a script to program fast (usage = sudo compavr (file without .c extension)):
 touch compavr && chmod +x compavr && gedit compavr
 
 avr-gcc -mmcu=atmega32 -Wall -Os -o $1.elf $1.c
