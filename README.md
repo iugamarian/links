@@ -25,10 +25,15 @@ default_serial     = "/dev/ttyUSB0";
 # ... and further down:
 
 programmer
+
   id    = "avrusb500";
+  
   desc  = "Atmel AVR ISP V2 programmer from tuxgraphics";
+  
   type  =  "stk500v2";
+  
 ;
+
 #
 
 # ... create a script to program fast (usage = sudo compavr (file without .c extension)):
