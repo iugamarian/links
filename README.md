@@ -3,6 +3,8 @@
 
 http://www.tuxgraphics.org/electronics/200705/article07052.shtml
 
+http://helpful.knobs-dials.com/index.php/Electronics_project_notes/Avrusb500v2_notes
+
 
 # ... fixing a bricked one from a pc without another programmer by using a Linux live cd:
 
