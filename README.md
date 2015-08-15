@@ -8,6 +8,11 @@ http://helpful.knobs-dials.com/index.php/Electronics_project_notes/Avrusb500v2_n
 http://letsmakerobots.com/blog/nuumio/first-experiences-avrusb500-v2-programmer
 
 
+# Using a ft232bl instead of ft232rl works, tested, but requires a 1k5 resistor and 6mhz quartz added:
+
+http://vonkonow.com/wordpress/2012/03/usbserial-pcb/
+
+
 # ... fixing a bricked one from a pc without another programmer by using a Linux live cd:
 
 http://tuxgraphics.org/common/src2/article07052/avrusb500-upd.html
