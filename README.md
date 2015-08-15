@@ -13,7 +13,7 @@ http://letsmakerobots.com/blog/nuumio/first-experiences-avrusb500-v2-programmer
 http://vonkonow.com/wordpress/2012/03/usbserial-pcb/
 
 
-# ... fixing a bricked one from a pc without another programmer by using a Linux live cd:
+# ... fixing a bricked one from a pc without another programmer by using a Linux live cd (repeat the make commands a few times if they give error, bitbang is hard to get):
 
 http://tuxgraphics.org/common/src2/article07052/avrusb500-upd.html
 
