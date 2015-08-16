@@ -21,6 +21,7 @@ build() {
   make DESTDIR=${pkgdir} install
 }
 
+# Store the patch part to uisp.patch. Follows after the many minus lines. Up is pkgfile.
 -------------------------------------------
 
 diff -Naur src.orig/AvrAtmel.C src/AvrAtmel.C
