@@ -1,0 +1,248 @@
+# Contributor: Corrado Primier <bardo@aur.archlinux.org>
+# Maintainer: Laszlo Papp <djszapi2 at gmail com>
+pkgname=uisp
+pkgver=20050207
+pkgrel=4
+pkgdesc="A tool for AVR which can interface to many hardware in-system programmers"
+arch=('i686')
+url="http://savannah.nongnu.org/projects/uisp/"
+license=('GPL')
+depends=('gcc-libs')
+source=(http://savannah.nongnu.org/download/uisp/${pkgname}-${pkgver}.tar.gz uisp.patch)
+md5sums=('b1e499d5a1011489635c1a0e482b1627'
+         '54350c8cc66946af4e316be8d736f9cb')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  patch -uNp1 -d src -i ../../uisp.patch || return 1
+
+  ./configure --prefix=/usr --mandir=/usr/share/man
+  make || return 1
+  make DESTDIR=${pkgdir} install
+}
+
+-------------------------------------------
+
+diff -Naur src.orig/AvrAtmel.C src/AvrAtmel.C
+--- src.orig/AvrAtmel.C	2002-10-31 00:22:07.000000000 +0100
++++ src/AvrAtmel.C	2012-06-16 15:29:17.379935096 +0200
+@@ -185,7 +185,7 @@
+ 
+ void TAvrAtmel::SetAddress(TAddr addr){
+   apc_address = addr;
+-  TByte setAddr [3] = { 'A', (addr>>8)&0xff, addr&0xff};
++  TByte setAddr [3] = { 'A', static_cast<TByte>((addr>>8)&0xff), static_cast<TByte>(addr&0xff)};
+   Send(setAddr, 3, 1);
+   CheckResponse(setAddr [0]);
+ }
+@@ -294,7 +294,7 @@
+       if (flush_buffer){WriteProgramMemoryPage();}
+     }
+     
+-    TByte wrF [2] = { (addr&1)?'C':'c', byte };
++    TByte wrF [2] = { static_cast<TByte>((addr&1)?'C':'c'), byte };
+     
+     if (apc_address!=(addr>>1) || apc_autoinc==false) SetAddress (addr>>1);
+     if (wrF[0]=='C') apc_address++;
+@@ -346,7 +346,7 @@
+  */
+ void TAvrAtmel::WriteOldFuseBits (TByte val)
+ {
+-  TByte buf[5] = {'.', 0xac, (val & 0x1f) | 0xa0, 0x00, 0xd2 };
++  TByte buf[5] = {'.', 0xac, static_cast<TByte>((val & 0x1f) | 0xa0), 0x00, 0xd2 };
+   Info (2, "Write fuse high bits: %02x\n", (int)val);
+   Send (buf, 5, 2);
+   CheckResponse (buf[1]);
+@@ -423,7 +423,7 @@
+ }
+ 
+ void TAvrAtmel::WriteLockBits(TByte bits){
+-  TByte lockTarget [2] = { 'l', 0xF9 | ((bits << 1) & 0x06) };
++  TByte lockTarget [2] = { 'l', static_cast<TByte>(0xF9 | ((bits << 1) & 0x06)) };
+   Send (lockTarget, 2, 1);
+   CheckResponse(lockTarget [0]);
+   Info(1, "Writing lock bits ...\nReinitializing device\n");
+diff -Naur src.orig/AvrDummy.C src/AvrDummy.C
+--- src.orig/AvrDummy.C	2005-02-07 22:55:21.000000000 +0100
++++ src/AvrDummy.C	2012-06-16 15:29:17.379935096 +0200
+@@ -81,12 +81,12 @@
+ TAvrDummy::GetPartInfo(TAddr addr)
+ {
+   if (at89) {
+-    TByte info [4] = { 0x28, addr & 0x1f, 0, 0 };
++    TByte info [4] = { 0x28, static_cast<TByte>(addr & 0x1f), 0, 0 };
+     Send(info, 4);
+     return info[3];
+   }
+ 
+-  TByte info [4] = { 0x30, 0, addr, 0 };
++  TByte info [4] = { 0x30, 0, static_cast<TByte>(addr), 0 };
+   Send(info, 4);
+   return info[3];
+ }
+@@ -289,7 +289,7 @@
+ void
+ TAvrDummy::WriteOldFuseBits(TByte val)
+ {
+-  TByte oldfuse[4] = { 0xAC, (val & 0x1F) | 0xA0, 0, 0xD2 };
++  TByte oldfuse[4] = { 0xAC, static_cast<TByte>((val & 0x1F) | 0xA0), 0, 0xD2 };
+   Send(oldfuse, 4);
+ }
+ 
+@@ -533,7 +533,7 @@
+ {
+   /* This handles both old (byte 2, bits 1-2)
+      and new (byte 4, bits 0-5) devices.  */
+-  TByte lock[4] = { 0xAC, 0xF9 | ((bits << 1) & 0x06), 0xFF, bits };
++  TByte lock[4] = { 0xAC, static_cast<TByte>(0xF9 | ((bits << 1) & 0x06)), 0xFF, bits };
+   TByte rbits;
+ 
+   if (at89)
+diff -Naur src.orig/Avr.h src/Avr.h
+--- src.orig/Avr.h	2004-03-31 04:25:44.000000000 +0200
++++ src/Avr.h	2012-06-16 15:29:17.379935096 +0200
+@@ -142,7 +142,7 @@
+ private:
+   /* AVR Family Device (Part) List */
+   struct TPart {
+-    char* name;
++const     char* name;
+     TByte part_family;
+     TByte part_number;
+     TAddr flash_size;
+diff -Naur src.orig/MotIntl.C src/MotIntl.C
+--- src.orig/MotIntl.C	2004-12-28 15:39:38.000000000 +0100
++++ src/MotIntl.C	2012-06-16 15:30:48.376825888 +0200
+@@ -349,11 +349,16 @@
+   if (val!=NULL){hash_marker = atoi(val);}  
+   
+   /* auto-detect Motorola or Intel file format */
+-  fgets(line_buf, MI_LINEBUF_SIZE, fd);
+-  if (strncasecmp(line_buf, "S0", 2)==0){UploadMotorola();}
+-  else if (line_buf[0]==':'){UploadIntel();}
+-  else {throw Error_Device("Unknown file format.");}  
+-  
++  if (fgets(line_buf, MI_LINEBUF_SIZE, fd) != NULL)
++  {
++    if (strncasecmp(line_buf, "S0", 2)==0){UploadMotorola();}
++    else if (line_buf[0]==':'){UploadIntel();}
++    else {throw Error_Device("Unknown file format.");}  
++  }
++  else
++  {
++    throw Error_C(filename);
++  }
+   fclose(fd);
+ }
+ 
+diff -Naur src.orig/Stk500.C src/Stk500.C
+--- src.orig/Stk500.C	2004-12-28 15:54:11.000000000 +0100
++++ src/Stk500.C	2012-06-16 15:29:17.379935096 +0200
+@@ -419,7 +419,7 @@
+   }
+ 
+   pgsz = prg_part[desired_part].params.pagesize;
+-  pagesize = (pgsz[0]) << 8 + pgsz[1];
++  pagesize = (pgsz[0]) << (8 + pgsz[1]);
+ 
+   if (pagesize == 0) {
+     pagesize = 128;
+@@ -518,7 +518,7 @@
+ 
+ TByte TStk500::ReadCalFuseBits(int addr)
+ {
+-  TByte cmd[] = { 0x38, 0x00, addr, 0x00 };
++  TByte cmd[] = { 0x38, 0x00, static_cast<TByte>(addr), 0x00 };
+ 
+   return UniversalCmd(cmd);
+ }
+@@ -724,7 +724,6 @@
+ void TStk500::ReadMem(){
+   TByte buf[0x200];
+   int wordsize;
+-  TAddr addr;
+   TByte seg;
+ 
+   if (segment == SEG_FLASH) {
+@@ -741,7 +740,6 @@
+ 
+   EnterProgrammingMode();
+ 
+-  addr = 0;
+   for (unsigned int addr=0; addr<GetSegmentSize(); addr+=0x100) {
+     memcpy(buf, SetAddress, sizeof(SetAddress));
+     buf[1] = (addr/wordsize) & 0xff;
+diff -Naur src.orig/Terminal.C src/Terminal.C
+--- src.orig/Terminal.C	2003-02-17 18:29:45.000000000 +0100
++++ src/Terminal.C	2012-06-16 15:29:17.379935096 +0200
+@@ -58,10 +58,11 @@
+   printf ("Entering the AVR Terminal. ?-help, q-quit.\n");
+   char cmd[32];
+   TAddr addr = 0;
++  int dummy = 0;
+   do {
+     try {
+       printf("avr> "); 
+-      scanf("%s",cmd);
++      dummy = scanf("%s",cmd);
+       if (!strcmp(cmd,"?")){
+ 	printf ("AVR Terminal supports the following commands:\n"
+ 	  "ul fileName        - uploads data from Motorola/Intel format.\n"
+@@ -80,7 +81,7 @@
+ 	  "Written by Uros Platise (c) 1997-1999, uros.platise@ijs.si\n");
+       }
+       else if (!strcmp(cmd,"ul")) {
+-	char inputFileName [64]; scanf ("%s", inputFileName);
++	char inputFileName [64]; dummy = scanf ("%s", inputFileName);
+ 	try{
+ 	  motintl.Read(inputFileName, true, false);
+ 	}
+@@ -88,7 +89,7 @@
+ 	catch (Error_C) { perror ("Error"); }
+       }
+       else if (!strcmp(cmd,"vf")) {
+-	char inputFileName [64]; scanf ("%s", inputFileName);
++	char inputFileName [64]; dummy = scanf ("%s", inputFileName);
+ 	try{
+ 	  motintl.Read(inputFileName, false, true);
+ 	}
+@@ -117,7 +118,7 @@
+       } 
+       else if (!strcmp(cmd,"ss")){
+         char seg_name [32];
+-	scanf("%s", seg_name);
++	dummy = scanf("%s", seg_name);
+ 	if (!device->SetSegment(seg_name)){
+ 	  printf("Invalid segment: `%s'\n", seg_name);
+ 	} else {addr=0;}
+@@ -138,17 +139,17 @@
+       }
+ */      
+       else if (!strcmp(cmd,"rd")){
+-	scanf ("%x", &addr);
++	dummy = scanf ("%x", &addr);
+ 	printf("%s: $%.2x\n", 
+ 	  device->TellActiveSegment(), device->ReadByte(addr));
+       }
+       else if (!strcmp(cmd,"wr")){
+         unsigned x;
+-	scanf("%x%x", &addr, &x);
++	dummy = scanf("%x%x", &addr, &x);
+ 	device->WriteByte(addr, TByte(x));
+       }
+       else if (!strcmp(cmd,"du")){
+-	scanf ("%x", &addr);
++	dummy = scanf ("%x", &addr);
+ 	goto list_contents;
+       }
+       else if (!strcmp(cmd,",")){
+@@ -162,7 +163,7 @@
+ 	  l++;
+ 	}  
+       }
+-      else printf ("Ouch.\n");
++      else printf ("Ouch. %d\n", dummy);
+       
+     } catch (Error_MemoryRange){Info(0,"Out of memory range!\n");putchar('\n');}
+   } while (strcmp(cmd,"q"));
+   
