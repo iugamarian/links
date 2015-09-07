@@ -1,5 +1,5 @@
 // buttonsdebounce.h for avr microcontrollers
-// Version 0.01
+// Version 0.02
 // License GPL v 3.0 or later
 /* Usage in a program including this buttonsdebounce.h:
  * #####################################################################
@@ -27,6 +27,8 @@ uint16_t buttonderivcount[NUMBEROFBUTTONS];
 uint16_t buttonderivratio = 0;	// value given in main
 uint16_t clocksfortenms = 0;	// value given in main
 int buttonconfidence = 0;	// value given in main
+int upperoverflowconf = 0;	// value given in main
+int upperconfidence = 0;	// value given in main
 // buttonconfidence is number of passes through while to reach
 // 10 ms as many times as noise at max percent requires
 // buttonderivratio passes to change pressedconfidence by 1 overall
@@ -39,6 +41,8 @@ int main(void)
 	clocksfortenms = F_CPU/10000;
 	buttonderivratio = (NOISEPERCENTMAX/10)+4; // experimentally
 	buttonconfidence = clocksfortenms/WHILECLOCKCOUNT*buttonderivratio;	// 10 ms
+	upperoverflowconf = buttonconfidence*2;
+	upperconfidence = upperoverflow-3;
 	for (whichbutton=0;whichbutton<NUMBEROFBUTTONS;whichbutton++)
 	// initialize each button variables with values
 	{
@@ -90,10 +94,10 @@ void pollbuttons(void)
 		// derivation has reached its ratio so derivate
 		{
 			buttonderivcount[whichbutton] = 0;	// reset derivation count
-			if (pressedconfidence[whichbutton] < 100)
+			if (pressedconfidence[whichbutton] < buttonconfidence)
 				pressedconfidence[whichbutton]++;	// closer to 100 by 1
 			// pressedconfidence[whichbutton] == 100 remains at 100
-			if (pressedconfidence[whichbutton] > 100)
+			if (pressedconfidence[whichbutton] > buttonconfidence)
 				pressedconfidence[whichbutton]--;	// closer to 100 by 1
 		}
 		// checking the actual noisy state of the button and setting statistics
@@ -106,14 +110,14 @@ void pollbuttons(void)
 		// <<<<< confident that button is released after it has been pressed
 		{
 			buttonreleased[whichbutton] = 1;		// the button is considered released many passes
-			pressedconfidence[whichbutton] = 100;	// and not confident any more
+			pressedconfidence[whichbutton] = buttonconfidence;	// and not confident any more
 			// that it is pressed, already done up, new pass so not pressed
 		}
-		if((pressedconfidence[whichbutton] > 197) && (buttonreleased[whichbutton] == 1))
+		if((pressedconfidence[whichbutton] > upperconfidence) && (buttonreleased[whichbutton] == 1))
 		// >>>>> confident that button is pressed after it has been released
 		{
 			buttonpressed[whichbutton] = 1;			// the button is considered pressed this pass only
-			pressedconfidence[whichbutton] = 100;	// and not confident any more
+			pressedconfidence[whichbutton] = buttonconfidence;	// and not confident any more
 			buttonreleased[whichbutton] = 0;		// that it is released
 		}
 		// in case it has not been the other way before don't let confidence overflow by reseting it
@@ -121,12 +125,12 @@ void pollbuttons(void)
 		if(pressedconfidence[whichbutton] < 1)
 		// <<<<< confident that button is released after it has been released, try again...
 		{
-			pressedconfidence[whichbutton] = 100;	// not confident any more
+			pressedconfidence[whichbutton] = buttonconfidence;	// not confident any more
 		}
-		if(pressedconfidence[whichbutton] > 199)
+		if(pressedconfidence[whichbutton] > upperoverflowconf)
 		// >>>>> confident that button is pressed after it has been pressed, try again...
 		{
-			pressedconfidence[whichbutton] = 100;	// not confident any more
+			pressedconfidence[whichbutton] = buttonconfidence;	// not confident any more
 		}
 	}
 }
