@@ -1,5 +1,5 @@
 // buttonsdebounce.h for avr microcontrollers
-// Version 0.02
+// Version 0.03
 // License GPL v 3.0 or later
 /* Usage in a program including this buttonsdebounce.h:
  * #####################################################################
@@ -80,7 +80,7 @@ void initializebuttons(void)
 	buttonderivratio = (NOISEPERCENTMAX/10)+4; // experimentally
 	buttonconfidence = clocksfortenms/WHILECLOCKCOUNT*buttonderivratio;	// 10 ms
 	upperoverflowconf = buttonconfidence*2;
-	upperconfidence = upperoverflow-3;
+	upperconfidence = upperoverflowconf-3;
 	for (whichbutton=0;whichbutton<NUMBEROFBUTTONS;whichbutton++)
 	// initialize each button variables with values
 	{
