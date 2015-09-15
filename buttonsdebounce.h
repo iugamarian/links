@@ -11,6 +11,7 @@
 #include <stdio.h>		// provides sprintf() number in lcd string
 #include <stdlib.h>		// provides abs()
 
+// Options for buttonsdebounce.h in the main program
 #define F_CPU 4000000
 #define NUMBEROFBUTTONS 4	// a fixed value, less than 9
 #define PULLBUTTONS PORTD	// port for pull up 1 or down 0
@@ -19,24 +20,61 @@
 #define WHILECLOCKCOUNT 40	// ~ nr. of instructions done in while
 #define NOISEPERCENTMAX 20	// 0-40% max noise avoid deriv to middle
 
-unsigned char whichbutton=0;
-unsigned char buttonreleased[NUMBEROFBUTTONS];	// many passes
-unsigned char buttonpressed[NUMBEROFBUTTONS];	// only on one pass
-unsigned char pressedconfidence[NUMBEROFBUTTONS];	// ..2-100-198..
-uint16_t buttonderivcount[NUMBEROFBUTTONS];
-uint16_t buttonderivratio = 0;	// value given in main
-uint16_t clocksfortenms = 0;	// value given in main
-int buttonconfidence = 0;	// value given in main
-int upperoverflowconf = 0;	// value given in main
-int upperconfidence = 0;	// value given in main
-// buttonconfidence is number of passes through while to reach
-// 10 ms as many times as noise at max percent requires
-// buttonderivratio passes to change pressedconfidence by 1 overall
-
 #include <util/delay.h>	// provides delay_ms() delay_us()
 #include "buttonsdebounce.h"	// provides pollbuttons()
 
 int main(void)
+{
+initializebuttons();  // set initial values for buttons
+	}
+	while (1)
+	{
+		pollbuttons();	// at the beginning of the loop
+		//[...]
+		if (buttonpressed[1] != 0)
+		{
+			_delay_ms(100);
+		}
+		//[...]
+		_delay_ms(2);
+	}
+}
+ * #####################################################################
+ */
+
+/* How it works:
+ * Statistically poll the buttons at every while pass from main program.
+ * When confident that button is pressed, make buttonpressed[whichbutton]
+ * 1 only for one pass then keep at zero until the button is confidently
+ * released and confidently pressed again.
+ * pressconfidence[whichbutton] needs to reach 0 for released and buttonconfidence*2
+ * for pressed in a span of 10 ms, it will happen a little faster for
+ * less noise and never while noise larger than NOISEPERCENTMAX as
+ * pressconfidence[whichbutton] is getting faster to buttonconfidence because of
+ * buttonderivratio than pressed or released with over max noise.
+ * buttonpressed[whichbutton] is the one to be read from main program.
+ * For more button ports functions with different names are needed.
+ */
+
+// All global variables static volatile so that main program variables can stay in registers more
+static volatile unsigned char whichbutton=0;
+static volatile unsigned char buttonreleased[NUMBEROFBUTTONS];	// many passes
+static volatile unsigned char buttonpressed[NUMBEROFBUTTONS];	// only on one pass
+static volatile unsigned char pressedconfidence[NUMBEROFBUTTONS];	// ..2 buttonconfidence buttonconfidence*2-2..
+static volatile uint16_t buttonderivcount[NUMBEROFBUTTONS];
+static volatile uint16_t buttonderivratio = 0;	// value given in initializebuttons
+static volatile uint16_t clocksfortenms = 0;	// value given in initializebuttons
+static volatile int buttonconfidence = 0;	// value given in initializebuttons
+static volatile int upperoverflowconf = 0;	// value given in initializebuttons
+static volatile int upperconfidence = 0;	// value given in initializebuttons
+// buttonconfidence is number of passes through while to reach
+// 10 ms as many times as noise at max percent requires
+// buttonderivratio passes to change pressedconfidence by 1 overall 
+
+void initializebuttons(void);	// when it's called should be already declared
+void pollbuttons(void);		// when it's called should be already declared
+
+void initializebuttons(void)
 {
 	clocksfortenms = F_CPU/10000;
 	buttonderivratio = (NOISEPERCENTMAX/10)+4; // experimentally
@@ -48,38 +86,10 @@ int main(void)
 	{
 		buttonreleased[whichbutton] = 1;
 		buttonpressed[whichbutton] = 0;
-		pressedconfidence[whichbutton] = 100;
+		pressedconfidence[whichbutton] = buttonconfidence;
 		buttonderivcount[whichbutton] = 0;
 	}
-	while (1)
-	{
-		pollbuttons();	// at the beginning of the loop
-		//[...]
-		if (buttonpressed[1] != 0)
-		{
-			_delay_ms(100);
-		}
-		//[...]
-	}
 }
- * #####################################################################
- */
-
-/* How it works:
- * Statistically poll the buttons at every while pass from main program.
- * When confident that button is pressed, make buttonpressed[whichbutton]
- * 1 only for one pass then keep at zero until the button is confidently
- * released and confidently pressed again.
- * pressconfidence[whichbutton] needs to reach 0 for released and 200
- * for pressed in a span of 10 ms, it will happen a little faster for
- * less noise and never while noise larger than NOISEPERCENTMAX as
- * pressconfidence[whichbutton] is getting faster to 100 because of
- * buttonderivratio than pressed or released with over max noise.
- * buttonpressed[whichbutton] is the one to be read from main program.
- * For more button ports functions with different names are needed.
- */
- 
-void pollbuttons(void);		// when it's called should be already declared
 
 void pollbuttons(void)
 {
@@ -95,10 +105,10 @@ void pollbuttons(void)
 		{
 			buttonderivcount[whichbutton] = 0;	// reset derivation count
 			if (pressedconfidence[whichbutton] < buttonconfidence)
-				pressedconfidence[whichbutton]++;	// closer to 100 by 1
-			// pressedconfidence[whichbutton] == 100 remains at 100
+				pressedconfidence[whichbutton]++;	// closer to buttonconfidence by 1
+			// pressedconfidence[whichbutton] == buttonconfidence remains at buttonconfidence
 			if (pressedconfidence[whichbutton] > buttonconfidence)
-				pressedconfidence[whichbutton]--;	// closer to 100 by 1
+				pressedconfidence[whichbutton]--;	// closer to buttonconfidence by 1
 		}
 		// checking the actual noisy state of the button and setting statistics
 		if(INPUTBUTTONS &=~(1 << whichbutton))
@@ -121,7 +131,7 @@ void pollbuttons(void)
 			buttonreleased[whichbutton] = 0;		// that it is released
 		}
 		// in case it has not been the other way before don't let confidence overflow by reseting it
-		// after three tries (0 1 2 ------ 198 199 200)
+		// after three tries ( 0 1 2 ------ buttonconfidence*2-2 buttonconfidence*2-1 buttonconfidence*2)
 		if(pressedconfidence[whichbutton] < 1)
 		// <<<<< confident that button is released after it has been released, try again...
 		{
