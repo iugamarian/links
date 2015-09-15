@@ -1,5 +1,5 @@
 // buttonsdebounce.h for avr microcontrollers
-// Version 0.03
+// Version 0.05
 // License GPL v 3.0 or later
 /* Usage in a program including this buttonsdebounce.h:
  * #####################################################################
@@ -21,12 +21,12 @@
 #define NOISEPERCENTMAX 20	// 0-40% max noise avoid deriv to middle
 
 #include <util/delay.h>	// provides delay_ms() delay_us()
-#include "buttonsdebounce.h"	// provides pollbuttons()
+#include "buttonsdebounce.h"	// provides initializebuttons() pollbuttons()
 
 int main(void)
 {
 initializebuttons();  // set initial values for buttons
-	}
+	//[...]
 	while (1)
 	{
 		pollbuttons();	// at the beginning of the loop
@@ -36,7 +36,7 @@ initializebuttons();  // set initial values for buttons
 			_delay_ms(100);
 		}
 		//[...]
-		_delay_ms(2);
+		_delay_ms(20);
 	}
 }
  * #####################################################################
@@ -58,10 +58,11 @@ initializebuttons();  // set initial values for buttons
 
 // All global variables static volatile so that main program variables can stay in registers more
 static volatile unsigned char whichbutton=0;
+// Arrays have contents plus null and maybe something else before that or at the beginning
 static volatile unsigned char buttonreleased[NUMBEROFBUTTONS+2];	// many passes
 static volatile unsigned char buttonpressed[NUMBEROFBUTTONS+2];	// only on one pass
 static volatile unsigned char pressedconfidence[NUMBEROFBUTTONS+2];	// ..2 buttonconfidence buttonconfidence*2-2..
-static volatile uint16_t buttonderivcount[NUMBEROFBUTTONS+2];
+static volatile uint16_t buttonderivcount[NUMBEROFBUTTONS+2];	// iterations before derivating for each button
 static volatile uint16_t buttonderivratio = 0;	// value given in initializebuttons
 static volatile uint16_t clocksfortenms = 0;	// value given in initializebuttons
 static volatile int buttonconfidence = 0;	// value given in initializebuttons
