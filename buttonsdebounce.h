@@ -58,10 +58,10 @@ initializebuttons();  // set initial values for buttons
 
 // All global variables static volatile so that main program variables can stay in registers more
 static volatile unsigned char whichbutton=0;
-static volatile unsigned char buttonreleased[NUMBEROFBUTTONS];	// many passes
-static volatile unsigned char buttonpressed[NUMBEROFBUTTONS];	// only on one pass
-static volatile unsigned char pressedconfidence[NUMBEROFBUTTONS];	// ..2 buttonconfidence buttonconfidence*2-2..
-static volatile uint16_t buttonderivcount[NUMBEROFBUTTONS];
+static volatile unsigned char buttonreleased[NUMBEROFBUTTONS+2];	// many passes
+static volatile unsigned char buttonpressed[NUMBEROFBUTTONS+2];	// only on one pass
+static volatile unsigned char pressedconfidence[NUMBEROFBUTTONS+2];	// ..2 buttonconfidence buttonconfidence*2-2..
+static volatile uint16_t buttonderivcount[NUMBEROFBUTTONS+2];
 static volatile uint16_t buttonderivratio = 0;	// value given in initializebuttons
 static volatile uint16_t clocksfortenms = 0;	// value given in initializebuttons
 static volatile int buttonconfidence = 0;	// value given in initializebuttons
@@ -111,9 +111,9 @@ void pollbuttons(void)
 				pressedconfidence[whichbutton]--;	// closer to buttonconfidence by 1
 		}
 		// checking the actual noisy state of the button and setting statistics
-		if(INPUTBUTTONS &=~(1 << whichbutton))
+		if(!(INPUTBUTTONS &(1<<whichbutton)))
 			pressedconfidence[whichbutton]--;	// more confident the button is released
-		if(INPUTBUTTONS |= (1 << whichbutton))
+		if(INPUTBUTTONS&(1<<whichbutton))
 			pressedconfidence[whichbutton]++;	// more confident the button is pressed
 		// checking for confidence being reached and that it has been the other way before
 		if((pressedconfidence[whichbutton] < 3) && (buttonreleased[whichbutton] == 0))
