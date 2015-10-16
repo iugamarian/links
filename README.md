@@ -92,8 +92,6 @@ x11vnc -storepasswd
 
 on the client (not ssh-ed in) in separate terminals or with an & after the first one do:
 
-ssh -t -L 5900:localhost:5900 root@IPTARGET 'x11vnc -forever -localhost -display :0 -ultrafilexfer -auth /home/pi/.Xauthority'
+ssh -t -c -L 5900:localhost:5900 root@IPTARGET 'x11vnc -forever -localhost -display :0 -ultrafilexfer -auth /home/pi/.Xauthority'
 
-xtightvncviewer -encodings "copyrect tight zrle hextile" localhost:0
-
-
+xtightvncviewer -encodings "copyrect tight hextile" -quality 9 -compresslevel 1 localhost:0
