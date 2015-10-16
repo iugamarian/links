@@ -81,3 +81,15 @@ avrdude -c avrusb500 -p atmega8 -U flash:w:usbasp.atmega8.2011-05-28.hex
 # other links
 links
 https://eagleup.wordpress.com/tutorial-v4/     - google sketchup allows many 3d board models in eagle
+
+# connect to vnc with tunneling (the server behaves as running on the client)
+
+x11vnc connects to already open Desktop, doesn not make a new one
+
+ssh -t -L 5900:localhost:5900 far-host 'x11vnc -forever -localhost -display :0 -ultrafilexfer'
+xtightvncviewer 127.0.0.1:0
+
+or
+
+xtightvncviewer localhost:0
+
