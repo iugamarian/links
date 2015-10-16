@@ -86,6 +86,12 @@ https://eagleup.wordpress.com/tutorial-v4/     - google sketchup allows many 3d 
 
 x11vnc connects to already open Desktop, doesn not make a new one
 
+on the server make a vnc password, avoid open connection (not being -shared means only you anyway):
+
+x11vnc -storepasswd
+
+on the client (not ssh-ed in) in separate terminals or with an & after the first one do:
+
 ssh -t -L 5900:localhost:5900 far-host 'x11vnc -forever -localhost -display :0 -ultrafilexfer'
 
 xtightvncviewer 127.0.0.1:0
