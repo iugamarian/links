@@ -98,4 +98,16 @@ xtightvncviewer -encodings "copyrect tight hextile" -quality 5 -compresslevel 5 
 
 (maximum 400 kB/s when there are a lot of image changes, 5 kB/s at a static image with blinking cursor)
 
-(Raspberry Pi 2 CPU at 20 % at maximum, but that's also because of the program changing the image)
+(Raspberry Pi 2 CPU at 34 % at maximum, but that's also because of the program changing the image)
+
+# Autostart a program in LXDE
+
+Right click - add on desktop
+
+file manager - ctrl + h
+
+cd ./config
+
+mkdir autostart
+
+Drag and drop from the desktop in autostart.
