@@ -92,6 +92,10 @@ x11vnc -storepasswd
 
 on the client (not ssh-ed in) in separate terminals or with an & after the first one do:
 
-ssh -t -c -L 5900:localhost:5900 root@IPTARGET 'x11vnc -forever -localhost -display :0 -ultrafilexfer -auth /home/pi/.Xauthority'
+ssh -t -L 5900:localhost:5900 root@IPTARGET 'x11vnc -forever -localhost -display :0 -ultrafilexfer -auth /home/pi/.Xauthority'
 
-xtightvncviewer -encodings "copyrect tight hextile" -quality 9 -compresslevel 1 localhost:0
+xtightvncviewer -encodings "copyrect tight hextile" -quality 5 -compresslevel 5 localhost:0
+
+(maximum 400 kB/s when there are a lot of image changes, 5 kB/s at a static image with blinking cursor)
+
+(Raspberry Pi 2 CPU at 20 % at maximum, but that's also because of the program changing the image)
