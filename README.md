@@ -110,7 +110,7 @@ scp -r /media/user/datadrive/videos root@IPTARGET:/media/pi/250gbdate/pi/
 
 From there to here, a file:
 
-scp root@IPTARGET:/media/pi/250gbdate/pi/file.tar.gz /media/pi/250gbdate/pi/ 
+scp root@IPTARGET:/media/pi/250gbdate/pi/file.tar.gz /media/user/ 
 
 # Autostart a program in LXDE
 
