@@ -84,9 +84,11 @@ https://eagleup.wordpress.com/tutorial-v4/     - google sketchup allows many 3d 
 
 # connect to vnc with tunneling (the server behaves as running on the client)
 
-x11vnc connects to already open Desktop, doesn not make a new one
+First open port 22 and 5900 (or all of them) on the router on the network to enter.
 
-on the server make a vnc password, avoid open connection (not being -shared means only you anyway):
+x11vnc connects to already open Desktop, doesn not make a new one, I like that
+
+On the server make a vnc password, avoid anyone entering vnc server without a password (port 5900):
 
 x11vnc -storepasswd
 
@@ -99,6 +101,16 @@ xtightvncviewer -encodings "copyrect tight hextile" -quality 5 -compresslevel 5 
 (maximum 400 kB/s when there are a lot of image changes, 5 kB/s at a static image with blinking cursor)
 
 (Raspberry Pi 2 CPU at 34 % at maximum, but that's also because of the program changing the image)
+
+# Copy files securely on the internet over ssh:
+
+From here to there a directory (-r means recursive):
+
+scp -r /media/user/datadrive/videos root@IPTARGET:/media/pi/250gbdate/pi/
+
+From there to here, a file:
+
+scp root@IPTARGET:/media/pi/250gbdate/pi/file.tar.gz /media/pi/250gbdate/pi/ 
 
 # Autostart a program in LXDE
 
