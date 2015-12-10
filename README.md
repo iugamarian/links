@@ -123,3 +123,45 @@ cd ./config
 mkdir autostart
 
 Drag and drop from the desktop in autostart.
+
+# Working Samba share
+
+sudo -s
+apt-get install -y samba samba-common python-glade2 system-config-samba
+cp -pf /etc/samba/smb.conf /etc/samba/smb.conf.bak
+cat /dev/null  > /etc/samba/smb.conf
+systemctl stop apparmor
+systemctl disable apparmor
+firewall-cmd --add --service=samba
+
+a) In terminal run (set password that Windows asks):
+sudo pbedit -a pi
+
+b) In terminal run:
+mkdir /media/pi/EXT4DATE/dan/sambasharefolder
+
+c) In terminal run:
+chmod -R 0755 /media/pi/EXT4DATE/dan/sambasharefolder/
+chown -R pi:pi /media/pi/EXT4DATE/dan/sambasharefolder/
+chown pi:pi /media/pi/EXT4DATE/dan
+
+d) nano /etc/samba/smb.conf
+[global]
+    workgroup = WORKGROUP
+    dos charset = cp850
+    unix charset = ISO-8859-1
+    force user = pi
+    force group = pi
+    read only = no
+    wins support = yes
+    name resolve order = bcast host lmhosts wins
+
+[sambasharefolder]
+    path = /media/pi/EXT4DATE/dan/sambasharefolder
+    writable = yes
+    browseable = yes
+    guest ok = no
+
+e) Restart sharing service:
+systemctl restart smbd
+
