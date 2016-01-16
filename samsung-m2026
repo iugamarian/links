@@ -1,0 +1,34 @@
+http://www.samsungdrivers.net/samsung-m2026-driver/
+http://www.samsungdrivers.net/download/http://downloadcenter.samsung.com/content/DR/201503/20150311160833703/ULD_v1.00.35.tar.gz
+http://www.bchemnet.com/suldr/pool/debian/extra/
+
+Repair:
+
+Delete the printer in Administration-Hardware-Printers
+sudo -s
+apt-get remove -y samsungmfp-scanner samsungmfp-configurator-data samsungmfp-scanner-sane-fix-multiarch samsung-driver-pdf-fix samsungmfp-scanner-usblp-fix
+apt-get remove samsung*
+apt-get remove suld-driver2*
+apt-get remove suld-driver*
+apt-get autoremove
+
+Add key and repository if not already added:
+
+echo "deb http://www.bchemnet.com/suldr/ debian extra" >> /etc/apt/sources.list
+wget -O - http://www.bchemnet.com/suldr/suldr.gpg | sudo apt-key add -
+
+Install:
+
+apt-get update
+apt-get upgrade -y 
+apt-get install -y suld-driver2-1.00.35
+
+Reboot to make absolutely sure CUPS does not have old data in ram:
+
+reboot
+
+In a browser go to http://localhost:631
+
+Add printer from there.
+
+Then, move to "Printers" section, select your printer, and then choose "Set as server default".
