@@ -96,6 +96,10 @@ on the client (not ssh-ed in) in separate terminals or with an & after the first
 
 ssh -t -L 5900:localhost:5900 root@IPTARGET 'x11vnc -forever -localhost -display :0 -ultrafilexfer -auth /home/pi/.Xauthority'
 
+or with more caching that reduces network usage (but introduces vertically down images used for cache):
+
+ssh -t -L 5900:localhost:5900 pi@IPTARGET 'x11vnc -forever -localhost -ncache 2 -ncache_cr -ncache_no_rootpixmap -display :0 -ultrafilexfer -auth /home/pi/.Xauthority'
+
 xtightvncviewer -encodings "copyrect tight hextile" -quality 5 -compresslevel 5 localhost:0
 
 (maximum 400 kB/s when there are a lot of image changes, 5 kB/s at a static image with blinking cursor)
