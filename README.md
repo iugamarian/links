@@ -169,3 +169,33 @@ d) nano /etc/samba/smb.conf
 e) Restart sharing service:
 systemctl restart smbd
 
+# Another smb.conf untested...
+
+[global]
+	workgroup = WORKGROUP
+	client code page = 850
+	character set = ISO8859-1
+	force user = pi
+	force group = pi
+	read only = no
+	os level = 99
+	wins support = yes
+	name resolve order = wins lmhosts hosts bcast
+	domain master = yes
+	preferred master = yes
+	dns proxy = yes
+	time service = yes
+	dos filetimes = yes
+	dos filetime resolution = yes
+	delete readonly = yes
+	keep alive = 10
+	max xmit = 4096
+	status = no
+
+[sambasharefolder]
+	path = /media/pi/EXT4DATE/dan/sambasharefolder
+	writable = yes
+	browseable = yes
+	guest ok = no
+	
+
