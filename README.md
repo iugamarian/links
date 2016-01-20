@@ -169,7 +169,7 @@ d) nano /etc/samba/smb.conf
 e) Restart sharing service:
 systemctl restart smbd
 
-# Another smb.conf untested...
+# Another smb.conf tested and it but bcast must be first (again) for it to work
 
 [global]
 	workgroup = WORKGROUP
