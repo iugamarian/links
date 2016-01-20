@@ -180,7 +180,7 @@ systemctl restart smbd
 	read only = no
 	os level = 99
 	wins support = yes
-	name resolve order = wins lmhosts hosts bcast
+	name resolve order = bcast lmhosts hosts wins
 	domain master = yes
 	preferred master = yes
 	dns proxy = yes
