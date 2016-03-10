@@ -44,13 +44,15 @@ Script omxrosubbed:
 
 #!/bin/bash
 # $1 is the file specified: omxrosubbed file
-sed 's/\xE3/\x61/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xD3/\x41/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xE2/\x61/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xD2/\x41/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xEE/\x69/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xCE/\x49/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xBA/\x73/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xAA/\x53/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xFE/\x74/g' $1 > temprosubbed; mv temprosubbed $1
-sed 's/\xDE/\x54/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xE3/\x61/g' $1 > /tmp/temprosubbed-0
+sed 's/\xD3/\x41/g' /tmp/temprosubbed-0 > /tmp/temprosubbed-1
+sed 's/\xE2/\x61/g' /tmp/temprosubbed-1 > /tmp/temprosubbed-2
+sed 's/\xD2/\x41/g' /tmp/temprosubbed-2 > /tmp/temprosubbed-3
+sed 's/\xEE/\x69/g' /tmp/temprosubbed-3 > /tmp/temprosubbed-4
+sed 's/\xCE/\x49/g' /tmp/temprosubbed-4 > /tmp/temprosubbed-5
+sed 's/\xBA/\x73/g' /tmp/temprosubbed-5 > /tmp/temprosubbed-6
+sed 's/\xAA/\x53/g' /tmp/temprosubbed-6 > /tmp/temprosubbed-7
+sed 's/\xFE/\x74/g' /tmp/temprosubbed-7 > /tmp/temprosubbed-8
+sed 's/\xDE/\x54/g' /tmp/temprosubbed-8 > /tmp/temprosubbed-9
+mv /tmp/temprosubbed-9 $1
+rm /tmp/temprosubbed-*
