@@ -1,0 +1,56 @@
+Transcendence (nu apare corect):
+
+a~ - e3
+A~ - d3 - nesigur
+a^ - e2
+A^ - d2 - nesigur
+i^ - ee
+I^ - ce
+s, - ba
+S, - aa
+t, - fe
+T, - de
+
+Weaponized 2016 apare mai corect dar nu-mi place ca foloseste doua caractere pentru unul...
+
+Inlocuire:
+
+a~ - a - 61
+A~ - A - 41
+a^ - a - 61
+A^ - A - 41
+i^ - i - 69
+I^ - I - 49
+s, - s - 73
+S, - S - 53
+t, - t - 74
+T, - T - 54
+
+Concluzie hex initial - heX final
+
+e3 - 61
+d3 - 41
+e2 - 61
+d2 - 41
+ee - 69
+ce - 49
+ba - 73
+aa - 53
+fe - 74
+de - 54
+
+
+Script omxrosubbed:
+
+#!/bin/bash
+# $1 is the file specified: omxrosubbed file
+sed 's/\xE3/\x61/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xD3/\x41/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xE2/\x61/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xD2/\x41/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xEE/\x69/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xCE/\x49/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xBA/\x73/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xAA/\x53/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xFE/\x74/g' $1 > temprosubbed; mv temprosubbed $1
+sed 's/\xDE/\x54/g' $1 > temprosubbed; mv temprosubbed $1
