@@ -130,6 +130,8 @@ Drag and drop from the desktop in autostart.
 
 # Working Samba share
 
+# Also chech the newer samba2016 file in this folder
+
 sudo -s
 apt-get install -y samba samba-common python-glade2 system-config-samba
 cp -pf /etc/samba/smb.conf /etc/samba/smb.conf.bak
