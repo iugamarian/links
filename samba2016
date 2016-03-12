@@ -1,0 +1,130 @@
+http://askubuntu.com/questions/153893/samba-and-user-acount-passwords
+https://www.getfilecloud.com/supportdocs/display/cloud/Howto+properly+mount+a+CIFS+share+on+Linux+for+FileCloud
+https://help.ubuntu.com/community/How%20to%20Create%20a%20Network%20Share%20Via%20Samba%20Via%20CLI%20%28Command-line%20interface/Linux%20Terminal%29%20-%20Uncomplicated,%20Simple%20and%20Brief%20Way!
+
+La server (totul ca root):
+apt-get install -y samba
+smbpasswd -a pi
+(inserare parola identica cu cea de user pi linux)
+
+cp /etc/samba/smb.conf ~
+
+nano /etc/samba/smb.conf 
+
+
+################################################################################
+
+# "security = user" is always a good idea. This will require a Unix account
+# in this server for every user accessing the server. See
+# /usr/share/doc/samba-doc/htmldocs/Samba3-HOWTO/ServerType.html
+# in the samba-doc package for details.
+    security = user
+
+...
+
+# This boolean parameter controls whether Samba attempts to sync the Unix
+# password with the SMB password when the encrypted SMB password in the
+# passdb is changed.
+    unix password sync = yes
+
+...
+
+[shome]
+path = /home/pi/sambasharehome
+valid users = pi
+read only = no
+
+[storr]
+path = /500gbdate/pi/torrents3
+valid users = pi
+read only = no
+
+################################################################################
+
+
+(share [names] less than 12 characters recommended)
+
+
+(
+The first time you add a linux user (adduser) you need to add them to smbpasswd as well.
+
+sudo smbpasswd -a <user>
+
+when prompted for a password use the same password you used with adduser. After this the smb password should be updated automatically when you change the linux password with sudo passwd <user>
+)
+
+
+service smbd restart
+
+Sau mai nou:
+systemctl restart smbd.service
+
+
+
+
+La client (totul ca root):
+
+apt-get install -y cifs-utils
+mkdir /mnthome
+mount -t cifs -o username=pi,password=.........,rw,nounix,iocharset=utf8,file_mode=0777,dir_mode=0777 //192.168.1.182/shome /mnthome
+mkdir /mnttorr
+mount -t cifs -o username=pi,password=.........,rw,nounix,iocharset=utf8,file_mode=0777,dir_mode=0777 //192.168.1.182/storr /mnttorr
+
+Atentie la /etc/fstab - nu merge ca se intarzie pornirea desktop-ului care are retea wireless si se blocheaza ca nu vede share pe wireless, trebuie pornit mai tarziu (60 secunde) cu un script mic, similar cu https://github.com/iugamarian/noip2startup
+
+nano mountsambashares.service
+
+################################################################################
+
+[Unit]
+Description=noip2 updater to noip.com for ddns
+Documentation=https://www.noip.com/download
+ConditionPathExists=/usr/local/bin/noip2
+
+[Service]
+Type=forking
+# Need to start after internet connection established
+ExecStartPre=/bin/sleep 20
+ExecStart=/sbin/mountsambasharesscript
+
+[Install]
+WantedBy=multi-user.target
+
+################################################################################
+
+nano mountsambasharesscript
+
+################################################################################
+#!/bin/bash
+mkdir /mnthome
+mount -t cifs -o username=pi,password=.........,rw,nounix,iocharset=utf8,file_mode=0777,dir_mode=0777 //192.168.1.182/shome /mnthome
+mkdir /mnttorr
+mount -t cifs -o username=pi,password=.........,rw,nounix,iocharset=utf8,file_mode=0777,dir_mode=0777 //192.168.1.182/storr /mnttorr
+
+################################################################################
+
+nano setup-mountsambashare
+
+################################################################################
+
+#!/bin/bash
+# Get the cifs software:
+apt-get install -y cifs-utils
+# Pozition script:
+cp mountsambasharesscript /sbin
+# Install with:
+cp mountsambashares.service /etc/systemd/system/
+# Executable by user:
+chmod 700 /etc/systemd/system/mountsambashares.service
+# Systemd sees it without restart:
+systemctl daemon-reload
+sleep 2
+# Systemd starts it at boot:
+systemctl enable mountsambashares.service
+# Systemd starts it now:
+systemctl start mountsambashares.service
+echo ""
+echo "Wait a few seconds."
+echo ""
+
+################################################################################
