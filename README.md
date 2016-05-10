@@ -58,21 +58,26 @@ avrdude -c avrusb500 -p atmega32 -U flash:w:$1.hex
 
 
 # Usbasp has failed for me, found a way to fix it:
+
 http://visionhack.de/2012/09/23/installation-usap-programmer-with-ubuntu/
+
 Short JP3 slow sck.
+
 Or...
+
 https://forum.arduino.cc/index.php?topic=363772.75
 
 It always keeps reset on the target chip - after program, to test, you need to remove connection and power it from somewhere else.
 
 Compavr for atmega8 chip programmed with usbasp:
 
-avr-gcc -mmcu=atmega32 -Wall -Os -o $1.elf $1.c
+avr-gcc -mmcu=atmega8 -Wall -Os -o $1.elf $1.c
 
 avr-objcopy -j .text -j .data -O ihex $1.elf $1.hex
 
-# Fuses are for a fast external oscilator like 12MHz !!! Not internal.
-# avrdude -c usbasp -p atmega8 -u -U hfuse:w:0xc9:m -U lfuse:w:0xef:m
+# Fuses are for fast external oscilator like 12MHz !!! Not internal.
+
+avrdude -c usbasp -p atmega8 -u -U hfuse:w:0xc9:m -U lfuse:w:0xef:m
 
 avrdude -c usbasp -p atmega8 -U flash:w:$1.hex
 
