@@ -57,7 +57,25 @@ avrdude -c avrusb500 -p atmega32 -u -U hfuse:w:0xc9:m -U lfuse:w:0xe3:m
 avrdude -c avrusb500 -p atmega32 -U flash:w:$1.hex
 
 
-# Usbasp has failed for me, not working, I don't recommend it:
+# Usbasp has failed for me, found a way to fix it:
+http://visionhack.de/2012/09/23/installation-usap-programmer-with-ubuntu/
+Short JP3 slow sck.
+Or...
+https://forum.arduino.cc/index.php?topic=363772.75
+
+It always keeps reset on the target chip - after program, to test, you need to remove connection and power it from somewhere else.
+
+Compavr for atmega8 chip programmed with usbasp:
+
+avr-gcc -mmcu=atmega32 -Wall -Os -o $1.elf $1.c
+
+avr-objcopy -j .text -j .data -O ihex $1.elf $1.hex
+
+# Fuses are for a fast external oscilator like 12MHz !!! Not internal.
+# avrdude -c usbasp -p atmega8 -u -U hfuse:w:0xc9:m -U lfuse:w:0xef:m
+
+avrdude -c usbasp -p atmega8 -U flash:w:$1.hex
+
 
 0. Verify that you have a USBasp V2.0, and that it has a 12MHz crystal and an ATMEGA8 or ATMEGA8A MCU onboard. DO NOT CONNECT IT TO THE USB PORT OF YOUR COMPUTER.
 
@@ -79,7 +97,7 @@ avrdude -c avrusb500 -p atmega8 -u -U hfuse:w:0xc9:m -U lfuse:w:0xef:m
 avrdude -c avrusb500 -p atmega8 -U flash:w:usbasp.atmega8.2011-05-28.hex
 
 # other links
-links
+
 https://eagleup.wordpress.com/tutorial-v4/     - google sketchup allows many 3d board models in eagle
 
 # connect to vnc with tunneling (the server behaves as running on the client)
