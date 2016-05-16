@@ -2,10 +2,10 @@
 //////////START OF LCD DRIVER INCLUDES
 //////////////////////////////////////
 #include <avr/io.h>
-#include <avr/interrupt.h>
+//#include <avr/interrupt.h>
 #include <util/delay.h>
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 
 void send_data (unsigned char);
 void send_cmd (unsigned char);
@@ -13,6 +13,7 @@ void send_cmd_init (unsigned char);
 void lcdini (void);
 //void busy(void); // not using rw avoids blocking when lcd gets blocked and frees one pin
 void lcdputs (const char *pointer);
+char lcdlinebegins[4] = {0, 64, 20, 84};
 ////////////////////////////////////
 //////////END OF LCD DRIVER INCLUDES
 ////////////////////////////////////
@@ -29,10 +30,15 @@ void lcdputs (const char *pointer);
 // EN RS and R/W port in 4 bit can be same as data port, entire LCD on one port
 
 // not using rw avoids blocking when lcd gets blocked and frees one pin
-#define LCDRS	DDC2
-#define LCDEN	DDC3
-#define LCDOUTPUTPORT	PORTC
-#define LCDINOUTSELECT	DDRC
+
+#define LCDOUTPUTPORT	PORTD
+#define LCDINOUTSELECT	DDRD
+#define LCDRSPIN	2
+#define LCDENPIN	3
+#define LCDD4PIN	4
+#define LCDD5PIN	5
+#define LCDD6PIN	6
+#define LCDD7PIN	7
 // Data pins are DDC7 DDC6 DDC5 DDC4
 
 //pins 0 1 are i2c/twi
@@ -59,57 +65,57 @@ void lcdputs (const char *pointer);
 void send_data (unsigned char data)	// data on pins 4 - 7, leaving pins 0 1 free for i2c
 {
 	LCDOUTPUTPORT = (data & 0xF0);
-	LCDOUTPUTPORT |= (1<<LCDRS);          //RS on
-	LCDOUTPUTPORT |= (1<<LCDEN);          //EN off
-	LCDOUTPUTPORT &=~ (1<<LCDEN);         //EN on
+	LCDOUTPUTPORT |= (1<<LCDRSPIN);          //RS on
+	LCDOUTPUTPORT |= (1<<LCDENPIN);          //EN off
+	LCDOUTPUTPORT &=~ (1<<LCDENPIN);         //EN on
 	_delay_us(2);
-	LCDOUTPUTPORT &=~ (1<<LCDRS);         //RS off
+	LCDOUTPUTPORT &=~ (1<<LCDRSPIN);         //RS off
 	_delay_us(LCDMIDDLETIME);	// time for lcd to read data pins
 	LCDOUTPUTPORT = ((data & 0x0F)<<4);
-	LCDOUTPUTPORT |= (1<<LCDRS);          //RS on
-	LCDOUTPUTPORT |= (1<<LCDEN);          //EN on
+	LCDOUTPUTPORT |= (1<<LCDRSPIN);          //RS on
+	LCDOUTPUTPORT |= (1<<LCDENPIN);          //EN on
 	_delay_us(2);
-	LCDOUTPUTPORT &=~ (1<<LCDEN);         //EN off
-	LCDOUTPUTPORT &=~ (1<<LCDRS);         //RS off
+	LCDOUTPUTPORT &=~ (1<<LCDENPIN);         //EN off
+	LCDOUTPUTPORT &=~ (1<<LCDRSPIN);         //RS off
 	_delay_us(LCDFINISHTIME);	// time for lcd to read data pins and work fast
-	LCDOUTPUTPORT &=~ (1<<DDC7) | (1<<DDC6) | (1<<DDC5) | (1<<DDC4);	// set data pins to zero
+	LCDOUTPUTPORT &=~ (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN);	// set data pins to zero
 }
 
 void send_cmd (unsigned char cmd)	// data on pins 4 - 7, leaving pins 0 1 free for i2c
 {
 	LCDOUTPUTPORT = (cmd & 0xF0);
-	LCDOUTPUTPORT |= (1<<LCDEN);          //EN on
+	LCDOUTPUTPORT |= (1<<LCDENPIN);          //EN on
 	_delay_us(2);
-	LCDOUTPUTPORT &=~ (1<<LCDEN);         //EN off
+	LCDOUTPUTPORT &=~ (1<<LCDENPIN);         //EN off
 	_delay_us(LCDMIDDLETIME);	// time for lcd to read data pins
 	LCDOUTPUTPORT = ((cmd & 0x0F)<<4);
-	LCDOUTPUTPORT |= (1<<LCDEN);          //EN on
+	LCDOUTPUTPORT |= (1<<LCDENPIN);          //EN on
 	_delay_us(2);
-	LCDOUTPUTPORT &=~ (1<<LCDEN);         //EN off
+	LCDOUTPUTPORT &=~ (1<<LCDENPIN);         //EN off
 	_delay_us(LCDFINISHTIME);	// time for lcd to read data pins and work fast
-	LCDOUTPUTPORT &=~ (1<<DDC7) | (1<<DDC6) | (1<<DDC5) | (1<<DDC4);	// set data pins to zero
+	LCDOUTPUTPORT &=~ (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN);	// set data pins to zero
 }
 
 void send_cmd_init (unsigned char cmd)	// data on pins 4 - 7, leaving pins 0 1 free for i2c
 {
 	LCDOUTPUTPORT = (cmd & 0xF0);
-	LCDOUTPUTPORT |= (1<<LCDEN);          //EN on
+	LCDOUTPUTPORT |= (1<<LCDENPIN);          //EN on
 	_delay_us(2);
-	LCDOUTPUTPORT &=~ (1<<LCDEN);         //EN off
+	LCDOUTPUTPORT &=~ (1<<LCDENPIN);         //EN off
 	_delay_ms(LCDINITCMDTIME);  // long time for initialization command
 	LCDOUTPUTPORT = ((cmd & 0x0F)<<4);
-	LCDOUTPUTPORT |= (1<<LCDEN);          //EN on
+	LCDOUTPUTPORT |= (1<<LCDENPIN);          //EN on
 	_delay_us(2);
-	LCDOUTPUTPORT &=~ (1<<LCDEN);         //EN off
+	LCDOUTPUTPORT &=~ (1<<LCDENPIN);         //EN off
 	_delay_ms(LCDINITCMDTIME);  // long time for initialization command
-	LCDOUTPUTPORT &=~ (1<<DDC7) | (1<<DDC6) | (1<<DDC5) | (1<<DDC4);	// set data pins to zero
+	LCDOUTPUTPORT &=~ (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN);	// set data pins to zero
 }
 
 void lcdini (void)	// data on pins 4 - 7, leaving pins 0 1 free for i2c
 {
 	_delay_ms(100);			// delay to allow lcd to power up and microcontroller to stabilize
-	LCDINOUTSELECT |= (1<<DDC7) | (1<<DDC6) | (1<<DDC5) | (1<<DDC4) | (1<<DDC3) | (1<<DDC2);	// pins are outputs
-	LCDOUTPUTPORT &=~ (1<<DDC7) | (1<<DDC6) | (1<<DDC5) | (1<<DDC4) | (1<<DDC3) | (1<<DDC2);	// pins start at zero			
+	LCDINOUTSELECT |= (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN) | (1<<LCDENPIN) | (1<<LCDRSPIN);	// pins are outputs
+	LCDOUTPUTPORT &=~ (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN) | (1<<LCDENPIN) | (1<<LCDRSPIN);	// pins start at zero			
 
 //////////////////////////////////////////////////////
 ///////START OF INIT FOR RS0010 AND WS0010 CONTROLLERS
