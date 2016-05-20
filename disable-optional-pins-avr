@@ -1,0 +1,22 @@
+// >>> Disable extrnal interrupts so that the pins can be used as something else
+// Bit 7 – INT1: External Interrupt Request 1 Enable
+// When the INT1 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the external pin
+// interrupt is enabled.
+// Bit 6 – INT0: External Interrupt Request 0 Enable
+// When the INT0 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the external pin
+// interrupt is enabled.
+	GICR &= ~ (1 << INT0) | (1<<INT1); // INT2 is disabled when it's 1 or missing so no need to change here
+
+// >>> Disable AIN0 and AIN1 so that the pins can be used as something else, this is not the Analog Digital Converter
+// Bit 7 – ACD: Analog Comparator Disable
+// When this bit is written logic one, the power to the Analog Comparator is switched off. This bit can be set
+// at any time to turn off the Analog Comparator. This will reduce power consumption in Active and Idle
+// mode. When changing the ACD bit, the Analog Comparator Interrupt must be disabled by clearing the
+// ACIE bit in ACSR. Otherwise an interrupt can occur when the bit is changed.
+	ACSR &= ~ (1<<ACIE); // disable interrupt on ACD change
+	ACSR |= (1<<ACD);	// turn off power to Analog Comparator
+
+// >>> Disable Output Compare Output OC2
+// COM21 COM20 Description
+//   0     0   Normal port operation, OC2 disconnected.
+	TCCR2 &=~ (1<<COM21) | (1<<COM20);
