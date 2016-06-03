@@ -10,8 +10,8 @@ nameofdrive=STORAGE
 #********** END Configuration **************************************************************
 
 # Check to see if device is indicated
-if [ `echo $drivetobeformatted | grep sdwhat |wc -c` -eq 0 ]; then
     echo ""
+if [ `echo $drivetobeformatted | grep sdwhat |wc -c` -eq 0 ]; then
     echo "The drive to move root to is $drivetobeformatted."
     echo ""
 else
@@ -80,8 +80,9 @@ if [ `which fdisk |wc -c` != 0 ]; then
 echo "Found fdisk."
 else
 neededprograms+="fdisk "
+fi
 if [ `which parted |wc -c` != 0 ]; then
-echo "Found fdisk."
+echo "Found parted."
 else
 neededprograms+="parted "
 fi
