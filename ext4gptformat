@@ -1,0 +1,250 @@
+#!/bin/bash
+# Advanced script to completely erase and format a drive with ext4
+# More info and newest @ http://www.github.com/iugamarian/ext4format
+# Brought to you by iugamarian	<iugamarian@yahoo.com> 
+# Configuration - choose here carefuly 
+
+drivetobeformatted=/dev/sdwhat 			# Before running, lsblk to indicate card here
+nameofdrive=STORAGE
+
+#********** END Configuration **************************************************************
+
+# Check to see if device is indicated
+if [ `echo $drivetobeformatted | grep sdwhat |wc -c` -eq 0 ]; then
+    echo ""
+    echo "The drive to move root to is $drivetobeformatted."
+    echo ""
+else
+    lsblk
+    echo ""
+    echo "Specify the drive by editing the beginning of this script."
+    echo ""
+    exit 1
+fi
+# Check to see if running as root
+echo -e "\nChecking for root."
+if [ `id -u` != 0 ]; then
+    echo "Not root."
+    echo -e "Need to be run as root.\n"
+    echo " Try 'sudo sh rpiarchtoserialtorouter' as a user. Exiting."
+    echo ""
+    exit 1
+else
+    echo "Root."
+fi
+# Noting time when started
+start_time=$(date)
+echo ""
+echo ""
+# Allowing dd to be able to clear MBR (permission)
+viewsudouser=`logname`
+viewroot=""
+# A string echo "" is seen by wc as having 1 character so n+1, and a failed grep has a wc of 0
+if [ `echo $viewsudouser | grep "root" |wc -c` != 0 ] && [ `echo $viewsudouser |wc -c` = 5 ]; then
+viewroot="root"
+fi
+# On Arch a no login name gives a wc of 1
+if [ `echo $viewsudouser |wc -c` = 1 ]; then
+viewroot="root"
+fi
+# On other systems no login name maybe gives no login name
+if [ `echo $viewsudouser | grep "no login name" |wc -c` != 0 ]; then
+viewroot="root"
+fi
+if [ `echo $viewroot |wc -c` != 1 ]; then
+echo ""
+echo "Only root."
+echo "Adding root to the disk group."
+echo""
+usermod -G disk --append root
+else
+echo ""
+echo "Sudo is used by a user named $viewsudouser."
+echo "Adding user named $viewsudouser to the disk group."
+echo ""
+usermod -G disk --append $viewsudouser
+fi
+echo ""
+echo "Checking for programs that are needed:"
+echo ""
+# If on Arch this commands install them
+pacman -Syu --noconfirm
+sleep 2
+pacman -S --noconfirm --needed base-devel dosfstools wget libarchive
+pacman -S --noconfirm --needed parted
+sleep 2
+sync
+# On other distributions the user installs them
+neededprograms=""
+if [ `which fdisk |wc -c` != 0 ]; then
+echo "Found fdisk."
+else
+neededprograms+="fdisk "
+if [ `which parted |wc -c` != 0 ]; then
+echo "Found fdisk."
+else
+neededprograms+="parted "
+fi
+if [ `which mkfs.vfat |wc -c` != 0 ]; then
+echo "Found mkfs.vfat."
+else
+neededprograms+="mkfs.vfat "
+fi
+if [ `which wget |wc -c` != 0 ]; then
+echo "Found wget."
+else
+neededprograms+="wget "
+fi
+if [ `which bsdtar |wc -c` != 0 ]; then
+echo "Found bsdtar."
+else
+neededprograms+="bsdtar "
+fi
+echo ""
+if [ "$neededprograms" = "" ]; then
+echo "All needed programs available."
+else
+echo "Missing needed programs, install them:"
+echo ""
+echo $neededprograms
+echo ""
+echo "On Arch fdisk is in util-linux which is in base-devel."
+echo ""
+echo "On Arch mkfs.vfat is in dosfstools and bsdtar is in libarchive."
+echo ""
+echo "Exiting."
+echo ""
+exit 1
+fi
+# Detecting availability of indicated device
+if ! (fdisk -l | grep $drivetobeformatted); then
+    echo "Can't find ($drivetobeformatted). Insert and indicate it."
+    echo "No files. Only devices. Exiting."
+    echo ""
+    exit 1
+else
+    echo "Found indicated device $drivetobeformatted."
+    echo ""
+fi
+echo ""
+echo "============================================================"
+echo ""
+sleep 2
+# Safety unmounting of possible partitions, logicals can start from 5
+echo "Unmounting partitions, up to 9, with or without p in front:"
+echo ""
+umount "$drivetobeformatted"1
+umount "$drivetobeformatted"2
+umount "$drivetobeformatted"3
+umount "$drivetobeformatted"4
+umount "$drivetobeformatted"5
+umount "$drivetobeformatted"6
+umount "$drivetobeformatted"7
+umount "$drivetobeformatted"8
+umount "$drivetobeformatted"9
+umount "$drivetobeformatted"p1
+umount "$drivetobeformatted"p2
+umount "$drivetobeformatted"p3
+umount "$drivetobeformatted"p4
+umount "$drivetobeformatted"p5
+umount "$drivetobeformatted"p6
+umount "$drivetobeformatted"p7
+umount "$drivetobeformatted"p8
+umount "$drivetobeformatted"p9
+swapoff "$drivetobeformatted"1
+swapoff "$drivetobeformatted"2
+swapoff "$drivetobeformatted"3
+swapoff "$drivetobeformatted"4
+swapoff "$drivetobeformatted"5
+swapoff "$drivetobeformatted"6
+swapoff "$drivetobeformatted"7
+swapoff "$drivetobeformatted"8
+swapoff "$drivetobeformatted"9
+swapoff "$drivetobeformatted"p1
+swapoff "$drivetobeformatted"p2
+swapoff "$drivetobeformatted"p3
+swapoff "$drivetobeformatted"p4
+swapoff "$drivetobeformatted"p5
+swapoff "$drivetobeformatted"p6
+swapoff "$drivetobeformatted"p7
+swapoff "$drivetobeformatted"p8
+swapoff "$drivetobeformatted"p9
+echo ""
+sleep 5
+echo ""
+echo "Deleting MBR and fat allocation table general area with dd:"
+# Need to dd more because fat filesystems may get confused about random
+# data in their first part where they store the fat allocation table
+dd if=/dev/zero of=$drivetobeformatted bs=1M count=32 iflag=fullblock
+echo ""
+echo ""
+echo "Partitioning indicated device with parted, selecting GPT:"
+echo ""
+
+#it is better to use partitions than no partitions: BSDs call it "dangerously dedicated mode".
+#That's primarily because it is more difficult to tell that the disk is in use. You also can't
+#have a bootloader, and adding GRUB to it later (easy to do accidentally - there might not even
+#be any warnings) might hose the FS so thoroughly no amount of praying to fsck would save you.
+#If you were using LUKS encryption on a dangerously dedicated disk, replacing the first 4K
+#would render the data 100% irrecoverable.
+#So that's why. Otherwise there's nothing wrong with it. Any FS that would otherwise be
+#block-aligned still will be.
+#The drive will look as unformatted to Windows, if yes, deletes the format.
+#Using GPT instead of MSDOS partition table avoids errors on large TB drives
+#http://openelec.tv/forum/123-apple-atv-mk1/690-apple-tv-hdd-install?start=20
+parted -s $drivetobeformatted mklabel gpt
+sleep 2
+#Avoiding first cylinder and last two cilinders because Windows or MAC may corrupt them
+#Tip: Most Linux native file systems map to the same partition code (0x83), so it is
+#perfectly safe to e.g. use ext2 for an ext4-formatted partition.
+parted -s $drivetobeformatted unit cyl mkpart primary ext2 -- 0 -2
+sleep 2
+# sync the system disk partition tables
+partprobe $drivetobeformatted
+sleep 2
+# Finished partitioning.
+sleep 5
+echo ""
+echo "=================================================="
+echo ""
+echo ""
+echo "Detecting if the device is seen as a mmcblk so that partitions have a p in front"
+echo ""
+if [ `echo $drivetobeformatted | grep mmcblk |wc -c` != 0 ]; then
+echo ""
+echo "Partition numbers have a p in front of them..."
+storagepartition="$drivetobeformatted"p1
+else
+echo ""
+echo "Partition numbers don't have a p in front of them..."
+storagepartition="$drivetobeformatted"1
+fi
+echo ""
+echo -n "Storage partition is: "
+echo $storagepartition
+echo ""
+echo ""
+echo "Formatting partition:"
+# Disabling lazy options so that all inodes get written now not bit by bit later.
+mke2fs -t ext4 -m 0 -F -L $nameofdrive -E lazy_itable_init=0,lazy_journal_init=0 $storagepartition
+echo ""
+sleep 2
+sync
+sleep 2
+echo "Completed."
+echo ""
+end_time=$(date)
+echo "Started at:"
+echo ""
+echo $start_time
+echo ""
+echo "Finished at:"
+echo ""
+echo $end_time
+echo ""
+echo "Exiting happy."
+echo ""
+sleep 2
+sync
+sleep 2
+exit 0
