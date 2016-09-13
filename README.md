@@ -1,3 +1,20 @@
+# Windows or DOS first if it is found by grub:
+
+sudo -s
+
+dpkg-divert --local --divert /etc/grub.d/09_os-prober --rename --add /etc/grub.d/30_os-prober
+
+update-grub
+
+
+# Remove this divert (works to remove if bad name given to diverted file), go back to default:
+
+sudo -s
+
+dpkg-divert --rename --remove /etc/grub.d/30_os-prober
+
+update-grub
+
 
 # Avrusb500v2 avr programmer has worked for me, I recommend it:
 
