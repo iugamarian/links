@@ -1,0 +1,13 @@
+#!/bin/bash
+
+avr-gcc -mmcu=atmega8 -Wall -Os -o $1.elf $1.c
+
+avr-objcopy -j .text -j .data -O ihex $1.elf $1.hex
+
+avrdude -c usbasp -p atmega8 -U flash:w:$1.hex
+
+# file.c put only file as argument, not followed by extension .c
+
+# chmod +x compavrusbasp
+
+# ./compavrusbasp file
