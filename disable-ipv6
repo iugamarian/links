@@ -1,0 +1,40 @@
+#!/bin/bash
+# https://www.raspberrypi.org/forums/viewtopic.php?f=36&t=138899
+
+# Add these lines to /etc/sysctl.conf
+
+#https://wiki.archlinux.org/index.php/sysctl
+#From version 207 and 21x, systemd only applies settings from
+#/etc/sysctl.d/*.conf and /usr/lib/sysctl.d/*.conf. If you had
+#customized /etc/sysctl.conf, you need to rename it as
+#/etc/sysctl.d/99-sysctl.conf. If you had e.g. /etc/sysctl.d/foo,
+#you need to rename is to /etc/sysctl.d/foo.conf.
+
+
+cat <<EOF > /etc/sysctl.d/30-rpi-disable-ipv6
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+net.ipv6.conf.eth0.disable_ipv6 = 1
+net.ipv6.conf.[interface].disable_ipv6 = 1
+EOF
+
+# Making sure in case of power loss data loss is reduced drastically
+
+cat <<EOF > /etc/sysctl.d/30-rpi-optimizations.conf
+vm.swappiness = 60
+vm.min_free_kbytes = 8192
+vm.vfs_cache_pressure = 500
+vm.dirty_bytes = 8388608
+vm.dirty_background_bytes = 8388608
+vm.dirty_writeback_centisecs = 600
+vm.dirty_expire_centisecs = 600
+EOF
+
+# If those files are already there, they get rewritten, not added to.
+
+sync
+sleep 1
+sysctl -p
+
+# or reboot
