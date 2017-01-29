@@ -1,0 +1,12 @@
+#!/bin/bash
+# https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=127042
+# http://askubuntu.com/questions/679419/how-to-make-auto-login-work-in-ubuntu-no-display-manager
+# https://wiki.archlinux.org/index.php/Getty
+
+mkdir -pv /etc/systemd/system/getty@tty1.service.d/
+cat <<EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin pi --noclear %I $TERM
+EOF
+systemctl enable getty@tty1.service
