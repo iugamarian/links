@@ -35,6 +35,8 @@ EOF
 
 sync
 sleep 1
-sysctl -p
+
+# Load all configuration files manually:
+sysctl --system
 
 # or reboot
