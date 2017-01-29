@@ -12,7 +12,7 @@
 
 # Using 99- to apply after other .conf files enabled ipv6:
 
-cat <<EOF > /etc/sysctl.d/99-rpi-disable-ipv6
+cat <<EOF > /etc/sysctl.d/99-rpi-disable-ipv6.conf
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
