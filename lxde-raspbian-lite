@@ -1,0 +1,5 @@
+#!/bin/bash
+apt-get update && apt-get upgrade -y
+sync
+apt-get install -y xorg xserver-xorg-video-fbturbo xserver-xorg-core lxde iceweasel kodi omxplayer mc ncdu iotop
+sync
