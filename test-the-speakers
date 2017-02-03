@@ -1,0 +1,3 @@
+speaker-test -c 2 -t wav
+c = number of audio channels to test
+t = what to test with
