@@ -1,6 +1,11 @@
 #!/bin/bash
 # https://www.raspberrypi.org/forums/viewtopic.php?f=36&t=138899
 # http://askubuntu.com/questions/309461/how-to-disable-ipv6-permanently
+# https://discuss.pivotal.io/hc/en-us/articles/204415133-How-to-disable-the-Ipv6-on-Linux
+
+sysctl -a | grep disable | grep ipv6
+
+# Take result and put 1 instead of thero at end of each row
 
 # Add these lines to /etc/sysctl.conf
 
