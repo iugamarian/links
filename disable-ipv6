@@ -1,5 +1,6 @@
 #!/bin/bash
 # https://www.raspberrypi.org/forums/viewtopic.php?f=36&t=138899
+# http://askubuntu.com/questions/309461/how-to-disable-ipv6-permanently
 
 # Add these lines to /etc/sysctl.conf
 
