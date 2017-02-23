@@ -1,3 +1,7 @@
+# Ubuntu improovements
+
+http://askubuntu.com/questions/2194/how-can-i-improve-ubuntu-overall-system-performance
+
 # Windows or DOS first if it is found by grub:
 
 sudo -s
