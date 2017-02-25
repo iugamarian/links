@@ -1,0 +1,47 @@
+#!/bin/bash
+# first parameter is the file name with no directory path = $1
+# second parameter is the destination folder to be checked for corectness
+# the current file destination is determined by the program
+# Usage: checkdest file destination
+# Result: destination folder is stressed and checked for potential
+# errors which are counted (usb stick or harddisk with adapter)
+NAMEOFFILETOCHECKWITH=$1
+INITIALFILELOCATION=`pwd`
+INITIALMD5SUM=""
+DESTINATIONFILELOCATION=$2
+DESTINATIONMD5SUM=""
+REPEATED="0"
+ERRORCOUNT="0"
+
+echo "Checking file md5 for the first time."
+echo ""
+INITIALMD5SUM=`md5sum $NAMEOFFILETOCHECKWITH | awk '{print $1}'`
+echo "It is $INITIALMD5SUM"
+echo ""
+echo "Trying to remove file from destination for the first time."
+echo ""
+rm $DESTINATIONFILELOCATION/$NAMEOFFILETOCHECKWITH
+echo ""
+echo "Entering destination checking loop."
+echo ""
+
+while true
+do
+cp $NAMEOFFILETOCHECKWITH $DESTINATIONFILELOCATION
+sync
+DESTINATIONMD5SUM=`md5sum $DESTINATIONFILELOCATION/$NAMEOFFILETOCHECKWITH | awk '{print $1}'`
+if [ "$DESTINATIONMD5SUM" == "$INITIALMD5SUM" ]
+then
+	REPEATED=$((REPEATED+1))
+	else
+	REPEATED=$((REPEATED+1))
+	ERRORCOUNT=$((ERRORCOUNT+1))
+fi
+echo "Checking attempt $REPEATED. Number of errors $ERRORCOUNT."
+echo ""
+rm $DESTINATIONFILELOCATION/$NAMEOFFILETOCHECKWITH
+sync
+done
+# Check program functionality: open another terminal an do several times:
+# dd if=/dev/zero of=thefile bs=200 count=1
+# and see error count grow.
