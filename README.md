@@ -4,6 +4,10 @@ http://askubuntu.com/questions/2194/how-can-i-improve-ubuntu-overall-system-perf
 
 https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout
 
+http://askubuntu.com/questions/276669/how-to-monitor-disk-activity
+
+https://help.ubuntu.com/community/DiskPerformance
+
 # Windows or DOS first if it is found by grub:
 
 sudo -s
