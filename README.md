@@ -8,6 +8,8 @@ http://askubuntu.com/questions/276669/how-to-monitor-disk-activity
 
 https://help.ubuntu.com/community/DiskPerformance
 
+https://bigacid.wordpress.com/2008/12/08/jm20337-read-data-corruption-solution/
+
 # Windows or DOS first if it is found by grub:
 
 sudo -s
