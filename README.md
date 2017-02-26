@@ -24,6 +24,29 @@ https://www.reddit.com/r/linux/comments/4a87g1/is_linuxs_completely_fair_schedul
 
 https://wiki.archlinux.org/index.php/mpv
 
+# Test stereo speakers:
+
+speaker-test -c 2 -t wav
+
+# Test surround 5.1 speakers:
+
+speaker-test -c 6 -t wav
+
+# Wine installation for 3d games:
+
+apt-get install -y wine-stable 
+apt-get install -y winetricks 
+WINEARCH=win32 winecfg
+apt-get install -y wine-mono0.0.8 
+apt-get install -y mono-runtime
+WINEARCH=win32 winecfg
+winetricks d3dx9_36
+winetricks ddr=opengl multisampling=enabled orm=fbo videomemorysize=1024 strictdrawordering=enabled
+winetricks dotnet20
+winetricks dotnet40
+
+For Wine 2.0 and onwards, DirectX 11 is getting supported. More on that later...
+
 # Windows or DOS first if it is found by grub:
 
 sudo -s
