@@ -12,6 +12,8 @@ https://bigacid.wordpress.com/2008/12/08/jm20337-read-data-corruption-solution/
 
 http://www.mikejonesey.co.uk/linux/optimisation/linux-io-optimisation
 
+http://wiki.linuxaudio.org/wiki/system_configuration
+
 https://wiki.archlinux.org/index.php/mpv
 
 # Windows or DOS first if it is found by grub:
