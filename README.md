@@ -14,6 +14,8 @@ http://www.mikejonesey.co.uk/linux/optimisation/linux-io-optimisation
 
 http://wiki.linuxaudio.org/wiki/system_configuration
 
+https://fritshoogland.wordpress.com/2012/12/15/throttling-io-with-linux/
+
 https://wiki.archlinux.org/index.php/mpv
 
 # Windows or DOS first if it is found by grub:
