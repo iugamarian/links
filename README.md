@@ -16,6 +16,12 @@ http://wiki.linuxaudio.org/wiki/system_configuration
 
 https://fritshoogland.wordpress.com/2012/12/15/throttling-io-with-linux/
 
+https://www.kernel.org/doc/Documentation/cgroup-v1/blkio-controller.txt
+
+http://unix.stackexchange.com/questions/48138/how-to-throttle-per-process-i-o-to-a-max-limit
+
+https://www.reddit.com/r/linux/comments/4a87g1/is_linuxs_completely_fair_scheduler_ready_for_the/?st=izn2b9eq&sh=9e33d9af
+
 https://wiki.archlinux.org/index.php/mpv
 
 # Windows or DOS first if it is found by grub:
