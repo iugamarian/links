@@ -59,7 +59,11 @@ For Wine 2.0 and onwards, DirectX 11 is getting supported. More on that later...
 
 # Windows or DOS first if it is found by grub:
 
+apt-cache search dpkg-divert
+
 sudo -s
+
+apt-get install -y config-package-dev
 
 dpkg-divert --local --divert /etc/grub.d/09_os-prober --rename --add /etc/grub.d/30_os-prober
 
