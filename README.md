@@ -75,7 +75,7 @@ dpkg-divert --rename --remove /etc/grub.d/30_os-prober
 update-grub
 
 
-# MPV better configuration in ~/.config/mpv
+# MPV better configuration in ~/.config/mpv/mpv.conf
 
 hwdec=vdpau
 profile=opengl-hq
