@@ -78,9 +78,13 @@ update-grub
 # MPV better configuration in ~/.config/mpv/mpv.conf
 
 hwdec=vdpau
+
 profile=opengl-hq
+
 debrand=no
+
 save-position-on-quit
+
 af=drc
 
 
