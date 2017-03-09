@@ -56,6 +56,7 @@ winetricks dotnet40
 
 For Wine 2.0 and onwards, DirectX 11 is getting supported. More on that later...
 
+
 # Windows or DOS first if it is found by grub:
 
 sudo -s
@@ -72,6 +73,15 @@ sudo -s
 dpkg-divert --rename --remove /etc/grub.d/30_os-prober
 
 update-grub
+
+
+# MPV better configuration in ~/.config/mpv
+
+hwdec=vdpau
+profile=opengl-hq
+debrand=no
+save-position-on-quit
+af=drc
 
 
 # Avrusb500v2 avr programmer has worked for me, I recommend it:
