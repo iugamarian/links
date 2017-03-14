@@ -28,6 +28,8 @@ https://wiki.archlinux.org/index.php/mpv
 
 speaker-test -c 2 -t wav
 
+http://www.unix.com/os-x-apple-/249893-bash-audio-sweep-generator.html
+
 # Test surround 5.1 speakers:
 
 speaker-test -c 6 -t wav
