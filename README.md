@@ -24,6 +24,8 @@ https://www.reddit.com/r/linux/comments/4a87g1/is_linuxs_completely_fair_schedul
 
 https://wiki.archlinux.org/index.php/mpv
 
+https://forums.linuxmint.com/viewtopic.php?f=42&t=163126
+
 # Test stereo speakers:
 
 speaker-test -c 2 -t wav
