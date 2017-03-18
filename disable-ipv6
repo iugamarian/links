@@ -40,7 +40,7 @@ vm.dirty_writeback_centisecs = 600
 vm.dirty_expire_centisecs = 600
 EOF
 
-# For PC that can be about four times faster:
+# For PC harddisk that can be about four times faster:
 
 cat <<EOF > /etc/sysctl.d/30-rpi-optimizations.conf
 vm.swappiness = 10
@@ -50,6 +50,18 @@ vm.dirty_bytes = 33554432
 vm.dirty_background_bytes = 33554432
 vm.dirty_writeback_centisecs = 600
 vm.dirty_expire_centisecs = 600
+EOF
+
+# For PC SSD increase time limit to reduce wearing:
+
+cat <<EOF > /etc/sysctl.d/30-rpi-optimizations.conf
+vm.swappiness = 10
+vm.min_free_kbytes = 32768
+vm.vfs_cache_pressure = 500
+vm.dirty_bytes = 33554432
+vm.dirty_background_bytes = 33554432
+vm.dirty_writeback_centisecs = 1200
+vm.dirty_expire_centisecs = 1200
 EOF
 
 # If those files are already there, they get rewritten, not added to.
