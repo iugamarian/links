@@ -1,3 +1,7 @@
+# Raspberry Pi best Sound Card (requires VGA)
+
+Ebay.co.uk item number: 261997177225
+
 # Ubuntu improovements
 
 http://askubuntu.com/questions/2194/how-can-i-improve-ubuntu-overall-system-performance
