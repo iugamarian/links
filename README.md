@@ -2,6 +2,12 @@
 
 Ebay.co.uk item number: 261997177225
 
+
+# Youtube-dl download at maximum possible quality:
+
+youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 f0NdOE5GTgo
+
+
 # Ubuntu improovements
 
 http://askubuntu.com/questions/2194/how-can-i-improve-ubuntu-overall-system-performance
@@ -30,15 +36,18 @@ https://wiki.archlinux.org/index.php/mpv
 
 https://forums.linuxmint.com/viewtopic.php?f=42&t=163126
 
+
 # Test stereo speakers:
 
 speaker-test -c 2 -t wav
 
 http://www.unix.com/os-x-apple-/249893-bash-audio-sweep-generator.html
 
+
 # Test surround 5.1 speakers:
 
 speaker-test -c 6 -t wav
+
 
 # Wine installation for 3d games:
 
@@ -252,6 +261,7 @@ mkdir autostart
 
 Drag and drop from the desktop in autostart.
 
+
 # Working Samba share
 
 # Also chech the newer samba2016 file in this folder
@@ -294,6 +304,7 @@ d) nano /etc/samba/smb.conf
 
 e) Restart sharing service:
 systemctl restart smbd
+
 
 # Another smb.conf tested and it but bcast must be first (again) for it to work
 
