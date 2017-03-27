@@ -5,7 +5,7 @@ Ebay.co.uk item number: 261997177225
 
 # Youtube-dl download at maximum possible quality:
 
-youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 f0NdOE5GTgo
+youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ...video...
 
 
 # Ubuntu improovements
