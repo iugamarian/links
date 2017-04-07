@@ -7,9 +7,9 @@ Ebay.co.uk item number: 261997177225
 
 sudo -s
 
-apt-get install -y timidity timidity-interfaces-extra fluid-soundfont-gm fluid-soundfont-gs
+apt-get install -y audacious fluid-soundfont-gm fluid-soundfont-gs timidity timidity-interfaces-extra
 
-Auddacious -> File -> Settings -> Plugins -> Input -> AMIDI Plugin -> Soundfont
+Audacious -> File -> Settings -> Plugins -> Input -> AMIDI Plugin -> Soundfont
 
 /usr/share/sounds/sf2/FluidR3_GM.sf2
 
