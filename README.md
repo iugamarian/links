@@ -3,6 +3,17 @@
 Ebay.co.uk item number: 261997177225
 
 
+# Play MIDI files in Ubuntu:
+
+sudo -s
+
+apt-get install -y timidity timidity-interfaces-extra fluid-soundfont-gm fluid-soundfont-gs
+
+Auddacious -> File -> Settings -> Plugins -> Input -> AMIDI Plugin -> Soundfont
+
+/usr/share/sounds/sf2/FluidR3_GM.sf2
+
+
 # Youtube-dl download at maximum possible quality:
 
 youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ...video...
