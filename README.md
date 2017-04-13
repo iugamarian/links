@@ -38,6 +38,8 @@ https://addons.mozilla.org/en-us/firefox/addon/adwaita/
 
 https://ubuntuforums.org/showthread.php?t=2213631&p=13262506#post13262506 - iso on fat32 USB stick
 
+https://wiki.ubuntu.com/LiveUsbPendrivePersistent
+
 http://askubuntu.com/questions/2194/how-can-i-improve-ubuntu-overall-system-performance
 
 https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout
