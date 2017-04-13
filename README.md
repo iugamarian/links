@@ -19,6 +19,21 @@ Audacious -> File -> Settings -> Plugins -> Input -> AMIDI Plugin -> Soundfont
 youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ...video...
 
 
+# Firefox on 4k displays or too little Full HD displays
+
+https://fedoramagazine.org/how-to-get-firefox-looking-right-on-a-high-dpi-display-and-fedora/
+
+Enabling the high DPI mode in Firefox is actually pretty simple, it is just a matter of setting the layout.css.devPixelsPerPx value in about:config to a value of 2 (i.e. double the size).
+To do this, open up a new tab, and type about:config into the address bar, and press enter.
+Then use the search box in this page to find the key layout.css.devPixelsPerPx and then change the value from -1.0 to 2
+
+However, on closer inspection you will realise that the icons in the Firefox toolbar, while now the correct proportions, are now slightly fuzzy compared to the text. This is because the default Firefox theme ships bitmap icons that don’t work well with High DPI displays.
+
+The easiest way to fix this, and to make your Firefox fit that much better with the Fedora Workstation, is to install the GNOME Firefox theme. This theme uses scalable vector assets for the icons (SVGs) that look crisp and clean on a high DPI display.
+
+https://addons.mozilla.org/en-us/firefox/addon/adwaita/
+
+
 # Ubuntu improovements
 
 http://askubuntu.com/questions/2194/how-can-i-improve-ubuntu-overall-system-performance
