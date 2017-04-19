@@ -114,59 +114,45 @@ void LCD_update_time();
 void LCD_update_timesel();
 void var_delay_us(uint16_t);
 void makesnd(uint16_t, uint8_t);	// FREQUENCY, DURATION
+void alarmmusic();
+void findouttimeminutessel();
 
-
+// using static volatile keeps in RAM, not in registers, survives interrupts but is slower, good for one second operations and selections
 /*Global Variables Declarations*/
-unsigned int adc_value;
-unsigned char hours = 0;
-unsigned char minutes = 0;
-unsigned char seconds = 0;
-//char time[] = "00:00:00";
- 
-unsigned char hourssel = 0;
-unsigned char minutessel = 0;
-unsigned char secondssel = 0; // si zero ramane mereu
-//char timesel[] = "00:00:00";
-char lcdint [3];                           	// only 2 characters + not specified null to use integer to int, for lcd
 
-	static volatile unsigned char iiii = 0x01; //	1=ignored by compiler; 2: hours;  3: minutes; 4: day; 5: month; 6: year;
+static volatile unsigned char hours = 0;
+static volatile unsigned char minutes = 0;
+static volatile unsigned char seconds = 0;
+static volatile uint16_t timeinminutes = 0; //used for alarm decision, in minutes, more than 256 so 16 bit
+ 
+static volatile unsigned char hourssel = 0;
+static volatile unsigned char minutessel = 0;
+static volatile unsigned char secondssel = 0; // and zero always for the selected second
+static volatile uint16_t timeinminutessel = 1; //used for alarm decision, in minutes, more than 256 so 16 bit, bigger than timeinminutes
+
+static volatile unsigned char iiii = 0x01; //	1=ignored by compiler; 2: hours;  3: minutes; 4: day; 5: month; 6: year;
+static volatile unsigned char quarterofalarm=0; // for one second what part of the alarm 1,2,3,4 with 4 musical notes each part
 //	int was_selected = 0, was_pressed = 0;
 //	int waiting_to_reset = 0;
 
-void setup() {
-// Wait for power stabilization
-  _delay_ms(100); 
+/////////// From here variables don't need to survive interrupt
 
-// ENABLE PORTS
-
-	// Variable to hold ADC result
-	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);
-	// Set ADCSRA Register with division factor 128
-	ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX1);
-
-//((1<<pin)|(1<<pin)|(1<<pin));
-
-  DDRB |= (1<<0); // BUZZER
-  PORTB &= ~ (1<<0);
-  DDRC |= (1<<0); //LED1
-  PORTC &= ~ (1<<0);
-
-// c) registrul unde vede input se citeste in functii
-
-  lcdini();
-
-}
+unsigned int notjuststarted = 0; // 0 = just started (no feedback for selectionpiece) 1 = not just started
+unsigned int adc_value = 0; // 0 to 255
+unsigned int selectionpiece = 0; // 0 to 64, a quarter of adc_value, selected with some kind of feedback
+unsigned int oldselectionpiece = 0; // 0 to 64, a quarter of adc_value, selected with some kind of feedback, older value
+char lcdint [3];                           	// only 2 characters + not specified null to use integer to int, for lcd
 
 int main(void) {
 
-
+	_delay_ms(50); // bedore jumping functions allow small time to make sure microcontroller power is stabilised (increased to 5V)
 	setup();
 	gotolcdlocation(1,1);
 	lcdputs("                ");
 	gotolcdlocation(1,2);
 
 	lcdputs("                ");
-	_delay_ms(100);
+	_delay_ms(10);
 
 	TCCR1B |= (1<<WGM12); // clear timer on compare (when OCR1A is reached, automatically go to 0)
 
@@ -196,24 +182,6 @@ int main(void) {
 //  better always use for 0: REGISTER &= ~ (1<<BIT);
 
 // do, re, mi, fa, sol, la, si, do, do, si, la, sol, fa, mi, re, do
-					makesnd(FDOND,2);
-					makesnd(FREND,2);
-					makesnd(FMIND,2);
-					makesnd(FFAND,2);
-					makesnd(FSOLND,2);
-					makesnd(FLAND,2);
-					makesnd(FSIND,2);
-					makesnd(FDONE,2);
-					_delay_ms(250);
-					makesnd(FDONE,2);
-					makesnd(FSIND,2);
-					makesnd(FLAND,2);
-					makesnd(FSOLND,2);
-					makesnd(FFAND,2);
-					makesnd(FMIND,2);
-					makesnd(FREND,2);
-					makesnd(FDOND,2);
-					_delay_ms(250);
 
 	adc_value = 0; 
 	ADCSRA |= (1<<ADSC); //Forever since it is in single conversion mode
@@ -232,7 +200,7 @@ int main(void) {
 				ADCSRA |= (1<<ADSC); //Forever since it is in single conversion mode
 				// Start conversion in loop
 			}
-
+		findouttimeminutessel();
 		_delay_ms(50);
 
 	} // acolada de la while(1)
@@ -240,9 +208,29 @@ int main(void) {
 	return 0;
 }
 
+void setup() {
+// Initialise LCD
+lcdini();
+
+// ENABLE PORTS
+
+	// Variable to hold ADC result
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);
+	// Set ADCSRA Register with division factor 128
+	ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX1);
+
+//((1<<pin)|(1<<pin)|(1<<pin));
+
+  DDRB |= (1<<0); // BUZZER
+  PORTB &= ~ (1<<0);
+  DDRC |= (1<<0); //LED1
+  PORTC &= ~ (1<<0);
+
+
+}
+
 
 void LCD_update_time() {
-
 	gotolcdlocation(1,1);
 	lcdputs("  "); // empty selected field
 	sprintf(lcdint, "%02d", hours);
@@ -257,11 +245,17 @@ void LCD_update_time() {
 }
 
 void LCD_update_timesel() {
-	gotolcdlocation(1,2); // (coloana, rand)
-	lcdputs("      "); // "      xxx"
-	sprintf(lcdint, "%03d", adc_value); // lcdint is just a char array just made by sprintf
-	lcdputs(lcdint);	// display the lcdint char array
-	lcdputs("       ");  // sometimes errors appear at the end
+	gotolcdlocation(1,2);
+	lcdputs("  "); // empty selected field
+	sprintf(lcdint, "%02d", hourssel);
+	lcdputs(lcdint);
+	lcdputs(" : ");
+ 	sprintf(lcdint, "%02d", minutessel);
+	lcdputs(lcdint);
+	lcdputs(" : ");
+	sprintf(lcdint, "%02d", secondssel);
+	lcdputs(lcdint);
+	lcdputs("  "); // sometimes errors appear at the end
 }
 
 void var_delay_us(uint16_t usvar)	// allow delays without constant, for buzzer
@@ -293,6 +287,83 @@ void makesnd(uint16_t frequency, uint8_t duration)	// duration represented as 16
 //		_delay_ms(25);
 }
 
+void alarmmusic() {
+	switch (quarterofalarm) {
+		case 1:
+					makesnd(FDOND,4);
+					makesnd(FREND,4);
+					makesnd(FMIND,4);
+					makesnd(FFAND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+		break;
+		case 2:
+					makesnd(FSOLND,4);
+					makesnd(FLAND,4);
+					makesnd(FSIND,4);
+					makesnd(FDONE,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+		break;
+		case 3:
+					makesnd(FDONE,4);
+					makesnd(FSIND,4);
+					makesnd(FLAND,4);
+					makesnd(FSOLND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+		break;
+		case 4:
+					makesnd(FFAND,4);
+					makesnd(FMIND,4);
+					makesnd(FREND,4);
+					makesnd(FDOND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+		break;
+		default:
+		//code
+		break;
+	} // accolade for switch (quarterofalarm)
+		quarterofalarm++; // this code is always done, not only if no case happened
+		if(quarterofalarm>4) quarterofalarm=1;
+		// and so this second make no sounds, order for seconds is silence,case1,case2,case3,case4,silence,case1,case2,case3,case4,silence...
+}
+
+void findouttimeminutessel() {
+// http://www.robotplatform.com/howto/blinker/blinker_6.html
+// http://www.avrfreaks.net/forum/tut-c-bit-manipulation-aka-programming-101?page=all
+// http://efundies.com/avr-bitwise-operations-in-c/
+// https://download.mikroe.com/documents/compilers/mikroc/pic/help/logical_operators.htm
+
+// Hack to see if last two bits of adc value are 1 or 2 or bitwise 01 or 10, required for some kind of feedback 0 [1 2] 3 4 [5 6] 7 8 [9 10] 11...
+if( ( ( (!(adc_value &(1<<0))) && (adc_value &(1<<1)) ) || ( (adc_value &(1<<0)) && (!(adc_value &(1<<1))) ) ) || (notjuststarted==0) )
+	// if first two bits of adc_value are 01 or 10
+	{
+	// when adc was mooved with feedback reset counter so that time is measured after not mooving it
+	selectionpiece=(adc_value>>2);
+	if(notjuststarted==0) oldselectionpiece=selectionpiece+1;
+	if(selectionpiece!=oldselectionpiece) // http://www.cprogramming.com/tutorial/c/lesson2.html
+		{
+		oldselectionpiece=selectionpiece; // make old one equal first of all so that we don't reset time on every pass
+		notjuststarted=1;	// no problem if repeated, it only happens when mooving adc
+		quarterofalarm=0;	// start alarm from the beginning next time
+		seconds = 0;
+		minutes = 0;
+		hours = 0;
+		makesnd(FDOND,1); // aknowledge with short sound that there is a new selection
+		// http://www.avrfreaks.net/forum/if-if-if-vs-if-else-if-else-if
+		if (selectionpiece<30) // one piece is a minute, ranges from 0 to 30 minutes
+			timeinminutessel=selectionpiece+1; // 0 is 1 min and onwards to 29 is 30 min
+		else if (selectionpiece<60) // one piece is 5 minutes, ranges from 35 minutes to 180 minutes
+			timeinminutessel=(30+(((selectionpiece-30)+1)*5)); // 30 is 35 min and onwards to 59 is 180 min
+		else // so it's between 60 and 63 then, one piece is 30 minutes, ranges from 210 minutes to 300 minutes
+			timeinminutessel=(180+(((selectionpiece-60)+1)*30)); // 60 is 210 min and onwards to 63 is 300 min
+		// After timeminutessel is determined, we need to make it hours and minutes to be displayed on LCD screen
+		// http://stackoverflow.com/questions/4228356/how-to-perform-integer-division-and-get-the-remainder-in-javascript
+		// var remainder = x % y;
+		// return (x - remainder) / y;
+		minutessel=timeinminutessel % 60;
+		// Conclusion: Use (a/b>>0) (or (~~(a/b)) or (a/b|0)) to achieve about 20% gain in efficiency. Also keep in mind
+		// that they are all inconsistent with Math.floor, when a/b<0 && a%b!=0.
+		hourssel=(((timeinminutessel-minutessel)/60)>>0); // division without remainder, floor
+		} // accolade for oldselectionpiece if
+	} // accolade for feedback if
+
+}
+
 /*Timer Counter 1 Compare Match A Interrupt Service Routine/Interrupt Handler*/
 ISR(TIMER1_COMPA_vect)
 {
@@ -314,5 +385,11 @@ ISR(TIMER1_COMPA_vect)
 	if(hours > 23) {
 		hours = 0;
 	}
-	
+
+timeinminutes=60*hours+minutes;
+
+if(timeinminutessel <= timeinminutes)
+	{
+	alarmmusic();
+	}
 }
