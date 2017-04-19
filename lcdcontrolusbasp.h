@@ -120,7 +120,7 @@ void send_cmd_init (unsigned char cmd)	// data on pins 4 - 7, leaving pins 0 1 f
 
 void lcdini (void)	// data on pins 4 - 7, leaving pins 0 1 free for i2c
 {
-	_delay_ms(500);			// delay to allow lcd to power, microcontroller to stabilize, programmer be safe
+	_delay_ms(50);			// delay to allow lcd to power, microcontroller to stabilize, programmer be safe
 	LCDDATASELECT |= (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN);	// pins are outputs
 	LCDDATAPORT &=~ (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN);	// pins start at zero
 	LCDRSENSELECT |= (1<<LCDENPIN) | (1<<LCDRSPIN);	// pins are outputs
