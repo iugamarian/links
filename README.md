@@ -1,6 +1,10 @@
 # Best CPU upgrades for motherboards, in my opinion
 
-https://en.wikipedia.org/wiki/List_of_Intel_Xeon_microprocessors
+https://en.wikipedia.org/wiki/List_of_Intel_Xeon_microprocessors = Older
+
+http://www.digitimes.com/news/a20170419PD207.html
+
+https://hardforum.com/threads/coffee-lake-lga-1151-6c-12t-launching-in-august-several-k-models-planned.1930226/
 
 
 # Raspberry Pi best Sound Card (requires VGA)
