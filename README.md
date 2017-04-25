@@ -7,6 +7,11 @@ http://www.digitimes.com/news/a20170419PD207.html
 https://hardforum.com/threads/coffee-lake-lga-1151-6c-12t-launching-in-august-several-k-models-planned.1930226/
 
 
+# User autologin if you forgot at install, in /target/...
+
+https://ubuntu-mate.community/t/auto-login-to-the-desktop/60
+
+
 # Raspberry Pi best Sound Card (requires VGA)
 
 Ebay.co.uk item number: 261997177225
