@@ -2,6 +2,8 @@
 
 https://ubuntuforums.org/showthread.php?t=1613132
 
+https://help.ubuntu.com/community/BootOptions
+
 
 # Best CPU upgrades for motherboards, in my opinion
 
