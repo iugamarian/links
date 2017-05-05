@@ -1,3 +1,8 @@
+# Ubuntu boot options on live cd and after install
+
+https://ubuntuforums.org/showthread.php?t=1613132
+
+
 # Best CPU upgrades for motherboards, in my opinion
 
 https://en.wikipedia.org/wiki/List_of_Intel_Xeon_microprocessors = Older
