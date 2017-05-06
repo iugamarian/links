@@ -1,3 +1,8 @@
+# Turn an old laptop into a Raspberry Pi laptop
+
+https://codeandunicorns.com/acer-travelmate-4150-retrofitting-raspberry-pi-laptop-part-1-lcd-cleanup/
+
+
 # Ubuntu boot options on live cd and after install
 
 https://ubuntuforums.org/showthread.php?t=1613132
