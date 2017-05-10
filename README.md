@@ -1,3 +1,8 @@
+# Real functional examples of open source hardware and software
+
+https://github.com/librespacefoundation
+
+
 # Turn an old laptop into a Raspberry Pi laptop
 
 https://codeandunicorns.com/acer-travelmate-4150-retrofitting-raspberry-pi-laptop-part-1-lcd-cleanup/
