@@ -2,6 +2,8 @@
 
 https://github.com/librespacefoundation
 
+http://dl.illwieckz.net/b/linux-gpu-compatibility-matrix/
+
 
 # Turn an old laptop into a Raspberry Pi laptop
 
