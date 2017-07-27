@@ -1,0 +1,17 @@
+#!/bin/bash
+# split -l 20 book.txt
+# sudo apt install -y espeak lame
+# sudo cp /usr/bin txttomp3
+rm -rf mp3-dir
+for i in * ; do
+	espeak -p 0 -f "$i" -w "$i.wav"
+#	espeak -p 0 -v ro -f "$i" -w "$i.wav"
+	lame -b 160 "$i.wav"
+	rm "$i.wav"
+	sleep 1
+	sync
+done
+mkdir mp3-dir
+mv *.mp3 mp3-dir
+sleep 1
+sync
