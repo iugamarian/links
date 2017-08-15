@@ -141,6 +141,8 @@ winetricks dotnet20
 
 winetricks dotnet40
 
+winetricks corefonts vcrun2005 vcrun2008 vcrun2010 vcrun2012 vcrun2015
+
 For Wine 2.0 and onwards, DirectX 11 is getting supported. More on that later...
 
 
