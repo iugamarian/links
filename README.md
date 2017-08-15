@@ -119,13 +119,13 @@ speaker-test -c 6 -t wav
 
 # Wine installation for 3d games:
 
-apt-get install -y wine-stable 
+#apt-get install -y wine-stable
 
-apt-get install -y winetricks 
+apt-get install -y wine-development
 
-WINEARCH=win32 winecfg
+apt-get install -y winetricks
 
-apt-get install -y wine-mono0.0.8 
+#apt-get install -y wine-mono0.0.8
 
 apt-get install -y mono-runtime
 
