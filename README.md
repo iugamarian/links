@@ -127,7 +127,9 @@ apt-get install -y winetricks
 
 #apt-get install -y wine-mono0.0.8
 
-apt-get install -y mono-runtime
+#apt-get install -y mono-runtime
+
+apt-get install -y mono-complete
 
 WINEARCH=win32 winecfg
 
