@@ -119,19 +119,19 @@ speaker-test -c 6 -t wav
 
 # Wine installation for 3d games:
 
-#apt-get install -y wine-stable
+sudo -s
 
-apt-get install -y wine-development
+dpkg --add-architecture i386 && apt-get update && apt-get install -y wine-stable
 
-apt-get install -y winetricks
+WINEARCH=win32 winecfg
 
-#apt-get install -y wine-mono0.0.8
-
-#apt-get install -y mono-runtime
+Extra (no more Wine bug reports if you don't stop with install here):
 
 apt-get install -y mono-complete
 
-WINEARCH=win32 winecfg
+#apt-get install -y mono-runtime
+
+apt-get install -y winetricks
 
 winetricks d3dx9_36
 
