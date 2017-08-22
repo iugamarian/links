@@ -10,6 +10,10 @@ http://dl.illwieckz.net/b/linux-gpu-compatibility-matrix/
 https://codeandunicorns.com/acer-travelmate-4150-retrofitting-raspberry-pi-laptop-part-1-lcd-cleanup/
 
 
+# Debian Live with amdgpu fully supported
+
+https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/
+
 # Ubuntu boot options on live cd and after install
 
 https://ubuntuforums.org/showthread.php?t=1613132
