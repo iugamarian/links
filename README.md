@@ -123,6 +123,16 @@ speaker-test -c 6 -t wav
 
 # Wine installation for 3d games:
 
+http://davidgis.fr/amdgaming/
+
+https://www.reddit.com/r/archlinux/comments/5uo5nr/wine_gaming_on_amdgpu/
+
+https://launchpad.net/~commendsarnex/+archive/ubuntu/winedri3
+
+https://www.reddit.com/r/linux_gaming/comments/4rezum/amdgpu_terrible_wine_support/
+
+https://wiki.ixit.cz/d3d9
+
 sudo -s
 
 dpkg --add-architecture i386 && apt-get update && apt-get install -y wine-stable
