@@ -125,6 +125,8 @@ speaker-test -c 6 -t wav
 
 http://davidgis.fr/amdgaming/
 
+https://aur.archlinux.org/packages/wine-gaming-nine/?comments=all
+
 https://www.reddit.com/r/archlinux/comments/5uo5nr/wine_gaming_on_amdgpu/
 
 https://launchpad.net/~commendsarnex/+archive/ubuntu/winedri3
