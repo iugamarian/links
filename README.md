@@ -129,13 +129,20 @@ https://www.reddit.com/r/archlinux/comments/5uo5nr/wine_gaming_on_amdgpu/
 
 https://launchpad.net/~commendsarnex/+archive/ubuntu/winedri3
 
+https://launchpad.net/~oibaf/+archive/ubuntu/graphics-drivers
+
 https://www.reddit.com/r/linux_gaming/comments/4rezum/amdgpu_terrible_wine_support/
 
 https://wiki.ixit.cz/d3d9
 
 sudo -s
 
-dpkg --add-architecture i386 && apt-get update && apt-get install -y wine-stable
+add-apt-repository ppa:commendsarnex/winedri3
+
+#Nu merg live:
+add-apt-repository ppa:oibaf/graphics-drivers
+
+dpkg --add-architecture i386 && apt-get update && apt-get install -y wine2.0 xserver-xorg-video-amdgpu mesa-vdpau-drivers
 
 WINEARCH=win32 winecfg
 
