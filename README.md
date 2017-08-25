@@ -125,6 +125,8 @@ speaker-test -c 6 -t wav
 
 http://davidgis.fr/amdgaming/
 
+https://www.reddit.com/r/linuxquestions/comments/6goiso/trouble_with_gallium_nine_in_wine_on_debian/
+
 https://aur.archlinux.org/packages/wine-gaming-nine/?comments=all
 
 https://www.reddit.com/r/archlinux/comments/5uo5nr/wine_gaming_on_amdgpu/
