@@ -1,3 +1,11 @@
+# Ryzen Threadripper as software video card
+
+https://askubuntu.com/questions/908381/desktop-stuck-on-software-rendering-libgl-always-software-set
+
+https://www.reddit.com/r/lowendgaming/comments/4mlqwi/i_finally_figured_out_how_to_play_any_game_on/
+
+
+
 # Real functional examples of open source hardware and software
 
 https://github.com/librespacefoundation
