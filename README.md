@@ -1,3 +1,11 @@
+# gtk-recordmydesktop sound work
+
+https://ubuntuforums.org/showthread.php?t=2362044
+
+rename in Advanced -> Sound: DEFAULT to default
+
+pavucontrol -> select Monitor ... to record computer output, then close it or recording can't start
+
 # Debian live wrapper
 
 https://debian-live.alioth.debian.org/live-wrapper-doc/quickstart.html
