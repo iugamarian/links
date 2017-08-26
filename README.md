@@ -1,3 +1,7 @@
+# Emacs tutorials
+
+https://www.youtube.com/watch?v=49kBWM3RQQ8
+
 # Ryzen Threadripper as software video card
 
 https://askubuntu.com/questions/908381/desktop-stuck-on-software-rendering-libgl-always-software-set
