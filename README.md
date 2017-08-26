@@ -2,6 +2,9 @@
 
 https://debian-live.alioth.debian.org/live-wrapper-doc/quickstart.html
 
+https://debian-live.alioth.debian.org/live-manual/stable/manual/html/live-manual.en.html#examples
+
+
 # MPV (best player KISS principle) configuration in ~/.config/mpv/mpv.conf
 
 hwdec=vdpau
