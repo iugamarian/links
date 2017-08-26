@@ -1,3 +1,10 @@
+# MPV (best player KISS principle) configuration in ~/.config/mpv/mpv.conf
+
+hwdec=vdpau
+
+save-position-on-quit
+
+
 # Emacs tutorials
 
 https://www.youtube.com/watch?v=49kBWM3RQQ8
