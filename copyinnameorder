@@ -6,6 +6,7 @@ cd "$1"
 for i in * ; do
   echo "Copying $i"
 	cp "$i" "$2"
+	# ffmpeg -v 5 -y -i "$i" -acodec libmp3lame -ac 2 -ab 192k "$2""$i".mp3
 	sleep 0.1
 	sync
 done
