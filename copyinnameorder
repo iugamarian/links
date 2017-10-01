@@ -1,13 +1,14 @@
 #!/bin/bash
 # Does not traverse subdirectories, good to copy podcasts to mp3 player in order
-# Usage: copyinnameorder (folder where the files are) (destination folder)
+# Usage: copyinnameorder (folder where the files are) (destination folder with slash at the end)
 mkdir -p "$2"
 cd "$1"
 for i in * ; do
   echo "Copying $i"
 	cp "$i" "$2"
+	# https://askubuntu.com/questions/634584/how-to-download-youtube-videos-as-a-best-quality-audio-mp3-using-youtube-dl
 	# ffmpeg -v 5 -y -i "$i" -acodec libmp3lame -ac 2 -ab 192k "$2""$i".mp3
 	sleep 0.1
 	sync
 done
-# Example: copyinnameorder ~/podcast /media/user/SDCARD
+# Example: copyinnameorder ~/podcast /media/user/SDCARD/
