@@ -8,26 +8,27 @@
 //#include <math.h>		// sin cos tg ctg
 #include "lcdcontrolusbasp.h"
 
-// Button one is taken from jumper SLOW SCK pin C2 which could also be pin for ADC2 but not enabled here
-// Buuton one is: SELECT MODE: second minute hour day month year - and back again
+//  Button one is taken from jumper SLOW SCK pin C2 which could also be pin for ADC2 but not enabled here
+//  Button one is: SELECT MODE: second minute hour day month year - and back again
 #define PORTB1INOUT	DDRC
 #define PORTB1PULL	PORTC
 #define PORTB1INPUT	PINC
-#define BUTONB1PIN	2	// JP3 SLOW SCK ON USBASP
+#define BUTTONB1PIN	2	// JP3 SLOW SCK ON USBASP
 
-// Button two is taken from USB D- pin B0 the usb data pin nearest to 5V, it has external pull up resistor
-// Button two is: INCREASE NUMBER
+//  Button two is taken from USB D- pin B0 the usb data pin nearest to 5V, it has external pull up resistor
+//  Button two is: INCREASE NUMBER
 #define PORTB2INOUT	DDRB
 #define PORTB2PULL	PORTB
 #define PORTB2INPUT	PINB
-#define BUTONB2PIN	0	// USBD- NEAR VCC ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL AND EXTERNAL PULL UP
+#define BUTTONB2PIN	0	// USBD- NEAR VCC ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL AND EXTERNAL PULL UP
 
-// Button three could is taken from USB D+ pin B1 but it also triggers INT0 on D2 so external interrupts have to be disabled and D2 also made an input
-// Button three is: DECREASE NUMBER
+//  Button three could is taken from USB D+ pin B1 but it also triggers INT0 on D2 so external interrupts have to be disabled and D2 also made an input
+//  Button three is: DECREASE NUMBER
 #define PORTB3INOUT	DDRB
 #define PORTB3PULL	PORTB
 #define PORTB3INPUT	PINB
-#define BUTONB3PIN	1	// USBD+ NEAR GND ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL PULL UP
+#define BUTTONB3PIN	1	// USBD+ NEAR GND ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL PULL UP
+//  Button three requires adding external 2,2K pull up resistor to 5V, without it it's seen as always pressed.
 
 // LCD data and enable pin
 // They are defined in lcdcontrolusbasp.h and are B2 B3 B4 B5 and D1. D1 could be D0 for better enable signal without resistor but is not here yet
@@ -43,9 +44,9 @@ unsigned char minutes = 0;
 unsigned char seconds = 0;
 char time[] = "00:00:00";
  
-unsigned char day = 15;
+unsigned char day = 14;
 unsigned char month = 10;
-unsigned char year = 16;
+unsigned char year = 17;
 char date[] = "DD/MM/YY";
 char lcdint [3];                           	// only 2 characters + not specified null to use integer to int, for lcd
 
@@ -76,24 +77,24 @@ void setup() {
 	
 // Making sure external interrupts are disabled and D2 is set as input just to protect the port
 
-	// General Interrupt Control Register – GICR
+// General Interrupt Control Register – GICR
 
 //  Bit 7 – INT1: External Interrupt Request 1 Enable
-//When the INT1 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the exter-
-//nal pin interrupt is enabled. The Interrupt Sense Control1 bits 1/0 (ISC11 and ISC10) in the MCU
-//general Control Register (MCUCR) define whether the external interrupt is activated on rising
-//and/or falling edge of the INT1 pin or level sens
-//ed. Activity on the pin will cause an interrupt
-//request even if INT1 is configured as an output. The corresponding interrupt of External Interrupt
-//Request 1 is executed from the INT1 Interrupt Vector.
-//•   Bit 6 – INT0: External Interrupt Request 0 Enable
-//When the INT0 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the exter-
-//nal pin interrupt is enabled. The Interrupt Sense Control0 bits 1/0 (ISC01 and ISC00) in the MCU
-//general Control Register (MCUCR) define whether the external interrupt is activated on rising
-//and/or falling edge of the INT0 pin or level sens
-//ed. Activity on the pin will cause an interrupt
-//request even if INT0 is configured as an output. The corresponding interrupt of External Interrupt
-//Request 0 is executed from the INT0 Interrupt Vector.
+//  When the INT1 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the exter-
+//  nal pin interrupt is enabled. The Interrupt Sense Control1 bits 1/0 (ISC11 and ISC10) in the MCU
+//  general Control Register (MCUCR) define whether the external interrupt is activated on rising
+//  and/or falling edge of the INT1 pin or level sens
+//  ed. Activity on the pin will cause an interrupt
+//  request even if INT1 is configured as an output. The corresponding interrupt of External Interrupt
+//  Request 1 is executed from the INT1 Interrupt Vector.
+//  Bit 6 – INT0: External Interrupt Request 0 Enable
+//  When the INT0 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the exter-
+//  nal pin interrupt is enabled. The Interrupt Sense Control0 bits 1/0 (ISC01 and ISC00) in the MCU
+//  general Control Register (MCUCR) define whether the external interrupt is activated on rising
+//  and/or falling edge of the INT0 pin or level sens
+//  ed. Activity on the pin will cause an interrupt
+//  request even if INT0 is configured as an output. The corresponding interrupt of External Interrupt
+//  Request 0 is executed from the INT0 Interrupt Vector.
 
 	GICR &= ~(1 << INT0);	// INT0 disabled
 	GICR &= ~(1 << INT1);	// INT1 disabled
@@ -101,30 +102,34 @@ void setup() {
 	GICR &= ~(1 << INT0);   // SEI ENABLES IT I THINK SO DISABLE INT0 ONCE MORE
 	GICR &= ~(1 << INT1);	// SEI ENABLES IT I THINK SO DISABLE INT1 ONCE MORE
 
-// And now that interrupt INT0 is disabled, setting D2 as ignored input with pull up so that button three helped
+//  And now that interrupt INT0 is disabled, setting D2 as ignored input with pull up so that button three helped
 	DDRD &= ~ (1 << 2);
 	PORTD |= (1 << 2);	
 
-// Buttons
+//  Buttons
 
-// a) choose as input = 0 - not setting pull up yet
+//  Button three requires adding external 2,2K pull up resistor to 5V, without it it's seen as always pressed.
 
-	PORTB1INOUT &= ~ (1<<BUTONB1PIN);
-	PORTB2INOUT &= ~ (1<<BUTONB2PIN);
-	PORTB3INOUT &= ~ (1<<BUTONB3PIN);	// button where INT0 must be disabled and D2 also set as input and pull up
+//  a) choose as input = 0 - not setting pull up yet
 
-//b) choose pull up = 1 - not pressed is pulled to up --- pressed = connect to ground
+	PORTB1INOUT &= ~ (1<<BUTTONB1PIN);
+	PORTB2INOUT &= ~ (1<<BUTTONB2PIN);
+	PORTB3INOUT &= ~ (1<<BUTTONB3PIN);	// button where INT0 must be disabled and D2 also set as input and pull up
+//  Button three requires adding external 2,2K pull up resistor to 5V, without it it's seen as always pressed.
 
-	PORTB1PULL |= (1<<BUTONB1PIN);
-	PORTB2PULL |= (1<<BUTONB2PIN);
-	PORTB3PULL |= (1<<BUTONB3PIN);	// button where INT0 must be disabled and D2 also set as input and pull up
+//  b) choose pull up = 1 - not pressed is pulled to up --- pressed = connect to ground
+
+	PORTB1PULL |= (1<<BUTTONB1PIN);
+	PORTB2PULL |= (1<<BUTTONB2PIN);
+	PORTB3PULL |= (1<<BUTTONB3PIN);	// button where INT0 must be disabled and D2 also set as input and pull up
+//  Button three requires adding external 2,2K pull up resistor to 5V, without it it's seen as always pressed.
 
 // c) register where buttons are seen is requested in the functions
 
 //  This is the green LED that blinks at each second
 
-  DDRC |= (1<<0); //LED1
-  PORTC &= ~ (1<<0);
+	DDRC |= (1<<0); //LED1
+	PORTC &= ~ (1<<0);
 
   lcdini();
 
@@ -138,7 +143,6 @@ int main(void) {
 
 	// Wait for power stabilization
 	_delay_ms(200); 
-
 	setup();
 	gotolcdlocation(1,1);
 	lcdputs("                ");
@@ -153,7 +157,7 @@ int main(void) {
 		LCD_update_time();
 		LCD_update_date();	
 
-		if(!(PORTB1INPUT&(1<<BUTONB1PIN)))
+		if(!(PORTB1INPUT&(1<<BUTTONB1PIN)))
 		{
 			was_pressed = 1;
 			_delay_ms(200);
@@ -162,7 +166,7 @@ int main(void) {
 		if(was_pressed)
 		{
 
-			if(!(PORTB1INPUT&(1<<BUTONB1PIN)))
+			if(!(PORTB1INPUT&(1<<BUTTONB1PIN)))
 			{
 				iiii++;
 				if(iiii > 0x07) {
@@ -201,7 +205,7 @@ int main(void) {
 				}
 			}
 
-			if(!(PORTB2INPUT&(1<<BUTONB2PIN))) {
+			if(!(PORTB2INPUT&(1<<BUTTONB2PIN))) {
 
 				was_selected = 1;
 			
@@ -326,10 +330,8 @@ int main(void) {
 
 //////////////
 
-			if(!(PORTB3INPUT&(1<<BUTONB3PIN))) {
-// PORTB3INPUT should have decreased the current selected number
-// can't be used because a resistor pulls it to gnd on schematic - false button
-// and pulling it up hardware could harm a possibly connected usb port I suppose
+			if(!(PORTB3INPUT&(1<<BUTTONB3PIN))) {
+//  Button three requires adding external 2,2K pull up resistor to 5V, without it it's seen as always pressed.
 				was_selected = 1;
 			
 				waiting_to_reset = 0;
@@ -376,7 +378,7 @@ int main(void) {
 							}
 						}
 					}
-							else {	// from if(!(PORTB3INPUT&(1<<BUTONB3PIN))) {
+							else {	// from if(!(PORTB3INPUT&(1<<BUTTONB3PIN))) {
 								if(day < 1) {
 									day = 30;
 								}
