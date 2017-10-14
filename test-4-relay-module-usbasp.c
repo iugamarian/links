@@ -82,7 +82,7 @@ void setup() {
 	PORTB &= ~ (1<<3);
 	PORTB &= ~ (1<<4);
 	PORTB &= ~ (1<<5);
-	_delay_ms(500);
+	_delay_ms(500);	// all relays on for 0.5 seconds
 	PORTB |= (1<<2);
 	PORTB |= (1<<3);
 	PORTB |= (1<<4);
@@ -112,7 +112,7 @@ int main(void) {
 	while(1)
     	{
 			_delay_ms(100);
-		}
+	}
 
 	return 0;
 }
