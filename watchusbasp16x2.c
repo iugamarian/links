@@ -8,42 +8,31 @@
 //#include <math.h>		// sin cos tg ctg
 #include "lcdcontrolusbasp.h"
 
-// Butoane - a) se alege ca este input = 0, b) se alege pull up in sus = 1, c) registrul unde vede input
-
+// Button one is taken from jumper SLOW SCK pin C2 which could also be pin for ADC2 but not enabled here
+// Buuton one is: SELECT MODE: second minute hour day month year - and back again
 #define PORTB1INOUT	DDRC
 #define PORTB1PULL	PORTC
 #define PORTB1INPUT	PINC
 #define BUTONB1PIN	2	// JP3 SLOW SCK ON USBASP
 
-/* //Buttons to be ignored, not connected
-#define PORTB2INOUT	DDRC
-#define PORTB2PULL	PORTC
-#define PORTB2INPUT	PINC
-#define BUTONB2PIN	4	// USBD- NEAR VCC ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL PULL UP
-*/
-
-#define PORTB3INOUT	DDRC	// can't be used because a resistor pulls it to gnd on schematic - false button
-#define PORTB3PULL	PORTC
-#define PORTB3INPUT	PINC
-#define BUTONB3PIN	5	// USBD+ NEAR GND ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL PULL UP
-
-
+// Button two is taken from USB D- pin B0 the usb data pin nearest to 5V, it has external pull up resistor
+// Button two is: INCREASE NUMBER
 #define PORTB2INOUT	DDRB
 #define PORTB2PULL	PORTB
 #define PORTB2INPUT	PINB
-#define BUTONB2PIN	0	// USBD- NEAR VCC ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL PULL UP
+#define BUTONB2PIN	0	// USBD- NEAR VCC ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL AND EXTERNAL PULL UP
 
-/*
-#define PORTB3INOUT	DDRB	// can't be used because a resistor pulls it to gnd on schematic
+// Button three could is taken from USB D+ pin B1 but it also triggers INT0 on D2 so external interrupts have to be disabled and D2 also made an input
+// Button three is: DECREASE NUMBER
+#define PORTB3INOUT	DDRB
 #define PORTB3PULL	PORTB
 #define PORTB3INPUT	PINB
 #define BUTONB3PIN	1	// USBD+ NEAR GND ON USB PORT OF USBASP, ZENNER PROTECTED - INPUT WITH INTERNAL PULL UP
-*/
-// protect the real button that does not work because of resistor in main()
-//DDRB &= ~ (1<<1); // input
-//PORTB &= ~ (1<<1); // no pull up
 
-//Prototypes ( functions declared at beginning so they are always found later - no errors )
+// LCD data and enable pin
+// They are defined in lcdcontrolusbasp.h and are B2 B3 B4 B5 and D1. D1 could be D0 for better enable signal without resistor but is not here yet
+
+//Prototypes ( functions declared at the beginning so they are always found later - no errors )
 void setup();
 void LCD_update_time();
 void LCD_update_date();
@@ -65,46 +54,16 @@ char lcdint [3];                           	// only 2 characters + not specified
 	int waiting_to_reset = 0;
 
 void setup() {
-// Wait for power stabilization
-  _delay_ms(500); 
 
 // ENABLE PORTS
 
 //((1<<pin)|(1<<pin)|(1<<pin));
 
-// Butoane
+//  Avoid using REGISTER = (1<<BIT); that makes previous settings zero (like WGM12 for example)
+//  better always use for 1: REGISTER |= (1<<BIT);
+//  better always use for 0: REGISTER &= ~ (1<<BIT);
 
-// a) se alege ca este input = 0 - in acest caz nu este pull up inca
-
-  PORTB1PULL &= ~ (1<<BUTONB1PIN);
-  PORTB2PULL &= ~ (1<<BUTONB2PIN);
-  PORTB3PULL &= ~ (1<<BUTONB3PIN);
-
-//b) se alege pull up in sus = 1 - acum este pull up ca este input --- apasare = la gnd
-
-  PORTB1PULL |= (1<<BUTONB1PIN);
-  PORTB2PULL |= (1<<BUTONB2PIN);
-  PORTB3PULL |= (1<<BUTONB3PIN);
-
-  DDRC |= (1<<0); //LED1
-  PORTC &= ~ (1<<0);
-
-// c) registrul unde vede input se citeste in functii
-
-  lcdini();
-
-}
-
-int main(void) {
-
-
-	setup();
-	gotolcdlocation(1,1);
-	lcdputs("                ");
-	gotolcdlocation(1,2);
-
-	lcdputs("                ");
-	_delay_ms(100);
+// Setting up internal clock counter
 
 	TCCR1B |= (1<<WGM12); // clear timer on compare (when OCR1A is reached, automatically go to 0)
 
@@ -114,25 +73,80 @@ int main(void) {
 
 	TIMSK |= (1<<OCIE1A); // when OCR1A is reached, go to ISR(TIMER1_COMPA_vect) interrupt
 
+	
+// Making sure external interrupts are disabled and D2 is set as input just to protect the port
 
-	GICR &= ~(1 << INT0); // usbasp has a usb data pin on interrupt, don't want interrupt on button low
+	// General Interrupt Control Register – GICR
+
+//  Bit 7 – INT1: External Interrupt Request 1 Enable
+//When the INT1 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the exter-
+//nal pin interrupt is enabled. The Interrupt Sense Control1 bits 1/0 (ISC11 and ISC10) in the MCU
+//general Control Register (MCUCR) define whether the external interrupt is activated on rising
+//and/or falling edge of the INT1 pin or level sens
+//ed. Activity on the pin will cause an interrupt
+//request even if INT1 is configured as an output. The corresponding interrupt of External Interrupt
+//Request 1 is executed from the INT1 Interrupt Vector.
+//•   Bit 6 – INT0: External Interrupt Request 0 Enable
+//When the INT0 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the exter-
+//nal pin interrupt is enabled. The Interrupt Sense Control0 bits 1/0 (ISC01 and ISC00) in the MCU
+//general Control Register (MCUCR) define whether the external interrupt is activated on rising
+//and/or falling edge of the INT0 pin or level sens
+//ed. Activity on the pin will cause an interrupt
+//request even if INT0 is configured as an output. The corresponding interrupt of External Interrupt
+//Request 0 is executed from the INT0 Interrupt Vector.
+
+	GICR &= ~(1 << INT0);	// INT0 disabled
+	GICR &= ~(1 << INT1);	// INT1 disabled
 	sei(); // activate interrupts so (TIMER1_COMPA_vect) is available
-	GICR &= ~(1 << INT0); // SEI ENABLES IT I THINK
-	// And now that interrupt INT0 is disabled, setting as ignored input with pull up so that button PB1 helped
+	GICR &= ~(1 << INT0);   // SEI ENABLES IT I THINK SO DISABLE INT0 ONCE MORE
+	GICR &= ~(1 << INT1);	// SEI ENABLES IT I THINK SO DISABLE INT1 ONCE MORE
+
+// And now that interrupt INT0 is disabled, setting D2 as ignored input with pull up so that button three helped
 	DDRD &= ~ (1 << 2);
-	PORTD |= (1 << 2);
+	PORTD |= (1 << 2);	
 
-// protect the real button that does not work because of resistor in main()
-	DDRB &= ~ (1<<1); // input
-	PORTB &= ~ (1<<1); // no pull up
+// Buttons
 
-//	TCCR1B |= (1<<CS12) | (1<<CS10); // setting prescaler also starts the counting of the timer, for 16MHz
+// a) choose as input = 0 - not setting pull up yet
+
+	PORTB1INOUT &= ~ (1<<BUTONB1PIN);
+	PORTB2INOUT &= ~ (1<<BUTONB2PIN);
+	PORTB3INOUT &= ~ (1<<BUTONB3PIN);	// button where INT0 must be disabled and D2 also set as input and pull up
+
+//b) choose pull up = 1 - not pressed is pulled to up --- pressed = connect to ground
+
+	PORTB1PULL |= (1<<BUTONB1PIN);
+	PORTB2PULL |= (1<<BUTONB2PIN);
+	PORTB3PULL |= (1<<BUTONB3PIN);	// button where INT0 must be disabled and D2 also set as input and pull up
+
+// c) register where buttons are seen is requested in the functions
+
+//  This is the green LED that blinks at each second
+
+  DDRC |= (1<<0); //LED1
+  PORTC &= ~ (1<<0);
+
+  lcdini();
+
+// Starting the clock counter
+	//	TCCR1B |= (1<<CS12) | (1<<CS10); // setting prescaler also starts the counting of the timer, for 16MHz
 	TCCR1B |= (1<<CS12);			// setting prescaler also starts the counting of the timer, for 12Mhz
 
-//  Avoid using REGISTER = (1<<BIT); that makes previous settings zero (like WGM12 for example)
-//  better always use for 1: REGISTER |= (1<<BIT);
-//  better always use for 0: REGISTER &= ~ (1<<BIT);
- 
+}
+
+int main(void) {
+
+	// Wait for power stabilization
+	_delay_ms(200); 
+
+	setup();
+	gotolcdlocation(1,1);
+	lcdputs("                ");
+	gotolcdlocation(1,2);
+	lcdputs("                ");
+	_delay_ms(100);	// wait more for LCD to clear any terrible artefact it might have
+
+	// Infinite loop
 	while(1)
     	{
 
@@ -173,13 +187,13 @@ int main(void) {
 						lcdputs("h ");	// <<<<<<
 						break;
 					case 0x05:
-						lcdputs("d ");	// >>>>>>
+						lcdputs("D ");	// >>>>>>
 						break;
 					case 0x06:
 						lcdputs("M ");	// >>>>>>
 						break;
 					case 0x07:
-						lcdputs("y ");	// >>>>>>
+						lcdputs("Y ");	// >>>>>>
 						break;
 					default:
 					//Default code
