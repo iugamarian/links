@@ -1,0 +1,41 @@
+### USBasp in Windows 7
+
+Better use GNU/Linux - all that's needed there is:
+
+apt-get install -y gcc-avr avrdude avr-libc
+
+## 1. Driver
+
+http://www.fischl.de/usbasp/
+
+https://github.com/bperrybap/usbasp/tree/1.06-alpha/bin/win-driver
+
+https://www.youtube.com/watch?v=FtqGoaIFiQo
+
+https://www.youtube.com/watch?v=MHTR8iNN4ts
+
+https://www.howtogeek.com/167723/how-to-disable-driver-signature-verification-on-64-bit-windows-8.1-so-that-you-can-install-unsigned-drivers/
+
+With WinAVR version 20100110 or older, please use libusb_0.1.12.1.
+
+## 2. Software
+
+https://blog.manash.me/setting-up-atmel-studio-for-usbasp-and-avr-programming-802bb4dcf1e9
+
+http://www.microchip.com/avr-support/atmel-studio-7
+
+http://winavr.sourceforge.net/download.html
+
+http://download.savannah.gnu.org/releases/avrdude/avrdude-6.3-mingw32.zip
+
+## 3. Better updated firmware for USBasp
+
+https://github.com/bperrybap/usbasp/blob/1.06-alpha/bin/firmware/usbasp-v1.06-alpha-2016-05-18/usbasp-v1.06-alpha-2016-05-18-atmega8.hex
+
+## 4. Use firmware updated USBasp to update firmware on non updated USBasp
+
+https://www.youtube.com/watch?v=BPxgv2PXGw8
+
+avrdude -c usbasp -p atmega8 -U flash:w:usbasp-v1.06-alpha-2016-05-18-atmega8.hex
+
+avrdude -e -P usb -c USBasp -p m8 -e -U flash:w:"$(TargetDir)$(TargetName).hex":i
