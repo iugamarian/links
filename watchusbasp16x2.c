@@ -36,7 +36,7 @@ unsigned char hours = 21;
 unsigned char minutes = 0;
 unsigned char seconds = 0;
 char time[] = "00:00:00";
-unsigned char day = 14;
+unsigned char day = 17;
 unsigned char month = 10;
 unsigned char year = 17; // up to 254 - allow 255 reserve, sprintf not implemented for long long type
 char date[] = "DD/MM/YY";
@@ -106,7 +106,7 @@ void LCD_update_date() {
 int main(void) {
 	// Wait for power stabilization
 	_delay_ms(200);
-	unsigned char selected_field = 0x01; //	1=seconds; 2: hours;  3: minutes; 4: days; 5: months; 6: years;
+	unsigned char selected_field = 0x00; // 0 = allow initial ++ to 1; 1=seconds; 2: hours;  3: minutes; 4: days; 5: months; 6: years;
 	int was_pressed = 0;
 	int waiting_to_reset = 0;
 	setup();
@@ -132,6 +132,10 @@ int main(void) {
 				waiting_to_reset = 0;
 				_delay_ms(200);
 				gotolcdlocation(1,1);
+				selected_field++;
+				if(selected_field > 0x06) {
+					selected_field = 0x01;
+				}
 				switch(selected_field)
 				{
 					case 0x01:
@@ -155,10 +159,6 @@ int main(void) {
 					default:
 					//Default code
 					break;
-				}
-				selected_field++;
-				if(selected_field > 0x06) {
-					selected_field = 0x01;
 				}
 			}
 			if(!(BUTTON2INPUT&(1<<BUTTON2PIN))) {
@@ -379,7 +379,7 @@ int main(void) {
 				was_selected = 0;
 				waiting_to_reset = 0;
 				gotolcdlocation(1,1);
-				selected_field = 0x01;
+				selected_field = 0x00;	// 0 = allow another initial ++ to 1
 				_delay_ms(50);
 			}
 			_delay_ms(50);
