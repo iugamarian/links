@@ -1,3 +1,10 @@
+# Intel Management Engine
+
+https://wiki.gentoo.org/wiki/Sakaki%27s_EFI_Install_Guide/Disabling_the_Intel_Management_Engine
+
+https://puri.sm/posts/deep-dive-into-intel-me-disablement/
+
+
 # gtk-recordmydesktop sound work
 
 https://ubuntuforums.org/showthread.php?t=2362044
@@ -5,6 +12,7 @@ https://ubuntuforums.org/showthread.php?t=2362044
 rename in Advanced -> Sound: DEFAULT to default
 
 pavucontrol -> select Monitor ... to record computer output, then close it or recording can't start
+
 
 # Debian live wrapper
 
@@ -23,6 +31,7 @@ save-position-on-quit
 # Emacs tutorials
 
 https://www.youtube.com/watch?v=49kBWM3RQQ8
+
 
 # Ryzen Threadripper as software video card
 
@@ -47,6 +56,7 @@ https://codeandunicorns.com/acer-travelmate-4150-retrofitting-raspberry-pi-lapto
 # Debian Live with amdgpu fully supported
 
 https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/
+
 
 # Ubuntu boot options on live cd and after install
 
