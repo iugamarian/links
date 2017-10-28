@@ -18,6 +18,10 @@ This way, bluealsa will start up on boot in Lite
 
 https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=138145&start=125
 
+https://raspberrypi.stackexchange.com/questions/71333/bluetooth-does-not-work-with-raspbian-stretch-and-raspberry-pi-3/71384
+
+https://github.com/Arkq/bluez-alsa
+
 
 # Intel Management Engine
 
