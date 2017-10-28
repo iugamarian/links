@@ -1,3 +1,24 @@
+# Raspberry Pi 3 Bluetooth with bluealsa
+
+https://raspberrypi.stackexchange.com/questions/73659/bluetooth-disconnect
+
+https://jp.raspberrypi.org/forums/viewtopic.php?t=193776
+
+No pulseaudio in Raspbian Lite Stretch, use bluealsa
+
+sudo systemctl disable bluealsa
+
+sudo nano /lib/systemd/system/bluealsa.service
+
+{and change it to WantedBy=multi-user.target - then save}
+
+sudo systemctl enable bluealsa
+
+This way, bluealsa will start up on boot in Lite
+
+https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=138145&start=125
+
+
 # Intel Management Engine
 
 https://wiki.gentoo.org/wiki/Sakaki%27s_EFI_Install_Guide/Disabling_the_Intel_Management_Engine
