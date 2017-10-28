@@ -1,3 +1,10 @@
+# Raspberry Pi 3 with Debian Buster (after Stretch)
+
+https://wiki.debian.org/RaspberryPi3
+
+https://github.com/Debian/raspi3-image-spec
+
+
 # Raspberry Pi 3 Bluetooth with bluealsa
 
 https://raspberrypi.stackexchange.com/questions/73659/bluetooth-disconnect
