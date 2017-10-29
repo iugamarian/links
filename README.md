@@ -34,6 +34,8 @@ https://raspberrypi.stackexchange.com/questions/71333/bluetooth-does-not-work-wi
 
 https://github.com/Arkq/bluez-alsa
 
+https://www.raspberrypi.org/forums/viewtopic.php?t=147919&p=1034908
+
 
 # Intel Management Engine
 
