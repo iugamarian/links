@@ -1,3 +1,8 @@
+# Original research
+
+https://en.wikipedia.org/wiki/Wikipedia:No_original_research
+
+
 # Raspberry Pi 3 with Debian Buster (after Stretch)
 
 https://wiki.debian.org/RaspberryPi3
