@@ -36,6 +36,8 @@ https://github.com/Arkq/bluez-alsa
 
 https://www.raspberrypi.org/forums/viewtopic.php?t=147919&p=1034908
 
+https://www.raspberrypi.org/forums/viewtopic.php?f=66&p=1224052
+
 
 # Intel Management Engine
 
