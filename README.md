@@ -1,3 +1,8 @@
+# Debian to Windows USB stick
+
+https://itsfoss.com/bootable-windows-usb-linux/
+
+
 # Original research
 
 https://en.wikipedia.org/wiki/Wikipedia:No_original_research
