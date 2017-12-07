@@ -1,5 +1,7 @@
 # Debian to Windows USB stick
 
+https://www.linuxbabe.com/ubuntu/easily-create-windows-10-bootable-usb-ubuntu
+
 https://itsfoss.com/bootable-windows-usb-linux/
 
 
