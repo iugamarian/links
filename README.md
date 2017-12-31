@@ -526,4 +526,71 @@ systemctl restart smbd
 	browseable = yes
 	guest ok = no
 	
+http://diantokam.blogspot.ro/2012/11/openwrt-samba-file-server.html
 
+ OpenWRT - Samba Server
+Install samba36-server and luci-app-samba
+
+# opkg install samba36-server
+# opkg install luci-app-samba
+
+Edit /etc/config/samba
+
+# vi /etc/config/samba
+config samba
+        option name 'OpenWrt'
+        option workgroup 'WORKGROUP'
+        option description 'OpenWrt'
+        option homes '0'
+
+config sambashare
+        option name 'dlna'
+        option read_only 'no'
+        option users 'diantokam'
+        option create_mask '0777'
+        option dir_mask '0777'
+        option path '/home/dlna'
+        option guest_ok 'yes'
+
+config sambashare
+        option name 'hidden$'
+        option users 'diantokam'
+        option read_only 'no'
+        option create_mask '0777'
+        option dir_mask '0777'
+        option path '/home/old'
+        option guest_ok 'yes'
+
+Edit /etc/passwd and add user diantokam,copy paste user nobody configuration, leave everything same as user nobody, except for user ID and group name.
+
+# vi /etc/passwd
+
+
+    root:$1$nvFplbd8$l05HR0mdTHcGprNaMg8QA1:0:0:root:/root:/bin/ash
+    daemon:*:1:1:daemon:/var:/bin/false
+    network:*:101:101:network:/var:/bin/false
+    nobody:*:65534:65534:nobody:/var:/bin/false
+    diantokam:*:65535:65534:diantokam:/var:/bin/false
+
+
+Create password for user diantokam
+
+# passwd diantokam
+
+Adding diantokam to samba user
+
+# smbpasswd -a diantokam
+
+Enable samba service on startup
+
+# /etc/init.d/samba enable
+
+To start samba service
+
+# /etc/init.d/samba start
+
+To stop samba service
+
+# /etc/init.d/samba stop
+
+To accesses samba share from windows type \\samba_server_name on address bar, in my case it is \\openwrt
