@@ -455,123 +455,193 @@ Drag and drop from the desktop in autostart.
 
 # Working Samba share
 
-# Also chech the newer samba2016 file in this folder
+# Also check the newer samba2016 file in this folder
 
 sudo -s
+
 apt-get install -y samba samba-common python-glade2 system-config-samba
+
 cp -pf /etc/samba/smb.conf /etc/samba/smb.conf.bak
+
 cat /dev/null  > /etc/samba/smb.conf
+
 systemctl stop apparmor
+
 systemctl disable apparmor
+
 firewall-cmd --add --service=samba
 
 a) In terminal run (set password that Windows asks):
+
 sudo pbedit -a pi
 
 b) In terminal run:
+
 mkdir /media/pi/EXT4DATE/dan/sambasharefolder
 
 c) In terminal run:
+
 chmod -R 0755 /media/pi/EXT4DATE/dan/sambasharefolder/
+
 chown -R pi:pi /media/pi/EXT4DATE/dan/sambasharefolder/
+
 chown pi:pi /media/pi/EXT4DATE/dan
 
 d) nano /etc/samba/smb.conf
+
 [global]
-    workgroup = WORKGROUP
-    dos charset = cp850
-    unix charset = ISO-8859-1
-    force user = pi
-    force group = pi
-    read only = no
-    wins support = yes
-    name resolve order = bcast host lmhosts wins
+
+workgroup = WORKGROUP
+
+dos charset = cp850
+
+unix charset = ISO-8859-1
+
+force user = pi
+
+force group = pi
+
+read only = no
+
+wins support = yes
+
+name resolve order = bcast host lmhosts wins
 
 [sambasharefolder]
-    path = /media/pi/EXT4DATE/dan/sambasharefolder
-    writable = yes
-    browseable = yes
-    guest ok = no
+
+path = /media/pi/EXT4DATE/dan/sambasharefolder
+
+writable = yes
+
+browseable = yes
+
+guest ok = no
 
 e) Restart sharing service:
+
 systemctl restart smbd
 
 
 # Another smb.conf tested and it but bcast must be first (again) for it to work
 
 [global]
-	workgroup = WORKGROUP
-	client code page = 850
-	character set = ISO8859-1
-	force user = pi
-	force group = pi
-	read only = no
-	os level = 99
-	wins support = yes
-	name resolve order = bcast lmhosts hosts wins
-	domain master = yes
-	preferred master = yes
-	dns proxy = yes
-	time service = yes
-	dos filetimes = yes
-	dos filetime resolution = yes
-	delete readonly = yes
-	keep alive = 10
-	max xmit = 4096
-	status = no
+
+workgroup = WORKGROUP
+
+client code page = 850
+
+character set = ISO8859-1
+
+force user = pi
+
+force group = pi
+
+read only = no
+
+os level = 99
+
+wins support = yes
+
+name resolve order = bcast lmhosts hosts wins
+
+domain master = yes
+
+preferred master = yes
+
+dns proxy = yes
+
+time service = yes
+
+dos filetimes = yes
+
+dos filetime resolution = yes
+
+delete readonly = yes
+
+keep alive = 10
+
+max xmit = 4096
+
+status = no
 
 [sambasharefolder]
-	path = /media/pi/EXT4DATE/dan/sambasharefolder
-	writable = yes
-	browseable = yes
-	guest ok = no
-	
+
+path = /media/pi/EXT4DATE/dan/sambasharefolder
+
+writable = yes
+
+browseable = yes
+
+guest ok = no
+
+# OpenWRT/LEDE Project - Samba Server 2018 install and setup
+
 http://diantokam.blogspot.ro/2012/11/openwrt-samba-file-server.html
 
- OpenWRT - Samba Server
 Install samba36-server and luci-app-samba
 
 # opkg install samba36-server
+
 # opkg install luci-app-samba
 
 Edit /etc/config/samba
 
 # vi /etc/config/samba
 config samba
-        option name 'OpenWrt'
-        option workgroup 'WORKGROUP'
-        option description 'OpenWrt'
-        option homes '0'
+
+option name 'OpenWrt'
+
+option workgroup 'WORKGROUP'
+
+option description 'OpenWrt'
+
+option homes '0'
 
 config sambashare
-        option name 'dlna'
-        option read_only 'no'
-        option users 'diantokam'
-        option create_mask '0777'
-        option dir_mask '0777'
-        option path '/home/dlna'
-        option guest_ok 'yes'
+
+option name 'dlna'
+
+option read_only 'no'
+
+option users 'diantokam'
+
+option create_mask '0777'
+
+option dir_mask '0777'
+
+option path '/home/dlna'
+
+option guest_ok 'yes'
 
 config sambashare
-        option name 'hidden$'
-        option users 'diantokam'
-        option read_only 'no'
-        option create_mask '0777'
-        option dir_mask '0777'
-        option path '/home/old'
-        option guest_ok 'yes'
+
+option name 'hidden$'
+
+option users 'diantokam'
+
+option read_only 'no'
+
+option create_mask '0777'
+
+option dir_mask '0777'
+
+option path '/home/old'
+
+option guest_ok 'yes'
 
 Edit /etc/passwd and add user diantokam,copy paste user nobody configuration, leave everything same as user nobody, except for user ID and group name.
 
 # vi /etc/passwd
 
+root:$1$nvFplbd8$l05HR0mdTHcGprNaMg8QA1:0:0:root:/root:/bin/ash
 
-    root:$1$nvFplbd8$l05HR0mdTHcGprNaMg8QA1:0:0:root:/root:/bin/ash
-    daemon:*:1:1:daemon:/var:/bin/false
-    network:*:101:101:network:/var:/bin/false
-    nobody:*:65534:65534:nobody:/var:/bin/false
-    diantokam:*:65535:65534:diantokam:/var:/bin/false
+daemon:*:1:1:daemon:/var:/bin/false
 
+network:*:101:101:network:/var:/bin/false
+
+nobody:*:65534:65534:nobody:/var:/bin/false
+
+diantokam:*:65535:65534:diantokam:/var:/bin/false
 
 Create password for user diantokam
 
@@ -594,3 +664,39 @@ To stop samba service
 # /etc/init.d/samba stop
 
 To accesses samba share from windows type \\samba_server_name on address bar, in my case it is \\openwrt
+
+# OpenWRT/LEDE Project - Samba Server 2018 firewalled only one ip allowed, also ssh
+
+Combined from the following (each not working individually, only after merging all and testing):
+
+http://mattventura.net/2009/08/17/a-mostly-complete-openwrt-tutorial/ - input_rule instead of INPUT
+
+https://www.garron.me/en/bits/iptables-open-port-for-specific-ip.html - port to one IP
+
+http://www.chiark.greenend.org.uk/~peterb/network/drop-vs-reject - drop saves upload speed
+
+https://superuser.com/questions/924662/openwrt-iptables-rules-will-be-deleted-automatically - /etc/firewall.user
+
+http://troy.jdmz.net/samba/fw/ - the ports used by Samba
+
+Allow only one ip to ssh and samba no matter wan or lan, edit /etc/firewall.user
+
+iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 22 -j ACCEPT
+
+iptables -A input_rule -p udp -s 192.168.1.101/32 --dport 137 -j ACCEPT
+
+iptables -A input_rule -p udp -s 192.168.1.101/32 --dport 138 -j ACCEPT
+
+iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 139 -j ACCEPT
+
+iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 445 -j ACCEPT
+
+iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
+
+iptables -A input_rule -p udp -s 0.0.0.0/0 --dport 137 -j DROP
+
+iptables -A input_rule -p udp -s 0.0.0.0/0 --dport 138 -j DROP
+
+iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 139 -j DROP
+
+iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 445 -j DROP
