@@ -732,6 +732,6 @@ The rights on the folders look like this (ls -lh /mnt):
 drwxrwx---  8 1016 users 0 2011-03-08 11:14 rua_all
 drwxrwx--- 25 1016 users 0 2011-05-25 18:21 rua_user
 
-# Using switches ensures less or no sniffiong of packets
+# Using switches ensures less or no sniffing of packets
 
 https://blog.packet-foo.com/2016/07/how-to-use-wireshark-to-steal-passwords/
