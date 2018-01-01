@@ -704,3 +704,32 @@ iptables -A input_rule -p udp -s 0.0.0.0/0 --dport 138 -j DROP
 iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 139 -j DROP
 
 iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 445 -j DROP
+
+
+# Mounting samba shares
+
+sudo apt install cifs-utils
+
+sudo nano /etc/group
+
+add your user name to the users line users:x:100:abc
+
+sudo nano /etc/fstab
+
+//192.168.1.50/500gbhdd /media/500gbhdd cifs username=abc,password=def 0 1
+
+https://askubuntu.com/questions/33480/how-do-i-navigate-to-a-samba-location-ive-mounted-in-nautilus-on-the-command-li
+
+https://askubuntu.com/questions/33480/how-do-i-navigate-to-a-samba-location-ive-mounted-in-nautilus-on-the-command-li
+
+Upon adding myself to this group (sudo nano /etc/group, adding my name to the users line users:x:100:pi), I am now able to access the remote directories. My /etc/fstab file has these lines:
+
+//xxx.220.131.233/user  /mnt/rua_user  cifs  username=abc,password=def 0 1
+//xxx.220.131.233/all   /mnt/rua_all   cifs  username=abc,password=def 0 1
+
+The rights on the folders look like this (ls -lh /mnt):
+
+drwxrwx---  8 1016 users 0 2011-03-08 11:14 rua_all
+drwxrwx--- 25 1016 users 0 2011-05-25 18:21 rua_user
+
+
