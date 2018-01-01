@@ -665,7 +665,7 @@ To stop samba service
 
 To accesses samba share from windows type \\samba_server_name on address bar, in my case it is \\openwrt
 
-# OpenWRT/LEDE Project - Samba Server 2018 firewalled only one ip allowed, also ssh
+# OpenWRT/LEDE Project - Samba Server 2018 firewalled only one ip allowed, also ssh and http (LuCI)
 
 Combined from the following (each not working individually, only after merging all and testing):
 
@@ -683,6 +683,8 @@ Allow only one ip to ssh and samba no matter wan or lan, edit /etc/firewall.user
 
 iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 22 -j ACCEPT
 
+iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 80 -j ACCEPT
+
 iptables -A input_rule -p udp -s 192.168.1.101/32 --dport 137 -j ACCEPT
 
 iptables -A input_rule -p udp -s 192.168.1.101/32 --dport 138 -j ACCEPT
@@ -692,6 +694,8 @@ iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 139 -j ACCEPT
 iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 445 -j ACCEPT
 
 iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
+
+iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 80 -j DROP
 
 iptables -A input_rule -p udp -s 0.0.0.0/0 --dport 137 -j DROP
 
