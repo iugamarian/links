@@ -11,8 +11,44 @@ cp /etc/samba/smb.conf ~
 
 nano /etc/samba/smb.conf 
 
+2018 succesfull for anybody wanting to access share, but not writable to protect
+from crazy antivirus or wifi strangers, add at the end of smb.conf:
 
 ################################################################################
+
+wins support = yes
+guest account = nfsnobody
+map to guest = bad user
+
+[celde500]
+Path = /media/pi/wd500gb/pi
+Writeable = no
+Guest ok = yes
+Public = yes
+force user = root
+force group = root
+create mask = 0666
+directory mask = 0666
+security mask = 0666
+
+[celde700]
+Path = /media/pi/700gbhdd/pi
+Writeable = no
+Guest ok = yes
+Public = yes
+force user = root
+force group = root
+create mask = 0666
+directory mask = 0666
+security mask = 0666
+
+################################################################################
+
+sudo smbpasswd -a <user>
+systemctl restart smbd.service
+
+
+################################################################################ old 2016 with some security:
 
 # "security = user" is always a good idea. This will require a Unix account
 # in this server for every user accessing the server. See
