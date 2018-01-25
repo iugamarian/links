@@ -44,7 +44,6 @@ security mask = 0666
 
 ################################################################################
 
-sudo smbpasswd -a <user>
 systemctl restart smbd.service
 
 
