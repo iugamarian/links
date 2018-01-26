@@ -7,6 +7,9 @@ and can be removed, works the same without the light after.
 
 https://www.ebay.co.uk/itm/USB-To-3-5mm-Headphone-Jack-Stereo-Headset-3D-Sound-Card-Audio-Adapter-For-PC/311563006618?epid=1261136772&hash=item488a9a329a:g:QxoAAOSwP~tW39-l
 
+Datasheets:
+https://www.semiconductorstore.com/cart/pc/viewPrd.asp?idproduct=48472
+
 
 # Debian to Windows USB stick
 
