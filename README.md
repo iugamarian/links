@@ -1,3 +1,13 @@
+# USB good quality audio soundcards
+
+http://raspberrypimaker.com/cheap-quality-audio-raspberry-pi/
+
+I have the 3d sound, very good but has a red led near usb port that is annoying
+and can be removed, works the same without the light after.
+
+https://www.ebay.co.uk/itm/USB-To-3-5mm-Headphone-Jack-Stereo-Headset-3D-Sound-Card-Audio-Adapter-For-PC/311563006618?epid=1261136772&hash=item488a9a329a:g:QxoAAOSwP~tW39-l
+
+
 # Debian to Windows USB stick
 
 https://askubuntu.com/questions/599746/how-do-i-burn-the-windows-10-iso-to-a-usb
