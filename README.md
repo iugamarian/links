@@ -1,3 +1,8 @@
+# Arch Linux UEFI
+
+https://wiki.archlinux.org/index.php/User:Soloturn/Quick_Installation_guide_UEFI
+
+
 # USB good quality audio soundcards
 
 http://raspberrypimaker.com/cheap-quality-audio-raspberry-pi/
