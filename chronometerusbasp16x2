@@ -110,6 +110,9 @@
 
 //Prototypes ( functions declared at beginning so they are always found later - no errors )
 void setup();
+// https://bugzilla.redhat.com/show_bug.cgi?id=1431678
+// https://github.com/magnumripper/JohnTheRipper/issues/2533
+// ignore warnings like: may write a terminating nul past the end of the destination
 void LCD_update_time();
 void LCD_update_timesel();
 void var_delay_us(uint16_t);
@@ -123,17 +126,18 @@ void findouttimeminutessel();
 static volatile unsigned char hours = 0;
 static volatile unsigned char minutes = 0;
 static volatile unsigned char seconds = 0;
-static volatile uint16_t timeinminutes = 0; //used for alarm decision, in minutes, more than 256 so 16 bit
+static volatile uint16_t timein30seconds = 0; //used for alarm decision, in minutes, more than 256 so 16 bit
  
 static volatile unsigned char hourssel = 0;
 static volatile unsigned char minutessel = 0;
 static volatile unsigned char secondssel = 0; // and zero always for the selected second
-static volatile uint16_t timeinminutessel = 1; //used for alarm decision, in minutes, more than 256 so 16 bit, bigger than timeinminutes
+static volatile uint16_t timein30secondssel = 1; //used for alarm time reached, in 30 seconds,
+// more than 256 so 16 bit
 
-static volatile unsigned char iiii = 0x01; //	1=ignored by compiler; 2: hours;  3: minutes; 4: day; 5: month; 6: year;
-static volatile unsigned char quarterofalarm=0; // for one second what part of the alarm 1,2,3,4 with 4 musical notes each part
-//	int was_selected = 0, was_pressed = 0;
-//	int waiting_to_reset = 0;
+static volatile unsigned char sectionofalarm = 0; // for one second what section of the alarm 1,2,3,4 with 4 musical notes
+static volatile unsigned char noteofalarm = 0;    // what note of the alarm 1,2,3,4 to play in 0.75/4 seconds
+
+static volatile unsigned char alarmbeginsection = 0; // timer interrupt informs main that an alarm section can be issued
 
 /////////// From here variables don't need to survive interrupt
 
@@ -145,7 +149,7 @@ char lcdint [3];                           	// only 2 characters + not specified
 
 int main(void) {
 
-	_delay_ms(50); // bedore jumping functions allow small time to make sure microcontroller power is stabilised (increased to 5V)
+	_delay_ms(50); // time to make sure microcontroller power is stabilised (increased to 5V)
 	setup();
 	gotolcdlocation(1,1);
 	lcdputs("                ");
@@ -201,6 +205,10 @@ int main(void) {
 				// Start conversion in loop
 			}
 		findouttimeminutessel();
+	if((alarmbeginsection == 1) && (noteofalarm < 5))
+		{
+			alarmmusic(); // lasts 0.75/4 seconds, one note, done like this for more responsive selection
+		}
 		_delay_ms(50);
 
 	} // acolada de la while(1)
@@ -226,7 +234,7 @@ lcdini();
   DDRC |= (1<<0); //LED1
   PORTC &= ~ (1<<0);
 
-
+	sectionofalarm = 0;
 }
 
 
@@ -277,6 +285,7 @@ void makesnd(uint16_t frequency, uint8_t duration)	// duration represented as 16
 		sinusoidrepetition = duration*frequency/tempo/16;
 		sinusoidtime=1000000/25/frequency;	// 25 us is the var_delay_us time unit, 1000000 us is one second
 		sinusoidtime=sinusoidtime/2; // one pulse is composed of an up and a down, time used is half
+		sinusoidrepetition = ( (uint16_t) round(sinusoidrepetition * 14/11) );	// fine tune for almost 250 ms repetition
    		while(sinusoidrepetition){
 			var_delay_us(sinusoidtime);	// buzzer frequency
 			PORTB |= (1<<0);
@@ -288,38 +297,36 @@ void makesnd(uint16_t frequency, uint8_t duration)	// duration represented as 16
 }
 
 void alarmmusic() {
-	switch (quarterofalarm) {
-		case 1:
-					makesnd(FDOND,4);
-					makesnd(FREND,4);
-					makesnd(FMIND,4);
-					makesnd(FFAND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
-		break;
-		case 2:
-					makesnd(FSOLND,4);
-					makesnd(FLAND,4);
-					makesnd(FSIND,4);
-					makesnd(FDONE,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
-		break;
-		case 3:
-					makesnd(FDONE,4);
-					makesnd(FSIND,4);
-					makesnd(FLAND,4);
-					makesnd(FSOLND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
-		break;
-		case 4:
-					makesnd(FFAND,4);
-					makesnd(FMIND,4);
-					makesnd(FREND,4);
-					makesnd(FDOND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
-		break;
-		default:
-		//code
-		break;
-	} // accolade for switch (quarterofalarm)
-		quarterofalarm++; // this code is always done, not only if no case happened
-		if(quarterofalarm>4) quarterofalarm=1;
-		// and so this second make no sounds, order for seconds is silence,case1,case2,case3,case4,silence,case1,case2,case3,case4,silence...
+	if (sectionofalarm == 1)
+			{
+			if(noteofalarm == 1) makesnd(FDOND,4);
+			if(noteofalarm == 2) makesnd(FREND,4);
+			if(noteofalarm == 3) makesnd(FMIND,4);
+			if(noteofalarm == 4) makesnd(FFAND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+			}
+
+    else if (sectionofalarm == 2)
+			{
+			if(noteofalarm == 1) makesnd(FSOLND,4);
+			if(noteofalarm == 2) makesnd(FLAND,4);
+			if(noteofalarm == 3) makesnd(FSIND,4);
+			if(noteofalarm == 4) makesnd(FDONE,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+			}
+    else if (sectionofalarm == 3)
+			{
+			if(noteofalarm == 1) makesnd(FDONE,4);
+			if(noteofalarm == 2) makesnd(FSIND,4);
+			if(noteofalarm == 3) makesnd(FLAND,4);
+			if(noteofalarm == 4) makesnd(FSOLND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+			}
+    else
+			{
+			if(noteofalarm == 1) makesnd(FFAND,4);
+			if(noteofalarm == 2) makesnd(FMIND,4);
+			if(noteofalarm == 3) makesnd(FREND,4);
+			if(noteofalarm == 4) makesnd(FDOND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+			}
+	noteofalarm++;
 }
 
 void findouttimeminutessel() {
@@ -328,37 +335,98 @@ void findouttimeminutessel() {
 // http://efundies.com/avr-bitwise-operations-in-c/
 // https://download.mikroe.com/documents/compilers/mikroc/pic/help/logical_operators.htm
 
-// Hack to see if last two bits of adc value are 1 or 2 or bitwise 01 or 10, required for some kind of feedback 0 [1 2] 3 4 [5 6] 7 8 [9 10] 11...
-if( ( ( (!(adc_value &(1<<0))) && (adc_value &(1<<1)) ) || ( (adc_value &(1<<0)) && (!(adc_value &(1<<1))) ) ) || (notjuststarted==0) )
-	// if first two bits of adc_value are 01 or 10
+// Hack to see if last three bits of adc value are 1 to 8  or bitwise 001 to 111,
+// required for some kind of feedback from 1 to 6 like this:
+// 0 [1 2 3 4 5 6] 7 8 [9 10 11 12 13 14] 15 16 [17 18 19...
+// So we need bitwise: 000 [001 010 011 100 101 110] 111 that means:
+// not ( (bit3=0 and bit2=0 and bit1=0) or (bit3=1 and bit2=1 and bit1=1) )
+if( !( ( (!(adc_value &(1<<0))) && (!(adc_value &(1<<1))) && (!(adc_value &(1<<2))) ) || ( (adc_value &(1<<0)) && (adc_value &(1<<1)) && (adc_value &(1<<2)) ) ) || (notjuststarted==0) )
+	// if first three bits of adc_value are not 000 or 111
 	{
 	// when adc was mooved with feedback reset counter so that time is measured after not mooving it
-	selectionpiece=(adc_value>>2);
+	selectionpiece=(adc_value>>3); // ignore first three bits, this divides up to 256 by eight resulting in up to 32
 	if(notjuststarted==0) oldselectionpiece=selectionpiece+1;
 	if(selectionpiece!=oldselectionpiece) // http://www.cprogramming.com/tutorial/c/lesson2.html
 		{
 		oldselectionpiece=selectionpiece; // make old one equal first of all so that we don't reset time on every pass
 		notjuststarted=1;	// no problem if repeated, it only happens when mooving adc
-		quarterofalarm=0;	// start alarm from the beginning next time
 		seconds = 0;
 		minutes = 0;
 		hours = 0;
 		makesnd(FDOND,1); // aknowledge with short sound that there is a new selection
 		// http://www.avrfreaks.net/forum/if-if-if-vs-if-else-if-else-if
-		if (selectionpiece<30) // one piece is a minute, ranges from 0 to 30 minutes
-			timeinminutessel=selectionpiece+1; // 0 is 1 min and onwards to 29 is 30 min
-		else if (selectionpiece<60) // one piece is 5 minutes, ranges from 35 minutes to 180 minutes
-			timeinminutessel=(30+(((selectionpiece-30)+1)*5)); // 30 is 35 min and onwards to 59 is 180 min
-		else // so it's between 60 and 63 then, one piece is 30 minutes, ranges from 210 minutes to 300 minutes
-			timeinminutessel=(180+(((selectionpiece-60)+1)*30)); // 60 is 210 min and onwards to 63 is 300 min
-		// After timeminutessel is determined, we need to make it hours and minutes to be displayed on LCD screen
+		// The objective is to be able to select from few ranges, each range having it's own resolution.
+		// The more time is selected the less the resolution can be, use some common sense about time to make ranges.
+		// The program is made to allow 32 selections made by reading a 8 bit ADC value and dividing it
+		// by eight to get a more stable readout, but still using the last three bits that make an eight
+		// for fine tuning the selection, by rotating a potentiometer with multiple turns from 0V up to 5V.
+		// The variable timein30secondssel which is 16 bit specifies how many 30 seconds are selected at a time.
+		// Range 1 = 30 seconds to 4 minutes with resolution of 30 seconds, that's << 8 >> selections
+		// selected minutes in range 1:  (0.5) ( 1 ) (1.5) ( 2 ) (2.5) ( 3 ) (3.5) ( 4 )
+		// Range 2 = 5 minutes to 10 minutes with resolution of 1 minute, that's << 6 >> more selections total 14 of 32
+		// selected minutes in range 2:  ( 5 ) ( 6 ) ( 7 ) ( 8 ) ( 9 ) ( 10 )
+		// Range 3 = 15 minutes to 30 minutes with resolution of 5 minutes, that's << 4 >> more selections total 18 of 32
+		// selected minutes in range 3:  ( 15 ) ( 20 ) ( 25 ) ( 30 )
+		// Range 4 = 45 minutes to 1.5 hours with resolution of 15 minutes, that's << 4 >> more selections total 22 of 32
+		// selected hours in range 4:  (0.75) ( 1 ) (1.25) (1.5)
+		// Range 5 = 2 hours to 4 hours with resolution of 30 minutes, that's << 5 >> more selections total 27 of 32
+		// selected hours in range 5:  ( 2 ) ( 2.5 ) ( 3 ) ( 3.5 ) ( 4 )
+		// Range 6 = 5 hours to 8 hours with resolution of 1 hour, that's << 4 >> more selections total 32 of 32
+		// selected hours in range 6:  ( 5 ) ( 6 ) ( 7 ) ( 8 ) ( 9 )
+		// Maximum value of timein30secondssel must be lower than 32768 and is: 9 hours * 60 minutes * 2 half minutes = 1080
+		// timein30secondssel starts from zero but consider it from 1 all the way so +1 in all if's
+		secondssel=0; // start secondsel at zero for all ranges, only range 1 may modify it
+
+		if (selectionpiece < 8) // range 1, timein30secondssel here is from 1 to 8 so up to 4 minutes
+			{
+			timein30secondssel=selectionpiece+1;
+			secondssel=(timein30secondssel % 2)*30; // required in range 1 only
+			}
+
+		else if (selectionpiece < 14) // range 2, timein30secondssel here is from 10 to 20, 9 is not used
+			// (<range 1 max timein30secondssel> + ((( <range 2 selection> -
+			// - <range 1 max selection> ) +1 ) * (<range 2 resolution / timein30secondssel resolution>) ))
+			timein30secondssel=(8+(((selectionpiece-8)+1)*2));
+
+		else if (selectionpiece < 18) // range 3, timein30secondssel here is from 30 to 60, 21 to 29 are not used
+			// (<range 2 max timein30secondssel> + ((( <range 3 selection> -
+			// - <range 2 max selection> ) +1 ) * (<range 3 resolution / timein30secondssel resolution>) ))
+			timein30secondssel=(20+(((selectionpiece-14)+1)*10));
+
+		else if (selectionpiece < 22) // range 4, timein30secondssel here is from 90 to 180, 61 to 89 are not used
+			// (<range 3 max timein30secondssel> + ((( <range 4 selection> -
+			// - <range 3 max selection> ) +1 ) * (<range 4 resolution / timein30secondssel resolution>) ))
+			timein30secondssel=(60+(((selectionpiece-18)+1)*30));
+
+		else if (selectionpiece < 27) // range 5, timein30secondssel here is from 240 to 480, 181 to 239 are not used
+			// (<range 4 max timein30secondssel> + ((( <range 5 selection> -
+			// - <range 4 max selection> ) +1 ) * (<range 5 resolution / timein30secondssel resolution>) ))
+			timein30secondssel=(180+(((selectionpiece-22)+1)*60));
+
+		else // range 6, last range, timein30secondssel here is from 600 to 1080, 481 to 599 are not used
+			// (<range 5 max timein30secondssel> + ((( <range 6 selection> -
+			// - <range 5 max selection> ) +1 ) * (<range 6 resolution / timein30secondssel resolution>) ))
+			timein30secondssel=(480+(((selectionpiece-27)+1)*120));
+
+		// After timein30secondssel is determined, we need to make it hours and minutes to be displayed on LCD screen
 		// http://stackoverflow.com/questions/4228356/how-to-perform-integer-division-and-get-the-remainder-in-javascript
 		// var remainder = x % y;
 		// return (x - remainder) / y;
-		minutessel=timeinminutessel % 60;
+
+		// (timein30secondssel/2) can be integer orinteger + 0.5 sometimes, so avoidcompiler giving warnings and errors
+		// https://stackoverflow.com/questions/16032522/rounding-numbers-on-avrs-in-c
+		// https://www.microchip.com/webdoc/AVRLibcReferenceManual/group__avr__math_1ga6eb04604d801054c5a2afe195d1dd75d.html
+		// http://jkorpela.fi/round.html
+		// https://www.avrfreaks.net/forum/avr-libc-built-rounding-function-and-documentation
+		// https://www.avrfreaks.net/forum/how-round-float-2-decimal-places-atmega16-iar-work
+		// https://www.avrfreaks.net/forum/avr-math-rounding-uprounding-down-when-dividing-ui
+		// Conclusion: round(39.84) = 39.00 and (uint8_t) 39.00 = 39 and everything in round needs to be with decimal point .0
+
+		minutessel=((uint16_t) round(timein30secondssel / 2.0 - 0.5)) % 60;
 		// Conclusion: Use (a/b>>0) (or (~~(a/b)) or (a/b|0)) to achieve about 20% gain in efficiency. Also keep in mind
 		// that they are all inconsistent with Math.floor, when a/b<0 && a%b!=0.
-		hourssel=(((timeinminutessel-minutessel)/60)>>0); // division without remainder, floor
+
+		hourssel=(((((uint16_t) round(timein30secondssel / 2.0 - 0.5)) - minutessel) / 60) >> 0); // division without remainder, floor
 		} // accolade for oldselectionpiece if
 	} // accolade for feedback if
 
@@ -386,10 +454,19 @@ ISR(TIMER1_COMPA_vect)
 		hours = 0;
 	}
 
-timeinminutes=60*hours+minutes;
+	timein30seconds=( (60 * hours + minutes)*2 + (uint16_t) round((seconds / 30.0) - 0.5) );
+	sectionofalarm++;    // this code is always done
+	if(sectionofalarm > 4) sectionofalarm=1;
+	
+	if(timein30secondssel <= timein30seconds)
+		{
+		alarmbeginsection=1; // inform main that a new second is in for alarm, an alarm section lasts 0.75 seconds
+		noteofalarm=1;       // start from the first note in the section because a second has passed
+		}
+	else
+		{
+			alarmbeginsection=0;
+			sectionofalarm=0;	// will cycle section [1, 2, 3, 4]
+		}
 
-if(timeinminutessel <= timeinminutes)
-	{
-	alarmmusic();
-	}
 }
