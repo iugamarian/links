@@ -361,52 +361,68 @@ if( !( ( (!(adc_value &(1<<0))) && (!(adc_value &(1<<1))) && (!(adc_value &(1<<2
 		// by eight to get a more stable readout, but still using the last three bits that make an eight
 		// for fine tuning the selection, by rotating a potentiometer with multiple turns from 0V up to 5V.
 		// The variable timein30secondssel which is 16 bit specifies how many 30 seconds are selected at a time.
+
 		// Range 1 = 30 seconds to 4 minutes with resolution of 30 seconds, that's << 8 >> selections
 		// selected minutes in range 1:  (0.5) ( 1 ) (1.5) ( 2 ) (2.5) ( 3 ) (3.5) ( 4 )
+
 		// Range 2 = 5 minutes to 10 minutes with resolution of 1 minute, that's << 6 >> more selections total 14 of 32
 		// selected minutes in range 2:  ( 5 ) ( 6 ) ( 7 ) ( 8 ) ( 9 ) ( 10 )
-		// Range 3 = 15 minutes to 30 minutes with resolution of 5 minutes, that's << 4 >> more selections total 18 of 32
+
+		// Range 3 = 12 minutes only, that's << 1 >> more selection total 15 of 32
+		// selected minutes in range 3:  ( 12 )
+
+		// Range 4 = 15 minutes to 30 minutes with resolution of 5 minutes, that's << 4 >> more selections total 19 of 32
 		// selected minutes in range 3:  ( 15 ) ( 20 ) ( 25 ) ( 30 )
-		// Range 4 = 45 minutes to 1.5 hours with resolution of 15 minutes, that's << 4 >> more selections total 22 of 32
+
+		// Range 5 = 45 minutes to 1.5 hours with resolution of 15 minutes, that's << 4 >> more selections total 23 of 32
 		// selected hours in range 4:  (0.75) ( 1 ) (1.25) (1.5)
-		// Range 5 = 2 hours to 4 hours with resolution of 30 minutes, that's << 5 >> more selections total 27 of 32
+
+		// Range 6 = 2 hours to 4 hours with resolution of 30 minutes, that's << 5 >> more selections total 28 of 32
 		// selected hours in range 5:  ( 2 ) ( 2.5 ) ( 3 ) ( 3.5 ) ( 4 )
-		// Range 6 = 5 hours to 8 hours with resolution of 1 hour, that's << 4 >> more selections total 32 of 32
-		// selected hours in range 6:  ( 5 ) ( 6 ) ( 7 ) ( 8 ) ( 9 )
-		// Maximum value of timein30secondssel must be lower than 32768 and is: 9 hours * 60 minutes * 2 half minutes = 1080
+
+		// Range 7 = 5 hours to 8 hours with resolution of 1 hour, that's << 4 >> more selections total 32 of 32
+		// selected hours in range 6:  ( 5 ) ( 6 ) ( 7 ) ( 8 )
+
+		// Maximum value of timein30secondssel must be lower than 32768 and is: 8 hours * 60 minutes * 2 half minutes = 960
 		// timein30secondssel starts from zero but consider it from 1 all the way so +1 in all if's
+
 		secondssel=0; // start secondsel at zero for all ranges, only range 1 may modify it
 
 		if (selectionpiece < 8) // range 1, timein30secondssel here is from 1 to 8 so up to 4 minutes
 			{
 			timein30secondssel=selectionpiece+1;
-			secondssel=(timein30secondssel % 2)*30; // required in range 1 only
+			secondssel = (timein30secondssel % 2)*30; // required in range 1 only
 			}
 
 		else if (selectionpiece < 14) // range 2, timein30secondssel here is from 10 to 20, 9 is not used
 			// (<range 1 max timein30secondssel> + ((( <range 2 selection> -
 			// - <range 1 max selection> ) +1 ) * (<range 2 resolution / timein30secondssel resolution>) ))
-			timein30secondssel=(8+(((selectionpiece-8)+1)*2));
+			timein30secondssel = (8+(((selectionpiece-8)+1)*2));
 
-		else if (selectionpiece < 18) // range 3, timein30secondssel here is from 30 to 60, 21 to 29 are not used
+		else if (selectionpiece < 15) // range 3, timein30secondssel here is from 24 to 24, 21 to 23 are not used
 			// (<range 2 max timein30secondssel> + ((( <range 3 selection> -
 			// - <range 2 max selection> ) +1 ) * (<range 3 resolution / timein30secondssel resolution>) ))
-			timein30secondssel=(20+(((selectionpiece-14)+1)*10));
+			timein30secondssel = 24;
 
-		else if (selectionpiece < 22) // range 4, timein30secondssel here is from 90 to 180, 61 to 89 are not used
+		else if (selectionpiece < 19) // range 4, timein30secondssel here is from 30 to 60, 25 to 29 are not used
+			// (<range 2 max timein30secondssel> + ((( <range 3 selection> -
+			// - <range 2 max selection> ) +1 ) * (<range 3 resolution / timein30secondssel resolution>) ))
+			timein30secondssel = (20+(((selectionpiece-15)+1)*10));
+
+		else if (selectionpiece < 23) // range 5, timein30secondssel here is from 90 to 180, 61 to 89 are not used
 			// (<range 3 max timein30secondssel> + ((( <range 4 selection> -
 			// - <range 3 max selection> ) +1 ) * (<range 4 resolution / timein30secondssel resolution>) ))
-			timein30secondssel=(60+(((selectionpiece-18)+1)*30));
+			timein30secondssel = (60+(((selectionpiece-19)+1)*30));
 
-		else if (selectionpiece < 27) // range 5, timein30secondssel here is from 240 to 480, 181 to 239 are not used
+		else if (selectionpiece < 28) // range 6, timein30secondssel here is from 240 to 480, 181 to 239 are not used
 			// (<range 4 max timein30secondssel> + ((( <range 5 selection> -
 			// - <range 4 max selection> ) +1 ) * (<range 5 resolution / timein30secondssel resolution>) ))
-			timein30secondssel=(180+(((selectionpiece-22)+1)*60));
+			timein30secondssel=(180+(((selectionpiece-23)+1)*60));
 
-		else // range 6, last range, timein30secondssel here is from 600 to 1080, 481 to 599 are not used
+		else // range 6, last range, timein30secondssel here is from 600 to 960, 481 to 599 are not used
 			// (<range 5 max timein30secondssel> + ((( <range 6 selection> -
 			// - <range 5 max selection> ) +1 ) * (<range 6 resolution / timein30secondssel resolution>) ))
-			timein30secondssel=(480+(((selectionpiece-27)+1)*120));
+			timein30secondssel = (480+(((selectionpiece-28)+1)*120));
 
 		// After timein30secondssel is determined, we need to make it hours and minutes to be displayed on LCD screen
 		// http://stackoverflow.com/questions/4228356/how-to-perform-integer-division-and-get-the-remainder-in-javascript
