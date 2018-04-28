@@ -191,10 +191,10 @@ void makesnd(uint16_t frequency, uint8_t duration)	// duration represented as 16
 	uint16_t sinusoidtime = 0;			// length of time for a sinusoid
 //	tempo is usually 120 beats per minute - half a second, number written down 2/2=half second 4/4=quarter second
 //	https://en.wikipedia.org/wiki/Tempo
-	uint8_t tempo = 32; // the bigger, the shorter the note at the same frequency (parts of a second)
+	uint8_t tempo = 4; // the bigger, the shorter the note at the same frequency (parts of a second)
 	sinusoidrepetition = duration*frequency/tempo/16;
 	sinusoidtime=1000000/25/frequency;	// 25 us is the var_delay_us time unit, 1000000 us is one second
-//	sinusoidtime=sinusoidtime/2; // one pulse is composed of an up and a down, time used is half
+	sinusoidtime=sinusoidtime/2; // one pulse is composed of an up and a down, time used is half
 	sinusoidrepetition = ( (uint16_t) round(sinusoidrepetition * 14/11) );	// fine tune for almost 250 ms repetition
 	PORTC &= ~ (1<<0); //LED2 on at zero logic
    	while(sinusoidrepetition){
@@ -219,15 +219,9 @@ void alarmmusic() {
 	alarmrepetition = 18;
    	while(alarmrepetition)
 	{
-		makesnd(FSOLND,4);
-		makesnd(FLAND,4);
-		makesnd(FSIND,4);
 		makesnd(FDONE,4);
 		_delay_ms(25);
-		makesnd(FDONE,4);
-		makesnd(FSIND,4);
-		makesnd(FLAND,4);
-		makesnd(FSOLND,4);
+		makesnd(FSOLNE,4);
 		_delay_ms(25);
     	 	alarmrepetition--;
 	}
