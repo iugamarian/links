@@ -491,7 +491,7 @@ firewall-cmd --add --service=samba
 
 a) In terminal run (set password that Windows asks):
 
-sudo pbedit -a pi
+sudo pdbedit -a pi
 
 b) In terminal run:
 
