@@ -91,6 +91,28 @@ https://debian-live.alioth.debian.org/live-manual/stable/manual/html/live-manual
 
 # MPV (best player KISS principle) configuration in ~/.config/mpv/mpv.conf
 
+# MPV 2018 best with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
+
+hwdec=vaapi
+
+vo=vaapi
+
+save-position-on-quit
+
+# MPV 2017 medium with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
+
+opengl-hwdec-interop=vaapi-copy
+
+hwdec=vaapi-copy
+
+vo=opengl
+
+profile=opengl-hq
+
+save-position-on-quit
+
+# MPV 2016 low with AMD, better with Nvidia, configuration in ~/.config/mpv/mpv.conf:
+
 hwdec=vdpau
 
 save-position-on-quit
