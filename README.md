@@ -93,6 +93,8 @@ https://debian-live.alioth.debian.org/live-manual/stable/manual/html/live-manual
 
 # MPV 2018 best with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
 
+# sudo apt install -y mesa-va-drivers
+
 hwdec=vaapi
 
 vo=vaapi
@@ -100,6 +102,8 @@ vo=vaapi
 save-position-on-quit
 
 # MPV 2017 medium with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
+
+# sudo apt install -y mesa-va-drivers
 
 opengl-hwdec-interop=vaapi-copy
 
@@ -112,6 +116,8 @@ profile=opengl-hq
 save-position-on-quit
 
 # MPV 2016 low with AMD, better with Nvidia, configuration in ~/.config/mpv/mpv.conf:
+
+# install Nvidia proprietary driver
 
 hwdec=vdpau
 
