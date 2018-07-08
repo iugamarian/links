@@ -91,6 +91,10 @@ https://debian-live.alioth.debian.org/live-manual/stable/manual/html/live-manual
 
 # MPV (best player KISS principle) configuration in ~/.config/mpv/mpv.conf
 
+https://mpv.io/manual/master/
+
+https://spit.mixtape.moe/view/73ac8ca5
+
 # MPV 2018 best with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
 
 # sudo apt install -y mesa-va-drivers
@@ -100,6 +104,10 @@ hwdec=vaapi
 vo=vaapi
 
 save-position-on-quit
+
+audio-normalize-downmix=yes
+
+volume=100
 
 # MPV 2017 medium with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
 
@@ -115,6 +123,10 @@ profile=opengl-hq
 
 save-position-on-quit
 
+audio-normalize-downmix=yes
+
+volume=100
+
 # MPV 2016 low with AMD, better with Nvidia, configuration in ~/.config/mpv/mpv.conf:
 
 # install Nvidia proprietary driver
@@ -123,6 +135,9 @@ hwdec=vdpau
 
 save-position-on-quit
 
+audio-normalize-downmix=yes
+
+volume=100
 
 # Emacs tutorials
 
