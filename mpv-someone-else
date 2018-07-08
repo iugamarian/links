@@ -1,0 +1,70 @@
+# VIDEO
+vo=opengl
+profile=opengl-hq
+opengl-backend=dxinterop
+opengl-shaders="~~/shaders/KrigBilateral.glsl,~~/shaders/SSimSuperRes.glsl,~~/shaders/adaptive-sharpen.glsl"
+hwdec=no
+scale=haasnsoft
+cscale=ewa_lanczos
+sigmoid-center=1.0
+sigmoid-slope=10.0
+deband-grain=0
+deband-iterations=2
+deband-range=12
+deband-threshold=48
+video-sync=display-resample
+video-sync-max-video-change=5
+
+
+# AUDIO
+ao=wasapi
+audio-channels=auto
+audio-normalize-downmix=yes
+audio-pitch-correction=no
+volume=100
+
+# WINDOW
+autofit-larger=90%x90%
+autofit-smaller=40%x40%
+force-window=immediate
+geometry=50%:50%
+keep-open=always
+no-resume-playback
+
+# OSD
+osc=no
+no-osd-bar
+osd-font="Source Sans Pro"
+osd-font-size=42
+osd-border-size=3.5
+osd-border-color="#262626"
+osd-color="#FFFFFF"
+osd-shadow-offset=1
+osd-shadow-color="#33000000"
+
+# SUBTITLES
+sub-ass-force-style=Kerning=yes
+sub-ass-style-override=force
+demuxer-mkv-subtitle-preroll=yes
+sub-font="Source Sans Pro Semibold"
+sub-font-size=56
+sub-color="#FFFFFF"
+sub-border-color="#262626"
+sub-border-size=3.5
+sub-shadow-offset=1
+sub-shadow-color="#33000000"
+sub-spacing=0.5
+
+# SCREENSHOT
+screenshot-format=jpg
+screenshot-jpeg-quality="100"
+screenshot-png-compression=0
+screenshot-png-filter=0
+screenshot-tag-colorspace=yes
+screenshot-template="%F - %P"
+
+# OTHER
+msg-color=yes
+msg-module
+ytdl=yes
+ytdl-format=(bestvideo[vcodec=vp9]/bestvideo[height<=1080]/bestvideo[fps>30])+(bestaudio[acodec=opus]/bestaudio)/best
