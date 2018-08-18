@@ -1,3 +1,36 @@
+# scp convincing to copy from remote server with spaces and parantheses
+
+https://unix.stackexchange.com/questions/64195/how-to-replace-a-left-parenthesis-with-sed
+
+https://serverfault.com/questions/692364/scp-remote-file-to-local-machine
+
+https://superuser.com/questions/1310766/scp-from-remote-linux-to-local-windows-with-spaces-in-local-path
+
+https://stackoverflow.com/questions/19858176/how-to-escape-spaces-in-path-during-scp-copy-in-linux
+
+https://www.funtoo.org/Sed_by_Example,_Part_2
+
+https://stackoverflow.com/questions/6744006/can-i-use-sed-to-manipulate-a-variable-in-bash
+
+Original name as presented by GUI:
+
+aaabbb='A file with spaces (and parantheses).txt'
+
+Add escape characters because client bash must be convinced to send correctly to server bash
+
+bbbccc=$(echo $aaabbb |sed -e "s/(/\\\(/g"|sed -e "s/)/\\\)/g"|sed -r "s/ /\\\ /g")
+
+Result becomes $bbbccc:
+
+echo $bbbccc
+
+A\ file\ with\ spaces\ \(and\ parantheses\).txt
+
+Insert $bbbccc into scp request
+
+scp -r user@example.com:"$bbbccc"
+
+
 # Arch Linux UEFI
 
 https://wiki.archlinux.org/index.php/User:Soloturn/Quick_Installation_guide_UEFI
