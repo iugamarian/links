@@ -28,7 +28,7 @@ A\ file\ with\ spaces\ \(and\ parantheses\).txt
 
 Insert $bbbccc into scp request
 
-scp -r user@example.com:"$bbbccc"
+scp -r user@example.com:"$bbbccc" ~/
 
 
 # Arch Linux UEFI
