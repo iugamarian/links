@@ -1,0 +1,10 @@
+#!/bin/bash
+# Usage :
+# testtar archive.tar
+if ! tar xOf "$1" &> /dev/null; then
+    echo "Error while uncompressing $1 ."
+    echo "Error while uncompressing $1 ." > testtar-conclusion
+else
+    echo "Good uncompress $1 ."
+    echo "Good uncompress $1 ." > testtar-conclusion
+fi
