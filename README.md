@@ -1,4 +1,4 @@
-# mouse slower working solution Ubuntu 18.04
+# Slower mouse speed solution for Ubuntu 18.04
 
 xinput --list
 
@@ -20,12 +20,23 @@ Avoid using Default
 Determine name of device "Telink Wireless Receiver" and property Accel Speed which
 must be set to -1 for slowest, up to 1 for fastest with the following contraption:
 
-To see the backspaces in this you need to download the repository and open README.md
+As README.md hides some backspaces from this command it is in this repository as file:
 
-xinput --list | grep 'Telink Wireless Receiver.*slave[[:space:]]\{1,2\}pointer' | grep -Po '\d+' | awk 'NR%2==1 {print "xinput --set-prop "$1" \"libinput Accel Speed\" -1"}' | while read line ; do eval $line ; done
+mouseslower
 
-And can be made permanent in Ubuntu by putting it in /etc/X11/Xsession just before exit 0 at the end
-or in systemd after some sleep nr.
+And can be made permanent in Ubuntu Mate by putting it in /usr/bin as root and
+
+sudo chmod +x /usr/bin/mouseslower
+
+and creating preferences -> startup
+applications -> add as:
+
+Mouse Slower
+mate-terminal -e "/usr/bin/mouseslower"
+Slow mouse speed.
+
+And similarly for other desktop environments.
+
 
 # scp convincing to copy from remote server with spaces and parantheses
 
