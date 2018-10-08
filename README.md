@@ -1,3 +1,30 @@
+# mouse slower working solution Ubuntu 18.04
+
+xinput --list
+
+⎡ Virtual core pointer                    	id=2	[master pointer  (3)]
+⎜   ↳ Virtual core XTEST pointer              	id=4	[slave  pointer  (2)]
+⎜   ↳ Telink Wireless Receiver                	id=9	[slave  pointer  (2)]
+⎜   ↳ Barcode Reader                          	id=12	[slave  pointer  (2)]
+⎣ Virtual core keyboard                   	id=3	[master keyboard (2)]
+    ↳ Virtual core XTEST keyboard             	id=5	[slave  keyboard (3)]
+
+xinput --list-props 9
+xinput --list-props 9 |grep Accel
+xinput --list-props 9 |grep Speed
+
+libinput Accel Speed (283):	0.000000
+libinput Accel Speed Default (284):	0.000000
+
+Avoid using Default
+Determine name of device "Telink Wireless Receiver" and property Accel Speed which
+must be set to -1 for slowest, up to 1 for fastest with the following contraption:
+
+xinput --list | grep 'Telink Wireless Receiver.*slave[[:space:]]\{1,2\}pointer' | grep -Po '\d+' | awk 'NR%2==1 {print "xinput --set-prop "$1" \"libinput Accel Speed\" -1"}' | while read line ; do eval $line ; done
+
+And can be made permanent in Ubuntu by putting it in /etc/X11/Xsession just before exit 0 at the end
+
+
 # scp convincing to copy from remote server with spaces and parantheses
 
 https://unix.stackexchange.com/questions/64195/how-to-replace-a-left-parenthesis-with-sed
