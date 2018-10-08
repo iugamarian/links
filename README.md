@@ -31,9 +31,15 @@ sudo chmod +x /usr/bin/mouseslower
 and creating preferences -> startup
 applications -> add as:
 
+========================
+
 Mouse Slower
+
 mate-terminal -e "/usr/bin/mouseslower"
+
 Slow mouse speed.
+
+========================
 
 And similarly for other desktop environments.
 
