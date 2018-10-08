@@ -3,21 +3,33 @@
 xinput --list
 
 ⎡ Virtual core pointer                    	id=2	[master pointer  (3)]
+
 ⎜   ↳ Virtual core XTEST pointer              	id=4	[slave  pointer  (2)]
+
 ⎜   ↳ Telink Wireless Receiver                	id=9	[slave  pointer  (2)]
+
 ⎜   ↳ Barcode Reader                          	id=12	[slave  pointer  (2)]
+
 ⎣ Virtual core keyboard                   	id=3	[master keyboard (2)]
+
     ↳ Virtual core XTEST keyboard             	id=5	[slave  keyboard (3)]
+    
 
 xinput --list-props 9
+
 xinput --list-props 9 |grep Accel
+
 xinput --list-props 9 |grep Speed
 
+
 libinput Accel Speed (283):	0.000000
+
 libinput Accel Speed Default (284):	0.000000
 
-Avoid using Default
+Avoid using Default.
+
 Determine name of device "Telink Wireless Receiver" and property Accel Speed which
+
 must be set to -1 for slowest, up to 1 for fastest with the following contraption:
 
 As README.md hides some backspaces from this command it is in this repository as file:
@@ -28,8 +40,7 @@ And can be made permanent in Ubuntu Mate by putting it in /usr/bin as root and
 
 sudo chmod +x /usr/bin/mouseslower
 
-and creating preferences -> startup
-applications -> add as:
+and creating preferences -> startup applications -> add as:
 
 ========================
 
@@ -37,7 +48,7 @@ Mouse Slower
 
 mate-terminal -e "/usr/bin/mouseslower"
 
-Slow mouse speed.
+Slower mouse speed.
 
 ========================
 
