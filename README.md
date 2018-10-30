@@ -1,3 +1,10 @@
+# Old sound card not recognised by Linux
+
+https://help.ubuntu.com/community/HowToSetupSoundCards
+
+BIOS - ADVANCED - PCIPnP - IRQ Manual - IRQ Auto - Save
+
+
 # Slower mouse speed solution for Ubuntu 18.04
 
 xinput --list
