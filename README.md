@@ -1,3 +1,10 @@
+# Old motherboard not recognising new GPU card
+
+https://forum-en.msi.com/index.php?topic=308673.0
+
+It's hit and miss if both are not old or both are not new.
+
+
 # Old sound card not recognised by Linux
 
 https://help.ubuntu.com/community/HowToSetupSoundCards
