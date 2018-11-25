@@ -5,8 +5,8 @@
 #include <util/delay.h>
 
 /*Global Variables Declarations*/
-unsigned char twelvehours = 1;
-unsigned char oneandahalfhours = 6;
+unsigned char twelvehours = 0;
+unsigned char oneandahalfhours = 0;
 unsigned char minutes = 0;
 unsigned char seconds = 0;
 
