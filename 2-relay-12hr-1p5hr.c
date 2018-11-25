@@ -27,10 +27,10 @@ void setup() {
 // SCK = B5 has 270 ohm resistor
 // MISO = B4 has no resistor, direct connection to microcontroller pin
 
-	DDRB |= (1<<2);     // set out relay air pump
-	DDRB |= (1<<3);     // set out relay light
-//	DDRB |= (1<<4);
-//	DDRB |= (1<<5);
+	DDRB |= (1<<2);     // set out relay light
+	DDRB |= (1<<3);     // set out relay air pump
+	DDRB |= (1<<4);     // set out relay red light
+	DDRB |= (1<<5);     // set relay test
 //	PORTB &= ~ (1<<2);     // on relay air pump
 //	PORTB &= ~ (1<<3);     // on relay light
 //	PORTB &= ~ (1<<4);
@@ -38,15 +38,20 @@ void setup() {
 //	_delay_ms(500);	// all relays on for 0.5 seconds
 	PORTB |= (1<<2);      // off relay air pump
 	PORTB |= (1<<3);      // off relay light
-//	PORTB |= (1<<4);
-//	PORTB |= (1<<5);
-	TCCR1B |= (1<<WGM12); // clear timer on compare (when OCR1A is reached, automatically go to 0)
-	OCR1A = 46875; // 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
-	TIMSK |= (1<<OCIE1A); // when OCR1A is reached, go to ISR(TIMER1_COMPA_vect) interrupt
+	PORTB |= (1<<4);      // off relay light
+	PORTB |= (1<<5);      // off relay test
 	DDRD &= ~ (1 << 2);
 	PORTD |= (1 << 2);	
 	DDRC |= (1<<0); // LED1 green
 	PORTC &= ~ (1<<0);
+	DDRC |= (1<<1); // LED2 red
+	PORTC &= ~ (1<<1);
+	TCCR1B |= (1<<WGM12); // clear timer on compare (when OCR1A is reached, automatically go to 0)
+// U L T R A    F A S T    T E S T    S P E E D
+//	OCR1A = 900; // 20 milliseconds per second - test
+// N O R M A L    S P E E D
+	OCR1A = 46875; // 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
+	TIMSK |= (1<<OCIE1A); // when OCR1A is reached, go to ISR(TIMER1_COMPA_vect) interrupt
 	TCCR1B |= (1<<CS12);			// setting prescaler also starts the counting of the timer, for 12Mhz
 }
 
@@ -56,23 +61,26 @@ int main(void) {
 	setup();
 	while(1)	// Infinite loop
     	{
-            if(oneandahalfhours%2 == 0) {
-                // close air pump
-                PORTB |= (1<<2);       // off relay air pump
-            }
-            else {
-                // open air pump
-                PORTB &= ~ (1<<2);     // on relay air pump
-            }
-            if(twelvehours == 0) {
-                // close light
-                PORTB |= (1<<3);       // off relay light
-            }
-            else {
-                // open light
-                PORTB &= ~ (1<<3);     // on relay light
-            }
-		    _delay_ms(700);     // delay not compatible with one second
+            // Using cascaded if's with elses are in between is very dizzying for the compiler, better just say all in each if:
+            if(twelvehours == 0) PORTB |= (1<<2);       // off relay light
+            // air pump last half hour during time light closed
+            if(twelvehours == 0 && !(oneandahalfhours == 7 && minutes > 59)) PORTB |= (1<<3);       // off relay air pump
+            if(twelvehours == 0 && (oneandahalfhours == 7 && minutes > 59)) PORTB &= ~ (1<<3);     // on relay air pump
+            // red light first and last 15 minutes during time light closed
+            if(twelvehours == 0 && !(oneandahalfhours == 0 && minutes < 16)) PORTB |= (1<<4);       // off relay red light
+            if(twelvehours == 0 && !(oneandahalfhours == 7 && minutes > 74)) PORTB |= (1<<4);       // off relay red light
+            if(twelvehours == 0 && (oneandahalfhours == 0 && minutes < 16)) PORTB &= ~ (1<<4);     // on relay red light
+            if(twelvehours == 0 && (oneandahalfhours == 7 && minutes > 74)) PORTB &= ~ (1<<4);     // on relay red light
+            // when the light is on there needs to be a condition to turn off all others, the red light condition is added here:
+            if(!(twelvehours == 0)) PORTB |= (1<<4);       // off relay red light
+            // open light
+            if(!(twelvehours == 0)) PORTB &= ~ (1<<2);     // on relay light
+            // air pump 1.5 hour off 1.5 hour on during time light open
+            if(!(twelvehours == 0) && oneandahalfhours%2 == 0) PORTB |= (1<<3);       // off relay air pump
+            if(!(twelvehours == 0) && !(oneandahalfhours%2 == 0)) PORTB &= ~ (1<<3);     // on relay air pump
+//            if(oneandahalfhours%2 == 0)PORTB |= (1<<5);       // off relay test
+//            if(!(oneandahalfhours%2 == 0)) PORTB &= ~ (1<<5);     // on relay test
+		    _delay_ms(35);     // delay not compatible with one second
 	    }
 	return 0;
     }
@@ -80,29 +88,30 @@ int main(void) {
 /*Timer Counter 1 Compare Match A Interrupt Service Routine/Interrupt Handler*/
 ISR(TIMER1_COMPA_vect)
 {
-	PORTC &= ~ (1<<0); //LED1 tic	
+	PORTC &= ~ (1<<0); //LED1 tic
+    PORTC &= ~ (1<<1); //LED2 tic	
+//	_delay_ms(5);  // test
 	_delay_ms(20);
-	PORTC |= (1<<0); //LED1 tac	
+    if(!(seconds == 0)) {
+	PORTC |= (1<<0); //LED1 tac
+    PORTC |= (1<<1); //LED2 tac
+    }
 	seconds++;
-	if(seconds == 60)
-//    if(seconds == 1)    // test mode fast seconds - minutes
-	{
+//	if(seconds == 3) {  //    test
+	if(seconds == 60) {
 		seconds = 0;
 		minutes++;
 	}
 	if(minutes == 90)
-//    if(minutes == 2)    // test mode fast minutes - oneandahalfhours
 	{
 		minutes = 0;
 		oneandahalfhours++;		
 	}
-	if(oneandahalfhours == 6) {
+	if(oneandahalfhours == 8) {
 		oneandahalfhours = 0;
 		twelvehours++;
 	}
-
 	if(twelvehours == 2) {
 		twelvehours = 0;
 	}
-
 }
