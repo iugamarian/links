@@ -8,6 +8,8 @@ https://www.cclonline.com/product/265744/11289-01-20G/Graphics-Cards/Sapphire-Ra
 
 https://community.amd.com/community/gaming/blog/2016/04/05/radeon-r9-fury-nano-uefi-firmware
 
+http://www.sapphiretech.com/productdetial.asp?pid=D5EDC78F-6920-4DDE-9EFF-6F35F8A68E27&lang=eng
+
 It's hit and miss if both are not old or both are not new.
 
 
