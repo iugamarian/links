@@ -6,6 +6,8 @@ https://imgur.com/a/bYYux
 
 https://www.cclonline.com/product/265744/11289-01-20G/Graphics-Cards/Sapphire-Radeon-RX-590-NITRO-Special-Edition-8GB-Graphics-Card/VGA5403/
 
+https://community.amd.com/community/gaming/blog/2016/04/05/radeon-r9-fury-nano-uefi-firmware
+
 It's hit and miss if both are not old or both are not new.
 
 
