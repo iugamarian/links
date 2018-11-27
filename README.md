@@ -12,6 +12,8 @@ http://www.sapphiretech.com/productdetial.asp?pid=D5EDC78F-6920-4DDE-9EFF-6F35F8
 
 It's hit and miss if both are not old or both are not new.
 
+https://www.techpowerup.com/vgabios/
+
 
 # Old sound card not recognised by Linux
 
