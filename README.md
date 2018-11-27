@@ -4,6 +4,8 @@ https://forum-en.msi.com/index.php?topic=308673.0
 
 https://imgur.com/a/bYYux
 
+https://www.cclonline.com/product/265744/11289-01-20G/Graphics-Cards/Sapphire-Radeon-RX-590-NITRO-Special-Edition-8GB-Graphics-Card/VGA5403/
+
 It's hit and miss if both are not old or both are not new.
 
 
