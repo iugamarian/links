@@ -1,3 +1,18 @@
+# Mount NTFS and USB
+
+https://askubuntu.com/questions/113733/how-do-i-correctly-mount-a-ntfs-partition-in-etc-fstab
+
+sudo -s
+
+blkid
+
+/etc/fstab
+
+#UUID="xxx" /450gbusb     ext4    defaults         0       3
+
+UUID="yyy" /750gbw7     ntfs-3g   defaults,nls=utf8,umask=000,dmask=027,fmask=137,uid=1000,gid=1000,windows_names 0 0
+
+
 # Old motherboard not recognising new GPU card
 
 https://forum-en.msi.com/index.php?topic=308673.0
