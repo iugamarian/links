@@ -350,6 +350,9 @@ Audacious -> File -> Settings -> Plugins -> Input -> AMIDI Plugin -> Soundfont
 
 youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 ...video...
 
+# an entire channel
+
+youtube-dl -f best -ciw -o %(title)s.%(id)s.%(ext)s -v https://www.youtube.com/ubuntupodcast
 
 # Firefox on 4k displays or too little Full HD displays
 
