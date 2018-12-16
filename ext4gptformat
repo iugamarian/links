@@ -227,7 +227,7 @@ echo ""
 echo ""
 echo "Formatting partition:"
 # Disabling lazy options so that all inodes get written now not bit by bit later.
-mke2fs -t ext4 -m 0 -F -L $nameofdrive -E lazy_itable_init=0,lazy_journal_init=0 $storagepartition
+mke2fs -t ext4 -m 0 -F -O ^64bit -L $nameofdrive -E lazy_itable_init=0,lazy_journal_init=0 $storagepartition
 echo ""
 sleep 2
 sync
