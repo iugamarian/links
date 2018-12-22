@@ -1,0 +1,17 @@
+With browser download original iso:
+https://sourceforge.net/projects/zestypup/files/Upup-Bionic/upupbb-18.05.iso/download
+Identify latest update:
+https://sourceforge.net/projects/zestypup/files/Upup-Bionic/updates/
+For example:
+https://sourceforge.net/projects/zestypup/files/Upup-Bionic/updates/upupbb-18.05.iso___upupbb-18.05%2B22.iso.delta/download
+and
+https://sourceforge.net/projects/zestypup/files/Upup-Bionic/updates/upupbb-18.05%2B22.iso.md5.txt/download
+
+Commands:
+
+sudo apt install -y xdelta3
+xdelta3 -d -f -s upupbb-18.05.iso upupbb-18.05.iso___upupbb-18.05+22.iso.delta
+md5sum upupbb-18.05+22.iso
+cat upupbb-18.05+22.iso.md5.txt
+
+Then dd upupbb-18.05+22.iso to flash drive
