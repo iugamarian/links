@@ -11,31 +11,18 @@ woofwoof
 
 ALT+F4
 
-
 ```bash
-
 #!/bin/bash
-
 while true
-
 do
-
 battery_level=`acpi -b|grep -P -o '[0-9]+(?=%)'`
-
 battery_discharging=`acpi -b|grep Discharging|wc -l`
-
 if [ $battery_level -le 1 ] && [ $battery_discharging -eq 1 ]
-
 then
-
 wmpoweroff
-
 fi
-
 sleep 30
-
 done
-
 ```
 
 # Mount NTFS and USB
