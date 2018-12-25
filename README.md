@@ -11,7 +11,8 @@ woofwoof
 
 ALT+F4
 
-[code]
+
+```bash
 
 #!/bin/bash
 
@@ -34,7 +35,8 @@ fi
 sleep 30
 
 done
-[/code]
+
+```
 
 # Mount NTFS and USB
 
