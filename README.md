@@ -1,3 +1,14 @@
+# Laptop with defective main LCD and external LCD monitor broken band down side resize display
+
+```bash
+#!/bin/bash
+xrandr --output LVDS-1 --off
+xrandr --output VGA-1 --panning 1280x1800
+xrandr --output VGA-1 --fb 1280x850
+```
+
+Last command triggers errors but the resize takes place as required.
+
 
 # Battery protection script for Puppy Linux and UpupBB
 
@@ -10,6 +21,8 @@ woofwoof
 ./batt-low.sh
 
 ALT+F4
+
+or in /root/Startup
 
 ```bash
 #!/bin/bash
@@ -24,6 +37,7 @@ fi
 sleep 30
 done
 ```
+
 
 # Mount NTFS and USB
 
