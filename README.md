@@ -1,4 +1,17 @@
+
 # Battery protection script for Puppy Linux and UpupBB
+
+CTRL+ALT+F2
+
+root
+
+woofwoof
+
+./batt-low.sh
+
+ALT+F4
+
+[code]
 
 #!/bin/bash
 
@@ -21,7 +34,7 @@ fi
 sleep 30
 
 done
-
+[/code]
 
 # Mount NTFS and USB
 
