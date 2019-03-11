@@ -500,13 +500,23 @@ apt-get install -y winetricks
 
 winetricks d3dx9_36
 
-winetricks ddr=opengl multisampling=enabled orm=fbo videomemorysize=1024 strictdrawordering=enabled
+winetricks ddr=opengl multisampling=enabled orm=fbo videomemorysize=2048 strictdrawordering=enabled
 
 winetricks dotnet20
 
 winetricks dotnet40
 
 winetricks corefonts vcrun2005 vcrun2008 vcrun2010 vcrun2012 vcrun2015
+
+Run game with this export to avoid black or invisible textures and surfaces:
+
+https://askubuntu.com/questions/140161/dark-textures-on-intel-hd-3000-sandy-bridge-in-games-via-wine
+
+export MESA_EXTENSION_OVERRIDE="-GL_EXT_texture_sRGB_decode -GL_ARB_draw_elements_base_vertex -GL_ARB_map_buffer_range"
+
+cd .wine/drive_c/Program\ Files/gamedir
+
+wine game
 
 For Wine 2.0 and onwards, DirectX 11 is getting supported. More on that later...
 
