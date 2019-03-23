@@ -1,3 +1,8 @@
+# Ubuntu 18.04.2 and onwards for arm64 Raspberry Pi 3B and 3B+
+
+https://wiki.ubuntu.com/ARM/RaspberryPi
+
+
 # Laptop with defective main LCD and external LCD monitor broken band down side resize display
 
 ```bash
