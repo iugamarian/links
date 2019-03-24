@@ -11,11 +11,18 @@ echo 50000000 > /sys/class/drm/card0/device/hwmon/hwmon1/power1_cap
 Not required to boot with amdgpu.ppfeaturemask=0xffffffff in cmdline in this case.
 
 
-# Ubuntu 18.04.2 and onwards for arm64 Raspberry Pi 3B and 3B+
-
-# Not very good yet...
+# Ubuntu 18.04.2 (all graphical desktops not loading after lightdm or sddm) for arm64 Raspberry Pi 3B and 3B+
 
 https://wiki.ubuntu.com/ARM/RaspberryPi
+
+
+# Gentoo for arm64 Raspberry Pi 3B and 3B+ with hardware decoding support through v4l2 framework
+
+https://github.com/sakaki-/gentoo-on-rpi3-64bit
+
+https://github.com/sakaki-/bcmrpi3-kernel
+
+https://github.com/TheNextLVL/RPi.GPIO.64
 
 
 # Laptop with defective main LCD and external LCD monitor broken band down side resize display
