@@ -1,4 +1,19 @@
+# Reduce new (Polaris onwards) AMD graphics card power usage to maximum 50 W, tested
+
+https://wiki.archlinux.org/index.php/AMDGPU#Overclocking
+
+echo 50000000 > /sys/class/drm/card0/device/hwmon/hwmon0/power1_cap
+
+# or
+
+echo 50000000 > /sys/class/drm/card0/device/hwmon/hwmon1/power1_cap
+
+Not required to boot with amdgpu.ppfeaturemask=0xffffffff in cmdline in this case.
+
+
 # Ubuntu 18.04.2 and onwards for arm64 Raspberry Pi 3B and 3B+
+
+# Not very good yet...
 
 https://wiki.ubuntu.com/ARM/RaspberryPi
 
