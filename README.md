@@ -24,6 +24,10 @@ https://github.com/sakaki-/bcmrpi3-kernel
 
 https://github.com/TheNextLVL/RPi.GPIO.64
 
+# and autobuild repository so that emerge does not need to compile, just to download
+
+https://isshoni.org/pi64pie
+
 
 # Laptop with defective main LCD and external LCD monitor broken band down side resize display
 
