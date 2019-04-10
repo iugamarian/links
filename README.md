@@ -1,3 +1,8 @@
+# Spectre and Meltdown mitigation checker
+
+https://salsa.debian.org/debian/spectre-meltdown-checker/blob/master/spectre-meltdown-checker.sh
+
+
 # Reduce new (Polaris onwards) AMD graphics card power usage to maximum 50 W, tested
 
 https://wiki.archlinux.org/index.php/AMDGPU#Overclocking
