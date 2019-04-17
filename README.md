@@ -1,3 +1,9 @@
+# e4defrag segfaults strlen.S on Debian Buster 10 i386 so use XFS instead for /
+
+https://www.rootusers.com/how-to-defragment-an-xfs-file-system/
+
+xfs_fsr
+
 # Spectre and Meltdown mitigation checker
 
 https://salsa.debian.org/debian/spectre-meltdown-checker/blob/master/spectre-meltdown-checker.sh
