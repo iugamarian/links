@@ -1,3 +1,8 @@
+# Firefox in RAM only
+
+https://wiki.archlinux.org/index.php/Firefox/Profile_on_RAM
+
+
 # e4defrag segfaults strlen.S on Debian Buster 10 i386 so use XFS instead for /
 
 https://www.rootusers.com/how-to-defragment-an-xfs-file-system/
