@@ -6,7 +6,13 @@ http://fibrevillage.com/storage/673-how-to-defragment-an-xfs-filesystem
 
 https://linuxhint.com/defragment_xfs_file_system/
 
-xfs_fsr /
+https://wiki.archlinux.org/index.php/XFS
+
+xfs_db -c frag -r /dev/sda1
+
+xfs_fsr /dev/sda1
+
+xfs_db -c frag -r /dev/sda1
 
 
 # Spectre and Meltdown mitigation checker
