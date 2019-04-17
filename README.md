@@ -4,6 +4,8 @@ https://www.rootusers.com/how-to-defragment-an-xfs-file-system/
 
 http://fibrevillage.com/storage/673-how-to-defragment-an-xfs-filesystem
 
+https://linuxhint.com/defragment_xfs_file_system/
+
 xfs_fsr /
 
 
