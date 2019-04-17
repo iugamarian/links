@@ -2,7 +2,10 @@
 
 https://www.rootusers.com/how-to-defragment-an-xfs-file-system/
 
-xfs_fsr
+http://fibrevillage.com/storage/673-how-to-defragment-an-xfs-filesystem
+
+xfs_fsr /
+
 
 # Spectre and Meltdown mitigation checker
 
