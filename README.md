@@ -19,6 +19,8 @@ http://xfs.org/index.php/XFS_FAQ
 
 https://opensource.com/article/18/4/ext4-filesystem
 
+https://arstechnica.com/information-technology/2014/01/bitrot-and-atomic-cows-inside-next-gen-filesystems/
+
 xfs_check /dev/sda1
 
 xfs_repair /dev/sda1
