@@ -17,6 +17,8 @@ https://www.thegeekdiary.com/running-repairs-on-xfs-filesystems/
 
 http://xfs.org/index.php/XFS_FAQ
 
+https://opensource.com/article/18/4/ext4-filesystem
+
 xfs_check /dev/sda1
 
 xfs_repair /dev/sda1
