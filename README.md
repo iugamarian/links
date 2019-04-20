@@ -15,6 +15,8 @@ https://wiki.archlinux.org/index.php/XFS
 
 https://www.thegeekdiary.com/running-repairs-on-xfs-filesystems/
 
+http://xfs.org/index.php/XFS_FAQ
+
 xfs_check /dev/sda1
 
 xfs_repair /dev/sda1
