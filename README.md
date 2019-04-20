@@ -13,6 +13,12 @@ https://linuxhint.com/defragment_xfs_file_system/
 
 https://wiki.archlinux.org/index.php/XFS
 
+https://www.thegeekdiary.com/running-repairs-on-xfs-filesystems/
+
+xfs_check /dev/sda1
+
+xfs_repair /dev/sda1
+
 xfs_db -c frag -r /dev/sda1
 
 xfs_fsr /dev/sda1
