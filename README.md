@@ -2,6 +2,21 @@
 
 https://wiki.archlinux.org/index.php/Firefox/Profile_on_RAM
 
+# Raspberry Pi disable swap
+
+http://ideaheap.com/2013/07/stopping-sd-card-corruption-on-a-raspberry-pi/
+
+sudo -s
+
+dphys-swapfile swapoff
+
+dphys-swapfile uninstall
+
+systemctl disable dphys-swapfile
+
+reboot
+
+
 # Fast Raspberry Pi remote desktop not on the same display:
 
 https://raspberrypi.stackexchange.com/questions/28149/tightvnc-connection-refused
