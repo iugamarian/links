@@ -2,6 +2,29 @@
 
 https://wiki.archlinux.org/index.php/Firefox/Profile_on_RAM
 
+# Par2 maximum continuous (.tar) archive file size is 1 TB
+
+# 1 MB block size => 32 GB maximum for Usenet posts
+
+# 32 MB block size => 32 x 32 GB = 1024 GB maximum for backups
+
+https://news.ycombinator.com/item?id=13615978
+
+ Thanks for the heads up but that's not the one. I posted it in 1998 or 1999 and I tried to find the exact Usenet archive link similar to the direct link for Larry Page's famous 1996 post on comp.lang.java
+
+To go back to the article, the author mentions posting the files to newsgroup "alt.binaries.backup". With Usenet, there isn't exactly a contractual SLA (Service Level Agreement) for that group. It's a gentlemen's agreement between those commercial Usenet providers (and non-commercials ones like universities) to replicate messages. Maybe because I posted the message to my GTE/Verizon ISP's Usenet server meant that it only got replicated to a few peers and it "died".
+
+If my tiny text-based post which is 2 years newer than Larry Page's can't be recovered today, it doesn't give me lot of confidence to use Usenet as a backup solution. I have over 1 terabyte of photos, home videos, and tif scans of all my paper files. It's not appealing to chop that 1TB into a thousand PAR2 files with extra 20% redundant parity and posting it to alt.binaries.backup. That seems extremely fragile. Another commenter made a suggestion for Amazon's new personal "unlimited" cloud for $60/year. That seems much more reliable.
+
+
+> It's not appealing to chop that 1TB into a thousand PAR2 files with extra 20% redundant parity and posting it to alt.binaries.backup.
+
+For a 1 TB archive with 20% redundancy, you're looking at a block size of at least 32 MB in each par2 file (due to the maximum block count of 32767 in the official implementation). Given that the article size limit for many news servers is roughly 1 MB, you're looking at even a single block getting split into 32 article posts. par2 programs typically will generate a series of files where the smallest files contain a single block and the largest files contain 50 or more blocks. The 50 block files will each get split into 1600 articles.
+
+For par2 recovery to work even when articles are missing, you really want the recovery block size to be less than the article size limit, so that even if one or more articles are missing, the par2 archiver program can still read a subset of blocks from the incomplete recovery file and still use them for recovery. That means that the maximum archive size would be roughly 32 GB to keep the block size under the article size limit.
+
+Going beyond that size means that it's less likely that the recovery file would be usable if some of the articles are missing. At 32 GB, if one article is missing from a 3 block recovery file, the software will still be able find 2 blocks in that file. But, if the archive size was 100 GB, then the block size would be a minimum of 3 MB and just missing 3 out of 9 articles that make up a 3 block recovery file would make the recovery file unusable.
+
 
 # e4defrag segfaults strlen.S on Debian Buster 10 i386 so use XFS instead for /
 
