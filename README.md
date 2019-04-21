@@ -2,6 +2,47 @@
 
 https://wiki.archlinux.org/index.php/Firefox/Profile_on_RAM
 
+# Fast Raspberry Pi remote desktop not on the same display:
+
+https://raspberrypi.stackexchange.com/questions/28149/tightvnc-connection-refused
+
+https://raspberrypi.stackexchange.com/questions/45914/raspbian-graphical-login-screen-stuck-cant-login
+
+https://superuser.com/questions/696840/is-there-a-way-to-get-tightvnc-to-host-the-native-display-0
+
+https://elinux.org/RPiconfig
+
+https://ubuntuforums.org/showthread.php?t=1289897
+
+On the Pi:
+
+sudo -s
+
+raspi-config -> Interfacing options -> SSH -> Enable SSH -> TAB -> Finish
+
+apt install -y tightvncserver
+
+chown -R pi /home/pi
+
+OR
+
+chown pi:pi .Xauthority
+
+On the PC start tightvncserver on the Pi:
+
+ssh pi@192.168.x.x
+
+tightvncserver :1 -geometry 800x600 -depth 24
+
+exit
+
+On the PC graphical login on the Pi (server is already started):
+
+xtightvncviewer 192.168.1.2:5901
+
+KEEP TERMINAL OPEN
+
+
 # Par2 maximum continuous (.tar) archive file size is 1 TB
 
 # 1 MB block size => 32 GB maximum for Usenet posts
