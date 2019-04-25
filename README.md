@@ -19,6 +19,13 @@ reboot
 
 # Fast Raspberry Pi remote desktop not on the same display:
 
+# AND PROTECT IT from too many authentification failures from internet
+
+https://www.cyberciti.biz/tips/linux-iptables-how-to-specify-a-range-of-ip-addresses-or-ports.html
+
+iptables -A INPUT -p tcp --dport 5901 -m iprange --src-range 192.168.1.2-192.168.1.254 -j ACCEPT
+iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 5901 -j DROP
+
 https://raspberrypi.stackexchange.com/questions/28149/tightvnc-connection-refused
 
 https://raspberrypi.stackexchange.com/questions/45914/raspbian-graphical-login-screen-stuck-cant-login
