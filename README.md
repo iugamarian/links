@@ -1,6 +1,48 @@
+# Unlock locked phone and make it work on any other network(s) with 4G and calls
+
+01 - unlock phone for 0.99 pounds at
+
+https://www.ebay.co.uk/sch/mobunlockingmaster/m.html?_nkw=&_armrs=1&_ipg=&_from=
+
+If code does not work don't consume your tries, send another question about item with
+
+"Code does not Work. Please can you give another code ?". They usually give another code that works 100%
+
+02 - uninstall locked caller/dialer app that does not want to work on other networks
+
+03 - install New Dialer,Ultimate Dialer,Superb Dialer, Contacts BITS INDIA
+
+https://play.google.com/store/apps/details?id=n_com.android.dialer
+
+04 - open Phone = New Dialer,Ultimate Dialer,Superb Dialer, Contacts BITS INDIA
+
+05 - Download APK specified by the app - required to have call history also
+
+06 - Settings - Apps - uninstall Phone = New Dialer,Ultimate Dialer,Superb Dialer, Contacts BITS INDIA
+
+07 - Settings - Security - Allow Unknown Sources
+
+08 - Install downloaded APK
+
+-- You can now make calls and have call history and contacts
+
+09 - Uninstall messages (SMS) app
+
+09 - install Google Messages https://play.google.com/store/apps/details?id=com.google.android.apps.messaging 
+
+10 - open it, update required apps, open it again and make it default for messages
+
+-- You can now send SMS messages
+
+11 - open Chrome, update Chrome, open it, go to Settings - Home page - https://www.google.com - Save
+
+-- You can now browse the web fast
+
+
 # Firefox in RAM only
 
 https://wiki.archlinux.org/index.php/Firefox/Profile_on_RAM
+
 
 # Raspberry Pi disable swap
 
@@ -25,6 +67,8 @@ https://www.cyberciti.biz/tips/linux-iptables-how-to-specify-a-range-of-ip-addre
 
 https://serverfault.com/questions/161401/how-to-allow-a-range-of-ips-with-iptables
 
+sudo -s
+
 iptables -A INPUT -p tcp -m iprange --src-range 192.168.1.2-192.168.1.254 --dport 22 -j ACCEPT
 
 iptables -A INPUT -p tcp -m iprange --src-range 192.168.1.2-192.168.1.254 --dport 5901 -j ACCEPT
@@ -32,6 +76,8 @@ iptables -A INPUT -p tcp -m iprange --src-range 192.168.1.2-192.168.1.254 --dpor
 iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
 
 iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 5901 -j DROP
+
+exit
 
 https://raspberrypi.stackexchange.com/questions/28149/tightvnc-connection-refused
 
