@@ -1,3 +1,15 @@
+# Debian run graphical applications as root
+
+https://help.ubuntu.com/community/RootSudo#Graphical_sudo
+
+You can use pkexec on those flavours that support this option. As of 18.04, only Xubuntu supports this option by default, as shown in the following examples:
+
+    pkexec thunar
+    pkexec mousepad /etc/fstab
+
+https://unix.stackexchange.com/questions/203136/how-do-i-run-gui-applications-as-root-by-using-pkexec
+
+
 # Unlock locked phone and make it work on any other network(s) with 4G and calls
 
 01 - unlock phone for 0.99 pounds at
