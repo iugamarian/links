@@ -9,6 +9,8 @@ You can use pkexec on those flavours that support this option. As of 18.04, only
 
 https://unix.stackexchange.com/questions/203136/how-do-i-run-gui-applications-as-root-by-using-pkexec
 
+https://www.linuxquestions.org/questions/linux-desktop-74/linux-debian-9-gui-don%27t-accept-sudo-and-asks-for-root-password-4175611640/
+
 
 # Unlock locked phone and make it work on any other network(s) with 4G and calls
 
