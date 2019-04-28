@@ -171,7 +171,9 @@ For par2 recovery to work even when articles are missing, you really want the re
 Going beyond that size means that it's less likely that the recovery file would be usable if some of the articles are missing. At 32 GB, if one article is missing from a 3 block recovery file, the software will still be able find 2 blocks in that file. But, if the archive size was 100 GB, then the block size would be a minimum of 3 MB and just missing 3 out of 9 articles that make up a 3 block recovery file would make the recovery file unusable.
 
 
-# e4defrag segfaults strlen.S on Debian Buster 10 i386 so use XFS instead for /
+# e4defrag segfaults strlen.S on Debian Buster 10 i386 so use XFS or BTRFS instead for /
+
+# XFS defragmentation
 
 https://www.rootusers.com/how-to-defragment-an-xfs-file-system/
 
@@ -200,6 +202,32 @@ xfs_db -c frag -r /dev/sda1
 xfs_fsr /dev/sda1
 
 xfs_db -c frag -r /dev/sda1
+
+# BTRFS defragmentation (for not encountering up to about year 2022 BTRFS bugs avoid doing snapshots, reflinks, compression and RAID 5/6)
+
+https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
+
+Swap files in Btrfs are supported since Linux 5.0
+
+Displaying used/free space
+
+General linux userspace tools such as df will inaccurately report free space on a Btrfs partition. It is recommended to use btrfs filesystem usage to query Btrfs partitions. For example:
+
+btrfs filesystem usage /
+
+Note: The btrfs filesystem usage command does not currently work correctly with RAID5/RAID6 RAID levels.
+
+Btrfs supports online defragmentation through the mount option autodefrag. To manually defragment your root, use:
+
+btrfs filesystem defragment -r /
+
+Using the above command without the -r switch will result in only the metadata held by the subvolume containing the directory being defragmented. This allows for single file defragmentation by simply specifying the path.
+
+Defragmenting a file which has a COW copy (either a snapshot copy or one made with cp --reflink or bcp) plus using the -c switch with a compression algorithm may result in two unrelated files effectively increasing the disk usage.
+
+Parity RAID (RAID 5/6) code has multiple serious data-loss bugs in it.
+
+Bitrot protection (repair) available if you use well tested RAID 0 (mirror) or RAID 10 (striped mirror)
 
 
 # Spectre and Meltdown mitigation checker
