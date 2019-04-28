@@ -1,3 +1,18 @@
+# Debian easy install some desktop from minimal installation
+
+https://wiki.debian.org/tasksel
+
+https://packages.debian.org/buster/task-mate-desktop
+
+su -
+
+tasksel
+
+tasksel --list-tasks
+
+tasksel --task-packages task-mate-desktop
+
+
 # Debian run graphical applications as root
 
 https://help.ubuntu.com/community/RootSudo#Graphical_sudo
