@@ -298,6 +298,44 @@ As a result, we had a RAID1 again.
 
 If you wonder why we did not use btrfs replace: We would have to connect the new disk before the second reboot, which is not always practical. With the method above, once we have rebalanced the file system to a single one, we can reboot as often as we like to get the new drive online. 
 
+# BTRFS scrub stopped half way not running but says it's running bug
+
+http://marc.merlins.org/perso/btrfs/post_2014-04-26_Btrfs-Tips_-Cancel-A-Btrfs-Scrub-That-Is-Already-Stopped.html
+
+btrfs scrub start -d /dev/mapper/dshelf1
+
+ERROR: scrub is already running.
+
+To cancel use 'btrfs scrub cancel /dev/mapper/dshelf1'.
+
+btrfs scrub status  /dev/mapper/dshelf1
+
+scrub status for 6358304a-2234-4243-b02d-4944c9af47d7
+
+scrub started at Tue Apr  8 08:36:18 2014, running for 46347 seconds
+
+total bytes scrubbed: 5.70TiB with 0 errors
+
+btrfs scrub cancel  /dev/mapper/dshelf1
+
+ERROR: scrub cancel failed on /dev/mapper/dshelf1: not running
+
+# Fix:
+
+perl -pi -e 's/finished:0/finished:1/' /var/lib/btrfs/*
+
+btrfs scrub status  /dev/mapper/dshelf1
+
+scrub status for 6358304a-2234-4243-b02d-4944c9af47d7
+
+scrub started at Tue Apr  8 08:36:18 2014 and finished after 46347 seconds
+
+total bytes scrubbed: 5.70TiB with 0 errors
+
+btrfs scrub start -d /dev/mapper/dshelf1
+
+scrub started on /dev/mapper/dshelf1, fsid 6358304a-2234-4243-b02d-4944c9af47d7 (pid=24196)
+
 
 # Spectre and Meltdown mitigation checker
 
