@@ -205,6 +205,8 @@ xfs_db -c frag -r /dev/sda1
 
 # BTRFS defragmentation (for not encountering up to about year 2022 BTRFS bugs avoid doing snapshots, reflinks, compression and RAID 5/6)
 
+# BTRFS has complete toolset including defragmentation in Debian Install netinst Rescue Mode, XFS and e4defrag lack defragmentation and many others in Rescue Mode
+
 https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
 
 Swap files in Btrfs are supported since Linux 5.0
@@ -227,7 +229,70 @@ Defragmenting a file which has a COW copy (either a snapshot copy or one made wi
 
 Parity RAID (RAID 5/6) code has multiple serious data-loss bugs in it.
 
-Bitrot protection (repair) available if you use well tested RAID 0 (mirror) or RAID 10 (striped mirror)
+Bitrot protection (repair) available if you use well tested RAID 1 (mirror) or RAID 10 (mirror striped)
+
+Bitrot protection (repair) can be done if you use two partitions of the same size on the same one harddisk / ssd and put them in RAID 1 (mirror) or maybe even one partition with RAID1 made just inside it:
+
+# But you use mirrored so half space half performance
+
+https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices
+
+https://www.complang.tuwien.ac.at/anton/btrfs-raid1.html
+
+Installing RAID1 for BTRFS
+Debian does not support Btrfs RAID out of the box, so the way to go is to start to install BTRFS without RAID on one of the disk drives, leave the same space on a partition on the other drive(s), and then do
+
+btrfs device add /dev/sdb3 /
+btrfs balance start -dconvert=raid1 -mconvert=raid1 /
+
+We also add "degraded" as file system option in fstab; e.g.:
+
+UUID=3d0ce18b-dc2c-4943-b765-b8a79f842b88 /               btrfs   degraded,strictatime        0       0
+
+btrfs device delete missing tells btrfs to remove the first device that is described by the filesystem metadata but not present when the FS was mounted.
+...
+For example if you have a raid1 layout with two devices, and a device fails, you must:
+
+    mount in degraded mode.
+    add a new device.
+    remove the missing device.
+
+The UUID (check with blkid) is the same for both partitions in our RAID, so no need to specify devices.
+EFI and RAID1
+There is no support for RAID1 and EFI in Linux or Debian, so what we did was to have one EFI system partition (ESP) on each drive, let the Debian installer install the the EFI stub of grub on one of them, and then use dd to copy the contents of the ESP to the other ESP partition(s):
+
+dd if=/dev/sda1 of=/dev/sdb1
+
+This has to be repeated every time the EFI partition changes, but it seems that this normally does not change, even when running update-grub. OTOH, it does not hurt to do the dd more often than necessary.
+
+We also needed to change /etc/grub.d/10_linux in different places than "The perfect Btrfs setup for a server" (which seems to be written for a BIOS/MBR system) indicates: Search for " ro " (two occurences), and prepend "rootflags=degraded". One of these lines becomes
+
+	linux	${rel_dirname}/${basename}.efi.signed root=${linux_root_device_thisversion} rootflags=degraded ro ${args}
+
+In order for that to take effect, we had to
+
+update-grub
+
+What to do on a failed disk
+We disconnected one of the disks (while the system was offline, online would have been an interesting variant) to simulate a disk failure. Due to a bug in BTRFS, it degrades nicely on the first boot, but then becomes irreversibly read-only on the second boot. If you get there, the best option seems to be to copy the read-only file system to a fresh and writable file system (with e.g., tar or cpio). (We actually went as far as having the read-only file system with one of the two drives we used, so the bug is still there in Linux 4.11).
+
+You probably want to avoid these complications, and while you are still in your first boot, you can. What we did (with the other disk), is to convert it back from RAID1 to a single profile, then remove the failed device (which complains that it does not know the device, but still removes it).
+
+btrfs balance start -v -mconvert=dup -dconvert=single /
+btrfs device remove /dev/sdb3
+#now check that it has worked
+btrfs device usage /
+btrfs fi show
+btrfs fi usage
+
+We then shut down the system, plugged the replacement disk in (actually the disk we had earlier ruined by double degraded booting, after wiping the BTRFS partition), booted and then did the usual dance to turn the now-single BTRFS into a RAID1 again:
+
+btrfs device add /dev/sdb3 /
+btrfs balance start -dconvert=raid1 -mconvert=raid1 /
+
+As a result, we had a RAID1 again.
+
+If you wonder why we did not use btrfs replace: We would have to connect the new disk before the second reboot, which is not always practical. With the method above, once we have rebalanced the file system to a single one, we can reboot as often as we like to get the new drive online. 
 
 
 # Spectre and Meltdown mitigation checker
