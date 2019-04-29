@@ -239,6 +239,8 @@ https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices
 
 https://www.complang.tuwien.ac.at/anton/btrfs-raid1.html
 
+https://seravo.fi/2016/perfect-btrfs-setup-for-a-server
+
 Installing RAID1 for BTRFS
 Debian does not support Btrfs RAID out of the box, so the way to go is to start to install BTRFS without RAID on one of the disk drives, leave the same space on a partition on the other drive(s), and then do
 
