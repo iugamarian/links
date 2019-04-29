@@ -205,6 +205,8 @@ xfs_db -c frag -r /dev/sda1
 
 # BTRFS defragmentation (for not encountering up to about year 2022 BTRFS bugs avoid doing snapshots, reflinks, compression and RAID 5/6)
 
+https://btrfs.wiki.kernel.org/index.php/Status
+
 # BTRFS has complete toolset including defragmentation in Debian Install netinst Rescue Mode, XFS and e4defrag lack defragmentation and many others in Rescue Mode
 
 https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
