@@ -1,3 +1,16 @@
+# Better than FAT32 for TV's and Android: exFAT allows more than 4 GB for a file
+
+https://appuals.com/how-to-format-a-drive-as-exfat-on-linux/
+
+wipefs -a /dev/sdc
+
+fdisk /dev/sdc
+
+n ENTER ENTER ENTER ENTER ENTER t 7 w
+
+mkfs.exfat -n hardDisk /dev/sdc1
+
+
 # Debian easy install some desktop from minimal installation
 
 https://wiki.debian.org/tasksel
