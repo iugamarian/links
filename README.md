@@ -336,6 +336,32 @@ btrfs scrub start -d /dev/mapper/dshelf1
 
 scrub started on /dev/mapper/dshelf1, fsid 6358304a-2234-4243-b02d-4944c9af47d7 (pid=24196)
 
+# BTRFS deal with databases and virtual harddisks without NOCOW
+
+marc.merlins.org/linux/talks/Btrfs-LC2014-JP/Btrfs.pdf
+
+If you have a virtual disk image, or a database file that gets written randomly in the middle,
+
+Copy On Write is going to cause many fragments since each write is a new fragment.
+
+My virtualbox image grew 100,000 fragments quickly.
+
+You can turn off COW for specific files
+
+and directories with chattr +C /path (new files will inherit this)
+
+Or you can defragment the file:
+
+btrfs filesystem defragment vbox.vdi
+
+(could take hours)
+
+cp –reflink=never vbox.vdi vbox.vdi.new; rm vbox.vdi
+
+mv vbox.vdi.new vbox.vdi
+
+(is much faster)
+
 
 # Spectre and Meltdown mitigation checker
 
