@@ -220,6 +220,12 @@ xfs_db -c frag -r /dev/sda1
 
 https://btrfs.wiki.kernel.org/index.php/Status
 
+https://chrisirwin.ca/posts/btrfs-presentation/
+
+https://askubuntu.com/questions/229770/how-do-i-show-the-current-amount-of-fragmentation-on-a-btrfs-filesystem
+
+https://serverfault.com/questions/896535/possible-to-see-btrfs-defrag-progress
+
 # BTRFS has complete toolset including defragmentation in Debian Install netinst Rescue Mode, XFS and e4defrag lack defragmentation and many others in Rescue Mode
 
 https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
