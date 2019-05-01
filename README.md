@@ -254,6 +254,25 @@ Bitrot protection (repair) available if you use well tested RAID 1 (mirror) or R
 
 Bitrot protection (repair) can be done if you use two partitions of the same size on the same one harddisk / ssd and put them in RAID 1 (mirror) or maybe even one partition with RAID1 made just inside it:
 
+# BTRFS No space left on device
+
+From live rescue mode enter a shell withowt chroot:
+
+cat /proc/partitions
+
+mount /dev/sdxx /mnt
+
+cd /mnt
+
+btrfs fi balance start -dusage=5 /mnt
+
+rm /mount/point/var/cache/apt/archives/*.deb
+
+btrfs fi balance start --full-balance /mnt
+
+btrfs filesystem defragment -r /mnt
+
+
 # But you use mirrored so half space half performance
 
 https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices
