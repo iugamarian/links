@@ -218,6 +218,8 @@ xfs_db -c frag -r /dev/sda1
 
 # BTRFS defragmentation (for not encountering up to about year 2022 BTRFS bugs avoid doing snapshots, reflinks, compression and RAID 5/6)
 
+https://github.com/egara/arch-btrfs-installation
+
 https://btrfs.wiki.kernel.org/index.php/Status
 
 https://chrisirwin.ca/posts/btrfs-presentation/
