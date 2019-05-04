@@ -163,6 +163,8 @@ KEEP TERMINAL OPEN
 
 # Very good protection against bitrot
 
+https://forum.level1techs.com/t/idea-for-a-highly-flexible-nas/108575
+
 https://sourceforge.net/p/snapraid/discussion/1677233/thread/7167759c/
 
 2018-04-03
