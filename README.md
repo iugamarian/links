@@ -242,6 +242,10 @@ xfs_db -c frag -r /dev/sda1
 
 # BTRFS defragmentation (for not encountering up to about year 2022 BTRFS bugs avoid doing snapshots, reflinks, compression and RAID 5/6)
 
+https://stackoverflow.com/questions/26429360/crc32-vs-crc32c
+
+BTRFS uses CRC32C with polynomial 0x1EDC6F41, hardware accelerated in newer CPUs and quite good for bitrot detection, if you also have RAID1 mirror to repair automatically after detection even if it's a whole 4 KB sector missing which BTRFS does.
+
 https://news.ycombinator.com/item?id=8304217
 
 http://noahdavids.org/self_published/CRC_and_checksum.html
