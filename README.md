@@ -218,6 +218,12 @@ xfs_db -c frag -r /dev/sda1
 
 # BTRFS defragmentation (for not encountering up to about year 2022 BTRFS bugs avoid doing snapshots, reflinks, compression and RAID 5/6)
 
+https://btrfs.wiki.kernel.org/index.php/Changelog
+
+https://lwn.net/Articles/577961/
+
+https://lwn.net/Articles/579009/
+
 https://github.com/egara/arch-btrfs-installation
 
 https://btrfs.wiki.kernel.org/index.php/Status
@@ -231,6 +237,14 @@ https://serverfault.com/questions/896535/possible-to-see-btrfs-defrag-progress
 # BTRFS has complete toolset including defragmentation in Debian Install netinst Rescue Mode, XFS and e4defrag lack defragmentation and many others in Rescue Mode
 
 https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
+
+https://wiki.debian.org/Btrfs
+
+https://patchwork.kernel.org/patch/3554661/
+
+https://www.spinics.net/lists/linux-btrfs/msg78524.html
+
+https://borgbackup.readthedocs.io/en/stable/
 
 Swap files in Btrfs are supported since Linux 5.0
 
