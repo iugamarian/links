@@ -242,6 +242,10 @@ xfs_db -c frag -r /dev/sda1
 
 # BTRFS defragmentation (for not encountering up to about year 2022 BTRFS bugs avoid doing snapshots, reflinks, compression and RAID 5/6)
 
+https://news.ycombinator.com/item?id=8304217
+
+http://noahdavids.org/self_published/CRC_and_checksum.html
+
 https://www.youtube.com/watch?v=W3QRWUfBua8&feature=youtu.be&t=17m51s
 
 https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=840248
