@@ -159,6 +159,28 @@ xtightvncviewer 192.168.1.2:5901
 
 KEEP TERMINAL OPEN
 
+# GOOD NEWS - Snapraid also protects against bitrot in parity files not just data files
+
+# Very good protection against bitrot
+
+https://sourceforge.net/p/snapraid/discussion/1677233/thread/7167759c/
+
+2018-04-03
+
+Fix all the files and the parity data.
+
+All the files and the parity data are compared with the snapshot state saved in the last "sync". If a difference is found, it's reverted to the stored snapshot.
+
+The "fix" command doesn't differentiate between errors and intentional modifications. It unconditionally reverts the file state at the last "sync".
+
+https://sourceforge.net/p/snapraid/discussion/1677233/thread/31bc9de8/
+
+Down in the thread:
+
+2013-12-15
+
+Beta works perfect! I've modified a byte in parity, scrub found 1 error and fix -e fixed it without problems.
+
 
 # Par2 maximum continuous (.tar) archive file size is 1 TB
 
