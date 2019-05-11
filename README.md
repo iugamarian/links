@@ -6,6 +6,12 @@ https://www.linuxuprising.com/2019/01/ubuntu-testing-chromium-snap-with-vaapi.ht
 
 https://askubuntu.com/questions/336302/gpu-accelerated-chromium
 
+https://wiki.archlinux.org/index.php/Chromium#Hardware_video_acceleration
+
+https://bbs.archlinux.org/viewtopic.php?id=244031
+
+https://askubuntu.com/questions/336302/gpu-accelerated-chromium
+
 
 # Better than FAT32 for TV's and Android: exFAT allows more than 4 GB for a file
 
