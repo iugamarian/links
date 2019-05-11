@@ -1,3 +1,8 @@
+# Old PC hardware accelerated decoding with capable video card in Chromium web browser
+
+https://www.pcsuggest.com/chromium-hardware-accelerated-video-decoding-linux/
+
+
 # Better than FAT32 for TV's and Android: exFAT allows more than 4 GB for a file
 
 https://appuals.com/how-to-format-a-drive-as-exfat-on-linux/
