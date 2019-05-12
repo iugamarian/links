@@ -1,3 +1,16 @@
+# p5ad2-e Premium fix sound
+
+sudo -s
+apt remove --purge pulseaudio
+
+/etc/modprobe.d/alsa-base.conf
+La sfarsit:
+options snd-hda-intel model=6stack-digout
+options snd-hda-intel power_save=0
+
+Restart.
+
+
 # Old PC hardware accelerated decoding with capable video card in Chromium web browser (needs tweaking)
 
 https://www.pcsuggest.com/chromium-hardware-accelerated-video-decoding-linux/
