@@ -22,7 +22,7 @@ fdisk /dev/sdb1
 
 o n ENTER ENTER ENTER t 83 w
 
-mkfs.btrfs -d raid1 -m raid1 /dev/sda1 /dev/sda2
+mkfs.btrfs -d raid1 -m raid1 /dev/sda1 /dev/sdb1
 
 -reboot and begin installing on the raid
 
