@@ -1,3 +1,47 @@
+# btrfs raid 1 for devices with some checksum errors
+
+https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices#Adding_new_devices
+
+https://wiki.archlinux.org/index.php/Btrfs#Preparation
+
+https://wiki.gentoo.org/wiki/Btrfs/System_Root_Guide
+
+-boot (netinst or cd or dvd) Debian GNU/Linux
+
+-Enter rescue mode drop to shell root
+
+-connect second device of similar size (not required to be exact size)
+
+-run this commands as root
+
+fdisk /dev/sda1
+
+o n ENTER ENTER ENTER t 83 w
+
+fdisk /dev/sdb1
+
+o n ENTER ENTER ENTER t 83 w
+
+mkfs.btrfs -d raid1 -m raid1 /dev/sda1 /dev/sda2
+
+-reboot and begin installing on the raid
+
+===========================================
+
+On already existing non raid install high risk of not working:
+
+btrfs device add -f /dev/sdb1 /
+
+btrfs balance start -dconvert=raid1 -mconvert=raid1 /
+
+ERROR: error during balancing '/': Input/output error
+There may be more info in syslog - try dmesg | tail
+
+BTRFS warning (device sda1): csum failed root
+
+===========================================
+
+
 # p5ad2-e Premium fix sound
 
 sudo -s
