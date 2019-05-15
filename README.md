@@ -54,6 +54,8 @@ apt install -y grub2
 
 grub-install /dev/sda
 
+update-grub
+
 sync
 
 exit
