@@ -6,6 +6,10 @@ https://wiki.archlinux.org/index.php/Btrfs#Preparation
 
 https://wiki.gentoo.org/wiki/Btrfs/System_Root_Guide
 
+https://askubuntu.com/questions/32418/is-there-an-easier-way-to-chroot-than-bind-mounting
+
+https://bartsimons.me/ubuntu-linux-chroot-guide/
+
 -boot (netinst or cd or dvd) Debian GNU/Linux
 
 -Enter rescue mode drop to shell root
@@ -25,6 +29,36 @@ o n ENTER ENTER ENTER t 83 w
 mkfs.btrfs -d raid1 -m raid1 /dev/sda1 /dev/sdb1
 
 -reboot and begin installing on the raid
+
+-grub installation will fail - select continue without boot loader
+
+-Debian boot - advanced - rescue mode
+
+-Open a shell in the installer enviroment
+
+cat /proc/partitions
+
+mount /dev/sda1 /mnt
+
+-if that has an error: mount /dev/sdb1 /mnt
+
+-if that has an error: mount /dev/sdc1 /mnt
+
+-if still error stop here - failed install
+
+for f in proc sys dev ; do mount --bind /$f /mnt/$f ; done
+
+chroot /mnt
+
+apt install -y grub2
+
+grub-install /dev/sda
+
+sync
+
+exit
+
+poweroff
 
 ===========================================
 
