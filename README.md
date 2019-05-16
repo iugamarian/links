@@ -56,6 +56,10 @@ grub-install /dev/sda
 
 update-grub
 
+nano /etc/fstab
+
+...   btrfs  defaults,noatime,autodefrag   ...
+
 sync
 
 exit
