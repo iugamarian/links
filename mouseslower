@@ -2,15 +2,6 @@
 sleep 1
 echo ""
 echo "   T U R N    W I R E L E S S    M O U S E    O N"
-echo ""
-echo "      5"
-echo ""
-sleep 1
-echo "      4"
-echo ""
-sleep 1
-echo "      3"
-echo ""
 sleep 1
 echo "      2"
 echo ""
@@ -21,6 +12,7 @@ sleep 1
 echo "   S L O W I N G    M O U S E   S P E E D"
 echo ""
 sleep 1
+xinput --list | grep 'Logitech USB-PS/2 Optical Mouse.*slave[[:space:]]\{1,2\}pointer' | grep -Po '\d+' | awk 'NR%2==1 {print "xinput --set-prop "$1" \"libinput Accel Speed\" -1"}' | while read line ; do eval $line ; done
 xinput --list | grep 'Barcode Reader.*slave[[:space:]]\{1,2\}pointer' | grep -Po '\d+' | awk 'NR%2==1 {print "xinput --set-prop "$1" \"libinput Accel Speed\" -1"}' | while read line ; do eval $line ; done
 xinput --list | grep 'Telink Wireless Receiver.*slave[[:space:]]\{1,2\}pointer' | grep -Po '\d+' | awk 'NR%2==1 {print "xinput --set-prop "$1" \"libinput Accel Speed\" -1"}' | while read line ; do eval $line ; done
 echo ""
