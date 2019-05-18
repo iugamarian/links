@@ -17,3 +17,199 @@ xinput --list | grep 'Barcode Reader.*slave[[:space:]]\{1,2\}pointer' | grep -Po
 xinput --list | grep 'Telink Wireless Receiver.*slave[[:space:]]\{1,2\}pointer' | grep -Po '\d+' | awk 'NR%2==1 {print "xinput --set-prop "$1" \"libinput Accel Speed\" -1"}' | while read line ; do eval $line ; done
 echo ""
 exit 0
+
+# https://stackoverflow.com/questions/18755967/how-to-make-a-program-that-finds-ids-of-xinput-devices-and-sets-xinput-some-set
+
+
+
+You can do something like the following.
+
+if [ "$SEARCH" = "" ]; then 
+    exit 1
+fi
+
+ids=$(xinput --list | awk -v search="$SEARCH" \
+    '$0 ~ search {match($0, /id=[0-9]+/);\
+                  if (RSTART) \
+                    print substr($0, RSTART+3, RLENGTH-3)\
+                 }'\
+     )
+
+for i in $ids
+do
+    xinput set-prop $i 'Device Accel Profile' -1
+    xinput set-prop $i 'Device Accel Constant Deceleration' 2.5
+    xinput set-prop $i 'Device Accel Velocity Scaling' 1.0
+done
+
+So with this you first find all the IDs which match the search pattern $SEARCH and store them in $ids. Then you loop over the IDs and execute the three xinput commands.
+
+You should make sure that $SEARCH does not match to much, since this could result in undesired behavior.
+shareimprove this answer
+answered Sep 12 '13 at 6:31
+Raphael Ahrens
+6941325
+
+add a comment
+7
+
+If the device name is always the same, in this case Logitech G700 Laser Mouse, you can search for matching device IDs by running
+
+xinput list --id-only 'Logitech G700 Laser Mouse'
+
+shareimprove this answer
+answered Apr 29 '18 at 17:40
+Vinson Chuong
+11913
+
+add a comment
+6
+
+My 2 cents for a Logitech Gaming Mouse G502
+
+#!/bin/sh
+
+
+for id in `xinput --list|grep 'Logitech Gaming Mouse G502'|perl -ne 'while (m/id=(\d+)/g){print "$1\n";}'`; do
+    # echo "setting device ID $id"
+    notify-send -t 50000  'Mouse fixed'
+    xinput set-prop $id "Device Accel Velocity Scaling" 1
+    xinput set-prop $id "Device Accel Constant Deceleration" 3
+done 
+
+shareimprove this answer
+answered Oct 1 '16 at 9:06
+nick fox
+405713
+add a comment
+3
+
+I did it like the Answer of Raphael Ahrens but used grep and sed instead of awk and The command is now something like my_script part_of_device_name part_of_property_name_(spaces with \space) value:
+
+#!/bin/sh
+
+DEVICE=$1
+PROP=$2
+VAL=$3
+
+DEFAULT="Default"
+
+if [ "$DEVICE" = "" ]; then 
+    exit 1
+fi
+
+if [ "$PROP" = "" ]; then 
+    exit 1
+fi
+
+if [ "$VAL" = "" ]; then 
+    exit 1
+fi
+
+devlist=$(xinput --list | grep "$DEVICE" | sed -n 's/.*id=\([0-9]\+\).*/\1/p')
+
+for dev in $devlist
+do
+    props=$(xinput list-props $dev | grep "$PROP" | grep -v $DEFAULT | sed -n 's/.*(\([0-9]\+\)).*/\1/p')
+
+    for prop in $props
+    do
+        echo $prop
+        xinput set-prop $dev $prop $VAL 
+    done 
+done
+
+shareimprove this answer
+edited Oct 3 '17 at 18:12
+rofrol
+8,07534649
+answered Nov 23 '16 at 17:55
+Schoenix
+1013
+add a comment
+1
+
+Currently I am working on a script for a question over at askubuntu.com , which requires something similar, and I thought I'd share the simple python script that does pretty much what this question asks - find device ids and set properties:
+The Script
+
+from __future__ import print_function
+import subprocess
+import sys
+
+def run_cmd(cmdlist):
+    """ Reusable function for running shell commands"""
+    try:
+        stdout = subprocess.check_output(cmdlist)
+    except subprocess.CalledProcessError as pserror:
+        sys.exit(1)
+    else:
+        if stdout:
+            return stdout.decode().strip()
+
+def list_ids(mouse_name):
+    """ Returns list of ids for the same device"""
+    while True:
+        mouse_ids = []
+        for dev_id in run_cmd(['xinput','list','--id-only']).split('\n'):
+            if mouse_name in run_cmd(['xinput','list','--name-only',dev_id]):
+                mouse_ids.append(dev_id)
+        if mouse_ids:
+           break
+    return mouse_ids
+
+"""dictionary of propery-value pairs"""
+props = { 'Device Accel Profile':'-1',
+          'Device Accel Constant Deceleration':'2.5',
+          'Device Accel Velocity Scaling':'1.0'   }
+
+""" set all property-value pair per each device id
+    Uncomment the print function if you wish to know
+    which ids have been altered for double-checking
+    with xinput list-props"""
+for dev_id in list_ids(sys.argv[1]):
+    # print(dev_id)
+    for prop,value in props.items():
+        run_cmd(['xinput','set-prop',dev_id,prop,value]) 
+
+Usage
+
+Provide quoted name of the mouse as first command line argument:
+
+python set_xinput_props.py 'Logitech G700 Laser Mouse'
+
+If everything is OK, script exits silently, with exit status of 0 , or 1 if any xinput command failed. You can uncomment print statement to show which ids are being configured (to later double check with xinput that values are set alright)
+How it works:
+
+Essentially, list_ids function lists all device ids , finds those devices that have the same name as user's mouse name and returns a list of those ids. Next we simply loop over each one of them, and of each one we set all the property-value pairs that are defined in props dictionary. Could be done with list of tuples as well, but dictionary is my choice here.
+shareimprove this answer
+answered Aug 6 '16 at 5:09
+Sergiy Kolodyazhnyy
+517426
+add a comment
+1
+
+For the fun of it, same answer, but simpler way to parse and get ids:
+
+for id in $(xinput list | grep 'Logitech USB Receiver' |  grep pointer | cut -d '=' -f 2 | cut -f 1); do xinput --set-button-map $id 3 2 1; done
+
+Took me a while to figure out this can get the ids:
+
+xinput | cut -d '=' -f 2 | cut -f 1
+
+# https://askubuntu.com/questions/332798/changing-mouse-acceleration-and-speed-xinput
+
+First, use xinput --list --short and write down your mouse ID. Mine is (8). Save it.
+
+Next, in the terminal, type:
+
+xinput --list-props yourMouseId
+
+Press enter and find the Device Accel Constant Deceleration #. Mine is (270). Write it down, behind your mouses ID.
+
+Now, in the terminal, type:
+
+xinput --set-prop 8 270 7
+
+If this is too slow, retype the command but lower the last #. Try 6 or 5 or 4 and down till you got the speed you like.
+
+One last thing: If your mouse is too slow, try going into the settings of mouse and touchpad and use the speed slider there to your liking.
