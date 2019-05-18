@@ -84,16 +84,21 @@ BTRFS warning (device sda1): csum failed root
 
 # p5ad2-e Premium fix sound
 
-sudo -s
-apt remove --purge pulseaudio
+su -s
 
-/etc/modprobe.d/alsa-base.conf
+nano /etc/modprobe.d/alsa-base.conf
+
 La sfarsit:
+
 options snd-hda-intel model=6stack-digout
+
 options snd-hda-intel power_save=0
 
 Restart.
 
+If still not working, try:
+
+apt remove --purge pulseaudio
 
 # Old PC hardware accelerated decoding with capable video card in Chromium web browser (needs tweaking)
 
