@@ -1,3 +1,10 @@
+# android block phones
+
+https://www.androidauthority.com/how-to-block-a-phone-number-246484/
+
+http://andauth.co/fdmcms
+
+
 # btrfs raid 1 for devices with some checksum errors
 
 https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices#Adding_new_devices
