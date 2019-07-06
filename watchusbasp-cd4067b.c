@@ -95,25 +95,25 @@
 
 
 
- Microcontroller Pins:
+//  Microcontroller Pins:
 
-// - 4 pins connected to both CD4067B inputs for selection of channel 0 - 15
-// - 1 pin for resetting all flip flops by cycling their VCC - all LED's off
-// - 1 pin for channel state of left field CD4067B
-// - 1 pin for channel state of right field CD4067B
-// - 1 pin for potentiometer 8 bit field value change 0 to 255 - 
-//         0 -  35 = 36 steps = fast decrease
-//        36 -  71 = 36 steps = normal decrease
-//        72 - 107 = 36 steps = slow decrease
-//       108 - 147 = 40 steps = keep constant
-//       148 - 183 = 36 steps = slow increase
-//       184 - 219 = 36 steps = normal increase
-//       220 - 255 = 36 steps = fast increase
+//  - 4 pins connected to both CD4067B inputs for selection of channel 0 - 15
+//  - 1 pin for resetting all flip flops by cycling their VCC - all LED's off
+//  - 1 pin for channel state of left field CD4067B
+//  - 1 pin for channel state of right field CD4067B
+//  - 1 pin for potentiometer 8 bit field value change 0 to 255 - 
+//          0 -  35 = 36 steps = fast decrease
+//         36 -  71 = 36 steps = normal decrease
+//         72 - 107 = 36 steps = slow decrease
+//        108 - 147 = 40 steps = keep constant
+//        148 - 183 = 36 steps = slow increase
+//        184 - 219 = 36 steps = normal increase
+//        220 - 255 = 36 steps = fast increase
 //  - 1 pin for multifunctional button
-//        - one short press = date mode for 10 seconds, another short press within two seconds = year mode for 10 seconds
-//        - another short press in yeart mode = back to time mode
-//        - one long press in time / date / year mode = select left field to change, another long press select right field to change,
-//        - another long press = back to left field to change
-//        - short press in select mode = cancel select mode, show current date / year for another 10 seconds if that was the last mode
+//        - one short press = date mode for 10 seconds, another short press within this time = year mode for 10 seconds
+//        - another short press within year mode time = back to time mode
+//        - one long press in time / date / year mode = select left field to change, another long press select right field to change
+//        - another long press in select mode = back to left field to change
+//        - short press in select mode = cancel select mode, back to showing current date / year mode for another 10 seconds
 
 // To be continued...
