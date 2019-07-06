@@ -21,7 +21,11 @@
 //  - two 1N4007 diodes
 //
 //
-//  Schematic for controlling one LED segment with one CD4067 OUT channel:
+//  For all 32 LED's at 5V, total circuit current consumption is below 400 mA.
+//  Only the LED's all ON current consumption is about 160 mA
+//  Each LED that is ON receives about 5 mA, and the light looks just about right.
+//
+//  Schematic for controlling one LED segment with one OUT channel of CD4067B:
 //
 //
 //       VCC-RESET >-----------+------------------------------------------------------------------+
