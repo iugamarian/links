@@ -296,7 +296,43 @@
 //                                   ==================================================================================
 //                                       BC640 and 47 nF capacitors and GND
 //                                   ==================================================================================
-//                                   
+//
+//
+//
+// PCB layout for 16 LED's on a 30 x 48 holes breadboard
+//
+//        ..r.r.r.r.AVCCr.r.r.r.AVCCr.r.r.r.AVCCr.r.r.r..    <---  560 ohm resistors
+//        .t.t.t.t......t.t.t.t.....t.t.t.t......t.t.t.t.
+//        .t.t.t.t......t.t.t.t.....t.t.t.t......t.t.t.t.    <---  BC640
+//        .t.t.t.t......t.t.t.t.....t.t.t.t......t.t.t.t.
+//        .4.3.1.2......7.8.6.5.....5.6.8.7......2.1.3.4.
+//        ..444444445555555555.......555555555544444444..
+//        ..433333345666666665.......566666666543333334..
+//        ..432222345677777765.......567777776543222234..
+//        A.4321uuuuuuuuuu8765.....D.5678uuuuuuuuuu1234.A
+//        V.4321>>uuuuuuuu8765.....V.5678uuuuuuuu<<1234.V    <---  ULN2803A
+//        C.4321>>uuuuuuuu8765.....C.5678uuuuuuuu<<1234.C
+//        C.4321uuuuuuuuuu8765X....C.5678uuuuuuuuuu1234.C
+//        r.4321ttt..ttte.8765XcccccD5678eettt..ttt1234..
+//        r.4321ttt..ttte.8765occccco5678.ettt..ttt1234.r
+//        r.4321ttt..ttte.8765occccco5678.ettt..ttt1234.r
+//        r.4321ttt..ttte.8765occccco5678.ettt..ttt1234.r    <---  CD4067B and 4.7 Kohm resistors
+//        r.4321ttt..ttte.8765occccco5678.ettt..ttt1234.r
+//        r.4321ttt..ttte.8765occccco5678.ettt..ttt1234.r
+//        r.4321ttt..ttte.8765occccco5678.ettt..ttt1234.r
+//        r.4321ttt..tttee8765occccco5678.ettt..ttt1234.r
+//        A.4321uuuuuuuuuu8765occccco5678uuuuuuuuuu1234.A
+//        V.4321>>uuuuuuuu8765icccccG5678uuuuuuuu<<1234.V    <---  ULN2803A
+//        C.4321>>uuuuuuuu8765iccccci5678uuuuuuuu<<1234.C
+//        C.4321uuuuuuuuuu8765Gccccci5678uuuuuuuuuu1234.C
+//        ..432222345677777765G......567777776543222234..
+//        ..433333345666666665N......566666666543333334..
+//        ..444444445555555555D......555555555544444444..
+//        .4.3.1.2......7.8.6.5.....5.6.8.7......2.1.3.4.
+//        .c.c.c.c......c.c.c.c.....c.c.c.c......c.c.c.c.    <--- 47 nF capacitors
+//        .........GND..........GND..........GND.........
+//
+//
 //
 //  Microcontroller Pins:
 //
