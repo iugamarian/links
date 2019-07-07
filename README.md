@@ -1,3 +1,16 @@
+# Debian experimental for select packages
+
+https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1111742-debian-11-bullseye-cycle-prepares-to-begin-long-journey/page2
+
+Just to be clear though, experimental isn't a complete distribution. It's just an extra repository where maintainers can upload the latest stuff without immediately pushing it into unstable. It's meant for users of unstable who wants to pull in the latest of only some specific package. Recently I've used it for getting the latest mesa while Debian has been frozen these last few months, and it's great to have such a simple way to do that. Just don't try going into your apt sources list and change unstable to experimental. That won't work because experimental isn't an entire distribution in itself the way unstable and stable is. The way you do it is you have both unstable and experimental in your sources list, and whenever you want to install an experimental package you append '-t experimental' to apt, otherwise experimental packages will be ignored.
+
+Example if I want latest gnome-shell and mutter and already have added the repo to my sources
+Code:
+
+sudo apt -t experimental install gnome-shell mutter
+
+That way, nothing but gnome-shell and mutter will be from experimental. Everything else in my distribution will still be from unstable. 
+
 # android block phones
 
 https://www.androidauthority.com/how-to-block-a-phone-number-246484/
