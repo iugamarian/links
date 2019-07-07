@@ -5,19 +5,19 @@
 #include <util/delay.h>
 // #include <stdio.h>		// provides sprintf() which displays number on LCD	// not required here
 // #include "lcdcontrolusbasp.h"							// not required here
-
+//
 //  You can make a 7 LED segment watch that has 4 digits with this components:
-//  - four 7 segments and 1 point LED display,
+//  - four 7 segments and 1 point LED display, in my case they have a forward voltage of 3,84V so adapting for that
 //  - two CD4067B one for left field and one for right field
 //  - four flip-flop LED driving gates made with eight ULN2803A which have 2.7 Kohm input resistors inside them
-//  - one 1.5A PNP transistor
-//  - one 1.5A NPN transistor
+//  - 32 cheap 500mA pnp transistors - BC640 for PARTICULAR LED RESET
+//  - one 1.5 A NPN transistor BD139 for COMMON LED RESET
 //  - one 1 uF capacitor
-//  - three 10 Kohm resistors
+//  - one 100 Kohm resistors for the aditional BC640 base pull up
 //  - 32 560 ohm resistors
-//  - 32 4.7 Kohm resistors
+//  - 74 4.7 Kohm resistors - 64 for all circuits, 6 for pulling up CD4067B inputs, 4 for COMMON LED RESET
 //  - 32 47 nF capacitors
-//  - 32 1N4148 diodes
+//  - 34 1N4148 diodes - two for COMMON LED RESET
 //  - two 1N4007 diodes
 //
 //
@@ -25,47 +25,79 @@
 //  Only the LED's all ON current consumption is about 160 mA
 //  Each LED that is ON receives about 5 mA, and the light looks just about right.
 //
+//  LTSPICE IV simulation is in this repository as watchcd.asc
+//
 //  Schematic for controlling one LED segment with one OUT channel of CD4067B:
 //
 //
-//       VCC-RESET >-----------+------------------------------------------------------------------+
-//                             |                                                                  |
-//       Connected to a        |                                                                  |
-//       switch to VCC         |                                                                  |
-//       controlled by the     []                                                                 []
-//       microcontroller       [] R1 = 560 ohm                                                    [] R2 = 4.7 Kohm
-//       (1.5A PNP - NPN       []                                                                 []
-//       transistor pair and   |                                                                  |
-//       10 Kohm resistors)    |                                                                  |
-//                             |                                                                  |
-//             +---------------0-----------------------------+      +-----------------------------+
-//             |               |                              \    /                              |
-//             |               |                               \  /                               |
-//             |               | STARTUP LATCH ON               \/              STARTUP LATCH OFF |
-//             |             +-+----------+                     /\                     +----------+-+
-//             |             | C          |                    /  \                    |          C |
-//          +--+--+          |            |                   /    \                   |            |
-//           \   /  LED      |   ULN    B +------------------0      0------------------+ B    ULN   |
-//            \ / segment    |  2803A     |                  |      |                  |     2803A  |
-//          ---V---          |            |                  |      |                  |            |
-//             | common      | common E   |                  |      |                  |   common E |
-//             | cathode     +----+-------+                  |      |                  +-------+----+
-//             |                  |                          |      |                          |
-//             |                  |                          |      |                          |
-//             |                  |        +-----------------+      +-----------+              |
-//             |                  |        |                                    |              |
-//             |                  |        |                                    |              +--------------------+
+//     ANALOG VCC   >----------+-------------------------------------------------------------------+
+//     it can be               |                                                                   |
+//     higher than the         |                                                                   |
+//     5V DIGITAL VCC          |                                                                   |
+//     up to 9V                []                                                                  []
+//                             [] R1 = 560 ohm                                                     [] R2 = 4.7 Kohm
+//                             []                                                                  []
+//                             |                                                                   |
+//                             |                                                                   |
+//                             |                                                                   |
+//             +---------------0---------------------+      +--------------------------------------+
+//             |               |                      \    /                                       |
+//             |               |                       \  /                                        |
+//             |               | STARTUP LATCH ON       \/                       STARTUP LATCH OFF |
+//             |             +-+----------+             /\                              +----------+-+
+//             |             | C          |            /  \                             |          C |
+//          +--+--+          |            |           /    \                            |            |
+//           \   /  LED      |   ULN    B +----------0      0---------------------+-----+ B    ULN   |
+//            \ / segment    |  2803A     |          |      |                     |     |     2803A  |
+//          ---V---          |            |          |      |                     |     |            |
+//             | common      | common E   |          |      |                     |     |   common E |
+//             | cathode     +----+-------+          |      |                     |     +-------+----+
+//             |                  |                  |      |                     |             |
+//             |                  |                  |      |                     |             |
+//             |                  |                  |      |                 |  /              |
+//             |                  |                  |      |                 | V/   T1         |
+//             |                  |                  |      |       +---------+K    BC640       |
+//             |                  |                  |      |       |         | \               |
+//             |                  |                  |      |       |         |  \              |
+//             |                  |                  |      |       |             |             |
+//             |                  |                  |      |       |             |             |
+//             |                  |                  |      |       |          ---+---          |
+//             |                  |                  |      |       |             GND           |
+//             |                  |                  |      |       |                           |
+//             |                  |                  |      |       []                          |
+//             |                  |                  |      |       []  R3 = 4.7 Kohm           |
+//             |                  |                  |      |       []                          |
+//             |                  |                  |      |       |                           |
+//             |                  |                  |      |       |                           |
+//             |                  |                  |      |       |                           |
+//             |                  |                  |      |      / \                          |
+//             |                  |                  |      |     PARTICULAR LED RESET          |
+//             |                  |                  |      |     Because 4.7 Kohm / 32 =       |
+//             |                  |                  |      |     = 146.875 ohm this signal     |
+//             |                  |                  |      |     needs to be pulled LOW by     |
+//             |                  |                  |      |     a NPN transistor, a common    |
+//             |                  |                  |      |     circuit shown down under      |
+//             |                  |                  |      |     this schematic               |
+//             |                  |                  |      |                                   |
+//             |                  |                  |      |                                   |
+//             |                  |        +---------+      +-------------------+               |
+//             |                  |        |                                    |               |
+//             |                  |        |                                    |               |
+//             |                  |        |                                    |               |
+//             |                  |        |                                    |               +-------------------+
 //             |                  |     +--+--+                                 |                                   |
 //             |                  |      \   /                             -----+-----                              |
 //             |                  |       \ /   D1 = 1N4148                -----+-----                              |
 //             |                  |     ---V---                                 |  C1 = 47 nF                       |
 //             |                  |        |                                    |                                   |
+//             |                  |        |                                    |                                   |
+//             |                  |        |                                    |                                   |
 //             |                  |        |                                    |   Prevents STARTUP LATCH OFF      |
 //             |                  |       / \                                   |   from turning ON at startup      |
 //             |                  |   Whenever this is pulled to low, the       |   by delaying it's UBE rise       |
 //             |                  |   LED is latched ON and turning it OFF      |   and so STARTUP LATCH ON has     |
-//             |                  |   requires that VCC-RESET is turned         |   more time to turn ON for sure   |
-//             |                  |   OFF for a short time then ON again.       |   and LED is shorted and is OFF   |
+//             |                  |   requires that RESET is pulled LOW         |   more time to turn ON for sure   |
+//             |                  |   for a short time then HIGH again.         |   and LED is shorted and is OFF   |
 //             |                  |   Connected to a CD4067B OUT channel.       |   awaiting to be latched ON.      |
 //             |                  |                                             |                                   |
 //             |                  |                                             |                                   |
@@ -79,9 +111,9 @@
 //                                                     |                      |   emmitors of the ULN2803A need to be
 //                                                     |                      |   at a voltage of about 1.4 V because
 //                                                  +--+--+                   |   a CD4067B has a low logic level of
-//                                                   \   /                    |   0.8 V also the VCC-RESET's turn OFF
-//                                                    \ /   D2 = 1N4007       |   unlatch efectiveness is increased.
-//                                                  ---V---                   |
+//                                                   \   /                    |   0.8 V also COMMON LED RESET has 1.4V
+//                                                    \ /   D2 = 1N4007       |   when pulling low. As long as the LED
+//                                                  ---V---                   |   is shorted at below 3.84V it's fine.
 //                                                     |                      |
 //                                                     |                 -----+-----
 //                                                     |                 -----+-----
@@ -96,11 +128,78 @@
 //                                                     |                      |
 //                                                  ---+---                ---+---
 //                                                    GND                    GND
-
-
-
+//
+//
+// Schematic for COMMON LED RESET circuit:
+//
+//
+//        ANALOG VCC   >--------------------------------+
+//                                                      |
+//                                                      |
+//                                                      |
+//                                                      |
+//                                                      []
+//                                                      [] R1 = 4.7 Kohm
+//                                                      []
+//                                                      |
+//                      DIGITAL                         |
+//                        VCC                           |
+//                                                      |
+//                        \ /                           +----------------<   PARTICULAR RED RESET
+//    COMMON               |                            |
+//   LED RESET             |                            |
+//                         |                            |
+//      \ /                |                            |
+//       |      +----------+                            |
+//       |      |                                   |  /
+//       |      |                                   | /    T1
+//       |      |                  +----------------+K    BD139
+//       |      |                  |                | \
+//       |      []                 |                |  V
+//       |      [] R2 = 4.7 Kohm   |                    |
+//       |      []                 |                    |
+//       |      |                  |                    |
+//       |      |                  |                    |
+//       |      |                  |                    |
+//       |      |                  |                    |
+//       +------+                  |                    |
+//              |                  |                    |
+//              |                  |                    |
+//              |                  |                    |
+//              |                  |                    |
+//           +--+--+               |                    |
+//            \   /    D1          |                    |
+//             \ /   14148         |                    |
+//           ---+---               []                   |
+//              |                  [] R3 = 4.7 Kohm     |
+//              |                  []                   |
+//           +--+--+               |                    |
+//            \   /    D2          |                    |
+//             \ /   14148         |                    |
+//           ---+---               |                    |
+//              |                  |                    |
+//              |                  |                    |
+//              |                  |                    |
+//              |                  |                    |
+//              +------------------+                    |
+//                                 |                    |
+//                                 |                    |
+//                                 |                    |
+//                                 |                    |
+//                                 []                   |
+//                                 [] R4 = 4.7 Kohm     |
+//                                 []                   |
+//                                 |                    |
+//                                 |                    |
+//                                 |                    |
+//                                 |                    |
+//                              ---+---              ---+---
+//                                GND                  GND
+//
+//
+//
 //  Microcontroller Pins:
-
+//
 //  - 4 pins connected to both CD4067B inputs for selection of channel 0 - 15
 //  - 1 pin for resetting all flip flops by cycling their VCC - all LED's off
 //  - 1 pin for channel state of left field CD4067B
@@ -119,5 +218,5 @@
 //        - one long press in time / date / year mode = select left field to change, another long press select right field to change
 //        - another long press in select mode = back to left field to change
 //        - short press in select mode = cancel select mode, back to showing current date / year mode for another 10 seconds
-
+//
 // To be continued...
