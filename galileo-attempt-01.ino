@@ -453,7 +453,7 @@ unsigned int selectionpiece = 0; // 0 to 64, a quarter of adc_value, selected wi
 unsigned int oldselectionpiece = 0; // 0 to 64, a quarter of adc_value, selected with some kind of feedback, older value
 char lcdint [3];                            // only 2 characters + not specified null to use integer to int, for lcd
   sectionofalarm = 0;
-  Timer1.initialize(1000000); // set a timer of length 1000000 microseconds (or 1 sec - or 1Hz)
+  Timer1.initialize(100000); // set a timer of length 100000 microseconds (or 1 sec - or 1Hz)
   Timer1.attachInterrupt( timerIsr ); // attach the service routine here
 }
 
