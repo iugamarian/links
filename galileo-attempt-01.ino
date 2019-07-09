@@ -1,0 +1,757 @@
+#define F_CPU 12000000UL
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <stdio.h>    // sprintf()
+//#include <stdlib.h> // itoa()
+//#include <math.h>   // sin cos tg ctg
+#include "lcdcontrolusbasp.h"
+
+// (F)recuency of (note) (normal / plus a semitone) (scale A B C D E F)
+// https://en.wikipedia.org/wiki/Scale_(music)
+// https://en.wikipedia.org/wiki/Musical_note
+//  # note = plus a semitone
+//  b note = minus a semitone
+// C MAJOR SCALE = SCALE C HERE = STARTS FROM ONE LINE UNDER THE SCORE AND ENDS AT MIDDLE OF SCORE
+// C MAJOR SCALE HAS IN THE MIDDLE OF IT THE SOL KEY START POINT AT THE SOL NOTE, ON LINE 2
+// THE NEXT DO FOR D SCALE IS BETWEEN LINE 3 AND LINE 4
+//
+// ASCII ART REPRESENTATION OF SCALES C AND D HERE WITH THEIR NOTES:
+//
+//                                      FSIND
+//                                  ---FLAND---
+//                                 FSOLND
+//----------------------------------------------------------FFAND------------------
+//                             FMIND            SCALE D AREA (OPTIMUM FOR BUZZER)
+//------------------------------------------------FREND----------------------------
+//                       FDOND
+//--------------------------------------FSINC--------------------------------------
+//                   FLANC
+//--SOL-KEY-START------------FSOLNC------------------------------------------------
+//            FFANC                           SCALE C AREA (OPTIMUM FOR SPEAKER)
+//-----------------FMINC-----------------------------------------------------------
+//        FRENC
+//    ---FDONC---
+
+#define FDONA 131
+#define FDOSA 139
+#define FRENA 147
+#define FRESA 156
+#define FMINA 165
+#define FFANA 175
+#define FFASA 185
+#define FSOLNA  196
+#define FSOLSA  208
+#define FLANA 220
+#define FLASA 233
+#define FSINA 247
+#define FDONB 262
+#define FDOSB 277
+#define FRENB 294
+#define FRESB 311
+#define FMINB 330
+#define FFANB 349
+#define FFASB 370
+#define FSOLNB  392
+#define FSOLSB  415
+#define FLANB 440
+#define FLASB 466
+#define FSINB 494
+#define FDONC 523
+#define FDOSC 554
+#define FRENC 587
+#define FRESC 622
+#define FMINC 659
+#define FFANC 698
+#define FFASC 740
+#define FSOLNC  784
+#define FSOLSC  831
+#define FLANC 880
+#define FLASC 932
+#define FSINC 988
+#define FDOND 1047
+#define FDOSD 1109
+#define FREND 1175
+#define FRESD 1245
+#define FMIND 1319
+#define FFAND 1397
+#define FFASD 1480
+#define FSOLND  1568
+#define FSOLSD  1661
+#define FLAND 1760
+#define FLASD 1865
+#define FSIND 1976
+#define FDONE 2093
+#define FDOSE 2217
+#define FRENE 2349
+#define FRESE 2489
+#define FMINE 2637
+#define FFANE 2794
+#define FFASE 2960
+#define FSOLNE  3136
+#define FSOLSE  3322
+#define FLANE 3520
+#define FLASE 3729
+#define FSINE 3951
+#define FDONF 4186
+#define FDOSF 4435
+#define FRENF 4699
+#define FRESF 4978
+#define FMINF 5274
+#define FFANF 5588
+#define FFASF 5920
+#define FSOLNF  6272
+#define FSOLSF  6645
+#define FLANF 7040
+#define FLASF 7459
+#define FSINF 7902
+
+
+
+// using static volatile keeps in RAM, not in registers, survives interrupts but is slower, good for one second operations and selections
+/*Global Variables Declarations*/
+
+
+
+int main(void) {
+
+  _delay_ms(50); // time to make sure microcontroller power is stabilised (increased to 5V)
+  setup();
+  gotolcdlocation(1,1);
+  lcdputs("                ");
+  gotolcdlocation(1,2);
+
+  lcdputs("                ");
+  _delay_ms(10);
+
+  TCCR1B |= (1<<WGM12); // clear timer on compare (when OCR1A is reached, automatically go to 0)
+
+//  Also check #define F_CPU clocks
+//  OCR1A = 15625; // 1 second on 16mhz with prescaler 1024 =>  TCCR1B |= (1<<CS12) | (1<<CS10);
+  OCR1A = 46875; // 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
+
+  TIMSK |= (1<<OCIE1A); // when OCR1A is reached, go to ISR(TIMER1_COMPA_vect) interrupt
+
+
+  GICR &= ~(1 << INT0); // usbasp has a usb data pin on interrupt, don't want interrupt on button low
+  sei(); // activate interrupts so (TIMER1_COMPA_vect) is available
+  GICR &= ~(1 << INT0); // SEI ENABLES IT I THINK
+  // And now that interrupt INT0 is disabled, setting as ignored input with pull up so that button PB1 helped
+  DDRD &= ~ (1 << 2);
+  PORTD |= (1 << 2);
+
+// protect the real button that does not work because of resistor in main()
+  DDRB &= ~ (1<<1); // input
+  PORTB &= ~ (1<<1); // no pull up
+
+//  TCCR1B |= (1<<CS12) | (1<<CS10); // setting prescaler also starts the counting of the timer, for 16MHz
+  TCCR1B |= (1<<CS12);      // setting prescaler also starts the counting of the timer, for 12Mhz
+
+//  Avoid using REGISTER = (1<<BIT); that makes previous settings zero (like WGM12 for example)
+//  better always use for 1: REGISTER |= (1<<BIT);
+//  better always use for 0: REGISTER &= ~ (1<<BIT);
+
+// do, re, mi, fa, sol, la, si, do, do, si, la, sol, fa, mi, re, do
+
+  adc_value = 0; 
+  ADCSRA |= (1<<ADSC); //Forever since it is in single conversion mode
+  // Start conversion for the first time
+  while(1)
+      {
+
+      LCD_update_time();
+      LCD_update_timesel(); 
+
+      if (!(ADCSRA & (1<<ADSC))) // detect that ADSC is 0 and then do what is in the accolades
+      {
+        // wait until conversion completes; ADSC=0 means Complete
+        adc_value = ADCH;
+        //Store ADC result
+        ADCSRA |= (1<<ADSC); //Forever since it is in single conversion mode
+        // Start conversion in loop
+      }
+    findouttimeminutessel();
+  if((alarmbeginsection == 1) && (noteofalarm < 5))
+    {
+      alarmmusic(); // lasts 0.75/4 seconds, one note, done like this for more responsive selection
+    }
+    _delay_ms(50);
+
+  } // acolada de la while(1)
+
+  return 0;
+}
+
+void setup() {
+// Initialise LCD
+lcdini();
+
+// ENABLE PORTS
+
+  // Variable to hold ADC result
+  ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);
+  // Set ADCSRA Register with division factor 128
+  ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX1);
+
+//((1<<pin)|(1<<pin)|(1<<pin));
+
+  DDRB |= (1<<0); // BUZZER
+  PORTB &= ~ (1<<0);
+  DDRC |= (1<<0); //LED1
+  PORTC &= ~ (1<<0);
+
+  sectionofalarm = 0;
+}
+
+
+void LCD_update_time() {
+  gotolcdlocation(1,1);
+  lcdputs("  "); // empty selected field
+  sprintf(lcdint, "%02d", hours);
+  lcdputs(lcdint);
+  lcdputs(" : ");
+  sprintf(lcdint, "%02d", minutes);
+  lcdputs(lcdint);
+  lcdputs(" : ");
+  sprintf(lcdint, "%02d", seconds);
+  lcdputs(lcdint);
+  lcdputs("  "); // sometimes errors appear at the end
+}
+
+void LCD_update_timesel() {
+  gotolcdlocation(1,2);
+  lcdputs("  "); // empty selected field
+  sprintf(lcdint, "%02d", hourssel);
+  lcdputs(lcdint);
+  lcdputs(" : ");
+  sprintf(lcdint, "%02d", minutessel);
+  lcdputs(lcdint);
+  lcdputs(" : ");
+  sprintf(lcdint, "%02d", secondssel);
+  lcdputs(lcdint);
+  lcdputs("  "); // sometimes errors appear at the end
+}
+
+void var_delay_us(uint16_t usvar) // allow delays without constant, for buzzer
+{
+  // =1/7902/5 resolution 5 times bigger than highest frequency 7902 => 0.00002531005 s ~= 25 us + 1 clock calcul usvar--
+  // not smaller than 10 us because UC instruction times interference will make the time unit incorrect
+  while (usvar-- != 0)
+    _delay_us(25);  
+}
+
+void makesnd(uint16_t frequency, uint8_t duration)  // duration represented as 16 for one second, linear
+{
+//    frequency=frequency/2;  // this is int, all fractions are lost
+    uint16_t sinusoidrepetition = 0;  // number of sinusoids
+    uint16_t sinusoidtime = 0;      // length of time for a sinusoid
+//    tempo is usually 120 beats per minute - half a second, number written down 2/2=half second 4/4=quarter second
+//    https://en.wikipedia.org/wiki/Tempo
+    uint8_t tempo = 2; // the bigger, the shorter the note at the same frequency (parts of a second)
+    sinusoidrepetition = duration*frequency/tempo/16;
+    sinusoidtime=1000000/25/frequency;  // 25 us is the var_delay_us time unit, 1000000 us is one second
+    sinusoidtime=sinusoidtime/2; // one pulse is composed of an up and a down, time used is half
+    sinusoidrepetition = ( (uint16_t) round(sinusoidrepetition * 14/11) );  // fine tune for almost 250 ms repetition
+      while(sinusoidrepetition){
+      var_delay_us(sinusoidtime); // buzzer frequency
+      PORTB |= (1<<0);
+      var_delay_us(sinusoidtime); // buzzer frequency
+      PORTB &=~ (1<<0);
+        sinusoidrepetition--;
+    }
+//    _delay_ms(25);
+}
+
+void alarmmusic() {
+  if (sectionofalarm == 1)
+      {
+      if(noteofalarm == 1) makesnd(FDOND,4);
+      if(noteofalarm == 2) makesnd(FREND,4);
+      if(noteofalarm == 3) makesnd(FMIND,4);
+      if(noteofalarm == 4) makesnd(FFAND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+      }
+
+    else if (sectionofalarm == 2)
+      {
+      if(noteofalarm == 1) makesnd(FSOLND,4);
+      if(noteofalarm == 2) makesnd(FLAND,4);
+      if(noteofalarm == 3) makesnd(FSIND,4);
+      if(noteofalarm == 4) makesnd(FDONE,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+      }
+    else if (sectionofalarm == 3)
+      {
+      if(noteofalarm == 1) makesnd(FDONE,4);
+      if(noteofalarm == 2) makesnd(FSIND,4);
+      if(noteofalarm == 3) makesnd(FLAND,4);
+      if(noteofalarm == 4) makesnd(FSOLND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+      }
+    else
+      {
+      if(noteofalarm == 1) makesnd(FFAND,4);
+      if(noteofalarm == 2) makesnd(FMIND,4);
+      if(noteofalarm == 3) makesnd(FREND,4);
+      if(noteofalarm == 4) makesnd(FDOND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+      }
+  noteofalarm++;
+}
+
+void findouttimeminutessel() {
+// http://www.robotplatform.com/howto/blinker/blinker_6.html
+// http://www.avrfreaks.net/forum/tut-c-bit-manipulation-aka-programming-101?page=all
+// http://efundies.com/avr-bitwise-operations-in-c/
+// https://download.mikroe.com/documents/compilers/mikroc/pic/help/logical_operators.htm
+
+// Hack to see if last three bits of adc value are 1 to 8  or bitwise 001 to 111,
+// required for some kind of feedback from 1 to 6 like this:
+// 0 [1 2 3 4 5 6] 7 8 [9 10 11 12 13 14] 15 16 [17 18 19...
+// So we need bitwise: 000 [001 010 011 100 101 110] 111 that means:
+// not ( (bit3=0 and bit2=0 and bit1=0) or (bit3=1 and bit2=1 and bit1=1) )
+if( !( ( (!(adc_value &(1<<0))) && (!(adc_value &(1<<1))) && (!(adc_value &(1<<2))) ) || ( (adc_value &(1<<0)) && (adc_value &(1<<1)) && (adc_value &(1<<2)) ) ) || (notjuststarted==0) )
+  // if first three bits of adc_value are not 000 or 111
+  {
+  // when adc was mooved with feedback reset counter so that time is measured after not mooving it
+  selectionpiece=(adc_value>>3); // ignore first three bits, this divides up to 256 by eight resulting in up to 32
+  if(notjuststarted==0) oldselectionpiece=selectionpiece+1;
+  if(selectionpiece!=oldselectionpiece) // http://www.cprogramming.com/tutorial/c/lesson2.html
+    {
+    oldselectionpiece=selectionpiece; // make old one equal first of all so that we don't reset time on every pass
+    notjuststarted=1; // no problem if repeated, it only happens when mooving adc
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    makesnd(FDOND,1); // aknowledge with short sound that there is a new selection
+    // http://www.avrfreaks.net/forum/if-if-if-vs-if-else-if-else-if
+    // The objective is to be able to select from few ranges, each range having it's own resolution.
+    // The more time is selected the less the resolution can be, use some common sense about time to make ranges.
+    // The program is made to allow 32 selections made by reading a 8 bit ADC value and dividing it
+    // by eight to get a more stable readout, but still using the last three bits that make an eight
+    // for fine tuning the selection, by rotating a potentiometer with multiple turns from 0V up to 5V.
+    // The variable timein30secondssel which is 16 bit specifies how many 30 seconds are selected at a time.
+
+    // Range 1 = 30 seconds to 4 minutes with resolution of 30 seconds, that's << 8 >> selections
+    // selected minutes in range 1:  (0.5) ( 1 ) (1.5) ( 2 ) (2.5) ( 3 ) (3.5) ( 4 )
+
+    // Range 2 = 5 minutes to 10 minutes with resolution of 1 minute, that's << 6 >> more selections total 14 of 32
+    // selected minutes in range 2:  ( 5 ) ( 6 ) ( 7 ) ( 8 ) ( 9 ) ( 10 )
+
+    // Range 3 = 12 minutes only, that's << 1 >> more selection total 15 of 32
+    // selected minutes in range 3:  ( 12 )
+
+    // Range 4 = 15 minutes to 30 minutes with resolution of 5 minutes, that's << 4 >> more selections total 19 of 32
+    // selected minutes in range 3:  ( 15 ) ( 20 ) ( 25 ) ( 30 )
+
+    // Range 5 = 45 minutes to 1.5 hours with resolution of 15 minutes, that's << 4 >> more selections total 23 of 32
+    // selected hours in range 4:  (0.75) ( 1 ) (1.25) (1.5)
+
+    // Range 6 = 2 hours to 4 hours with resolution of 30 minutes, that's << 5 >> more selections total 28 of 32
+    // selected hours in range 5:  ( 2 ) ( 2.5 ) ( 3 ) ( 3.5 ) ( 4 )
+
+    // Range 7 = 5 hours to 8 hours with resolution of 1 hour, that's << 4 >> more selections total 32 of 32
+    // selected hours in range 6:  ( 5 ) ( 6 ) ( 7 ) ( 8 )
+
+    // Maximum value of timein30secondssel must be lower than 32768 and is: 8 hours * 60 minutes * 2 half minutes = 960
+    // timein30secondssel starts from zero but consider it from 1 all the way so +1 in all if's
+
+    secondssel=0; // start secondsel at zero for all ranges, only range 1 may modify it
+
+    if (selectionpiece < 8) // range 1, timein30secondssel here is from 1 to 8 so up to 4 minutes
+      {
+      timein30secondssel=selectionpiece+1;
+      secondssel = (timein30secondssel % 2)*30; // required in range 1 only
+      }
+
+    else if (selectionpiece < 14) // range 2, timein30secondssel here is from 10 to 20, 9 is not used
+      // (<range 1 max timein30secondssel> + ((( <range 2 selection> -
+      // - <range 1 max selection> ) +1 ) * (<range 2 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = (8+(((selectionpiece-8)+1)*2));
+
+    else if (selectionpiece < 15) // range 3, timein30secondssel here is from 24 to 24, 21 to 23 are not used
+      // (<range 2 max timein30secondssel> + ((( <range 3 selection> -
+      // - <range 2 max selection> ) +1 ) * (<range 3 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = 24;
+
+    else if (selectionpiece < 19) // range 4, timein30secondssel here is from 30 to 60, 25 to 29 are not used
+      // (<range 2 max timein30secondssel> + ((( <range 3 selection> -
+      // - <range 2 max selection> ) +1 ) * (<range 3 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = (20+(((selectionpiece-15)+1)*10));
+
+    else if (selectionpiece < 23) // range 5, timein30secondssel here is from 90 to 180, 61 to 89 are not used
+      // (<range 3 max timein30secondssel> + ((( <range 4 selection> -
+      // - <range 3 max selection> ) +1 ) * (<range 4 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = (60+(((selectionpiece-19)+1)*30));
+
+    else if (selectionpiece < 28) // range 6, timein30secondssel here is from 240 to 480, 181 to 239 are not used
+      // (<range 4 max timein30secondssel> + ((( <range 5 selection> -
+      // - <range 4 max selection> ) +1 ) * (<range 5 resolution / timein30secondssel resolution>) ))
+      timein30secondssel=(180+(((selectionpiece-23)+1)*60));
+
+    else // range 6, last range, timein30secondssel here is from 600 to 960, 481 to 599 are not used
+      // (<range 5 max timein30secondssel> + ((( <range 6 selection> -
+      // - <range 5 max selection> ) +1 ) * (<range 6 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = (480+(((selectionpiece-28)+1)*120));
+
+    // After timein30secondssel is determined, we need to make it hours and minutes to be displayed on LCD screen
+    // http://stackoverflow.com/questions/4228356/how-to-perform-integer-division-and-get-the-remainder-in-javascript
+    // var remainder = x % y;
+    // return (x - remainder) / y;
+
+    // (timein30secondssel/2) can be integer orinteger + 0.5 sometimes, so avoidcompiler giving warnings and errors
+    // https://stackoverflow.com/questions/16032522/rounding-numbers-on-avrs-in-c
+    // https://www.microchip.com/webdoc/AVRLibcReferenceManual/group__avr__math_1ga6eb04604d801054c5a2afe195d1dd75d.html
+    // http://jkorpela.fi/round.html
+    // https://www.avrfreaks.net/forum/avr-libc-built-rounding-function-and-documentation
+    // https://www.avrfreaks.net/forum/how-round-float-2-decimal-places-atmega16-iar-work
+    // https://www.avrfreaks.net/forum/avr-math-rounding-uprounding-down-when-dividing-ui
+    // Conclusion: round(39.84) = 39.00 and (uint8_t) 39.00 = 39 and everything in round needs to be with decimal point .0
+
+    minutessel=((uint16_t) round(timein30secondssel / 2.0 - 0.5)) % 60;
+    // Conclusion: Use (a/b>>0) (or (~~(a/b)) or (a/b|0)) to achieve about 20% gain in efficiency. Also keep in mind
+    // that they are all inconsistent with Math.floor, when a/b<0 && a%b!=0.
+
+    hourssel=(((((uint16_t) round(timein30secondssel / 2.0 - 0.5)) - minutessel) / 60) >> 0); // division without remainder, floor
+    } // accolade for oldselectionpiece if
+  } // accolade for feedback if
+
+}
+//======================================= TO BE OK DOWN
+
+void setup() 
+{
+  delay(100); // time to make sure microcontroller power is stabilised (increased to 5V)
+  // Initialize the digital pin as an output.
+  // Pin 13 has an LED connected on most Arduino boards
+  pinMode(13, OUTPUT);    
+  //((1<<pin)|(1<<pin)|(1<<pin));
+
+  DDRB |= (1<<0); // BUZZER
+  PORTB &= ~ (1<<0);
+  DDRC |= (1<<0); //LED1
+  PORTC &= ~ (1<<0);
+  
+static volatile unsigned char hours = 0;
+static volatile unsigned char minutes = 0;
+static volatile unsigned char seconds = 0;
+static volatile uint16_t timein30seconds = 0; //used for alarm decision, in minutes, more than 256 so 16 bit
+ 
+static volatile unsigned char hourssel = 0;
+static volatile unsigned char minutessel = 0;
+static volatile unsigned char secondssel = 0; // and zero always for the selected second
+static volatile uint16_t timein30secondssel = 1; //used for alarm time reached, in 30 seconds,
+// more than 256 so 16 bit
+
+static volatile unsigned char sectionofalarm = 0; // for one second what section of the alarm 1,2,3,4 with 4 musical notes
+static volatile unsigned char noteofalarm = 0;    // what note of the alarm 1,2,3,4 to play in 0.75/4 seconds
+
+static volatile unsigned char alarmbeginsection = 0; // timer interrupt informs main that an alarm section can be issued
+
+/////////// From here variables don't need to survive interrupt
+
+unsigned int notjuststarted = 0; // 0 = just started (no feedback for selectionpiece) 1 = not just started
+unsigned int adc_value = 0; // 0 to 255
+unsigned int selectionpiece = 0; // 0 to 64, a quarter of adc_value, selected with some kind of feedback
+unsigned int oldselectionpiece = 0; // 0 to 64, a quarter of adc_value, selected with some kind of feedback, older value
+char lcdint [3];                            // only 2 characters + not specified null to use integer to int, for lcd
+  sectionofalarm = 0;
+  Timer1.initialize(1000000); // set a timer of length 1000000 microseconds (or 1 sec - or 1Hz)
+  Timer1.attachInterrupt( timerIsr ); // attach the service routine here
+}
+
+void loop()
+{
+  gotolcdlocation(1,1);
+  lcdputs("                ");
+  gotolcdlocation(1,2);
+
+  lcdputs("                ");
+
+  DDRD &= ~ (1 << 2);
+  PORTD |= (1 << 2);
+
+// protect the real button that does not work because of resistor in main()
+  DDRB &= ~ (1<<1); // input
+  PORTB &= ~ (1<<1); // no pull up
+
+
+//  Avoid using REGISTER = (1<<BIT); that makes previous settings zero (like WGM12 for example)
+//  better always use for 1: REGISTER |= (1<<BIT);
+//  better always use for 0: REGISTER &= ~ (1<<BIT);
+
+// do, re, mi, fa, sol, la, si, do, do, si, la, sol, fa, mi, re, do
+
+  adc_value = 0; 
+  ADCSRA |= (1<<ADSC); //Forever since it is in single conversion mode
+  // Start conversion for the first time
+  while(1)
+      {
+
+      LCD_update_time();
+      LCD_update_timesel(); 
+
+      if (!(ADCSRA & (1<<ADSC))) // detect that ADSC is 0 and then do what is in the accolades
+      {
+        // wait until conversion completes; ADSC=0 means Complete
+        adc_value = ADCH;
+        //Store ADC result
+        ADCSRA |= (1<<ADSC); //Forever since it is in single conversion mode
+        // Start conversion in loop
+      }
+    findouttimeminutessel();
+  if((alarmbeginsection == 1) && (noteofalarm < 5))
+    {
+      alarmmusic(); // lasts 0.75/4 seconds, one note, done like this for more responsive selection
+    }
+    _delay_ms(50);
+
+  } // acolada de la while(1)
+
+  return 0;
+}
+
+void LCD_update_time() {
+  gotolcdlocation(1,1);
+  lcdputs("  "); // empty selected field
+  sprintf(lcdint, "%02d", hours);
+  lcdputs(lcdint);
+  lcdputs(" : ");
+  sprintf(lcdint, "%02d", minutes);
+  lcdputs(lcdint);
+  lcdputs(" : ");
+  sprintf(lcdint, "%02d", seconds);
+  lcdputs(lcdint);
+  lcdputs("  "); // sometimes errors appear at the end
+}
+
+void LCD_update_timesel() {
+  gotolcdlocation(1,2);
+  lcdputs("  "); // empty selected field
+  sprintf(lcdint, "%02d", hourssel);
+  lcdputs(lcdint);
+  lcdputs(" : ");
+  sprintf(lcdint, "%02d", minutessel);
+  lcdputs(lcdint);
+  lcdputs(" : ");
+  sprintf(lcdint, "%02d", secondssel);
+  lcdputs(lcdint);
+  lcdputs("  "); // sometimes errors appear at the end
+}
+
+void var_delay_us(uint16_t usvar) // allow delays without constant, for buzzer
+{
+  // =1/7902/5 resolution 5 times bigger than highest frequency 7902 => 0.00002531005 s ~= 25 us + 1 clock calcul usvar--
+  // not smaller than 10 us because UC instruction times interference will make the time unit incorrect
+  while (usvar-- != 0)
+    _delay_us(25);  
+}
+
+void makesnd(uint16_t frequency, uint8_t duration)  // duration represented as 16 for one second, linear
+{
+//    frequency=frequency/2;  // this is int, all fractions are lost
+    uint16_t sinusoidrepetition = 0;  // number of sinusoids
+    uint16_t sinusoidtime = 0;      // length of time for a sinusoid
+//    tempo is usually 120 beats per minute - half a second, number written down 2/2=half second 4/4=quarter second
+//    https://en.wikipedia.org/wiki/Tempo
+    uint8_t tempo = 2; // the bigger, the shorter the note at the same frequency (parts of a second)
+    sinusoidrepetition = duration*frequency/tempo/16;
+    sinusoidtime=1000000/25/frequency;  // 25 us is the var_delay_us time unit, 1000000 us is one second
+    sinusoidtime=sinusoidtime/2; // one pulse is composed of an up and a down, time used is half
+    sinusoidrepetition = ( (uint16_t) round(sinusoidrepetition * 14/11) );  // fine tune for almost 250 ms repetition
+      while(sinusoidrepetition){
+      var_delay_us(sinusoidtime); // buzzer frequency
+      PORTB |= (1<<0);
+      var_delay_us(sinusoidtime); // buzzer frequency
+      PORTB &=~ (1<<0);
+        sinusoidrepetition--;
+    }
+//    _delay_ms(25);
+}
+
+void alarmmusic() {
+  if (sectionofalarm == 1)
+      {
+      if(noteofalarm == 1) makesnd(FDOND,4);
+      if(noteofalarm == 2) makesnd(FREND,4);
+      if(noteofalarm == 3) makesnd(FMIND,4);
+      if(noteofalarm == 4) makesnd(FFAND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+      }
+
+    else if (sectionofalarm == 2)
+      {
+      if(noteofalarm == 1) makesnd(FSOLND,4);
+      if(noteofalarm == 2) makesnd(FLAND,4);
+      if(noteofalarm == 3) makesnd(FSIND,4);
+      if(noteofalarm == 4) makesnd(FDONE,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+      }
+    else if (sectionofalarm == 3)
+      {
+      if(noteofalarm == 1) makesnd(FDONE,4);
+      if(noteofalarm == 2) makesnd(FSIND,4);
+      if(noteofalarm == 3) makesnd(FLAND,4);
+      if(noteofalarm == 4) makesnd(FSOLND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+      }
+    else
+      {
+      if(noteofalarm == 1) makesnd(FFAND,4);
+      if(noteofalarm == 2) makesnd(FMIND,4);
+      if(noteofalarm == 3) makesnd(FREND,4);
+      if(noteofalarm == 4) makesnd(FDOND,3); // 4+4+4+3 = 12 not 16 is less than a second, finish before next interrupt
+      }
+  noteofalarm++;
+}
+
+void findouttimeminutessel() {
+// http://www.robotplatform.com/howto/blinker/blinker_6.html
+// http://www.avrfreaks.net/forum/tut-c-bit-manipulation-aka-programming-101?page=all
+// http://efundies.com/avr-bitwise-operations-in-c/
+// https://download.mikroe.com/documents/compilers/mikroc/pic/help/logical_operators.htm
+
+// Hack to see if last three bits of adc value are 1 to 8  or bitwise 001 to 111,
+// required for some kind of feedback from 1 to 6 like this:
+// 0 [1 2 3 4 5 6] 7 8 [9 10 11 12 13 14] 15 16 [17 18 19...
+// So we need bitwise: 000 [001 010 011 100 101 110] 111 that means:
+// not ( (bit3=0 and bit2=0 and bit1=0) or (bit3=1 and bit2=1 and bit1=1) )
+if( !( ( (!(adc_value &(1<<0))) && (!(adc_value &(1<<1))) && (!(adc_value &(1<<2))) ) || ( (adc_value &(1<<0)) && (adc_value &(1<<1)) && (adc_value &(1<<2)) ) ) || (notjuststarted==0) )
+  // if first three bits of adc_value are not 000 or 111
+  {
+  // when adc was mooved with feedback reset counter so that time is measured after not mooving it
+  selectionpiece=(adc_value>>3); // ignore first three bits, this divides up to 256 by eight resulting in up to 32
+  if(notjuststarted==0) oldselectionpiece=selectionpiece+1;
+  if(selectionpiece!=oldselectionpiece) // http://www.cprogramming.com/tutorial/c/lesson2.html
+    {
+    oldselectionpiece=selectionpiece; // make old one equal first of all so that we don't reset time on every pass
+    notjuststarted=1; // no problem if repeated, it only happens when mooving adc
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    makesnd(FDOND,1); // aknowledge with short sound that there is a new selection
+    // http://www.avrfreaks.net/forum/if-if-if-vs-if-else-if-else-if
+    // The objective is to be able to select from few ranges, each range having it's own resolution.
+    // The more time is selected the less the resolution can be, use some common sense about time to make ranges.
+    // The program is made to allow 32 selections made by reading a 8 bit ADC value and dividing it
+    // by eight to get a more stable readout, but still using the last three bits that make an eight
+    // for fine tuning the selection, by rotating a potentiometer with multiple turns from 0V up to 5V.
+    // The variable timein30secondssel which is 16 bit specifies how many 30 seconds are selected at a time.
+
+    // Range 1 = 30 seconds to 4 minutes with resolution of 30 seconds, that's << 8 >> selections
+    // selected minutes in range 1:  (0.5) ( 1 ) (1.5) ( 2 ) (2.5) ( 3 ) (3.5) ( 4 )
+
+    // Range 2 = 5 minutes to 10 minutes with resolution of 1 minute, that's << 6 >> more selections total 14 of 32
+    // selected minutes in range 2:  ( 5 ) ( 6 ) ( 7 ) ( 8 ) ( 9 ) ( 10 )
+
+    // Range 3 = 12 minutes only, that's << 1 >> more selection total 15 of 32
+    // selected minutes in range 3:  ( 12 )
+
+    // Range 4 = 15 minutes to 30 minutes with resolution of 5 minutes, that's << 4 >> more selections total 19 of 32
+    // selected minutes in range 3:  ( 15 ) ( 20 ) ( 25 ) ( 30 )
+
+    // Range 5 = 45 minutes to 1.5 hours with resolution of 15 minutes, that's << 4 >> more selections total 23 of 32
+    // selected hours in range 4:  (0.75) ( 1 ) (1.25) (1.5)
+
+    // Range 6 = 2 hours to 4 hours with resolution of 30 minutes, that's << 5 >> more selections total 28 of 32
+    // selected hours in range 5:  ( 2 ) ( 2.5 ) ( 3 ) ( 3.5 ) ( 4 )
+
+    // Range 7 = 5 hours to 8 hours with resolution of 1 hour, that's << 4 >> more selections total 32 of 32
+    // selected hours in range 6:  ( 5 ) ( 6 ) ( 7 ) ( 8 )
+
+    // Maximum value of timein30secondssel must be lower than 32768 and is: 8 hours * 60 minutes * 2 half minutes = 960
+    // timein30secondssel starts from zero but consider it from 1 all the way so +1 in all if's
+
+    secondssel=0; // start secondsel at zero for all ranges, only range 1 may modify it
+
+    if (selectionpiece < 8) // range 1, timein30secondssel here is from 1 to 8 so up to 4 minutes
+      {
+      timein30secondssel=selectionpiece+1;
+      secondssel = (timein30secondssel % 2)*30; // required in range 1 only
+      }
+
+    else if (selectionpiece < 14) // range 2, timein30secondssel here is from 10 to 20, 9 is not used
+      // (<range 1 max timein30secondssel> + ((( <range 2 selection> -
+      // - <range 1 max selection> ) +1 ) * (<range 2 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = (8+(((selectionpiece-8)+1)*2));
+
+    else if (selectionpiece < 15) // range 3, timein30secondssel here is from 24 to 24, 21 to 23 are not used
+      // (<range 2 max timein30secondssel> + ((( <range 3 selection> -
+      // - <range 2 max selection> ) +1 ) * (<range 3 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = 24;
+
+    else if (selectionpiece < 19) // range 4, timein30secondssel here is from 30 to 60, 25 to 29 are not used
+      // (<range 2 max timein30secondssel> + ((( <range 3 selection> -
+      // - <range 2 max selection> ) +1 ) * (<range 3 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = (20+(((selectionpiece-15)+1)*10));
+
+    else if (selectionpiece < 23) // range 5, timein30secondssel here is from 90 to 180, 61 to 89 are not used
+      // (<range 3 max timein30secondssel> + ((( <range 4 selection> -
+      // - <range 3 max selection> ) +1 ) * (<range 4 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = (60+(((selectionpiece-19)+1)*30));
+
+    else if (selectionpiece < 28) // range 6, timein30secondssel here is from 240 to 480, 181 to 239 are not used
+      // (<range 4 max timein30secondssel> + ((( <range 5 selection> -
+      // - <range 4 max selection> ) +1 ) * (<range 5 resolution / timein30secondssel resolution>) ))
+      timein30secondssel=(180+(((selectionpiece-23)+1)*60));
+
+    else // range 6, last range, timein30secondssel here is from 600 to 960, 481 to 599 are not used
+      // (<range 5 max timein30secondssel> + ((( <range 6 selection> -
+      // - <range 5 max selection> ) +1 ) * (<range 6 resolution / timein30secondssel resolution>) ))
+      timein30secondssel = (480+(((selectionpiece-28)+1)*120));
+
+    // After timein30secondssel is determined, we need to make it hours and minutes to be displayed on LCD screen
+    // http://stackoverflow.com/questions/4228356/how-to-perform-integer-division-and-get-the-remainder-in-javascript
+    // var remainder = x % y;
+    // return (x - remainder) / y;
+
+    // (timein30secondssel/2) can be integer orinteger + 0.5 sometimes, so avoidcompiler giving warnings and errors
+    // https://stackoverflow.com/questions/16032522/rounding-numbers-on-avrs-in-c
+    // https://www.microchip.com/webdoc/AVRLibcReferenceManual/group__avr__math_1ga6eb04604d801054c5a2afe195d1dd75d.html
+    // http://jkorpela.fi/round.html
+    // https://www.avrfreaks.net/forum/avr-libc-built-rounding-function-and-documentation
+    // https://www.avrfreaks.net/forum/how-round-float-2-decimal-places-atmega16-iar-work
+    // https://www.avrfreaks.net/forum/avr-math-rounding-uprounding-down-when-dividing-ui
+    // Conclusion: round(39.84) = 39.00 and (uint8_t) 39.00 = 39 and everything in round needs to be with decimal point .0
+
+    minutessel=((uint16_t) round(timein30secondssel / 2.0 - 0.5)) % 60;
+    // Conclusion: Use (a/b>>0) (or (~~(a/b)) or (a/b|0)) to achieve about 20% gain in efficiency. Also keep in mind
+    // that they are all inconsistent with Math.floor, when a/b<0 && a%b!=0.
+
+    hourssel=(((((uint16_t) round(timein30secondssel / 2.0 - 0.5)) - minutessel) / 60) >> 0); // division without remainder, floor
+    } // accolade for oldselectionpiece if
+  } // accolade for feedback if
+
+}
+
+// OK down
+
+/*Timer Counter 1 Compare Match A Interrupt Service Routine/Interrupt Handler*/
+void timerIsr()
+{
+  seconds++;
+
+  if(seconds == 60)
+  {
+    seconds = 0;
+    minutes++;
+  }
+  if(minutes == 60)
+  {
+    minutes = 0;
+    hours++;    
+  }
+  if(hours > 23) {
+    hours = 0;
+  }
+
+  timein30seconds=( (60 * hours + minutes)*2 + (uint16_t) round((seconds / 30.0) - 0.5) );
+  sectionofalarm++;    // this code is always done
+  if(sectionofalarm > 4) sectionofalarm=1;
+  
+  if(timein30secondssel <= timein30seconds)
+    {
+    alarmbeginsection=1; // inform main that a new second is in for alarm, an alarm section lasts 0.75 seconds
+    noteofalarm=1;       // start from the first note in the section because a second has passed
+    }
+  else
+    {
+      alarmbeginsection=0;
+      sectionofalarm=0; // will cycle section [1, 2, 3, 4]
+    }
+
+}
