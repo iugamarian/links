@@ -1,3 +1,4 @@
+// Tested, it works, but can't display numbers - need sprintf alternative in arduino
 /*
   LiquidCrystal Library - Hello World
 
