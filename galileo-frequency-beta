@@ -1,0 +1,291 @@
+// version beta 13.07.2019
+
+#define FRQ_PIN           9
+
+//Setari originale:
+//#define SAMPLES           256
+//#define TIMEOUT           250000
+//#define SECOND_IN_us      1000000
+//#define SECOND_IN_ms      1000
+//#define BAUD_RATE         9600
+
+// Setari modificate (ca sa vad ca afiseaza de la 8 kHz pana la 14 kHz - date la LCD ceas):
+#define SAMPLES           256
+#define TIMEOUT           250000
+#define SECOND_IN_us      1000000
+#define SECOND_IN_ms      1000
+//#define BAUD_RATE         9600
+
+// * LCD RS pin to digital pin 12
+// * LCD Enable pin to digital pin 11
+// * LCD D4 pin to digital pin 5
+// * LCD D5 pin to digital pin 4
+// * LCD D6 pin to digital pin 3
+// * LCD D7 pin to digital pin 2
+// * LCD R/W pin to ground
+// * LCD VSS pin to ground
+// * LCD VCC pin to 5V
+// * 10K resistor:
+// * ends to +5V and ground
+// * wiper to LCD VO pin (pin 3)
+
+char lcdfrequency [9];  // only 8 characters + not specified null to use integer to int, for lcd
+char lcdduty [7];  // only 6 characters + not specified null to use integer to int, for lcd
+char lcduengine [6];  // only 5 characters + not specified null to use integer to int, for lcd
+
+uint32_t periodH = 0;
+uint32_t periodL = 0;
+uint32_t period = 0;
+uint32_t frequency = 0;
+double duty = 0.0;
+double uengine = 0.0;
+
+void send_data (unsigned char data)  // data on pins 4 - 7, leaving pins 0 1 free for i2c
+{
+  digitalWrite( 5, bitRead(data, 4) );
+  digitalWrite( 4, bitRead(data, 5) );
+  digitalWrite( 3, bitRead(data, 6) );
+  digitalWrite( 2, bitRead(data, 7) );
+
+  digitalWrite( 12, 1 );
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+ // delay(1);
+  digitalWrite( 11, 0 );
+  digitalWrite( 12, 0 );
+ 
+  delay(1); // time for lcd to read data pins
+ 
+  digitalWrite( 5, bitRead(data, 0) );
+  digitalWrite( 4, bitRead(data, 1) );
+  digitalWrite( 3, bitRead(data, 2) );
+  digitalWrite( 2, bitRead(data, 3) );
+ 
+  digitalWrite( 12, 1 );
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+
+ // delay(1);
+ 
+  digitalWrite( 11, 0 );
+  digitalWrite( 12, 0 );
+  delay(5); // time for lcd to read data pins and work fast
+
+  digitalWrite( 5, 0 );
+  digitalWrite( 4, 0 );
+  digitalWrite( 3, 0 );
+  digitalWrite( 2, 0 );  
+}
+
+void send_cmd (unsigned char cmd) // data on pins 4 - 7, leaving pins 0 1 free for i2c
+{
+  digitalWrite( 5, bitRead(cmd, 4) );
+  digitalWrite( 4, bitRead(cmd, 5) );
+  digitalWrite( 3, bitRead(cmd, 6) );
+  digitalWrite( 2, bitRead(cmd, 7) );
+
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+ // delay(1);
+  digitalWrite( 11, 0 );
+ 
+  delay(1); // time for lcd to read data pins
+ 
+  digitalWrite( 5, bitRead(cmd, 0) );
+  digitalWrite( 4, bitRead(cmd, 1) );
+  digitalWrite( 3, bitRead(cmd, 2) );
+  digitalWrite( 2, bitRead(cmd, 3) );
+ 
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+ // delay(1);
+ 
+  digitalWrite( 11, 0 );
+ 
+  delay(5); // time for lcd to read data pins and work fast
+
+  digitalWrite( 5, 0 );
+  digitalWrite( 4, 0 );
+  digitalWrite( 3, 0 );
+  digitalWrite( 2, 0 );  
+
+}
+
+void send_cmd_init (unsigned char cmd)  // data on pins 4 - 7, leaving pins 0 1 free for i2c
+{
+    digitalWrite( 5, bitRead(cmd, 4) );
+  digitalWrite( 4, bitRead(cmd, 5) );
+  digitalWrite( 3, bitRead(cmd, 6) );
+  digitalWrite( 2, bitRead(cmd, 7) );
+
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+  digitalWrite( 11, 1 );
+ // delay(1);
+  digitalWrite( 11, 0 );
+ 
+  delay(10); // time for lcd to read data pins
+ 
+  digitalWrite( 5, bitRead(cmd, 0) );
+  digitalWrite( 4, bitRead(cmd, 1) );
+  digitalWrite( 3, bitRead(cmd, 2) );
+  digitalWrite( 2, bitRead(cmd, 3) );
+ 
+  digitalWrite( 11, 1 );
+
+ // delay(1);
+ 
+  digitalWrite( 11, 0 );
+ 
+  delay(10); // time for lcd to read data pins and work fast
+
+  digitalWrite( 5, 0 );
+  digitalWrite( 4, 0 );
+  digitalWrite( 3, 0 );
+  digitalWrite( 2, 0 );  
+}
+
+void gotolcdlocation(uint8_t x, uint8_t y)
+{
+  char lcdlinebegins[4] = {0, 64, 20, 84};
+  send_cmd(0x80 + lcdlinebegins[y-1] + (x-1));
+}
+
+void lcdputs (const char *pointer)
+{
+  while(*pointer != 0)
+  {
+    send_data(*pointer++);
+  }
+}
+
+// END OF LCD FUNCTIONS
+
+void computefrequencyduty()
+{
+  frequency = 0;
+  duty=0;
+  period=0;
+ 
+  for(uint16_t i=0 ; i < SAMPLES/64 ; i++)
+  {
+       periodH = pulseIn(FRQ_PIN, HIGH, TIMEOUT);
+       periodL = pulseIn(FRQ_PIN, LOW, TIMEOUT);
+       period = periodH + periodL;
+       if (period > 0 ) {  // the frequency is detected
+            frequency += SECOND_IN_us/period;
+            duty = (periodH * 100)/period;
+       }
+  }
+  frequency = 64*frequency/SAMPLES;
+  
+  if (frequency > 100) {  // the frequency is high, more samples for better accuracy
+        frequency = 0;
+        duty=0;
+        period=0;
+        
+        for(uint16_t i=0 ; i < SAMPLES ; i++)
+        {
+             periodH = pulseIn(FRQ_PIN, HIGH, TIMEOUT);
+             periodL = pulseIn(FRQ_PIN, LOW, TIMEOUT);
+             period = periodH + periodL;
+             if (period > 0 ) {  // the frequency is detected
+                  frequency += SECOND_IN_us/period;
+                  duty = (periodH * 100)/period;
+           }
+        }
+        frequency = frequency/SAMPLES;
+    }
+
+}
+
+void setup() {
+
+    delay(50);      // delay to allow lcd to power, microcontroller to stabilize, programmer be safe
+
+    pinMode(FRQ_PIN, INPUT);  // frequency to be measured
+    
+    pinMode(12, OUTPUT);  // LCD
+    pinMode(11, OUTPUT);  // LCD
+    pinMode(5, OUTPUT);  // LCD
+    pinMode(4, OUTPUT);  // LCD
+    pinMode(3, OUTPUT);  // LCD
+    pinMode(2, OUTPUT);  // LCD
+//  LCDDATASELECT |= (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN); // pins are outputs
+digitalWrite( 12, 0 );
+digitalWrite( 11, 0 );
+digitalWrite( 5, 0 );
+digitalWrite( 4, 0 );
+digitalWrite( 3, 0 );
+digitalWrite( 2, 0 );
+//  LCDDATAPORT &=~ (1<<LCDD7PIN) | (1<<LCDD6PIN) | (1<<LCDD5PIN) | (1<<LCDD4PIN);  // pins start at zero
+//  LCDRSENSELECT |= (1<<LCDENPIN) | (1<<LCDRSPIN); // pins are outputs
+//  LCDRSENPORT &=~ (1<<LCDENPIN) | (1<<LCDRSPIN);  // pins start at zero
+
+//////////////////////////////////////////////////////
+///////START OF INIT FOR RS0010 AND WS0010 CONTROLLERS
+//////////////////////////////////////////////////////
+
+  // Initialise display into 4 bit mode, using recommended delays
+  send_cmd_init(0x33);
+  send_cmd_init(0x32);
+  // Now perform remainder of display init in 4 bit mode - IMPORTANT!
+  // These steps MUST be exactly as follows, as OLEDs in particular are rather fussy
+  send_cmd_init(0x28);   // two lines and correct font
+  send_cmd_init(0x08);    // display OFF, cursor/blink off
+  send_cmd_init(0x01);    // clear display, waiting for longer delay
+  send_cmd_init(0x06);    // entry mode set
+  // extra steps required for OLED initialisation (no effect on LCD)
+  send_cmd_init(0x17);    // character mode, power on
+  // now turn on the display, ready for use - IMPORTANT!
+  send_cmd_init(0x0C);    // display on, cursor/blink off
+
+}
+
+
+void loop() {
+//  Serial.print("Frequency = ");
+//  Serial.print(get_frequency(FRQ_PIN));
+//  Serial.println(" Hz");
+//  Serial.print("Duty Cycle = ");
+//  Serial.print(get_duty_cycle(FRQ_PIN));
+//  Serial.println(" %");
+//  Serial.print("Tensiune motor(5V) : ");
+//  Serial.print(((double)get_duty_cycle(FRQ_PIN)/100) * 5);
+//  Serial.println(" V");
+//  delay(SECOND_IN_ms);
+
+//char lcdfrequency [9];  // only 8 characters + not specified null to use integer to int, for lcd
+//char lcdduty [7];  // only 6 characters + not specified null to use integer to int, for lcd
+//char lcduengine [6];  // only 5 characters + not specified null to use integer to int, for lcd
+
+//uint32_t periodH = 0;
+//uint32_t periodL = 0;
+//uint32_t period = 0;
+//uint32_t frequency = 0;
+//double duty = 0.0;
+//double uengine = 0.0;
+
+computefrequencyduty();  // return values to global variables
+
+gotolcdlocation(1,1);
+lcdputs("Frq "); //
+sprintf(lcdfrequency, "%08d", frequency);
+lcdputs(lcdfrequency);
+lcdputs(" Hz"); //
+gotolcdlocation(1,2);
+lcdputs("D "); //
+sprintf(lcdduty, "%03.2f", duty);
+
+lcdputs(lcdduty);
+lcdputs(" U "); //
+//uengine = (((double)duty/100) * 5);
+uengine = ((duty/100) * 5);
+sprintf(lcduengine, "%02.2f", uengine);
+lcdputs(lcduengine);
+
+}
