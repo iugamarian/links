@@ -299,7 +299,7 @@
 //
 //
 //
-// PCB layout for 16 LED's on a 30 x 48 holes breadboard
+// PCB layout for 16 LED's on a 30 x 48 holes breadboard, with capacitor
 //
 //        ..r.r.r.r.AVCCr.r.r.r.AVCCr.r.r.r.AVCCr.r.r.r..    <---  560 ohm resistors
 //        .t.t.t.t......t.t.t.t.....t.t.t.t......t.t.t.t.
@@ -332,6 +332,41 @@
 //        .c.c.c.c......c.c.c.c.....c.c.c.c......c.c.c.c.    <--- 47 nF capacitors
 //        .........GND..........GND..........GND.........
 //
+//
+//
+// PCB layout for 16 LED's on a 30 x 48 holes breadboard, without capacitor
+//
+//        ..............................................48
+//        ..r..r..r..r..r..r..r..r..r..r..r..r..r..r..r..r
+//        .rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr
+//        .rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr
+//        .rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr.rr
+//        .r..r..r..r..r..r..r..r..r..r..r..r..r..r..r..r.
+//        .t..t..t..t..t..t..t..t..t..t..t..t..t..t..t..t.
+//        .tt.tt.tt.tt.tt.tt.tt.tt.tt.tt.tt.tt.tt.tt.tt.tt
+//        .t..t..t..t..t..t..t..t..t..t..t..t..t..t..t..t.
+//        111222333444555666777888888777666555444333222111
+//        ..1..2..33345666..7..8.<>.8..7..66654333..2..1..
+//        ..1..22222345677777..8.<>.8..77777654322222..1..
+//        ..1...xx.234567.xx...8.<>.8...xx.765432.xx...1..
+//        ..1...xxuuuuuuuuux...8....8...xuuuuuuuuuxx...1..
+//        ..111111>>uuuuuuu88888....88888uuuuuuu<<111111..
+//        ........>>uuuuuuu..............uuuuuuu<<........
+//        ........uuuuuuuuu..X..DVCC.....uuuuuuuuu........
+//        r.......ttt..ttte...XccccccD..eettt..ttt.......r
+//        r.......ttt..ttte...occcccco...ettt..ttt.......r
+//        r.......ttt..ttte...occcccco...ettt..ttt.......r
+//        r.......ttt..ttte...occcccco...ettt..ttt.......r
+//        r.......ttt..ttte...occcccco...ettt..ttt.......r
+//        r.......ttt..ttte...occcccco...ettt..ttt.......r
+//        r.......ttt..ttte...occcccco...ettt..ttt.......r
+//        r.......ttt..tttee..occcccco...ettt..ttt.......r
+//        A.......uuuuuuuuu...occccco....uuuuuuuuu.......A
+//        V.......>>uuuuuuu..incccccG....uuuuuuu<<.......V
+//        C.......>>uuuuuuu..incccccin...uuuuuuu<<.......C
+//        C.......uuuuuuuuu...Gcccccin...uuuuuuuuu.......C
+//        30..............................................
+//  
 //
 //
 //  Microcontroller Pins:
