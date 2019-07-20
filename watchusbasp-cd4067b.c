@@ -371,7 +371,7 @@
 //
 //  Microcontroller Pins for controlling 5 fields that are 1 = hour 2 = minute 3 = day 4 = month 5 = year up to 2099 or 2199:
 //
-//  - 4 pins connected to both CD4067B inputs for selection of channel 0 - 15  =  B2  B3  B4  B5
+//  - 4 pins connected in parallel to five CD4067B inputs for selection of channel 0 - 15  =  B2  B3  B4  B5
 //  - 1 pin for resetting all flip flops - all LED's off  =  D1
 //  - 5 pins for the CD4067B fields  =  C0  C1  C2  D0  D3
 //  
