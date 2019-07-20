@@ -369,13 +369,19 @@
 //  
 //
 //
-//  Microcontroller Pins:
+//  Microcontroller Pins for controlling 5 fields that are 1 = hour 2 = minute 3 = day 4 = month 5 = year up to 2099 or 2199:
 //
-//  - 4 pins connected to both CD4067B inputs for selection of channel 0 - 15
-//  - 1 pin for resetting all flip flops by cycling their VCC - all LED's off
-//  - 1 pin for channel state of left field CD4067B
-//  - 1 pin for channel state of right field CD4067B
-//  - 1 pin for potentiometer 8 bit field value change 0 to 255 - 
+//  - 4 pins connected to both CD4067B inputs for selection of channel 0 - 15  =  B2  B3  B4  B5
+//  - 1 pin for resetting all flip flops - all LED's off  =  D1
+//  - 5 pins for the CD4067B fields  =  C0  C1  C2  D0  D3
+//  
+//  To use all 10 pins some modifications on the USBASP are required:
+//  - VCC  changed to  C2
+//  - GND  two pins traces cut and changed to  C0  and  C1 , 1K resistors from the USBASP LED's removed
+//  - NC   changed to  D3 , the pin is easy to connect to, at a microcontroller corner corner
+
+
+//  - 2 pins ADC6 and ADC7 for potentiometer 8 bit field value change 0 to 255, pins are a little harder to connect to:
 //          0 -  35 = 36 steps = fast decrease
 //         36 -  71 = 36 steps = normal decrease
 //         72 - 107 = 36 steps = slow decrease
@@ -383,7 +389,8 @@
 //        148 - 183 = 36 steps = slow increase
 //        184 - 219 = 36 steps = normal increase
 //        220 - 255 = 36 steps = fast increase
-//  - 1 pin for multifunctional button
+//
+//  Optional  1 pin for multifunctional button - not used here
 //        - one short press = date mode for 10 seconds, another short press within this time = year mode for 10 seconds
 //        - another short press within year mode time = back to time mode
 //        - one long press in time / date / year mode = select left field to change, another long press select right field to change
