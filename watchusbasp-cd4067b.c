@@ -154,7 +154,7 @@
 //       |      |                                   |  /
 //       |      |                                   | /    T1
 //       |      |                  +----------------+K    BD139
-//       |      |                  |                | \
+//       |      |                  |                | L
 //       |      []                 |                |  V
 //       |      [] R2 = 4.7 Kohm   |                    |
 //       |      []                 |                    |
@@ -398,3 +398,1062 @@
 //        - short press in select mode = cancel select mode, back to showing current date / year mode for another 10 seconds
 //
 // To be continued...
+
+static volatile unsigned char hours = 10;
+static volatile unsigned char minutes = 0;
+static volatile unsigned char seconds = 0;
+static volatile unsigned char day = 11;
+static volatile unsigned char month = 07;
+static volatile unsigned char year = 19; // up to 254 - allow 255 reserve, display can show up to 199
+static volatile unsigned char adc_value = 0;
+static volatile unsigned char adc_channel = 0;
+static volatile unsigned char pot_time = 0;
+static volatile unsigned char pot_date = 0;
+static volatile unsigned char pot_time_at_zero = 1;
+static volatile unsigned char pot_date_at_zero = 1;
+static volatile unsigned char interruptdetected = 0;
+// need to be fast here, so no RAM usage if possible
+unsigned char ledstep = 0;
+unsigned char ledleftdigit1 = 0;
+unsigned char ledrightdigit1 = 0;
+unsigned char ledleftdigit2 = 0;
+unsigned char ledrightdigit2 = 0;
+unsigned char ledleftdigit3 = 0;
+unsigned char ledrightdigit3 = 0;
+unsigned char ledleftdigit4 = 0;
+unsigned char ledrightdigit4 = 0;
+unsigned char ledleftdigit5 = 0;
+unsigned char ledrightdigit5 = 0;
+unsigned char yearover100detected = 0;
+unsigned char ledcurrentdigit1 = 0;
+unsigned char ledcurrentdigit2 = 0;
+unsigned char ledcurrentdigit3 = 0;
+unsigned char ledcurrentdigit4 = 0;
+unsigned char ledcurrentdigit5 = 0;
+unsigned char pointsfortime = 0;
+unsigned char pointsfordate = 0;
+unsigned char ledhours = 10;
+unsigned char ledminutes = 0;
+unsigned char ledday = 11;
+unsigned char ledmonth = 07;
+unsigned char ledyear = 19; // up to 254 - allow 255 reserve, display can show up to 199
+
+
+void setup() {
+
+/////////////// SET MICROCONTROLLER REGISTERS
+
+	// Variable to hold ADC result
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);
+	TCCR1B |= (1<<WGM12); // clear timer on compare (when OCR1A is reached, automatically go to 0)
+
+//  Also check #define F_CPU clocks
+//	OCR1A = 15625; // 1 second on 16mhz with prescaler 1024 => 	TCCR1B |= (1<<CS12) | (1<<CS10);
+	OCR1A = 46875; // 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
+
+	TIMSK |= (1<<OCIE1A); // when OCR1A is reached, go to ISR(TIMER1_COMPA_vect) interrupt
+
+
+	GICR &= ~(1 << INT0); // usbasp has a usb data pin on interrupt, don't want interrupt on button low
+	sei(); // activate interrupts so (TIMER1_COMPA_vect) is available
+	GICR &= ~(1 << INT0); // SEI ENABLES IT I THINK
+//	TCCR1B |= (1<<CS12) | (1<<CS10); // setting prescaler also starts the counting of the timer, for 16MHz
+	TCCR1B |= (1<<CS12);			// setting prescaler also starts the counting of the timer, for 12Mhz
+
+//  Avoid using REGISTER = (1<<BIT); that makes previous settings zero (like WGM12 for example)
+//  better always use for 1: REGISTER |= (1<<BIT);
+//  better always use for 0: REGISTER &= ~ (1<<BIT);
+//  ((1<<pin)|(1<<pin)|(1<<pin));
+
+/////////////// SET MICROCONTROLLER PORTS
+
+	// And now that interrupt INT0 is disabled which is pin D2 which is connected to pin B1 on USBASP,
+	// setting as ignored input with pull up so no interrupt microcontriller hangs
+	DDRD &= ~ (1 << 2);
+	PORTD |= (1 << 2);
+	// and setting B1 that is connected to D2 as input and ignoring it with no pull up
+	DDRB &= ~ (1<<1); // input
+	PORTB &= ~ (1<<1); // no pull up
+
+//  Microcontroller Pins for controlling 5 fields that are 1 = hour 2 = minute 3 = day 4 = month 5 = year up to 2099 or 2199:
+//
+
+//  - 1 pin for resetting all flip flops - all LED's off  =  D1
+//  - 5 pins for the CD4067B fields  =  C0  C1  C2  D0  D3
+  DDRC |= (1<<0) | (1<<1) | (1<<2);
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+// On port D we will ignore D2 which is INT0 and connected to B1
+  DDRD |= (1<<3) | (1<<1) | (1<<0);
+  PORTD |= (1<<3) | (1<<1) | (1<<0);  // Set to 1 to not trigger LED ON (or LED RESET which will be done later)
+
+//  - 4 pins connected in parallel to five CD4067B inputs for selection of channel 0 - 15  =  B2  B3  B4  B5
+  DDRB |= (1<<5) | (1<<4) | (1<<3) | (1<<2);        // CD4067B inputs set as microcontroller outputs
+  PORTB &= ~ ((1<<5) | (1<<4) | (1<<3) | (1<<2));   // and indicate CD4067B channel 1 of 16 which is 0 of 15
+
+/////////////// SET VARIABLES THAT ARE NOT READ YET TO KEEP CONSTANT VALUE
+
+pot_time = 128;
+pot_date = 128;
+
+}
+
+void updatecdselection() {
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+  _delay_ms(1);  // allow time for CD4067BE flip flops speed
+  PORTB = (ledstep<<2);	// select CD4067BE channel
+  _delay_ms(1);  // allow time for CD4067BE flip flops speed
+  // a total of 16 x 2 = 32 ms it is very good
+}
+
+void updatecdcommandled0() {
+
+//////////////////////////////////////// field 1 of 5
+	
+	if( !( ( ledcurrentdigit1 == 5 ) || ( ledcurrentdigit1 == 6 ) ) ) PORTC &= ~ (1<<0);
+
+//////////////////////////////////////// field 2 of 5
+
+	if( !( ( ledcurrentdigit2 == 5 ) || ( ledcurrentdigit2 == 6 ) ) ) PORTC &= ~ (1<<1);
+
+//////////////////////////////////////// field 3 of 5
+
+	if( !( ( ledcurrentdigit3 == 5 ) || ( ledcurrentdigit3 == 6 ) ) ) PORTC &= ~ (1<<2);
+
+//////////////////////////////////////// field 4 of 5
+
+	if( !( ( ledcurrentdigit4 == 5 ) || ( ledcurrentdigit4 == 6 ) ) ) PORTD &= ~ (1<<0);
+
+//////////////////////////////////////// field 5 of 5
+
+	if( !( ( ledcurrentdigit5 == 5 ) || ( ledcurrentdigit5 == 6 ) ) ) PORTD &= ~ (1<<3);
+
+///////////////////////////////////////////  END of fields
+
+}
+
+void updatecdcommandled1() {
+
+//////////////////////////////////////// field 1 of 5
+
+	if( !( ( ledcurrentdigit1 == 1 ) || ( ledcurrentdigit1 == 4 ) ) ) PORTC &= ~ (1<<0);
+
+//////////////////////////////////////// field 2 of 5
+
+	if( !( ( ledcurrentdigit2 == 1 ) || ( ledcurrentdigit2 == 4 ) ) ) PORTC &= ~ (1<<1);
+
+//////////////////////////////////////// field 3 of 5
+
+	if( !( ( ledcurrentdigit3 == 1 ) || ( ledcurrentdigit3 == 4 ) ) ) PORTC &= ~ (1<<2);
+
+//////////////////////////////////////// field 4 of 5
+
+	if( !( ( ledcurrentdigit4 == 1 ) || ( ledcurrentdigit4 == 4 ) ) ) PORTD &= ~ (1<<0);
+
+//////////////////////////////////////// field 5 of 5
+
+	if( !( ( ledcurrentdigit5 == 1 ) || ( ledcurrentdigit5 == 4 ) ) ) PORTD &= ~ (1<<3);
+
+///////////////////////////////////////////  END of fields
+
+}
+
+
+void updatecdcommandled2() {
+
+//////////////////////////////////////// field 1 of 5 show middle potentiometer position for time
+
+if((pointsfortime > 3) && (ledstep == 2)) PORTC &= ~ (1<<0);
+if((pointsfortime > 2) && (pointsfortime < 6) && (ledstep == 10)) PORTC &= ~ (1<<0);
+
+//////////////////////////////////////// field 2 of 5 show middle potentiometer position for time
+
+if((pointsfortime > 1) && (pointsfortime < 5) && (ledstep == 2)) PORTC &= ~ (1<<1);
+if((pointsfortime > 0) && (pointsfortime < 4 ) && (ledstep == 10 )) PORTC &= ~ (1<<1);
+
+//////////////////////////////////////// field 3 of 5 show middle potentiometer position for date
+
+if((pointsfordate > 3) && (ledstep == 2)) PORTC &= ~ (1<<2);
+if((pointsfordate > 2) && (pointsfordate < 6) && (ledstep == 10)) PORTC &= ~ (1<<2);
+
+//////////////////////////////////////// field 4 of 5 show middle potentiometer position for date
+
+if((pointsfordate > 1) && (pointsfordate < 5) && (ledstep == 2)) PORTD &= ~ (1<<0);
+if((pointsfordate > 0) && (pointsfordate < 4 ) && (ledstep == 10 )) PORTD &= ~ (1<<0);
+
+//////////////////////////////////////// field 5 of 5 this are the two points, used to command displaying year 20xx OFF or 21xx ON
+	
+	if( yearover100detected ) PORTD &= ~ (1<<3);
+
+///////////////////////////////////////////  END of fields
+
+}
+
+
+void updatecdcommandled3() {
+
+//////////////////////////////////////// field 1 of 5
+	
+	if( !( ( ledcurrentdigit1 == 1 ) || ( ledcurrentdigit1 == 2 ) || ( ledcurrentdigit1 == 3 )  || ( ledcurrentdigit1 == 7 ) ) ) PORTC &= ~ (1<<0);
+
+//////////////////////////////////////// field 2 of 5
+
+	if( !( ( ledcurrentdigit2 == 1 ) || ( ledcurrentdigit2 == 2 ) || ( ledcurrentdigit2 == 3 )  || ( ledcurrentdigit2 == 7 ) ) ) PORTC &= ~ (1<<1);
+
+//////////////////////////////////////// field 3 of 5
+
+	if( !( ( ledcurrentdigit3 == 1 ) || ( ledcurrentdigit3 == 2 ) || ( ledcurrentdigit3 == 3 )  || ( ledcurrentdigit3 == 7 ) ) ) PORTC &= ~ (1<<2);
+
+//////////////////////////////////////// field 4 of 5
+
+	if( !( ( ledcurrentdigit4 == 1 ) || ( ledcurrentdigit4 == 2 ) || ( ledcurrentdigit4 == 3 )  || ( ledcurrentdigit4 == 7 ) ) ) PORTD &= ~ (1<<0);
+
+//////////////////////////////////////// field 5 of 5
+
+	if( !( ( ledcurrentdigit5 == 1 ) || ( ledcurrentdigit5 == 2 ) || ( ledcurrentdigit5 == 3 )  || ( ledcurrentdigit5 == 7 ) ) ) PORTD &= ~ (1<<3);
+
+///////////////////////////////////////////  END of fields
+
+}
+
+
+void updatecdcommandled4() {
+
+//////////////////////////////////////// field 1 of 5
+	
+	if( !( ( ledcurrentdigit1 == 0 ) || ( ledcurrentdigit1 == 1 ) || ( ledcurrentdigit1 == 7 ) ) ) PORTC &= ~ (1<<0);
+
+//////////////////////////////////////// field 2 of 5
+
+	if( !( ( ledcurrentdigit2 == 0 ) || ( ledcurrentdigit2 == 1 ) || ( ledcurrentdigit2 == 7 ) ) ) PORTC &= ~ (1<<1);
+
+//////////////////////////////////////// field 3 of 5
+
+	if( !( ( ledcurrentdigit3 == 0 ) || ( ledcurrentdigit3 == 1 ) || ( ledcurrentdigit3 == 7 ) ) ) PORTC &= ~ (1<<2);
+
+//////////////////////////////////////// field 4 of 5
+
+	if( !( ( ledcurrentdigit4 == 0 ) || ( ledcurrentdigit4 == 1 ) || ( ledcurrentdigit4 == 7 ) ) ) PORTD &= ~ (1<<0);
+
+//////////////////////////////////////// field 5 of 5
+
+	if( !( ( ledcurrentdigit5 == 0 ) || ( ledcurrentdigit5 == 1 ) || ( ledcurrentdigit5 == 7 ) ) ) PORTD &= ~ (1<<3);
+
+///////////////////////////////////////////  END of fields
+
+}
+
+
+void updatecdcommandled5() {
+
+//////////////////////////////////////// field 1 of 5
+	
+	if( !( ledcurrentdigit1 == 2 ) ) PORTC &= ~ (1<<0);
+
+//////////////////////////////////////// field 2 of 5
+
+	if( !( ledcurrentdigit2 == 2 ) ) PORTC &= ~ (1<<1);
+
+//////////////////////////////////////// field 3 of 5
+
+	if( !( ledcurrentdigit3 == 2 ) ) PORTC &= ~ (1<<2);
+
+//////////////////////////////////////// field 4 of 5
+
+	if( !( ledcurrentdigit4 == 2 ) ) PORTD &= ~ (1<<0);
+
+//////////////////////////////////////// field 5 of 5
+
+	if( !( ledcurrentdigit5 == 2 ) ) PORTD &= ~ (1<<3);
+
+///////////////////////////////////////////  END of fields
+
+}
+
+
+void updatecdcommandled6() {
+
+//////////////////////////////////////// field 1 of 5
+	
+	if( !( ( ledcurrentdigit1 == 1 ) || ( ledcurrentdigit1 == 4 ) || ( ledcurrentdigit1 == 7 ) ) ) PORTC &= ~ (1<<0);
+
+//////////////////////////////////////// field 2 of 5
+
+	if( !( ( ledcurrentdigit2 == 1 ) || ( ledcurrentdigit2 == 4 ) || ( ledcurrentdigit2 == 7 ) ) ) PORTC &= ~ (1<<1);
+
+//////////////////////////////////////// field 3 of 5
+
+	if( !( ( ledcurrentdigit3 == 1 ) || ( ledcurrentdigit3 == 4 ) || ( ledcurrentdigit3 == 7 ) ) ) PORTC &= ~ (1<<2);
+
+//////////////////////////////////////// field 4 of 5
+
+	if( !( ( ledcurrentdigit4 == 1 ) || ( ledcurrentdigit4 == 4 ) || ( ledcurrentdigit4 == 7 ) ) ) PORTD &= ~ (1<<0);
+
+//////////////////////////////////////// field 5 of 5
+
+	if( !( ( ledcurrentdigit5 == 1 ) || ( ledcurrentdigit5 == 4 ) || ( ledcurrentdigit5 == 7 ) ) ) PORTD &= ~ (1<<3);
+
+///////////////////////////////////////////  END of fields
+
+}
+
+
+void updatecdcommandled7() {
+
+//////////////////////////////////////// field 1 of 5
+	
+	if( ( ledcurrentdigit1 == 0 ) || ( ledcurrentdigit1 == 2 ) || ( ledcurrentdigit1 == 6 ) || ( ledcurrentdigit1 == 8 ) ) PORTC &= ~ (1<<0);
+
+//////////////////////////////////////// field 2 of 5
+
+	if( ( ledcurrentdigit2 == 0 ) || ( ledcurrentdigit2 == 2 ) || ( ledcurrentdigit2 == 6 ) || ( ledcurrentdigit2 == 8 ) ) PORTC &= ~ (1<<1);
+
+//////////////////////////////////////// field 3 of 5
+
+	if( ( ledcurrentdigit3 == 0 ) || ( ledcurrentdigit3 == 2 ) || ( ledcurrentdigit3 == 6 ) || ( ledcurrentdigit3 == 8 ) ) PORTC &= ~ (1<<2);
+
+//////////////////////////////////////// field 4 of 5
+
+	if( ( ledcurrentdigit4 == 0 ) || ( ledcurrentdigit4 == 2 ) || ( ledcurrentdigit4 == 6 ) || ( ledcurrentdigit4 == 8 ) ) PORTD &= ~ (1<<0);
+
+//////////////////////////////////////// field 5 of 5
+
+	if( ( ledcurrentdigit5 == 0 ) || ( ledcurrentdigit5 == 2 ) || ( ledcurrentdigit5 == 6 ) || ( ledcurrentdigit5 == 8 ) ) PORTD &= ~ (1<<3);
+
+///////////////////////////////////////////  END of fields
+
+}
+
+
+void led_update_fields() {
+
+// How it works:
+
+// 1 - set the fast working variables from the RAM interrupt friendly variables
+// 2 - reset all LED flip flops turning them off for 10 ms
+// 3 - through each of 16 steps see fast if LED's from the 5 CD4067BE fields need to be ON
+// 4 - get all CD4067 flip flop setting pins up so another reset will work later
+
+
+// 1 - set fast working variables from RAM interrupt friendly variables
+ledhours = hours;
+ledminutes = minutes;
+ledday = day;
+ledmonth = month;
+ledyear = year;
+
+// 2 - reset all LED flip flops turning them off
+
+  PORTD &= ~ (1<<1);
+  _delay_ms(10);
+  PORTD |= (1<<1);
+
+// 3 - through each of 16 steps see fast if LED's from the 5 CD4067BE fields need to be ON
+
+// ESTABLISHING AN ORDER ACCORDING TO MY 7 SEGMENT DISPLAY PINOUT DIAGRAM SO THAT IT'S EASY TO CONNECT THEM
+
+//            ------------------                           ------------------
+//            |       01       |                           |       09       |
+//            ------------------                           ------------------
+//       ------                  ------              ------                  ------
+//       |    |                  |    |              |    |                  |    |
+//       |    |                  |    |              |    |                  |    |
+//       |    |                  |    |              |    |                  |    |
+//       | 03 |                  | 00 |              | 11 |                  | 08 |
+//       |    |                  |    |              |    |                  |    |
+//       |    |                  |    |              |    |                  |    |
+//       |    |                  |    |              |    |                  |    |
+//       ------                  ------              ------                  ------
+//            ------------------                           ------------------
+//            |       04       |                           |       12       |
+//            ------------------                           ------------------
+//       ------                  ------              ------                  ------
+//       |    |                  |    |              |    |                  |    |
+//       |    |                  |    |              |    |                  |    |
+//       |    |                  |    |              |    |                  |    |
+//       | 07 |                  | 05 |              | 15 |                  | 13 |
+//       |    |                  |    |              |    |                  |    |
+//       |    |                  |    |              |    |                  |    |
+//       |    |                  |    |              |    |                  |    |
+//       ------                  ------              ------                  ------
+//             ------------------      ------              ------------------      ------
+//             |       06       |      | 02 |              |       14       |      | 10 |
+//             ------------------      ------              ------------------      ------
+//
+//      
+
+  ledleftdigit1 = ledhours/10;
+  ledrightdigit1 = ledhours%10;
+  ledleftdigit2 = ledminutes/10;
+  ledrightdigit2 = ledminutes%10;
+  ledleftdigit3 = ledday/10;
+  ledrightdigit3 = ledday%10;
+  ledleftdigit4 = ledmonth/10;
+  ledrightdigit4 = ledmonth%10;
+
+  yearover100detected = 0;
+  if(ledyear > 99)
+	{
+		yearover100detected = 1;
+		ledyear = 100 - ledyear;
+	}
+
+  ledleftdigit5 = ledyear/10;
+  ledrightdigit5 = ledyear%10;
+
+//  For five fields it is required to control 16 LED's
+
+//   five fields = 32 states
+//   total states for all 16 led's = 32 x 16 = 512
+//   So this will require some compile flash memory...
+
+//  Left LED segment = 0 - 7
+
+ledcurrentdigit1 = ledleftdigit1;
+ledcurrentdigit2 = ledleftdigit2;
+ledcurrentdigit3 = ledleftdigit3;
+ledcurrentdigit4 = ledleftdigit4;
+ledcurrentdigit5 = ledleftdigit5;
+  ledstep = 0;
+  updatecdselection();
+  updatecdcommandled0();
+
+
+  ledstep = 1;
+  updatecdselection();
+  updatecdcommandled1();
+
+  ledstep = 2;
+  updatecdselection();
+  updatecdcommandled2();
+
+  ledstep = 3;
+  updatecdselection();
+  updatecdcommandled3();
+
+  ledstep = 4;
+  updatecdselection();
+  updatecdcommandled4();
+
+  ledstep = 5;
+  updatecdselection();
+  updatecdcommandled5();
+
+  ledstep = 6;
+  updatecdselection();
+  updatecdcommandled6();
+
+  ledstep = 7;
+  updatecdselection();
+  updatecdcommandled7();
+
+//  Right LED segment = 8 - 15
+
+ledcurrentdigit1 = ledrightdigit1;
+ledcurrentdigit2 = ledrightdigit2;
+ledcurrentdigit3 = ledrightdigit3;
+ledcurrentdigit4 = ledrightdigit4;
+ledcurrentdigit5 = ledrightdigit5;
+
+  ledstep = 8;
+  updatecdselection();
+  updatecdcommandled0();
+
+  ledstep = 9;
+  updatecdselection();
+  updatecdcommandled1();
+
+  ledstep = 10;
+  updatecdselection();
+  updatecdcommandled2();
+
+  ledstep = 11;
+  updatecdselection();
+  updatecdcommandled3();
+
+  ledstep = 12;
+  updatecdselection();
+  updatecdcommandled4();
+
+  ledstep = 13;
+  updatecdselection();
+  updatecdcommandled5();
+
+  ledstep = 14;
+  updatecdselection();
+  updatecdcommandled6();
+
+  ledstep = 15;
+  updatecdselection();
+  updatecdcommandled7();
+
+
+
+// 4 - get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+
+
+}
+
+//////////////////////////////////////////////////////////////////////
+
+
+
+void potentiometerdecreaseminutes() {
+if(minutes == 0)
+	minutes = 59;
+else
+	minutes--;
+
+}
+
+void potentiometerincreaseminutes() {
+	minutes++;
+	if(minutes > 59) minutes = 0;
+}
+
+void potentiometerdecreasehours() {
+if(hours == 0)
+	hours = 23;
+else
+	hours--;
+
+}
+
+void potentiometerincreasehours() {
+
+	hours++;
+	if(hours > 23) hours = 0;
+
+}
+/////////////////////////////////////////////////////////////////
+
+void potentiometerdecreasedays() {
+	day--;
+	if((month%2 == 1 && month < 8) || (month%2 == 0 && month >= 8)) {
+		if(day < 1) {
+			day = 31;
+		}
+	}
+	else if(month == 2) {
+		if(year%4 == 0) {   // leap year
+			if(day < 1) {
+				day = 29;
+			}
+		}
+		else {  // configuration for february, when it is not a leap year
+			if(day < 1) {
+			day = 28;
+			}
+		}
+	}
+	else {
+			if(day < 1) {
+				day = 30;
+			}
+		}
+
+}
+
+void potentiometerincreasedays() {
+
+	day++;
+	if((month%2 == 1 && month < 8) || (month%2 == 0 && month >= 8)) {
+		if(day > 31) {
+			day = 1;
+		}
+	}
+	else if(month == 2) {
+		if(year%4 == 0) {   // leap year
+			if(day > 29) {
+				day = 1;
+			}
+		}
+		else {  // configuration for february, when it is not a leap year
+			if(day > 28) {
+				day = 1;
+			}
+		}
+	}
+	else {
+		if(day > 30) {
+			day = 1;
+		}
+	}
+
+}
+
+void potentiometerdecreasemonths() {
+	month--;
+	if(month < 1) {
+		month = 12;
+	}
+	if((month%2 == 1 && month < 8) || (month%2 == 0 && month >= 8)) {
+		if(day > 31) {
+			day = 31;
+		}
+	}
+	else if(month == 2) {
+		if(year%4 == 0) {   // leap year
+			if(day > 29) {
+				day = 29;
+			}
+		}
+		else {  // configuration for february, when it is not a leap year
+			if(day > 28) {
+				day = 28;
+			}
+		}
+	}
+	else {
+		if(day > 30) {
+			day = 30;
+		}
+	}
+
+}
+
+
+//////////////////////////////////////////////////////////////
+void potentiometerincreasemonths() {
+
+	month++;
+	if(month > 12) {
+		month = 1;
+	}
+	if((month%2 == 1 && month < 8) || (month%2 == 0 && month >= 8)) {
+		if(day > 31) {
+			day = 31;
+		}
+	}
+	else if(month == 2) {
+		if(year%4 == 0) {   // leap year
+			if(day > 29) {
+				day = 29;
+			}
+		}
+		else {  // configuration for february, when it is not a leap year
+			if(day > 28) {
+				day = 28;
+			}
+		}
+	}
+	else {
+		if(day > 30) {
+			day = 30;
+		}
+	}
+
+}
+
+void potentiometerdecreaseyears() {
+	if(year == 0)
+		year = 199;	// 199 for 256 years - allow 255 reserve
+	else
+		year--;
+	if(month == 2) {
+		if(year%4 == 0) {   // leap year
+			if(day > 29) {
+				day = 29;
+			}
+		}
+		else {  // configuration for february, when it is not a leap year
+			if(day > 28) {
+				day = 28;
+			}
+		}
+	}
+
+}
+
+void potentiometerincreaseyears() {
+
+	year++;
+	if(year > 199) {	// 199 for 256 years - allow 255 reserve
+		year = 19; // year when the watch was made
+	}
+	if(month == 2) {
+		if(year%4 == 0) {   // leap year
+			if(day > 29) {
+				day = 29;
+			}
+		}
+		else {  // configuration for february, when it is not a leap year
+			if(day > 28) {
+				day = 28;
+			}
+		}
+	}
+
+}
+
+
+
+void potentiometercommandtime() {
+
+////////////////////////////////////////////////////////////////////////////////////
+
+//          0 -  31 = 32 steps = fast decrease
+//         36 -  63 = 32 steps = normal decrease
+//         72 -  79 = 32 steps = slow decrease
+
+//        160 - 191 = 32 steps = slow increase
+//        192 - 223 = 32 steps = normal increase
+//        224 - 255 = 32 steps = fast increase
+
+	if(pot_time < 32)
+		{
+			pointsfortime = 3;
+			pot_time_at_zero = 1;
+			potentiometerdecreasehours();
+			led_update_fields();
+		}
+
+	if((pot_time > 31) && (pot_time < 63))
+		{
+			pointsfortime = 2;
+			pot_time_at_zero = 1;
+			potentiometerdecreaseminutes();
+			potentiometerdecreaseminutes();
+			led_update_fields();
+		}
+	if((pot_time > 64) && (pot_time < 80))
+		{
+			pointsfortime = 1;
+			pot_time_at_zero = 1;
+			potentiometerdecreaseminutes();
+			led_update_fields();
+		}
+
+	if((pot_time > 159) && (pot_time < 192))
+		{
+			pointsfortime = 2;
+			pot_time_at_zero = 1;
+			potentiometerincreaseminutes();
+			led_update_fields();
+		}
+	if((pot_time > 191) && (pot_time < 224))
+		{
+			pointsfortime = 1;
+			pot_time_at_zero = 1;
+			potentiometerincreaseminutes();
+			potentiometerincreaseminutes();
+			led_update_fields();
+		}
+
+	if(pot_time > 223)
+		{
+			pointsfortime = 3;
+			pot_time_at_zero = 1;
+			potentiometerincreasehours();
+			led_update_fields();
+		}
+
+_delay_ms(50);
+////////////////////////////////////////////////////////////////////////////////////
+
+}
+
+void potentiometercommanddate() {
+
+////////////////////////////////////////////////////////////////////////////////////
+
+//          0 -  31 = 32 steps = fast decrease
+//         36 -  63 = 32 steps = normal decrease
+//         72 -  79 = 32 steps = slow decrease
+
+//        160 - 191 = 32 steps = slow increase
+//        192 - 223 = 32 steps = normal increase
+//        224 - 255 = 32 steps = fast increase
+
+	if(pot_date < 32)
+		{
+			pointsfordate = 3;
+			pot_date_at_zero = 1;
+			potentiometerdecreaseyears();
+			led_update_fields();
+		}
+
+	if((pot_date > 31) && (pot_date < 63))
+		{
+			pointsfordate = 2;
+			pot_date_at_zero = 1;
+			potentiometerdecreasedays();
+			potentiometerdecreasedays();
+			led_update_fields();
+		}
+	if((pot_date > 64) && (pot_date < 80))
+		{
+			pointsfordate = 1;
+			pot_date_at_zero = 1;
+			potentiometerdecreasedays();
+			led_update_fields();
+		}
+
+	if((pot_date > 159) && (pot_date < 192))
+		{
+			pointsfordate = 2;
+			pot_date_at_zero = 1;
+			potentiometerincreasedays();
+			led_update_fields();
+		}
+	if((pot_date > 191) && (pot_date < 224))
+		{
+			pointsfordate = 1;
+			pot_date_at_zero = 1;
+			potentiometerincreasedays();
+			potentiometerincreasedays();
+			led_update_fields();
+		}
+
+	if(pot_date > 223)
+		{
+			pointsfordate = 3;
+			pot_date_at_zero = 1;
+			potentiometerincreaseyears();
+			led_update_fields();
+		}
+
+_delay_ms(50);
+////////////////////////////////////////////////////////////////////////////////////
+
+}
+
+int main(void) {
+
+	_delay_ms(50); // time to make sure microcontroller power is stabilised (increased to 5V)
+	setup();
+
+	adc_value = 0; 
+	ADCSRA |= (1<<ADSC); //Forever since it is in single conversion mode
+	// Start conversion for the first time for channel 6
+	ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
+	ADMUX &= ~ (1<<MUX0);
+	adc_channel = 6;  // in the while loop know which channel is being read
+	led_update_fields();   // update fields for the first time
+	while(1)
+    	{
+
+			if (!(ADCSRA & (1<<ADSC))) // detect that ADSC is 0 and then do what is in the accolades
+			{
+				// wait until conversion completes; ADSC=0 means Complete
+				adc_value = ADCH;
+				//Store ADC result
+				// Start conversion in loop
+				if (adc_channel == 6)
+					{
+						pot_time = adc_value;
+						// Set ADCSRA Register with division factor 128, channel 7
+						ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0);
+						adc_channel = 7;
+					}
+				if (adc_channel == 7)
+					{
+						pot_date = adc_value;
+						// Set ADCSRA Register with division factor 128, channel 6
+						ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
+						ADMUX &= ~ (1<<MUX0);
+						adc_channel = 6;
+					}
+				_delay_ms(1); // Wait 1 ms for ADMUX to stay set to it's new value ( multiplexer/demultiplexer flip flops maybe not so fast)
+				ADCSRA |= (1<<ADSC); // After setting ADMUX, start ADC read
+			}
+
+
+////////////  ACT ON POTENTIOMETER COMMANDS
+
+//  - 2 pins ADC6 and ADC7 for potentiometer 8 bit field value change 0 to 255, pins are a little harder to connect to:
+//          0 -  31 = 32 steps = fast decrease
+//         36 -  63 = 32 steps = normal decrease
+//         72 -  79 = 32 steps = slow decrease
+
+//         80 - 159 = 80 steps = keep constant but display how far from the middle the potentiometer is
+
+//        14 - 14 - [[[ 24 ]]] - 14 - 14  steps:  80 - 94 - [[[ 108 - 132 ]]] - 146 - 160
+
+//        3|0111 = [ 0 - 79 ]   2|0011 = [ 80 - 93 ]   1|0001 = [ 94 - 107 ]   0|0000 = [[[ 108 - 131 ]]]   6|1000 = [ 132 - 145 ]   5|1100 = [ 146 - 159 ]   4|1110 = [ 160 - 255 ]
+
+//        160 - 191 = 32 steps = slow increase
+//        192 - 223 = 32 steps = normal increase
+//        224 - 255 = 32 steps = fast increase
+
+	if(pot_time < 80)
+		{
+			pointsfortime = 3;
+			pot_time_at_zero = 1;
+			potentiometercommandtime();
+			led_update_fields();
+		}
+
+	if((pot_time > 79) && (pot_time < 94))
+		{
+			pointsfortime = 2;
+			pot_time_at_zero = 1;
+			led_update_fields();
+		}
+	if((pot_time > 93) && (pot_time < 108))
+		{
+			pointsfortime = 1;
+			pot_time_at_zero = 1;
+			led_update_fields();
+		}
+	if((pot_time > 107) && (pot_time < 132))
+		{
+			pointsfortime = 0;
+			if(pot_time_at_zero == 1)
+			{
+				pot_time_at_zero = 0;
+				led_update_fields();
+			}
+		}
+	if((pot_time > 131) && (pot_time < 146))
+		{
+			pointsfortime = 6;
+			pot_time_at_zero = 1;
+			led_update_fields();
+		}
+	if((pot_time > 145) && (pot_time < 160))
+		{
+			pointsfortime = 5;
+			pot_time_at_zero = 1;
+			led_update_fields();
+		}
+	if(pot_time > 159)
+		{
+			pointsfortime = 4;
+			pot_time_at_zero = 1;
+			potentiometercommandtime();
+			led_update_fields();
+		}
+
+	if(pot_date < 80)
+		{
+			pointsfordate = 3;
+			pot_date_at_zero = 1;
+			potentiometercommanddate();
+			led_update_fields();
+		}
+
+	if((pot_date > 79) && (pot_date < 94))
+		{
+			pointsfordate = 2;
+			pot_date_at_zero = 1;
+			led_update_fields();
+		}
+	if((pot_date > 93) && (pot_date < 108))
+		{
+			pointsfortime = 1;
+			pot_time_at_zero = 1;
+			led_update_fields();
+		}
+	if((pot_date > 107) && (pot_date < 132))
+		{
+			pointsfordate = 0;
+			if(pot_date_at_zero == 1)
+			{
+				pot_date_at_zero = 0;
+				led_update_fields();
+			}
+		}
+	if((pot_date > 131) && (pot_date < 146))
+		{
+			pointsfordate = 6;
+			pot_date_at_zero = 1;
+			led_update_fields();
+		}
+	if((pot_date > 145) && (pot_date < 160))
+		{
+			pointsfordate = 5;
+			pot_date_at_zero = 1;
+			led_update_fields();
+		}
+	if(pot_date > 159)
+		{
+			pointsfordate = 4;
+			pot_date_at_zero = 1;
+			potentiometercommanddate();
+			led_update_fields();
+		}
+
+
+
+//	if((pot_date < 64) || (pot_date > 192))
+//		{
+//			pointsfordate = 0;
+//		}
+
+///////////  ACT ON INTERRUPT DETECTED AT THE PASS OF A MINUTE
+
+	if((interruptdetected == 1) && (seconds == 0))
+		{
+			interruptdetected = 0;
+			led_update_fields();
+		}
+
+
+	_delay_ms(50);		//  simulate slow / lazy program ( so the microcontroller does not get hot and decreases poissible battery lifetime ) 
+
+
+	} // acolade from while(1)
+
+	return 0;
+}
+
+/*Timer Counter 1 Compare Match A Interrupt Service Routine/Interrupt Handler*/
+ISR(TIMER1_COMPA_vect)
+{
+	interruptdetected = 1;
+	seconds++;
+	if(pot_time_at_zero == 1) seconds = 0; // when potentiometer not at middle reset seconds to zero
+	if(seconds > 59)
+	{
+		seconds = 0;
+		minutes++;
+	}
+	if(minutes > 59)
+	{
+		minutes = 0;
+		hours++;		
+	}
+	if(hours > 23) {
+		hours = 0;
+		day++;
+	}
+	if((month%2 == 1 && month < 8) || (month%2 == 0 && month >= 8)) {
+		if(day > 31) {
+			day = 1;
+			month++;
+		}
+	}
+	else if(month == 2) {
+		if(year%4 == 0) {   // leap year
+			
+			if(day > 29) {
+				day = 1;
+				month++;
+			}
+		}
+		else {  // configuration for february, when it is not a leap year
+			if(day > 28) {
+				day = 1;
+				month++;
+			}
+		}
+	}
+	else {
+		if(day > 30) {
+			day = 1;
+			month++;
+		}
+	}
+	if(month > 12) {
+		month = 1;
+		year++;
+	}
+	if(year > 199) {	// 199 years - allow 255 reserve
+		year = 19; // year when the watch was made
+	}
+}
