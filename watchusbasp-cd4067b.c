@@ -471,6 +471,9 @@ void setup() {
 	// setting as ignored input with pull up so no interrupt microcontriller hangs
 	DDRD &= ~ (1 << 2);
 	PORTD |= (1 << 2);
+	// setting B0 as input and ignoring it with no pull up
+	DDRB &= ~ (1<<0); // input
+	PORTB &= ~ (1<<0); // no pull up
 	// and setting B1 that is connected to D2 as input and ignoring it with no pull up
 	DDRB &= ~ (1<<1); // input
 	PORTB &= ~ (1<<1); // no pull up
