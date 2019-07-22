@@ -499,12 +499,14 @@ pot_date = 128;
 
 void updatecdselection() {
 
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+//  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+//  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+
   _delay_ms(1);  // allow time for CD4067BE flip flops speed
   PORTB = (ledstep<<2);	// select CD4067BE channel
   _delay_ms(1);  // allow time for CD4067BE flip flops speed
-  // a total of 16 x 2 = 32 ms it is very good
+  // a total of 16 x 2 = 32 ms this is very good
+
 }
 
 void updatecdcommandled0() {
@@ -531,6 +533,13 @@ void updatecdcommandled0() {
 
 ///////////////////////////////////////////  END of fields
 
+  _delay_ms(2); // time to switch flip flop
+
+// get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+
 }
 
 void updatecdcommandled1() {
@@ -556,6 +565,13 @@ void updatecdcommandled1() {
 	if( !( ( ledcurrentdigit5 == 1 ) || ( ledcurrentdigit5 == 4 ) ) ) PORTD &= ~ (1<<3);
 
 ///////////////////////////////////////////  END of fields
+
+  _delay_ms(2); // time to switch flip flop
+
+// get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
 
 }
 
@@ -588,6 +604,13 @@ if((pointsfordate > 0) && (pointsfordate < 4 ) && (ledstep == 10 )) PORTD &= ~ (
 
 ///////////////////////////////////////////  END of fields
 
+  _delay_ms(2); // time to switch flip flop
+
+// get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+
 }
 
 
@@ -614,6 +637,13 @@ void updatecdcommandled3() {
 	if( !( ( ledcurrentdigit5 == 1 ) || ( ledcurrentdigit5 == 2 ) || ( ledcurrentdigit5 == 3 )  || ( ledcurrentdigit5 == 7 ) ) ) PORTD &= ~ (1<<3);
 
 ///////////////////////////////////////////  END of fields
+
+  _delay_ms(2); // time to switch flip flop
+
+// get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
 
 }
 
@@ -642,6 +672,13 @@ void updatecdcommandled4() {
 
 ///////////////////////////////////////////  END of fields
 
+  _delay_ms(2); // time to switch flip flop
+
+// get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+
 }
 
 
@@ -668,6 +705,13 @@ void updatecdcommandled5() {
 	if( !( ledcurrentdigit5 == 2 ) ) PORTD &= ~ (1<<3);
 
 ///////////////////////////////////////////  END of fields
+
+  _delay_ms(2); // time to switch flip flop
+
+// get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
 
 }
 
@@ -696,6 +740,14 @@ void updatecdcommandled6() {
 
 ///////////////////////////////////////////  END of fields
 
+  _delay_ms(2); // time to switch flip flop
+
+// get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+
+
 }
 
 
@@ -723,6 +775,14 @@ void updatecdcommandled7() {
 
 ///////////////////////////////////////////  END of fields
 
+
+  _delay_ms(2); // time to switch flip flop
+
+// get all CD4067 flip flop setting pins up so another reset will work later
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+
 }
 
 
@@ -733,7 +793,7 @@ void led_update_fields() {
 // 1 - set the fast working variables from the RAM interrupt friendly variables
 // 2 - reset all LED flip flops turning them off for 10 ms
 // 3 - through each of 16 steps see fast if LED's from the 5 CD4067BE fields need to be ON
-// 4 - get all CD4067 flip flop setting pins up so another reset will work later
+// all from 3 have at the end get all CD4067 flip flop setting pins up so another reset will work later
 
 
 // 1 - set fast working variables from RAM interrupt friendly variables
@@ -887,14 +947,6 @@ ledcurrentdigit5 = ledrightdigit5;
   ledstep = 15;
   updatecdselection();
   updatecdcommandled7();
-
-
-
-// 4 - get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
-
 
 }
 
@@ -1050,7 +1102,7 @@ void potentiometerincreasemonths() {
 }
 
 void potentiometerdecreaseyears() {
-	if(year == 0)
+	if(year < 19) // year when the watch was made
 		year = 199;	// 199 for 256 years - allow 255 reserve
 	else
 		year--;
@@ -1224,7 +1276,7 @@ _delay_ms(50);
 
 int main(void) {
 
-	_delay_ms(50); // time to make sure microcontroller power is stabilised (increased to 5V)
+	_delay_ms(100); // time to make sure microcontroller power is stabilised (increased to 5V)
 	setup();
 
 	adc_value = 0; 
