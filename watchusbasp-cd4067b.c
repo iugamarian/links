@@ -1164,7 +1164,7 @@ void potentiometercommandtime() {
 			pointsfortime = 3;
 			pot_time_at_zero = 1;
 			potentiometerdecreasehours();
-			led_update_fields();
+			//led_update_fields();
 		}
 
 	if((pot_time > 31) && (pot_time < 63))
@@ -1173,14 +1173,14 @@ void potentiometercommandtime() {
 			pot_time_at_zero = 1;
 			potentiometerdecreaseminutes();
 			potentiometerdecreaseminutes();
-			led_update_fields();
+			//led_update_fields();
 		}
 	if((pot_time > 64) && (pot_time < 80))
 		{
 			pointsfortime = 1;
 			pot_time_at_zero = 1;
 			potentiometerdecreaseminutes();
-			led_update_fields();
+			//led_update_fields();
 		}
 
 	if((pot_time > 159) && (pot_time < 192))
@@ -1188,7 +1188,7 @@ void potentiometercommandtime() {
 			pointsfortime = 2;
 			pot_time_at_zero = 1;
 			potentiometerincreaseminutes();
-			led_update_fields();
+			//led_update_fields();
 		}
 	if((pot_time > 191) && (pot_time < 224))
 		{
@@ -1196,7 +1196,7 @@ void potentiometercommandtime() {
 			pot_time_at_zero = 1;
 			potentiometerincreaseminutes();
 			potentiometerincreaseminutes();
-			led_update_fields();
+			//led_update_fields();
 		}
 
 	if(pot_time > 223)
@@ -1204,10 +1204,10 @@ void potentiometercommandtime() {
 			pointsfortime = 3;
 			pot_time_at_zero = 1;
 			potentiometerincreasehours();
-			led_update_fields();
+			//led_update_fields();
 		}
 
-_delay_ms(50);
+_delay_ms(100);
 ////////////////////////////////////////////////////////////////////////////////////
 
 }
@@ -1229,23 +1229,22 @@ void potentiometercommanddate() {
 			pointsfordate = 3;
 			pot_date_at_zero = 1;
 			potentiometerdecreaseyears();
-			led_update_fields();
+			//led_update_fields();
 		}
 
 	if((pot_date > 31) && (pot_date < 63))
 		{
 			pointsfordate = 2;
 			pot_date_at_zero = 1;
-			potentiometerdecreasedays();
-			potentiometerdecreasedays();
-			led_update_fields();
+			potentiometerdecreasemonths();
+			//led_update_fields();
 		}
 	if((pot_date > 64) && (pot_date < 80))
 		{
 			pointsfordate = 1;
 			pot_date_at_zero = 1;
 			potentiometerdecreasedays();
-			led_update_fields();
+			//led_update_fields();
 		}
 
 	if((pot_date > 159) && (pot_date < 192))
@@ -1253,15 +1252,14 @@ void potentiometercommanddate() {
 			pointsfordate = 2;
 			pot_date_at_zero = 1;
 			potentiometerincreasedays();
-			led_update_fields();
+			//led_update_fields();
 		}
 	if((pot_date > 191) && (pot_date < 224))
 		{
 			pointsfordate = 1;
 			pot_date_at_zero = 1;
-			potentiometerincreasedays();
-			potentiometerincreasedays();
-			led_update_fields();
+			potentiometerincreasemonths();
+			//led_update_fields();
 		}
 
 	if(pot_date > 223)
@@ -1269,10 +1267,10 @@ void potentiometercommanddate() {
 			pointsfordate = 3;
 			pot_date_at_zero = 1;
 			potentiometerincreaseyears();
-			led_update_fields();
+			//led_update_fields();
 		}
 
-_delay_ms(50);
+_delay_ms(100);
 ////////////////////////////////////////////////////////////////////////////////////
 
 }
@@ -1283,11 +1281,12 @@ int main(void) {
 	setup();
 
 	adc_value = 0; 
-	ADCSRA |= (1<<ADSC); //Forever since it is in single conversion mode
+	//ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
+	//ADMUX &= ~ (1<<MUX0);
+	ADMUX |= 0b01100110;    //Channel 6
+	ADCSRA |= (1<<ADSC); After setting ADMUX, start ADC read
 	// Start conversion for the first time for channel 6
-	ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
-	ADMUX &= ~ (1<<MUX0);
-	adc_channel = 6;  // in the while loop know which channel is being read
+	adc_channel = 6;  // in the while loop know which channel is being read first
 	led_update_fields();   // update fields for the first time
 	while(1)
     	{
@@ -1302,18 +1301,28 @@ int main(void) {
 					{
 						pot_time = adc_value;
 						// Set ADCSRA Register with division factor 128, channel 7
-						ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0);
+						//ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0);
+
+						// https://www.avrfreaks.net/forum/atmega168-read-zero-adc6-and-adc7
+						// [REFS1] [REFS0] [ADLAR] [  –  ] [MUX3] [MUX2] [MUX1] [MUX0]
+						// all zero initially
+						// Bit 4 – Res: Reserved Bit
+						// This bit is an unused bit in the Atmel ® ATmega328P, and will always read as zero.
+						//ADMUX &= 0b11110000;    //ADC channel selection.
+						ADMUX |= 0b01100111;    //Channel 7
 						adc_channel = 7;
 					}
 				if (adc_channel == 7)
 					{
 						pot_date = adc_value;
 						// Set ADCSRA Register with division factor 128, channel 6
-						ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
-						ADMUX &= ~ (1<<MUX0);
+						//ADMUX &= ~ (1<<MUX0);
+						//ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
+						//ADMUX &= 0b11110000;    //ADC channel selection.
+						ADMUX |= 0b01100110;    //Channel 6
 						adc_channel = 6;
 					}
-				_delay_ms(1); // Wait 1 ms for ADMUX to stay set to it's new value ( multiplexer/demultiplexer flip flops maybe not so fast)
+				_delay_ms(10); // Wait 10 ms for ADMUX to stay set to it's new value ( multiplexer/demultiplexer flip flops maybe not so fast)
 				ADCSRA |= (1<<ADSC); // After setting ADMUX, start ADC read
 			}
 
@@ -1327,7 +1336,7 @@ int main(void) {
 
 //         80 - 159 = 80 steps = keep constant but display how far from the middle the potentiometer is
 
-//        14 - 14 - [[[ 24 ]]] - 14 - 14  steps:  80 - 94 - [[[ 108 - 132 ]]] - 146 - 160
+//        10 - 10 - [[[ 40 ]]] - 10 - 10  steps:  80 - 90 - [[[ 100 - 140 ]]] - 150 - 160
 
 //        3|0111 = [ 0 - 79 ]   2|0011 = [ 80 - 93 ]   1|0001 = [ 94 - 107 ]   0|0000 = [[[ 108 - 131 ]]]   6|1000 = [ 132 - 145 ]   5|1100 = [ 146 - 159 ]   4|1110 = [ 160 - 255 ]
 
@@ -1343,19 +1352,19 @@ int main(void) {
 			led_update_fields();
 		}
 
-	if((pot_time > 79) && (pot_time < 94))
+	if((pot_time > 79) && (pot_time < 90))
 		{
 			pointsfortime = 2;
 			pot_time_at_zero = 1;
 			led_update_fields();
 		}
-	if((pot_time > 93) && (pot_time < 108))
+	if((pot_time > 89) && (pot_time < 100))
 		{
 			pointsfortime = 1;
 			pot_time_at_zero = 1;
 			led_update_fields();
 		}
-	if((pot_time > 107) && (pot_time < 132))
+	if((pot_time > 99) && (pot_time < 140))
 		{
 			pointsfortime = 0;
 			if(pot_time_at_zero == 1)
@@ -1364,13 +1373,13 @@ int main(void) {
 				led_update_fields();
 			}
 		}
-	if((pot_time > 131) && (pot_time < 146))
+	if((pot_time > 139) && (pot_time < 150))
 		{
 			pointsfortime = 6;
 			pot_time_at_zero = 1;
 			led_update_fields();
 		}
-	if((pot_time > 145) && (pot_time < 160))
+	if((pot_time > 149) && (pot_time < 160))
 		{
 			pointsfortime = 5;
 			pot_time_at_zero = 1;
@@ -1384,6 +1393,20 @@ int main(void) {
 			led_update_fields();
 		}
 
+//          0 -  31 = 32 steps = fast decrease
+//         36 -  63 = 32 steps = normal decrease
+//         72 -  79 = 32 steps = slow decrease
+
+//         80 - 159 = 80 steps = keep constant but display how far from the middle the potentiometer is
+
+//        10 - 10 - [[[ 40 ]]] - 10 - 10  steps:  80 - 90 - [[[ 100 - 140 ]]] - 150 - 160
+
+//        3|0111 = [ 0 - 79 ]   2|0011 = [ 80 - 93 ]   1|0001 = [ 94 - 107 ]   0|0000 = [[[ 108 - 131 ]]]   6|1000 = [ 132 - 145 ]   5|1100 = [ 146 - 159 ]   4|1110 = [ 160 - 255 ]
+
+//        160 - 191 = 32 steps = slow increase
+//        192 - 223 = 32 steps = normal increase
+//        224 - 255 = 32 steps = fast increase
+
 	if(pot_date < 80)
 		{
 			pointsfordate = 3;
@@ -1392,19 +1415,19 @@ int main(void) {
 			led_update_fields();
 		}
 
-	if((pot_date > 79) && (pot_date < 94))
+	if((pot_date > 79) && (pot_date < 90))
 		{
 			pointsfordate = 2;
 			pot_date_at_zero = 1;
 			led_update_fields();
 		}
-	if((pot_date > 93) && (pot_date < 108))
+	if((pot_date > 89) && (pot_date < 100))
 		{
 			pointsfortime = 1;
 			pot_time_at_zero = 1;
 			led_update_fields();
 		}
-	if((pot_date > 107) && (pot_date < 132))
+	if((pot_date > 99) && (pot_date < 140))
 		{
 			pointsfordate = 0;
 			if(pot_date_at_zero == 1)
@@ -1413,13 +1436,13 @@ int main(void) {
 				led_update_fields();
 			}
 		}
-	if((pot_date > 131) && (pot_date < 146))
+	if((pot_date > 139) && (pot_date < 150))
 		{
 			pointsfordate = 6;
 			pot_date_at_zero = 1;
 			led_update_fields();
 		}
-	if((pot_date > 145) && (pot_date < 160))
+	if((pot_date > 149) && (pot_date < 160))
 		{
 			pointsfordate = 5;
 			pot_date_at_zero = 1;
@@ -1449,7 +1472,7 @@ int main(void) {
 		}
 
 
-	_delay_ms(50);		//  simulate slow / lazy program ( so the microcontroller does not get hot and decreases poissible battery lifetime ) 
+	_delay_ms(250);		//  simulate slow / lazy program ( so the microcontroller does not get hot and decreases poissible battery lifetime ) 
 
 
 	} // acolade from while(1)
