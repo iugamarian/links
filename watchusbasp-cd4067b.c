@@ -444,7 +444,6 @@ void setup() {
 /////////////// SET MICROCONTROLLER REGISTERS
 
 	// Variable to hold ADC result
-	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);
 	TCCR1B |= (1<<WGM12); // clear timer on compare (when OCR1A is reached, automatically go to 0)
 
 //  Also check #define F_CPU clocks
@@ -1295,7 +1294,9 @@ int main(void) {
 			if (!(ADCSRA & (1<<ADSC))) // detect that ADSC is 0 and then do what is in the accolades
 			{
 				// wait until conversion completes; ADSC=0 means Complete
+				_delay_ms(1);
 				adc_value = ADCH;
+				_delay_ms(1);
 				//Store ADC result
 				// Start conversion in loop
 				if (adc_channel == 6)
@@ -1309,7 +1310,11 @@ int main(void) {
 						// all zero initially
 						// Bit 4 – Res: Reserved Bit
 						// This bit is an unused bit in the Atmel ® ATmega328P, and will always read as zero.
-						//ADMUX &= 0b11110000;    //ADC channel selection.
+						//ADMUX &= 0b11110000;    //ADC channel selection can be made
+						ADCSRA = 0; // Turn off ADC so that new channel selection
+						_delay_ms(5);
+						ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);	// Turn on ADC
+						_delay_ms(5);
 						ADMUX |= 0b01100111;    //Channel 7
 						adc_channel = 7;
 					}
@@ -1320,6 +1325,10 @@ int main(void) {
 						//ADMUX &= ~ (1<<MUX0);
 						//ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
 						//ADMUX &= 0b11110000;    //ADC channel selection.
+						ADCSRA = 0; // Turn off ADC so that new channel selection
+						_delay_ms(5);
+						ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);	// Turn on ADC
+						_delay_ms(5);
 						ADMUX |= 0b01100110;    //Channel 6
 						adc_channel = 6;
 					}
