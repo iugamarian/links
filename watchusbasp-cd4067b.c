@@ -1284,6 +1284,7 @@ int main(void) {
 	//ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
 	//ADMUX &= ~ (1<<MUX0);
 	ADMUX |= 0b01100110;    //Channel 6
+	_delay_ms(10); // Wait 10 ms for ADMUX to stay set to it's new value ( multiplexer/demultiplexer flip flops maybe not so fast)
 	ADCSRA |= (1<<ADSC); After setting ADMUX, start ADC read
 	// Start conversion for the first time for channel 6
 	adc_channel = 6;  // in the while loop know which channel is being read first
