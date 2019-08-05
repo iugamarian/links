@@ -405,7 +405,6 @@ static volatile unsigned char seconds = 0;
 static volatile unsigned char day = 11;
 static volatile unsigned char month = 07;
 static volatile unsigned char year = 19; // up to 254 - allow 255 reserve, display can show up to 199
-static volatile unsigned char adc_value = 0;
 static volatile unsigned char pot_value = 0;
 static volatile unsigned char pot_value_at_zero = 1;
 static volatile unsigned char interruptdetected = 0;
@@ -492,7 +491,6 @@ void setup() {
 /////////////// SET VARIABLES THAT ARE NOT READ YET TO KEEP CONSTANT VALUE
 
 pot_value = 128;
-pot_value = 128;
 
 }
 
@@ -532,7 +530,7 @@ void updatecdcommandled0() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(2); // time to switch flip flop
+  _delay_ms(1); // time to switch flip flop
 
 // get all CD4067 flip flop setting pins up so another reset will work later
 
@@ -565,7 +563,7 @@ void updatecdcommandled1() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(2); // time to switch flip flop
+  _delay_ms(1); // time to switch flip flop
 
 // get all CD4067 flip flop setting pins up so another reset will work later
 
@@ -607,7 +605,7 @@ if((pointsfordate == 6) && (ledstep == 2)) PORTD &= ~ (1<<0);	     // xx10
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(2); // time to switch flip flop
+  _delay_ms(1); // time to switch flip flop
 
 // get all CD4067 flip flop setting pins up so another reset will work later
 
@@ -641,7 +639,7 @@ void updatecdcommandled3() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(2); // time to switch flip flop
+  _delay_ms(1); // time to switch flip flop
 
 // get all CD4067 flip flop setting pins up so another reset will work later
 
@@ -675,7 +673,7 @@ void updatecdcommandled4() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(2); // time to switch flip flop
+  _delay_ms(1); // time to switch flip flop
 
 // get all CD4067 flip flop setting pins up so another reset will work later
 
@@ -709,7 +707,7 @@ void updatecdcommandled5() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(2); // time to switch flip flop
+  _delay_ms(1); // time to switch flip flop
 
 // get all CD4067 flip flop setting pins up so another reset will work later
 
@@ -743,7 +741,7 @@ void updatecdcommandled6() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(2); // time to switch flip flop
+  _delay_ms(1); // time to switch flip flop
 
 // get all CD4067 flip flop setting pins up so another reset will work later
 
@@ -779,7 +777,7 @@ void updatecdcommandled7() {
 ///////////////////////////////////////////  END of fields
 
 
-  _delay_ms(2); // time to switch flip flop
+  _delay_ms(1); // time to switch flip flop
 
 // get all CD4067 flip flop setting pins up so another reset will work later
 
@@ -809,7 +807,7 @@ ledyear = year;
 // 2 - reset all LED flip flops turning them off
 
   PORTD &= ~ (1<<1);
-  _delay_ms(10);
+  _delay_ms(2);
   PORTD |= (1<<1);
 
 // 3 - through each of 16 steps see fast if LED's from the 5 CD4067BE fields need to be ON
@@ -1148,9 +1146,7 @@ void potentiometerincreaseyears() {
 int main(void) {
 
 	_delay_ms(100); // time to make sure microcontroller power is stabilised (increased to 5V)
-	setup();
-
-	adc_value = 0;	
+	setup();	
 	_delay_ms(5);
 	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);	// Turn on ADC
 	_delay_ms(5);
@@ -1166,9 +1162,8 @@ int main(void) {
 		{
 			// avoid until conversion completes; ADSC=0 means Complete
 			_delay_ms(5);
-			adc_value = ADCH;
+			pot_value = ADCH;
 			_delay_ms(5);
-			pot_value = adc_value;
 			ADCSRA |= (1<<ADSC); // After setting ADMUX, start ADC read
 		}
 
