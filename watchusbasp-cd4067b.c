@@ -406,11 +406,8 @@ static volatile unsigned char day = 11;
 static volatile unsigned char month = 07;
 static volatile unsigned char year = 19; // up to 254 - allow 255 reserve, display can show up to 199
 static volatile unsigned char adc_value = 0;
-static volatile unsigned char adc_channel = 0;
-static volatile unsigned char pot_time = 0;
-static volatile unsigned char pot_date = 0;
-static volatile unsigned char pot_time_at_zero = 1;
-static volatile unsigned char pot_date_at_zero = 1;
+static volatile unsigned char pot_value = 0;
+static volatile unsigned char pot_value_at_zero = 1;
 static volatile unsigned char interruptdetected = 0;
 // need to be fast here, so no RAM usage if possible
 unsigned char ledstep = 0;
@@ -494,8 +491,8 @@ void setup() {
 
 /////////////// SET VARIABLES THAT ARE NOT READ YET TO KEEP CONSTANT VALUE
 
-pot_time = 128;
-pot_date = 128;
+pot_value = 128;
+pot_value = 128;
 
 }
 
@@ -580,25 +577,29 @@ void updatecdcommandled1() {
 
 void updatecdcommandled2() {
 
-//////////////////////////////////////// field 1 of 5 show middle potentiometer position for time
 
-if((pointsfortime > 3) && (ledstep == 2)) PORTC &= ~ (1<<0);
-if((pointsfortime > 2) && (pointsfortime < 6) && (ledstep == 10)) PORTC &= ~ (1<<0);
+//        106 - 149 = 43 steps = keep constant but display how far from the middle the potentiometer is
 
-//////////////////////////////////////// field 2 of 5 show middle potentiometer position for time
+//        3 - 3 - [[[ 31 ]]] - 3 - 3  steps:  106 - 109 - [[[ 112 - 143 ]]] - 146 - 149
 
-if((pointsfortime > 1) && (pointsfortime < 5) && (ledstep == 2)) PORTC &= ~ (1<<1);
-if((pointsfortime > 0) && (pointsfortime < 4 ) && (ledstep == 10 )) PORTC &= ~ (1<<1);
 
-//////////////////////////////////////// field 3 of 5 show middle potentiometer position for date
+//////////////////////////////////////// show potentiometer position for time
 
-if((pointsfordate > 3) && (ledstep == 2)) PORTC &= ~ (1<<2);
-if((pointsfordate > 2) && (pointsfordate < 6) && (ledstep == 10)) PORTC &= ~ (1<<2);
+if((pointsfortime == 0) && (ledstep == 10)) PORTC &= ~ (1<<0); 	     // 01xx
+if(pointsfortime > 4) PORTC &= ~ (1<<0);			     // 11xx
+if((pointsfortime == 4 ) && (ledstep == 2)) PORTC &= ~ (1<<0);	     // 10xx
+if((pointsfortime == 2) && (ledstep == 10)) PORTC &= ~ (1<<1); 	     // xx01
+if((pointsfortime < 2)) PORTC &= ~ (1<<1); 			     // xx11
+if((pointsfortime == 6) && (ledstep == 2)) PORTC &= ~ (1<<1);	     // xx10
 
-//////////////////////////////////////// field 4 of 5 show middle potentiometer position for date
+//////////////////////////////////////// show middle potentiometer position for date
 
-if((pointsfordate > 1) && (pointsfordate < 5) && (ledstep == 2)) PORTD &= ~ (1<<0);
-if((pointsfordate > 0) && (pointsfordate < 4 ) && (ledstep == 10 )) PORTD &= ~ (1<<0);
+if((pointsfordate == 0) && (ledstep == 10)) PORTC &= ~ (1<<2); 	     // 01xx
+if(pointsfordate > 4) PORTC &= ~ (1<<2);			     // 11xx
+if((pointsfordate == 4 ) && (ledstep == 2)) PORTC &= ~ (1<<2);	     // 10xx
+if((pointsfordate == 2) && (ledstep == 10)) PORTD &= ~ (1<<0); 	     // xx01
+if((pointsfordate < 2)) PORTD &= ~ (1<<0); 			     // xx11
+if((pointsfordate == 6) && (ledstep == 2)) PORTD &= ~ (1<<0);	     // xx10
 
 //////////////////////////////////////// field 5 of 5 this are the two points, used to command displaying year 20xx OFF or 21xx ON
 	
@@ -1144,334 +1145,191 @@ void potentiometerincreaseyears() {
 
 }
 
-
-
-void potentiometercommandtime() {
-
-////////////////////////////////////////////////////////////////////////////////////
-
-//          0 -  31 = 32 steps = fast decrease
-//         36 -  63 = 32 steps = normal decrease
-//         72 -  79 = 32 steps = slow decrease
-
-//        160 - 191 = 32 steps = slow increase
-//        192 - 223 = 32 steps = normal increase
-//        224 - 255 = 32 steps = fast increase
-
-	if(pot_time < 32)
-		{
-			pointsfortime = 3;
-			pot_time_at_zero = 1;
-			potentiometerdecreasehours();
-			//led_update_fields();
-		}
-
-	if((pot_time > 31) && (pot_time < 63))
-		{
-			pointsfortime = 2;
-			pot_time_at_zero = 1;
-			potentiometerdecreaseminutes();
-			potentiometerdecreaseminutes();
-			//led_update_fields();
-		}
-	if((pot_time > 64) && (pot_time < 80))
-		{
-			pointsfortime = 1;
-			pot_time_at_zero = 1;
-			potentiometerdecreaseminutes();
-			//led_update_fields();
-		}
-
-	if((pot_time > 159) && (pot_time < 192))
-		{
-			pointsfortime = 2;
-			pot_time_at_zero = 1;
-			potentiometerincreaseminutes();
-			//led_update_fields();
-		}
-	if((pot_time > 191) && (pot_time < 224))
-		{
-			pointsfortime = 1;
-			pot_time_at_zero = 1;
-			potentiometerincreaseminutes();
-			potentiometerincreaseminutes();
-			//led_update_fields();
-		}
-
-	if(pot_time > 223)
-		{
-			pointsfortime = 3;
-			pot_time_at_zero = 1;
-			potentiometerincreasehours();
-			//led_update_fields();
-		}
-
-_delay_ms(100);
-////////////////////////////////////////////////////////////////////////////////////
-
-}
-
-void potentiometercommanddate() {
-
-////////////////////////////////////////////////////////////////////////////////////
-
-//          0 -  31 = 32 steps = fast decrease
-//         36 -  63 = 32 steps = normal decrease
-//         72 -  79 = 32 steps = slow decrease
-
-//        160 - 191 = 32 steps = slow increase
-//        192 - 223 = 32 steps = normal increase
-//        224 - 255 = 32 steps = fast increase
-
-	if(pot_date < 32)
-		{
-			pointsfordate = 3;
-			pot_date_at_zero = 1;
-			potentiometerdecreaseyears();
-			//led_update_fields();
-		}
-
-	if((pot_date > 31) && (pot_date < 63))
-		{
-			pointsfordate = 2;
-			pot_date_at_zero = 1;
-			potentiometerdecreasemonths();
-			//led_update_fields();
-		}
-	if((pot_date > 64) && (pot_date < 80))
-		{
-			pointsfordate = 1;
-			pot_date_at_zero = 1;
-			potentiometerdecreasedays();
-			//led_update_fields();
-		}
-
-	if((pot_date > 159) && (pot_date < 192))
-		{
-			pointsfordate = 2;
-			pot_date_at_zero = 1;
-			potentiometerincreasedays();
-			//led_update_fields();
-		}
-	if((pot_date > 191) && (pot_date < 224))
-		{
-			pointsfordate = 1;
-			pot_date_at_zero = 1;
-			potentiometerincreasemonths();
-			//led_update_fields();
-		}
-
-	if(pot_date > 223)
-		{
-			pointsfordate = 3;
-			pot_date_at_zero = 1;
-			potentiometerincreaseyears();
-			//led_update_fields();
-		}
-
-_delay_ms(100);
-////////////////////////////////////////////////////////////////////////////////////
-
-}
-
 int main(void) {
 
 	_delay_ms(100); // time to make sure microcontroller power is stabilised (increased to 5V)
 	setup();
 
-	adc_value = 0; 
-	//ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
-	//ADMUX &= ~ (1<<MUX0);
+	adc_value = 0;	
+	_delay_ms(5);
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);	// Turn on ADC
+	_delay_ms(5);
 	ADMUX |= 0b01100110;    //Channel 6
-	_delay_ms(10); // Wait 10 ms for ADMUX to stay set to it's new value ( multiplexer/demultiplexer flip flops maybe not so fast)
-	ADCSRA |= (1<<ADSC); // After setting ADMUX, start ADC read
-	// Start conversion for the first time for channel 6
-	adc_channel = 6;  // in the while loop know which channel is being read first
+	_delay_ms(10); // Wait 10 ms for ADMUX to stay set to it's new and buggy permanent value ( multiplexer/demultiplexer flip flops maybe not so fast)
+	ADCSRA |= (1<<ADSC);   // Start conversion for the first time for channel 6
+	_delay_ms(5);
 	led_update_fields();   // update fields for the first time
 	while(1)
     	{
 
-			if (!(ADCSRA & (1<<ADSC))) // detect that ADSC is 0 and then do what is in the accolades
-			{
-				// wait until conversion completes; ADSC=0 means Complete
-				_delay_ms(1);
-				adc_value = ADCH;
-				_delay_ms(1);
-				//Store ADC result
-				// Start conversion in loop
-				if (adc_channel == 6)
-					{
-						pot_time = adc_value;
-						// Set ADCSRA Register with division factor 128, channel 7
-						//ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0);
-
-						// https://www.avrfreaks.net/forum/atmega168-read-zero-adc6-and-adc7
-						// [REFS1] [REFS0] [ADLAR] [  –  ] [MUX3] [MUX2] [MUX1] [MUX0]
-						// all zero initially
-						// Bit 4 – Res: Reserved Bit
-						// This bit is an unused bit in the Atmel ® ATmega328P, and will always read as zero.
-						//ADMUX &= 0b11110000;    //ADC channel selection can be made
-						ADCSRA = 0; // Turn off ADC so that new channel selection
-						_delay_ms(5);
-						ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);	// Turn on ADC
-						_delay_ms(5);
-						ADMUX |= 0b01100111;    //Channel 7
-						adc_channel = 7;
-					}
-				if (adc_channel == 7)
-					{
-						pot_date = adc_value;
-						// Set ADCSRA Register with division factor 128, channel 6
-						//ADMUX &= ~ (1<<MUX0);
-						//ADMUX = (1<<REFS0) | (1<<ADLAR) | (1<<MUX2) | (1<<MUX1);
-						//ADMUX &= 0b11110000;    //ADC channel selection.
-						ADCSRA = 0; // Turn off ADC so that new channel selection
-						_delay_ms(5);
-						ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);	// Turn on ADC
-						_delay_ms(5);
-						ADMUX |= 0b01100110;    //Channel 6
-						adc_channel = 6;
-					}
-				_delay_ms(10); // Wait 10 ms for ADMUX to stay set to it's new value ( multiplexer/demultiplexer flip flops maybe not so fast)
-				ADCSRA |= (1<<ADSC); // After setting ADMUX, start ADC read
-			}
+		if (!(ADCSRA & (1<<ADSC))) // detect that ADSC is 0 and then do what is in the accolades
+		{
+			// avoid until conversion completes; ADSC=0 means Complete
+			_delay_ms(5);
+			adc_value = ADCH;
+			_delay_ms(5);
+			pot_value = adc_value;
+			ADCSRA |= (1<<ADSC); // After setting ADMUX, start ADC read
+		}
 
 
 ////////////  ACT ON POTENTIOMETER COMMANDS
 
 //  - 2 pins ADC6 and ADC7 for potentiometer 8 bit field value change 0 to 255, pins are a little harder to connect to:
-//          0 -  31 = 32 steps = fast decrease
-//         36 -  63 = 32 steps = normal decrease
-//         72 -  79 = 32 steps = slow decrease
 
-//         80 - 159 = 80 steps = keep constant but display how far from the middle the potentiometer is
+// Bug !!!!!!!! after selecting ADC 6 channel, ADC7 can't be selected. V E R Y     S T U P I D ! ! !
 
-//        10 - 10 - [[[ 40 ]]] - 10 - 10  steps:  80 - 90 - [[[ 100 - 140 ]]] - 150 - 160
+// So limited to one potentiometer
 
-//        3|0111 = [ 0 - 79 ]   2|0011 = [ 80 - 93 ]   1|0001 = [ 94 - 107 ]   0|0000 = [[[ 108 - 131 ]]]   6|1000 = [ 132 - 145 ]   5|1100 = [ 146 - 159 ]   4|1110 = [ 160 - 255 ]
+//          0 -    4 = 4 steps = year decrease - easy a to set at minimum position
+//          5 -   29 = 25 steps = month decrease
+//         30 -   54 = 25 steps = day decrease
+//         55 -   79 = 25 steps = hour decrease
+//         80 -  105 = 25 steps = minute decrease
 
-//        160 - 191 = 32 steps = slow increase
-//        192 - 223 = 32 steps = normal increase
-//        224 - 255 = 32 steps = fast increase
+//        106 - 149 = 43 steps = keep constant but display how far from the middle the potentiometer is
 
-	if(pot_time < 80)
-		{
-			pointsfortime = 3;
-			pot_time_at_zero = 1;
-			potentiometercommandtime();
-			led_update_fields();
-		}
+//        3 - 3 - [[[ 31 ]]] - 3 - 3  steps:  106 - 109 - [[[ 112 - 143 ]]] - 146 - 149
 
-	if((pot_time > 79) && (pot_time < 90))
-		{
-			pointsfortime = 2;
-			pot_time_at_zero = 1;
-			led_update_fields();
-		}
-	if((pot_time > 89) && (pot_time < 100))
-		{
-			pointsfortime = 1;
-			pot_time_at_zero = 1;
-			led_update_fields();
-		}
-	if((pot_time > 99) && (pot_time < 140))
-		{
-			pointsfortime = 0;
-			if(pot_time_at_zero == 1)
-			{
-				pot_time_at_zero = 0;
-				led_update_fields();
-			}
-		}
-	if((pot_time > 139) && (pot_time < 150))
-		{
-			pointsfortime = 6;
-			pot_time_at_zero = 1;
-			led_update_fields();
-		}
-	if((pot_time > 149) && (pot_time < 160))
-		{
-			pointsfortime = 5;
-			pot_time_at_zero = 1;
-			led_update_fields();
-		}
-	if(pot_time > 159)
-		{
-			pointsfortime = 4;
-			pot_time_at_zero = 1;
-			potentiometercommandtime();
-			led_update_fields();
-		}
+//        150 - 174 = 25 steps = minute increase
+//        175 - 199 = 25 steps = hour increase
+//        200 - 224 = 25 steps = day increase
+//        225 - 250 = 25 steps = month increase
+//        250 - 255 = 5 steps = year increase - easy a to set at maximum position
 
-//          0 -  31 = 32 steps = fast decrease
-//         36 -  63 = 32 steps = normal decrease
-//         72 -  79 = 32 steps = slow decrease
 
-//         80 - 159 = 80 steps = keep constant but display how far from the middle the potentiometer is
-
-//        10 - 10 - [[[ 40 ]]] - 10 - 10  steps:  80 - 90 - [[[ 100 - 140 ]]] - 150 - 160
-
-//        3|0111 = [ 0 - 79 ]   2|0011 = [ 80 - 93 ]   1|0001 = [ 94 - 107 ]   0|0000 = [[[ 108 - 131 ]]]   6|1000 = [ 132 - 145 ]   5|1100 = [ 146 - 159 ]   4|1110 = [ 160 - 255 ]
-
-//        160 - 191 = 32 steps = slow increase
-//        192 - 223 = 32 steps = normal increase
-//        224 - 255 = 32 steps = fast increase
-
-	if(pot_date < 80)
-		{
-			pointsfordate = 3;
-			pot_date_at_zero = 1;
-			potentiometercommanddate();
-			led_update_fields();
-		}
-
-	if((pot_date > 79) && (pot_date < 90))
-		{
-			pointsfordate = 2;
-			pot_date_at_zero = 1;
-			led_update_fields();
-		}
-	if((pot_date > 89) && (pot_date < 100))
-		{
-			pointsfortime = 1;
-			pot_time_at_zero = 1;
-			led_update_fields();
-		}
-	if((pot_date > 99) && (pot_date < 140))
+	if(pot_value < 5)
 		{
 			pointsfordate = 0;
-			if(pot_date_at_zero == 1)
+			pot_value_at_zero = 1;
+			potentiometerdecreaseyears();
+			led_update_fields();
+		}
+
+	if((pot_value > 4) && (pot_value < 30))
+		{
+			pointsfordate = 1;
+			pot_value_at_zero = 1;
+			potentiometerdecreasemonths();
+			led_update_fields();
+		}
+	if((pot_value > 29) && (pot_value < 55))
+		{
+			pointsfordate = 2;
+			pot_value_at_zero = 1;
+			potentiometerdecreasedays();
+			led_update_fields();
+		}
+	if((pot_value > 54) && (pot_value < 80))
+		{
+			pointsfortime = 1;
+			pot_value_at_zero = 1;
+			potentiometerdecreasehours();
+			led_update_fields();
+		}
+	if((pot_value > 79) && (pot_value < 106))
+		{
+			pointsfortime = 2;
+			pot_value_at_zero = 1;
+			potentiometerdecreaseminutes();
+			led_update_fields();
+		}
+
+
+	if((pot_value > 105) && (pot_value < 150))
+		{
+			pointsfordate = 3;
+		}
+
+//          0 -    4 = 4 steps = year decrease - easy a to set at minimum position
+//          5 -   29 = 25 steps = month decrease
+//         30 -   54 = 25 steps = day decrease
+//         55 -   75 = 25 steps = hour decrease
+//         80 -  105 = 25 steps = minute decrease
+
+//        106 - 149 = 43 steps = keep constant but display how far from the middle the potentiometer is
+
+//        3 - 3 - [[[ 31 ]]] - 3 - 3  steps:  106 - 109 - [[[ 112 - 143 ]]] - 146 - 149
+
+//        150 - 174 = 25 steps = minute increase
+//        175 - 199 = 25 steps = hour increase
+//        200 - 224 = 25 steps = day increase
+//        225 - 250 = 25 steps = month increase
+//        250 - 255 = 5 steps = year increase - easy a to set at maximum position
+
+	if((pot_value > 149) && (pot_value < 175))
+		{
+			pointsfortime = 4;
+			pot_value_at_zero = 1;
+			potentiometerincreaseminutes();
+			led_update_fields();
+		}
+	if((pot_value > 174) && (pot_value < 200))
+		{
+			pointsfortime = 5;
+			pot_value_at_zero = 1;
+			potentiometerincreasehours();
+			led_update_fields();
+		}
+	if((pot_value > 199) && (pot_value < 225))
+		{
+			pointsfordate = 4;
+			pot_value_at_zero = 1;
+			led_update_fields();
+			potentiometerincreasedays();
+		}
+	if((pot_value > 224) && (pot_value < 250))
+		{
+			pointsfordate = 5;
+			pot_value_at_zero = 1;
+			potentiometerincreasemonths();
+			led_update_fields();
+		}
+	if(pot_value > 249)
+		{
+			pointsfordate = 6;
+			pot_value_at_zero = 1;
+			potentiometerincreaseyears();
+			led_update_fields();
+		}
+
+//        106 - 149 = 43 steps = keep constant but display how far from the middle the potentiometer is
+
+//        3 - 3 - [[[ 31 ]]] - 3 - 3  steps:  106 - 109 - [[[ 112 - 143 ]]] - 146 - 149
+
+	if((pot_value > 105) && (pot_value < 110))
+		{
+			pointsfortime = 0;
+			pot_value_at_zero = 1;
+			led_update_fields();
+		}
+	if((pot_value > 109) && (pot_value < 112))
+		{
+			pointsfortime = 2;
+			pot_value_at_zero = 1;
+			led_update_fields();
+		}
+	if((pot_value > 111) && (pot_value < 144))
+		{
+			pointsfortime = 3;
+			if(pot_value_at_zero == 1)
 			{
-				pot_date_at_zero = 0;
+				pot_value_at_zero = 0;
 				led_update_fields();
 			}
 		}
-	if((pot_date > 139) && (pot_date < 150))
+	if((pot_value > 143) && (pot_value < 150))
 		{
-			pointsfordate = 6;
-			pot_date_at_zero = 1;
+			pointsfortime = 4;
+			pot_value_at_zero = 1;
 			led_update_fields();
 		}
-	if((pot_date > 149) && (pot_date < 160))
+	if((pot_value > 149) && (pot_value < 150))
 		{
-			pointsfordate = 5;
-			pot_date_at_zero = 1;
+			pointsfortime = 6;
+			pot_value_at_zero = 1;
 			led_update_fields();
-		}
-	if(pot_date > 159)
-		{
-			pointsfordate = 4;
-			pot_date_at_zero = 1;
-			potentiometercommanddate();
-			led_update_fields();
-		}
-
-
-
-//	if((pot_date < 64) || (pot_date > 192))
-//		{
-//			pointsfordate = 0;
-//		}
+}
 
 ///////////  ACT ON INTERRUPT DETECTED AT THE PASS OF A MINUTE
 
@@ -1482,7 +1340,7 @@ int main(void) {
 		}
 
 
-	_delay_ms(250);		//  simulate slow / lazy program ( so the microcontroller does not get hot and decreases poissible battery lifetime ) 
+	_delay_ms(200);		//  simulate slow / lazy program ( so the microcontroller does not get hot and decreases poissible battery lifetime ) 
 
 
 	} // acolade from while(1)
@@ -1495,7 +1353,7 @@ ISR(TIMER1_COMPA_vect)
 {
 	interruptdetected = 1;
 	seconds++;
-	if(pot_time_at_zero == 1) seconds = 0; // when potentiometer not at middle reset seconds to zero
+	if(pot_value_at_zero == 1) seconds = 0; // when potentiometer not at middle reset seconds to zero
 	if(seconds > 59)
 	{
 		seconds = 0;
