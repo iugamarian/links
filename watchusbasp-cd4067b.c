@@ -1148,9 +1148,11 @@ int main(void) {
 	_delay_ms(100); // time to make sure microcontroller power is stabilised (increased to 5V)
 	setup();	
 	_delay_ms(5);
-	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);	// Turn on ADC
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);	// Turn on ADC with prescaler
 	_delay_ms(5);
-	ADMUX |= 0b01100110;    //Channel 6
+	// https://www.avrfreaks.net/forum/atmega8-adc-usart
+	// Don't use "|=" as it does not get some values set - use "=" instead
+	ADMUX = 0b01100110;    //AVCC reference, 8 bit read ADCH left shifted, Channel 6
 	_delay_ms(10); // Wait 10 ms for ADMUX to stay set to it's new and buggy permanent value ( multiplexer/demultiplexer flip flops maybe not so fast)
 	ADCSRA |= (1<<ADSC);   // Start conversion for the first time for channel 6
 	_delay_ms(5);
@@ -1172,7 +1174,7 @@ int main(void) {
 
 //  - 2 pins ADC6 and ADC7 for potentiometer 8 bit field value change 0 to 255, pins are a little harder to connect to:
 
-// Bug !!!!!!!! after selecting ADC 6 channel, ADC7 can't be selected. V E R Y     S T U P I D ! ! !
+// Bug !!!!!!!! after selecting ADC 6 channel, ADC7 can't be selected. Probably because of "|=" instead of "="
 
 // So limited to one potentiometer
 
