@@ -1152,6 +1152,8 @@ int main(void) {
 	_delay_ms(5);
 	// https://www.avrfreaks.net/forum/atmega8-adc-usart
 	// Don't use "|=" as it does not get some values set - use "=" instead
+	// AVR Bitwise Operations in C:
+	// http://mlab.taik.fi/paja/?p=371
 	ADMUX = 0b01100110;    //AVCC reference, 8 bit read ADCH left shifted, Channel 6
 	_delay_ms(10); // Wait 10 ms for ADMUX to stay set to it's new and buggy permanent value ( multiplexer/demultiplexer flip flops maybe not so fast)
 	ADCSRA |= (1<<ADSC);   // Start conversion for the first time for channel 6
