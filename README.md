@@ -1,6 +1,6 @@
-# Video 5 minutes 2 seconds
+# Video 5 minutes 2 seconds - 2 x 24 hour to 2 x 9 minutes and 36 seconds
 
-https://drive.google.com/open?id=1gDCOSbBilQPVPTAWdDyMh_L7VrJ1NaoH
+https://drive.google.com/open?id=1q9QpxAYUR4zCtuv1vRMk-Ihi6gXvwV2b
 
 
 # Debian experimental for select packages
