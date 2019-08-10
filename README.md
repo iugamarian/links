@@ -1,3 +1,8 @@
+# Video 5 minutes 2 seconds
+
+https://drive.google.com/open?id=1gDCOSbBilQPVPTAWdDyMh_L7VrJ1NaoH
+
+
 # Debian experimental for select packages
 
 https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1111742-debian-11-bullseye-cycle-prepares-to-begin-long-journey/page2
