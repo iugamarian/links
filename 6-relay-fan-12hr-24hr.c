@@ -72,8 +72,7 @@ int main(void) {
 	{
 		if(!(PINC&(1<<2)))
 		{
-			runningspeed = 2;  //  5 minutes in 2 seconds, for testing, use video https://drive.google.com/open?id=1gDCOSbBilQPVPTAWdDyMh_L7VrJ1NaoH
-		}
+			runningspeed = 2;  //  5 minutes in 2 seconds, for testing, use video https://drive.google.com/open?id=1q9QpxAYUR4zCtuv1vRMk-Ihi6gXvwV2b
 	}
 
 	while(1)	// Infinite loop
