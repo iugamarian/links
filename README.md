@@ -618,9 +618,9 @@ Not required to boot with amdgpu.ppfeaturemask=0xffffffff in cmdline in this cas
 https://wiki.ubuntu.com/ARM/RaspberryPi
 
 
-# Gentoo for arm64 Raspberry Pi 3B and 3B+ with hardware decoding support through v4l2 framework
+# Gentoo for arm64 Raspberry Pi 3B and 3B+ and 4B with hardware decoding support through v4l2 framework
 
-https://github.com/sakaki-/gentoo-on-rpi3-64bit
+https://github.com/sakaki-/gentoo-on-rpi-64bit
 
 https://github.com/sakaki-/bcmrpi3-kernel
 
