@@ -14,7 +14,20 @@ https://frpbypass.download/frp-bypass-apk/
 
 4 - press three dots, Browser sign-in
 
-5 - accept, next
+5 - login with a real Google accont, accept, next, etc.
+
+6 - don't write in the "Email" box, instead restart the phone
+
+7 - after internet you have message "Account added" - press Next, wait "Just a sec..."
+
+8 - Not now, next, put your settings, Don't restore, next, next, next, next
+
+9 - The phone considers you it's master now. Across factory resets also. That's it. 
+
+Working video:
+
+https://www.youtube.com/watch?v=cG16UFq7ViQ
+
 
 For documentation, but each not actually working:
 
@@ -23,6 +36,8 @@ https://www.youtube.com/watch?v=BGcomr3z75Y
 first link: https://www.dropbox.com/s/sd2w2ecq26nzy6y/apk.apk?dl=0
 
 second link: https://www.apkmirror.com/apk/sika524/quickshortcutmaker/quickshortcutmaker-2-4-0-release/quickshortcutmaker-2-4-0-android-apk-download/
+
+from second link app I deduced (something) Google Account Manager was not installed
 
 https://www.youtube.com/watch?v=Yfzu_nMBKMk
 
