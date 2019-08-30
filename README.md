@@ -1,5 +1,23 @@
 # Hacking Google FRP on Vodafone phones
 
+Working:
+
+1 - install "password libraries"
+
+https://www.apkmirror.com/apk/google-inc/google-account-manager/google-account-manager-6-0-1-release/google-account-manager-6-0-1-android-apk-download/
+
+2 - install "password invoker"
+
+https://frpbypass.download/frp-bypass-apk/
+
+3 - open FRP Bypass
+
+4 - press three dots, Browser sign-in
+
+5 - accept, next
+
+For documentation, but each not actually working:
+
 https://www.youtube.com/watch?v=BGcomr3z75Y
 
 first link: https://www.dropbox.com/s/sd2w2ecq26nzy6y/apk.apk?dl=0
