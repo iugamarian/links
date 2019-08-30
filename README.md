@@ -1,3 +1,10 @@
+# Hacking Google FRP on Vodafone phones
+
+https://www.youtube.com/watch?v=Yfzu_nMBKMk
+
+https://apex-launcher.en.uptodown.com/android/download
+
+
 # Video 5 minutes 2 seconds - 2 x 24 hour to 2 x 9 minutes and 36 seconds
 
 https://drive.google.com/open?id=1q9QpxAYUR4zCtuv1vRMk-Ihi6gXvwV2b
