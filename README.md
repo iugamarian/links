@@ -1,5 +1,11 @@
 # Hacking Google FRP on Vodafone phones
 
+https://www.youtube.com/watch?v=BGcomr3z75Y
+
+first link: https://www.dropbox.com/s/sd2w2ecq26nzy6y/apk.apk?dl=0
+
+second link: https://www.apkmirror.com/apk/sika524/quickshortcutmaker/quickshortcutmaker-2-4-0-release/quickshortcutmaker-2-4-0-android-apk-download/
+
 https://www.youtube.com/watch?v=Yfzu_nMBKMk
 
 https://apex-launcher.en.uptodown.com/android/download
