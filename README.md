@@ -173,6 +173,8 @@ apt remove --purge pulseaudio
 
 # Old PC hardware accelerated decoding with capable video card in Chromium web browser (needs tweaking)
 
+https://forums.fedoraforum.org/showthread.php?260198-Compile-FFMPEG-with-VDPAU-support
+
 https://www.pcsuggest.com/chromium-hardware-accelerated-video-decoding-linux/
 
 https://www.linuxuprising.com/2019/01/ubuntu-testing-chromium-snap-with-vaapi.html
