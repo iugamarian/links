@@ -10,6 +10,8 @@ https://www.apkmirror.com/apk/google-inc/google-account-manager/google-account-m
 
 https://frpbypass.download/frp-bypass-apk/
 
+2.5 - (maybe) in Settings - Security - Device administrators - Enable permissions for Google Account Manager
+
 3 - open FRP Bypass
 
 4 - press three dots, Browser sign-in
