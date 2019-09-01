@@ -177,6 +177,8 @@ apt remove --purge pulseaudio
 
 https://forums.fedoraforum.org/showthread.php?260198-Compile-FFMPEG-with-VDPAU-support
 
+https://superuser.com/questions/250437/how-to-pass-custom-options-to-configure-when-building-a-package-with-debuild
+
 https://www.pcsuggest.com/chromium-hardware-accelerated-video-decoding-linux/
 
 https://www.linuxuprising.com/2019/01/ubuntu-testing-chromium-snap-with-vaapi.html
