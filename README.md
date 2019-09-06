@@ -1,3 +1,62 @@
+# Nvidia Chromium vdpau accelerated h264 decoding on Arch Linux
+
+ You need to install linux-lts linux-lts-headers linux-lts-docs and run:
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+ You need to compile and install some AUR packages with these steps:
+ 
+ - creade a folder
+ 
+ - put a PKGBUILD text file inside
+ 
+ - run:
+ 
+ cd 
+ cd folder
+ makepkg -Acs
+ 
+ - see what files are missing - patches, you can see them at Sources section on the AUR site for the package
+ 
+ - create text files for the missing patches with the name in the Sources section and fill them
+ 
+ makepkg -Acs
+ pacman -U *.xz
+ 
+ This are the AUR packages required:
+ 
+ https://aur.archlinux.org/packages/chromium-vaapi-bin/ or without -bin
+ 
+ https://aur.archlinux.org/packages/libva-vdpau-driver-chromium/
+ 
+ This are the required "main repository" packages:
+ 
+ pacman -Sy
+ pacman -S libva-mesa-driver mesa-vdpau vdpauinfo libvdpau-va-gl 
+ 
+ With X server off:
+ 
+ pacman -R lxdm
+ 
+ pacman -R gdm
+ 
+ Install for Nvidia Geforce 8800GT and 9600GSO this:
+ 
+ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/340.107/NVIDIA-Linux-x86_64-340.107-no-compat32.run
+ 
+ chmod +x NV*
+ 
+ ./NV*
+ 
+ Start Chromium, add extension h264ify
+ 
+ That's it. Tested and it works. To test that games work well:
+ 
+ pacman -S warzone2100
+ 
+ warzone2100
+
+
 # Hacking Google FRP on Vodafone phones
 
 Working:
