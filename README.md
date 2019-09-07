@@ -12,8 +12,10 @@ grub-mkconfig -o /boot/grub/grub.cfg
  
  - run:
  
- cd 
+ cd
+ 
  cd folder
+ 
  makepkg -Acs
  
  - see what files are missing - patches, you can see them at Sources section on the AUR site for the package
@@ -21,6 +23,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
  - create text files for the missing patches with the name in the Sources section and fill them
  
  makepkg -Acs
+ 
  pacman -U *.xz
  
  This are the AUR packages required:
@@ -32,6 +35,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
  This are the required "main repository" packages:
  
  pacman -Sy
+ 
  pacman -S libva-mesa-driver mesa-vdpau vdpauinfo libvdpau-va-gl 
  
  With X server off:
@@ -66,13 +70,21 @@ nvidia-xconfig --no-use-edid-dpi
 nano /etc/X11/xorg.conf
 
 [...]
-Section “Monitor”
-Identifier “Monitor0”
-VendorName “Unknown”
-ModelName “Unknown”
+
+Section "Monitor"
+
+Identifier "Monitor0"
+
+VendorName "Unknown"
+
+ModelName "Unknown"
+
 HorizSync 28.0 – 33.0
+
 VertRefresh 43.0 – 72.0
+
 Option "DPI" "96 x 96"     or    Option "DPI" "128 x 128"     be careful about the quotes on copy-paste
+
 [...]
 
 
