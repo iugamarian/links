@@ -4,7 +4,7 @@
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
- You need to compile and install some AUR packages with these steps:
+ You need to compile as user and install as root some AUR packages with these steps:
  
  - creade a folder
  
@@ -55,6 +55,25 @@ grub-mkconfig -o /boot/grub/grub.cfg
  pacman -S warzone2100
  
  warzone2100
+
+
+# Nvidia proprietary Linux driver get bigger fonts
+
+sudo -s
+
+nvidia-xconfig --no-use-edid-dpi
+
+nano /etc/X11/xorg.conf
+
+[...]
+Section “Monitor”
+Identifier “Monitor0”
+VendorName “Unknown”
+ModelName “Unknown”
+HorizSync 28.0 – 33.0
+VertRefresh 43.0 – 72.0
+Option "DPI" "96 x 96"     or    Option "DPI" "128 x 128"     be careful about the quotes on copy-paste
+[...]
 
 
 # Hacking Google FRP on Vodafone phones
