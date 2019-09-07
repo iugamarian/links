@@ -73,7 +73,15 @@ nano /etc/pacman.conf
     
 IgnorePkg=linux
 
+IgnorePkg=linux-headers
+
+IgnorePkg=linux-docs
+
 IgnorePkg=linux-lts
+
+IgnorePkg=linux-lts-headers
+
+IgnorePkg=linux-lts-docs
 
  
  That's it. Tested and it works. To test that games work well:
