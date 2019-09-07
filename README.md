@@ -54,6 +54,18 @@ grub-mkconfig -o /boot/grub/grub.cfg
  
  Start Chromium, add extension h264ify
  
+ https://askubuntu.com/questions/336302/gpu-accelerated-chromium
+ 
+ 
+    Open the about:flags in your address bar
+    
+    Look for Override software redendering list
+    
+    Click "Enable"
+    
+    Restart Chrome/ium
+
+ 
  That's it. Tested and it works. To test that games work well:
  
  pacman -S warzone2100
