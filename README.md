@@ -64,6 +64,16 @@ grub-mkconfig -o /boot/grub/grub.cfg
     Click "Enable"
     
     Restart Chrome/ium
+ 
+ https://wiki.archlinux.org/index.php/pacman
+ 
+ The nvidia.ko module installed with .run file will need the exact kernel to be kept, not updated
+ 
+nano /etc/pacman.conf
+    
+IgnorePkg=linux
+
+IgnorePkg=linux-lts
 
  
  That's it. Tested and it works. To test that games work well:
