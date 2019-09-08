@@ -1,3 +1,16 @@
+# Wayland on Debian, make Synaptic work (not tested yet)
+
+https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1731324/comments/4
+
+Wayland is designed to not allow elevated (sudo -H, gksu ...) permissions with GUI application programs.
+
+There is a workaround to allow graphical application programs owned by other users than the logged in user in Wayland:
+
+xhost +si:localuser:root
+
+Take a look at: https://wiki.ubuntu.com/Wayland/gks
+
+
 # Nvidia Chromium vdpau accelerated h264 decoding on Arch Linux
 
  You need to install linux-lts linux-lts-headers linux-lts-docs and run:
