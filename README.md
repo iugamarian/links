@@ -1,3 +1,10 @@
+# Gentoo Raspberry Pi graphical login VNC
+
+https://github.com/sakaki-/gentoo-on-rpi-64bit/wiki/Run-a-Remote-VNC-Desktop-on-your-RPi3
+
+genpi64 instead of rpi3
+
+
 # Wayland on Debian, make Synaptic work (not tested yet)
 
 https://bugs.launchpad.net/ubuntu/+source/synaptic/+bug/1731324/comments/4
