@@ -2,7 +2,15 @@
 
 https://github.com/sakaki-/gentoo-on-rpi-64bit/wiki/Run-a-Remote-VNC-Desktop-on-your-RPi3
 
-genpi64 instead of rpi3
+genpi64 instead of rpi3 for repository
+
+ssh -f -N -T -L 55901:127.0.0.1:5901 demouser@iprpi
+
+xtightvncviewer 127.0.0.1:55901
+
+mkdir -p /home/pi/sshfsmnt
+
+sshfs demouser@iprpi:/tvrecord/demouser /home/pi/sshfsmnt
 
 
 # Wayland on Debian, make Synaptic work (not tested yet)
