@@ -1104,7 +1104,25 @@ https://mpv.io/manual/master/
 
 https://spit.mixtape.moe/view/73ac8ca5
 
-# MPV 2018 best with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
+
+# MPV 2019 best with AMD Polaris, can select on timeline, configuration in ~/.config/mpv/mpv.conf:
+
+# sudo apt install -y mesa-va-drivers
+
+https://github.com/mpv-player/mpv/issues/5711
+
+hwdec=vaapi
+
+gpu-context=x11egl
+
+save-position-on-quit
+
+audio-normalize-downmix=yes
+
+volume=100
+
+
+# MPV 2018 best with AMD Polaris, can't select on timeline,  configuration in ~/.config/mpv/mpv.conf:
 
 # sudo apt install -y mesa-va-drivers
 
@@ -1117,6 +1135,7 @@ save-position-on-quit
 audio-normalize-downmix=yes
 
 volume=100
+
 
 # MPV 2017 medium with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
 
@@ -1136,6 +1155,7 @@ audio-normalize-downmix=yes
 
 volume=100
 
+
 # MPV 2016 low with AMD, better with Nvidia, configuration in ~/.config/mpv/mpv.conf:
 
 # install Nvidia proprietary driver
@@ -1147,6 +1167,7 @@ save-position-on-quit
 audio-normalize-downmix=yes
 
 volume=100
+
 
 # Emacs tutorials
 
