@@ -804,6 +804,12 @@ https://salsa.debian.org/debian/spectre-meltdown-checker/blob/master/spectre-mel
 
 https://wiki.archlinux.org/index.php/AMDGPU#Overclocking
 
+https://bitcointalk.org/index.php?topic=1543701.40
+
+https://www.youtube.com/watch?v=X7i9vR4s8iQ
+
+https://forums.anandtech.com/threads/rx-series-undervolt-how-much-have-you-undervolted-it.2541872/
+
 echo 50000000 > /sys/class/drm/card0/device/hwmon/hwmon0/power1_cap
 
 # or
