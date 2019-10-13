@@ -309,11 +309,19 @@ su -s
 
 nano /etc/modprobe.d/alsa-base.conf
 
-La sfarsit:
+At the end:
 
 options snd-hda-intel model=6stack-digout
 
 options snd-hda-intel power_save=0
+
+Then set pulseaudio to avoid HDMI audio output:
+
+https://bbs.archlinux.org/viewtopic.php?id=180102
+
+echo "set-card-profile 1 output:analog-stereo+input:analog-stereo" >> /etc/pulse/default.pa
+
+sync
 
 Restart.
 
