@@ -8,6 +8,12 @@ https://hackaday.com/2017/06/18/btrfs-for-the-pi/
 
 https://syonyk.blogspot.com/2018/03/project-pi3desk-building-awesome-pi3.html
 
+https://github.com/sakaki-/genpi64-overlay/blob/master/sys-apps/rpi3-init-scripts/files/init.d_autoexpand_root-4
+
+https://github.com/sakaki-/gentoo-on-rpi-64bit
+
+https://github.com/sakaki-/gentoo-on-rpi-64bit/blob/master/configs/bcmrpi3_defconfig
+
 
 # Gentoo Raspberry Pi graphical login VNC
 
