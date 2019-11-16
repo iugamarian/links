@@ -6,6 +6,8 @@ https://hackmd.io/@yOoDLyRxTU2S4S-obb7NpQ/HJOFQphWW?type=view
 
 https://hackaday.com/2017/06/18/btrfs-for-the-pi/
 
+https://syonyk.blogspot.com/2018/03/project-pi3desk-building-awesome-pi3.html
+
 
 # Gentoo Raspberry Pi graphical login VNC
 
