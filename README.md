@@ -1,3 +1,12 @@
+#Raspbian Raspberry Pi BTRFS with compression
+
+https://hackmd.io/FP-7sHiPTJGaJvzSa3nw8A
+
+https://hackmd.io/@yOoDLyRxTU2S4S-obb7NpQ/HJOFQphWW?type=view
+
+https://hackaday.com/2017/06/18/btrfs-for-the-pi/
+
+
 # Gentoo Raspberry Pi graphical login VNC
 
 https://github.com/sakaki-/gentoo-on-rpi-64bit/wiki/Run-a-Remote-VNC-Desktop-on-your-RPi3
