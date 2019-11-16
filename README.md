@@ -1,3 +1,8 @@
+# Windows 10 disable fast boot
+
+https://help.uaudio.com/hc/en-us/articles/213195423-How-To-Disable-Fast-Startup-in-Windows-10
+
+
 # Raspbian Raspberry Pi BTRFS with compression
 
 https://hackmd.io/FP-7sHiPTJGaJvzSa3nw8A
