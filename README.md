@@ -4,6 +4,8 @@ https://help.uaudio.com/hc/en-us/articles/213195423-How-To-Disable-Fast-Startup-
 
 https://win10faq.com/how-to-clone-windows-10-with-clonezilla/
 
+https://pureinfotech.com/clone-windows-10-drive-clonezilla/
+
 https://www.quora.com/If-you-clone-the-OS-hard-drive-will-Windows-require-a-new-license
 
 
