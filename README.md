@@ -6,6 +6,8 @@ https://win10faq.com/how-to-clone-windows-10-with-clonezilla/
 
 https://pureinfotech.com/clone-windows-10-drive-clonezilla/
 
+https://www.tecmint.com/migrate-windows-10-from-hdd-to-ssd-using-clonezilla/
+
 https://www.quora.com/If-you-clone-the-OS-hard-drive-will-Windows-require-a-new-license
 
 
