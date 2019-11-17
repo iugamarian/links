@@ -74,6 +74,28 @@ mkdir -p /home/pi/sshfsmnt
 
 sshfs demouser@iprpi:/tvrecord/demouser /home/pi/sshfsmnt
 
+In case of problems: they are created by apparmor or ssh tunneling, tigervnc is ok - test with no tunelling.
+
+On server troubleshoot:
+
+1) Disable tigervnc service
+
+sudo su
+
+ps -ef |grep 5901
+
+=====================
+
+/usr/bin/Xvnc :1 -auth /home/demouser/.Xauthority -desktop pi64:1 (demouser) -fp /usr/share/fonts/misc -geometry 1024x768 -pn -rfbauth /home/demouser/.vnc/passwd -rfbport 5901 -rfbwait 30000
+
+=====================
+
+sudo rc-update del tigervnc default
+
+2) try ssh tunelling with command for /usr/bin/Xvnc after in quotes, as root and as user:
+
+ssh ........ ´command´
+
 
 # Wayland on Debian, make Synaptic work (not tested yet)
 
