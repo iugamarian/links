@@ -1,6 +1,10 @@
-# Windows 10 disable fast boot
+# Windows 10 disable fast boot and clone drive on same PC, Legacy and UEFI
 
 https://help.uaudio.com/hc/en-us/articles/213195423-How-To-Disable-Fast-Startup-in-Windows-10
+
+https://win10faq.com/how-to-clone-windows-10-with-clonezilla/
+
+https://www.quora.com/If-you-clone-the-OS-hard-drive-will-Windows-require-a-new-license
 
 
 # Raspbian Raspberry Pi BTRFS with compression
