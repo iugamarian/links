@@ -22,7 +22,7 @@ https://github.com/sakaki-/gentoo-on-rpi-64bit/blob/master/configs/bcmrpi3_defco
 
 # Gentoo Raspberry Pi graphical login VNC
 
-https://github.com/sakaki-/gentoo-on-rpi-64bit/wiki/Run-a-Remote-VNC-Desktop-on-your-RPi3
+https://github.com/sakaki-/gentoo-on-rpi-64bit/wiki/Run-a-Remote-VNC-Desktop-on-your-RPi
 
 genpi64 instead of rpi3 for repository
 
