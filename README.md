@@ -1,5 +1,9 @@
 # Windows 10 disable fast boot and clone drive on same PC, Legacy and UEFI
 
+https://www.technibble.com/forums/threads/gnu-ddrescue-ridiculous-learning-curve.34594/
+
+https://www.linux.com/tutorials/gnu-ddrescue-best-damaged-drive-rescue/
+
 https://help.uaudio.com/hc/en-us/articles/213195423-How-To-Disable-Fast-Startup-in-Windows-10
 
 https://win10faq.com/how-to-clone-windows-10-with-clonezilla/
