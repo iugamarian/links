@@ -66,66 +66,9 @@ https://wiki.gentoo.org/wiki//etc/local.d
 
 genpi64 instead of rpi3 for repository
 
-ssh -f -N -T -L 5902:127.0.0.1:5901 demouser@iprpi
+DO NOT ADD tigervnc service to default runlevel - it gets unstable because it is starting too fast !!!
 
-OR with available user console:
-
-ssh -L 5902:localhost:5901 demouser@iprpi
-
-xtightvncviewer 127.0.0.1:5902
-
-=====================
-
-Performing standard VNC authentication
-
-Password: 
-
-Authentication successful
-
-=====================
-
-mkdir -p /home/pi/sshfsmnt
-
-sshfs demouser@iprpi:/tvrecord/demouser /home/pi/sshfsmnt
-
-In case of problems: they are created by apparmor or ssh tunneling, tigervnc is ok - test with no tunelling.
-
-On server troubleshoot:
-
-1) Uninstall apparmor if available on client and Raspberry Pi
-
-2) Linux cmdline apparmor=0 on client and Raspberry Pi
-
-3) Disable tigervnc service
-
-sudo su
-
-ps -ef |grep 5901
-
-=====================
-
-/usr/bin/Xvnc :1 -auth /home/demouser/.Xauthority -desktop pi64:1 (demouser) -fp /usr/share/fonts/misc -geometry 1024x768 -pn -rfbauth /home/demouser/.vnc/passwd -rfbport 5901 -rfbwait 30000
-
-=====================
-
-sudo rc-update del tigervnc default
-
-reboot
-
-ps -ef |grep 5901
-
-=====================
-
-only bash shell
-
-=====================
-
-
-4) update OS on client that accesses Raspberry Pi because maybe security fix for keys
-
-5) change tunnel port to target port to plus a few because maybe old port has old key configured
-
-6) configure ssh to be more permissive on the client and on the Raspberry Pi
+Configure ssh to be more permissive on the client and on the Raspberry Pi
 
 http://www.uptimemadeeasy.com/networking/connect-blocked-ports-ssh-tunneling/
 
@@ -134,6 +77,8 @@ https://superuser.com/questions/346971/ssh-tunnel-connection-refused
 https://wiki.gentoo.org/wiki/SSH_tunneling
 
 https://askubuntu.com/questions/539937/how-may-i-do-a-ssh-tunneling
+
+nano /etc/ssh/sshd_config
 
 =====================
 
@@ -151,13 +96,89 @@ PermitUserEnvironment yes
 
 reboot
 
-7) On Raspberry Pi:
+START GRAPHICAL LOGIN AFTER RASPBERRY PI IS TURNED OFF:
+
+1) START RASPBERRY PI
+
+2) WAIT 4 MINUTES - starting all services
+
+ssh demouser@iprpi
+
+sudo rc-service tigervnc start
+
+3) WAIT 3 MINUTES - starting a second X session for display :1 in the background
+
+sync
+
+exit
+
+4) Do not exit this console after the command to maintain tunelling link:
+
+ssh -L 5902:localhost:5901 demouser@iprpi
+
+5) Open a second terminal, leave first one open, then in the second terminal:
+
+xtightvncviewer 127.0.0.1:5902
+
+=====================
+
+Performing standard VNC authentication
+
+Password: 
+
+Authentication successful
+
+=====================
+
+6) WINDOW OPENS - COMPLETED GRAPHICAL LOGIN
+
+7) Access Raspberry Pi Share folder:
+
+ON THE RASPBERRY PI
+
+mkdir -p /home/demouser/share
+
+ON THE CLIENT
+
+mkdir -p /home/pi/sshfsmnt
+
+sshfs demouser@iprpi:/home/demouser/share /home/pi/sshfsmnt
+
+
+In case of problems: they are created by apparmor or ssh tunneling, tigervnc is ok - test with no tunelling.
+
+On server troubleshoot:
+
+1) Uninstall apparmor if available on client and Raspberry Pi
+
+2) Linux cmdline apparmor=0 on client and Raspberry Pi
+
+3) Disable tigervnc service
+
+sudo rc-update del tigervnc default
+
+reboot
+
+ps -ef |grep 5901
+
+=====================
+
+only bash shell, no VNC server
+
+=====================
+
+4) update OS on client that accesses Raspberry Pi because maybe security fix for keys
+
+5) change tunnel port to target port to plus a few because maybe old port has old key configured
+
+
+6) On Raspberry Pi:
 
 sudo rc-service tigervnc start
 
 sudo ps -ef |grep 5901
 
-8) On client:
+7) On client:
 
 ssh -L 5902:localhost:5901 demouser@iprpi
 
@@ -189,9 +210,9 @@ xtightvncviewer 127.0.0.1:5903
 
 590n
 
-9) If it is fixed, on Raspberry Pi enable tigervnc service:
+9) If it is fixed, on Raspberry Pi do not enable tigervnc service:
 
-sudo rc-update add tigervnc default
+sudo rc-update add tigervnc default      < < < < < <  D O   N O T
 
 sudo reboot
 
