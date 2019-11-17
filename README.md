@@ -62,6 +62,8 @@ reboot
 
 https://github.com/sakaki-/gentoo-on-rpi-64bit/wiki/Run-a-Remote-VNC-Desktop-on-your-RPi
 
+https://wiki.gentoo.org/wiki//etc/local.d
+
 genpi64 instead of rpi3 for repository
 
 ssh -f -N -T -L 55901:127.0.0.1:5901 demouser@iprpi
