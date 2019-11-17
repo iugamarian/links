@@ -92,9 +92,13 @@ ps -ef |grep 5901
 
 sudo rc-update del tigervnc default
 
+reboot
+
 2) try ssh tunelling with command for /usr/bin/Xvnc after in quotes, as root and as user:
 
 ssh ........ ´command´
+
+https://wiki.gentoo.org/wiki/SSH_tunneling
 
 
 # Wayland on Debian, make Synaptic work (not tested yet)
