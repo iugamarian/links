@@ -10,6 +10,8 @@ https://www.tecmint.com/migrate-windows-10-from-hdd-to-ssd-using-clonezilla/
 
 https://www.quora.com/If-you-clone-the-OS-hard-drive-will-Windows-require-a-new-license
 
+https://www.tigraine.at/2014/01/04/how-to-upgrade-to-an-ssd-with-minimal-effort
+
 
 # Raspbian Raspberry Pi BTRFS with compression
 
