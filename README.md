@@ -19,6 +19,44 @@ https://github.com/sakaki-/gentoo-on-rpi-64bit
 
 https://github.com/sakaki-/gentoo-on-rpi-64bit/blob/master/configs/bcmrpi3_defconfig
 
+# Gentoo Raspberry Pi fix keyboard issues ( UK to US )
+
+https://linoxide.com/linux-how-to/fix-error-locale-cannot-set-lc_all-to-default-locale-no-such-file-or-directory/
+
+https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System#Init_and_boot_configuration
+
+su -
+
+echo "Europe/Bucharest" > /etc/timezone
+
+emerge --config sys-libs/timezone-data
+
+nano -w /etc/conf.d/keymaps
+
+=====================
+
+keymap="us"
+
+=====================
+
+export LC_ALL=en_US.UTF-8
+
+nano  /etc/locale.gen
+
+=====================
+
+en_US.UTF-8 UTF-8
+
+=====================
+
+locale-gen
+
+sync
+
+locale -a
+
+reboot
+
 
 # Gentoo Raspberry Pi graphical login VNC
 
