@@ -116,6 +116,8 @@ exit
 
 ssh -L 5902:localhost:5901 demouser@iprpi
 
+ssh -L 5902:127.0.0.1:5901 demouser@192.168.1.50     <<<<<<< not working !!!
+
 5) Open a second terminal, leave first one open, then in the second terminal:
 
 xtightvncviewer 127.0.0.1:5902
