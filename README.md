@@ -2,6 +2,12 @@
 
 http://wiki.christophchamp.com/index.php?title=Dd_(command)
 
+https://en.wikipedia.org/wiki/Dd_(Unix)
+
+dd if=/dev/zero of=path/to/file bs=512 count=1 conv=notrunc
+
+The notrunc conversion option means do not truncate the output file — that is, if the output file already exists, just replace the specified bytes and leave the rest of the output file alone. Without this option, dd would create an output file 512 bytes long. 
+
 https://www.linux.com/tutorials/gnu-ddrescue-best-damaged-drive-rescue/
 
 https://help.uaudio.com/hc/en-us/articles/213195423-How-To-Disable-Fast-Startup-in-Windows-10
@@ -17,6 +23,18 @@ https://www.quora.com/If-you-clone-the-OS-hard-drive-will-Windows-require-a-new-
 https://www.tigraine.at/2014/01/04/how-to-upgrade-to-an-ssd-with-minimal-effort
 
 https://www.technibble.com/forums/threads/gnu-ddrescue-ridiculous-learning-curve.34594/
+
+For harddisk to 240 GB SSD we know it actually has about 220 GB and we should leave at least 10 % free
+
+for wear levelling so 200 GB and we should not stop or shorten the output if bad sector read error,
+
+harddisk being larger first we shrink Windows C drive to 190 GB, then start Clonezilla, enter command prompt:
+
+lsblk
+
+#/dev/sda is large but partitions on it are under 200GB seen in Windows Disk Management, /deb/sdb is about 220GB
+
+dd iflag=fullblock if=/dev/sda of=/dev/sdb bs=1M count=204800 conv=noerror,sync status=progress
 
 
 # Raspbian Raspberry Pi BTRFS with compression
