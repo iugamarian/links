@@ -1,6 +1,6 @@
 # Windows 10 disable fast boot and clone drive on same PC, Legacy and UEFI
 
-https://www.technibble.com/forums/threads/gnu-ddrescue-ridiculous-learning-curve.34594/
+http://wiki.christophchamp.com/index.php?title=Dd_(command)
 
 https://www.linux.com/tutorials/gnu-ddrescue-best-damaged-drive-rescue/
 
@@ -15,6 +15,8 @@ https://www.tecmint.com/migrate-windows-10-from-hdd-to-ssd-using-clonezilla/
 https://www.quora.com/If-you-clone-the-OS-hard-drive-will-Windows-require-a-new-license
 
 https://www.tigraine.at/2014/01/04/how-to-upgrade-to-an-ssd-with-minimal-effort
+
+https://www.technibble.com/forums/threads/gnu-ddrescue-ridiculous-learning-curve.34594/
 
 
 # Raspbian Raspberry Pi BTRFS with compression
