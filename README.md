@@ -66,9 +66,23 @@ https://wiki.gentoo.org/wiki//etc/local.d
 
 genpi64 instead of rpi3 for repository
 
-ssh -f -N -T -L 55901:127.0.0.1:5901 demouser@iprpi
+ssh -f -N -T -L 5902:127.0.0.1:5901 demouser@iprpi
 
-xtightvncviewer 127.0.0.1:55901
+OR with available user console:
+
+ssh -L 5902:localhost:5901 demouser@iprpi
+
+xtightvncviewer 127.0.0.1:5902
+
+=====================
+
+Performing standard VNC authentication
+
+Password: 
+
+Authentication successful
+
+=====================
 
 mkdir -p /home/pi/sshfsmnt
 
@@ -78,7 +92,11 @@ In case of problems: they are created by apparmor or ssh tunneling, tigervnc is 
 
 On server troubleshoot:
 
-1) Disable tigervnc service
+1) Uninstall apparmor if available on client and Raspberry Pi
+
+2) Linux cmdline apparmor=0 on client and Raspberry Pi
+
+3) Disable tigervnc service
 
 sudo su
 
@@ -94,11 +112,88 @@ sudo rc-update del tigervnc default
 
 reboot
 
-2) try ssh tunelling with command for /usr/bin/Xvnc after in quotes, as root and as user:
+ps -ef |grep 5901
 
-ssh ........ ´command´
+=====================
+
+only bash shell
+
+=====================
+
+
+4) update OS on client that accesses Raspberry Pi because maybe security fix for keys
+
+5) change tunnel port to target port to plus a few because maybe old port has old key configured
+
+6) configure ssh to be more permissive on the client and on the Raspberry Pi
+
+http://www.uptimemadeeasy.com/networking/connect-blocked-ports-ssh-tunneling/
+
+https://superuser.com/questions/346971/ssh-tunnel-connection-refused
 
 https://wiki.gentoo.org/wiki/SSH_tunneling
+
+https://askubuntu.com/questions/539937/how-may-i-do-a-ssh-tunneling
+
+=====================
+
+AllowTcpForwarding yes
+
+GatewayPorts yes
+
+X11Forwarding yes
+
+X11UseLocalhost yes
+
+PermitUserEnvironment yes
+
+=====================
+
+reboot
+
+7) On Raspberry Pi:
+
+sudo rc-service tigervnc start
+
+sudo ps -ef |grep 5901
+
+8) On client:
+
+ssh -L 5902:localhost:5901 demouser@iprpi
+
+xtightvncviewer 127.0.0.1:5902
+
+NOT OK ?
+
+On Raspberry Pi:
+
+sudo rc-service tigervnc start
+
+sudo ps -ef |grep 5901
+
+On client:
+
+ssh -L 5903:localhost:5901 demouser@iprpi
+
+xtightvncviewer 127.0.0.1:5903
+
+5904
+
+5905
+
+.
+
+.
+
+.
+
+590n
+
+9) If it is fixed, on Raspberry Pi enable tigervnc service:
+
+sudo rc-update add tigervnc default
+
+sudo reboot
 
 
 # Wayland on Debian, make Synaptic work (not tested yet)
