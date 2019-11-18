@@ -1,5 +1,7 @@
 # Windows 10 disable fast boot and clone drive on same PC, Legacy and UEFI
 
+https://somoit.net/windows/windows-cannot-shrink-volume-unmovable-files
+
 http://wiki.christophchamp.com/index.php?title=Dd_(command)
 
 https://en.wikipedia.org/wiki/Dd_(Unix)
