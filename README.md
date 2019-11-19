@@ -1,3 +1,10 @@
+# Power supply for TP-Link SG1016 that outputs 12V 2A
+
+https://www.yoycart.com/Product/524147033928/
+
+https://itbbs.pconline.com.cn/diy/15217927.html
+
+
 # Windows 10 disable fast boot and clone drive on same PC, Legacy and UEFI
 
 https://somoit.net/windows/windows-cannot-shrink-volume-unmovable-files
