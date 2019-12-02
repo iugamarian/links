@@ -1,3 +1,8 @@
+# Best available router for OpenWRT having no multiple risky versions
+
+https://openwrt.org/toh/asus/asus_rt-ac57u
+
+
 # Raspberry Pi Raspbian has Real VNC
 
 https://www.deviceplus.com/how-tos/how-to-make-a-vnc-server-on-raspberry-pi/
