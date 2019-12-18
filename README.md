@@ -6,6 +6,30 @@ https://forums.plex.tv/t/hardware-decoding-not-working-win-10-radeon-vega-8-gpu/
 
 https://www.notebookcheck.net/UHD-Graphics-630-vs-Vega-8-vs-Vega-10_8126_8144_8142.247598.0.html
 
+https://superuser.com/questions/1324323/how-to-disable-secure-boot-on-an-acer-aspire-3-laptop
+
+Specific steps
+Completely shut down your laptop.
+
+Power on the system and as soon as the first logo screen appears, immediately press F2 to enter the BIOS.
+
+Use the right arrow key to select Security tab.
+
+Use the down arrow key to highlight Set Supervisor Password and press Enter.
+
+Type some password and press Enter. Don't forget the password you enter!
+
+Retype the password to confirm and press Enter again.
+
+Use the right arrow key to select Boot tab.
+
+Press the down arrow key to select Secure Boot and press Enter.
+
+With the arrow key, highlight Disabled and press Enter.
+
+Press the F10 key and select Yes to save the changes and exit the BIOS.
+
+
 # Raspberry Pi VPN and iptables
 
 https://www.comparitech.com/blog/vpn-privacy/raspberry-pi-vpn/
