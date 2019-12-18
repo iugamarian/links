@@ -1,3 +1,9 @@
+# Ryzen 5 decoding information
+
+https://forums.plex.tv/t/hardware-decoding-not-working-win-10-radeon-vega-8-gpu/231752/3
+
+https://www.notebookcheck.net/UHD-Graphics-630-vs-Vega-8-vs-Vega-10_8126_8144_8142.247598.0.html
+
 # Raspberry Pi VPN and iptables
 
 https://www.comparitech.com/blog/vpn-privacy/raspberry-pi-vpn/
