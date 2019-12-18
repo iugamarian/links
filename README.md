@@ -1,5 +1,7 @@
 # Ryzen 5 decoding information
 
+Debian 10.2 does not have "driver" in amdgpu for Ryzen 5 Picasso. Need to use Ubuntu 19.10.
+
 https://en.wikipedia.org/wiki/Unified_Video_Decoder#VCN_1
 
 https://forums.plex.tv/t/hardware-decoding-not-working-win-10-radeon-vega-8-gpu/231752/3
@@ -29,6 +31,17 @@ With the arrow key, highlight Disabled and press Enter.
 
 Press the F10 key and select Yes to save the changes and exit the BIOS.
 
+https://askubuntu.com/questions/326662/which-partition-to-select-as-device-for-boot-loader-in-an-efi-mode-install
+
+While with BIOS/MBR systems you install to the MBR and almost never to a partition, with UEFI you always install to the efi partition. It actually should default to install to that partition anyway and you can only have one efi partition (with boot flag) per drive.
+
+In your case installing grub to sda3 the efi partition is correct. You should see multiple folders for each system you have installed, in Ubuntu they are mounted at /boot/efi and on the drive you have ubuntu & Microsoft folders with boot files:
+
+/boot/efi/EFI/ubuntu/grubx64.efi /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
+
+Grub2's os-prober has a bug and only creates BIOS boot entries which do not work with UEFI. You do not chainload to the Windows install like BIOS, but chain load to the efi partition. Boot-Repair can automatically create entries in 25_custom or you can manually add entries as shown in bug report to your 40_custom.
+
+grub2's os-prober creates wrong style (BIOS) chain boot entry https://bugs.launchpad.net/ubuntu/+source/grub2/+bug/1024383 type of entry from Boot-Repair that should work. menuentry "Windows UEFI bkpbootmgfw.efi" { menuentry "Windows Boot UEFI loader" { Type of entry that does not work: 'Windows ...) (on /dev/sdXY)' Some info in Post #3 on cleaning up menus, if desired. http://ubuntuforums.org/showthread.php?t=2085530
 
 # Raspberry Pi VPN and iptables
 
