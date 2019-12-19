@@ -2,6 +2,8 @@
 
 Debian 10.2 does not have "driver" in amdgpu for Ryzen 5 Picasso. Need to use Ubuntu 19.10.
 
+https://www.notebookcheck.net/Acer-Aspire-3-A315-41-Ryzen-3-2200U-Vega-3-SSD-FHD-Laptop-Review.306442.0.html
+
 https://en.wikipedia.org/wiki/Unified_Video_Decoder#VCN_1
 
 https://forums.plex.tv/t/hardware-decoding-not-working-win-10-radeon-vega-8-gpu/231752/3
