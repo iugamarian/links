@@ -2,6 +2,8 @@
 
 Debian 10.2 does not have "driver" in amdgpu for Ryzen 5 Picasso. Need to use Ubuntu 19.10.
 
+https://community.acer.com/en/discussion/576988/acer-aspire-3-a315-41g-bios-1-15-upgrade-stuck-boot
+
 https://www.youtube.com/watch?v=A0S9BIghFnU
 
 https://www.ebay.co.uk/itm/C5V01-NBX00026X00-DH5JV-NBX0002BY00-HDD-ACER-Aspire-A315-HDD-Jack/184046678950?hash=item2ada0973a6:m:mX7kZNGuY3QWovombR_vJyw
