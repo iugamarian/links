@@ -6,6 +6,8 @@ http://teknisi-indonesia.com/resources/aspire-3-a315-41-la-g021p-schematic.11166
 
 https://community.acer.com/en/discussion/576988/acer-aspire-3-a315-41g-bios-1-15-upgrade-stuck-boot
 
+https://community.acer.com/en/discussion/576990/how-to-flash-bios-on-acer-aspire-laptop
+
 https://www.youtube.com/watch?v=A0S9BIghFnU
 
 https://www.ebay.co.uk/itm/C5V01-NBX00026X00-DH5JV-NBX0002BY00-HDD-ACER-Aspire-A315-HDD-Jack/184046678950?hash=item2ada0973a6:m:mX7kZNGuY3QWovombR_vJyw
