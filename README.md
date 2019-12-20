@@ -2,7 +2,7 @@
 
 Debian 10.2 does not have "driver" in amdgpu for Ryzen 5 Picasso. Need to use Ubuntu 19.10.
 
-https://www.ebay.co.uk/itm/C5V01-NBX00026X00-DH5JV-NBX0002BY00-HDD-ACER-Aspire-A315-HDD-Jack/163951155021?hash=item262c40174d:m:mX7kZNGuY3QWovombR_vJyw
+https://www.ebay.co.uk/itm/C5V01-NBX00026X00-DH5JV-NBX0002BY00-HDD-ACER-Aspire-A315-HDD-Jack/184046678950?hash=item2ada0973a6:m:mX7kZNGuY3QWovombR_vJyw
 
 https://www.youtube.com/watch?v=KxQE5rm8vMc
 
