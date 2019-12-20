@@ -12,6 +12,12 @@ https://community.acer.com/en/discussion/552075/sata-cable-and-bracket-for-aspir
 
 https://community.acer.com/en/discussion/566384/aspire-3-a315-41-r9j2-sata-cable-hdd-cradle-and-mainboard-schematic
 
+https://www.doctor-laptop.ro/cablu-conectare-hdd-original-acer-50.gy9n2.003/
+
+https://www.ebay.fr/itm/312167713875
+
+https://www.ipc-computer.eu/notebook-spareparts/cable/-50.gy9n2.003
+
 https://www.aliexpress.com/item/4000385931261.html?spm=a2g0o.productlist.0.0.73121d90IDor0d&algo_pvid=0fa5b831-5c0c-4406-8963-ff4086dc6d13&algo_expid=0fa5b831-5c0c-4406-8963-ff4086dc6d13-2&btsid=9c0509f7-767f-4dc0-a908-ff2b97570f99&ws_ab_test=searchweb0_0,searchweb201602_7,searchweb201603_55
 
 https://www.aliexpress.com/item/4000364917729.html?spm=a2g0o.productlist.0.0.73121d90IDor0d&algo_pvid=0fa5b831-5c0c-4406-8963-ff4086dc6d13&algo_expid=0fa5b831-5c0c-4406-8963-ff4086dc6d13-1&btsid=9c0509f7-767f-4dc0-a908-ff2b97570f99&ws_ab_test=searchweb0_0,searchweb201602_7,searchweb201603_55
