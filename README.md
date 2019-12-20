@@ -10,6 +10,10 @@ https://www.acer.com/ac/ro/RO/content/model/NX.GY9EX.090
 
 https://community.acer.com/en/discussion/552075/sata-cable-and-bracket-for-aspire-a315-41-part-number-nx-gy9ed-012
 
+https://www.aliexpress.com/item/4000385931261.html?spm=a2g0o.productlist.0.0.73121d90IDor0d&algo_pvid=0fa5b831-5c0c-4406-8963-ff4086dc6d13&algo_expid=0fa5b831-5c0c-4406-8963-ff4086dc6d13-2&btsid=9c0509f7-767f-4dc0-a908-ff2b97570f99&ws_ab_test=searchweb0_0,searchweb201602_7,searchweb201603_55
+
+https://www.aliexpress.com/item/4000364917729.html?spm=a2g0o.productlist.0.0.73121d90IDor0d&algo_pvid=0fa5b831-5c0c-4406-8963-ff4086dc6d13&algo_expid=0fa5b831-5c0c-4406-8963-ff4086dc6d13-1&btsid=9c0509f7-767f-4dc0-a908-ff2b97570f99&ws_ab_test=searchweb0_0,searchweb201602_7,searchweb201603_55
+
 https://www.youtube.com/watch?v=_H_khwud0M0
 
 https://www.ebay.com/itm/Acer-Aspire-3-A315-41-Hard-Drive-HDD-Connector-Cable-50-GY9N2-003/123470616803?hash=item1cbf6c18e3:g:ySEAAOSwOkxb4EgY:rk:1:pf:0
