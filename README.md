@@ -4,6 +4,8 @@ Debian 10.2 does not have "driver" in amdgpu for Ryzen 5 Picasso. Need to use Ub
 
 https://www.ebay.co.uk/itm/C5V01-NBX00026X00-DH5JV-NBX0002BY00-HDD-ACER-Aspire-A315-HDD-Jack/184046678950?hash=item2ada0973a6:m:mX7kZNGuY3QWovombR_vJyw
 
+https://guatemaladigital.com/Deal4GO+SATA+SSD+Hard+Drive+Cable+with+2.5%22+HDD+Caddy+Bracket+for+Acer+Aspire+3+A315-41+A315-41G+A315-33+DH5JV+NBX0002BY00+50.GY9N2.003+(Color%3A+Black)/Producto.aspx?Codigo=7940076
+
 https://www.amazon.it/Deal4GO-A315-41-A315-41G-NBX0002BY00-50-GY9N2-003/dp/B0816QWNFG
 
 https://www.youtube.com/watch?v=KxQE5rm8vMc
