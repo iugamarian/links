@@ -1,4 +1,4 @@
-# Windows 10 LTSB can be left unactivated but only for trial period
+# Windows 10 Home, Pro, Enterprise, Enterprise LTSB can be left unactivated but only for trial period
 
 https://linustechtips.com/main/topic/956409-windows-10-ltsb-no-more-damn-updates/
 
@@ -7,17 +7,116 @@ https://superuser.com/questions/1024274/how-long-can-i-use-windows-10-without-ac
 https://www.reddit.com/r/windows/comments/6tn72g/windows_10_enterprise_ltsb/
 
 
-# Ryzen 5 decoding information
+# Ryzen 5 CPU Debian Linux and Ubuntu Linux
 
-Debian 10.2 does not have "driver" in amdgpu for Ryzen 5 Picasso. Need to use Ubuntu 19.10
+Debian 10.2 does not have "driver" in linux 4.19 amdgpu for Ryzen 5 Picasso. Need to use Ubuntu 19.10 directly,
 
-or install Debian without any desktop, then installing kernel (and maybe mesa) from backports
+or you need to install Debian without any desktop, then install the linux kernel and linux firmware from backports
 
-also firmware-amd-graphics from backports
+not needed to also update firmware-linux-free
+
+Why Debian ? Because it has << stable >> Chromium with accelerated video decoding by default, just need to enable
+
+in chrome://flags the "Override software rendering list" and check hardware video decoding status in chrome://gpu
+
+and check that it works with for example:
+
+https://www.youtube.com/watch?v=LXb3EKWsInQ
+
+Bear in mind that actual 4k content at 60 Hz will overload the notebook integrated GPU so you need to keep the setting at
+
+1080p 60 HZ or maybe if ok 1440p 60 Hz. This limitation is because of integrated GPU RAM speed more so if no dual channel
+
+Procedure:
+
+1 - update notebook BIOS (with an unactivated Windows 10 fresh install if notebook does not have Windows),
+
+this is required because Debian is too unstable with older than year 2019 BIOS, important to fix ACPI and AMD microcode
+
+2 - install Debian with an over 400 MB ESP EFI partition (linux kernels need space), deselected Debian Desktop Environment
+
+and deselected all desktops, not keeping Windows 10 at all but keeping end of storage drivers partition if available
+
+3 - Force debian to update the linux kernel to a very new version with this steps:
+
+aaa - start in normal mode, if not working press power button, then start in recovery mode and type root password every time until otherwise stated down here
+
+bbb - Install new kernel with this commands in console as root
+
+ip a
+
+Remember the name of the LAN network, for example enp1s0f1
+
+nano /etc/network/interfaces
+
+Add this in /etc/network/interfaces
+
+allow-hotplug enp1s0f1
+iface enp1s0f1 inet dhcp
+
+CTRL+o, ENTER, CTRL+x
+
+nano /etc/apt/sources.list
 
 https://backports.debian.org/Instructions/
 
 https://wiki.debian.org/Backports
+
+Add this in /etc/apt/sources.list
+
+deb http://deb.debian.org/debian buster-backports main contrib non-free
+deb-src http://deb.debian.org/debian buster-backports main contrib non-free
+
+CTRL+o, ENTER, CTRL+x
+
+apt-get update -y
+
+apt-get -t buster-backports install linux-image-amd64
+
+apt-get -t buster-backports install firmware-linux-nonfree
+
+sync
+
+reboot
+
+ccc - Run tasksel as root to install a Desktop environment
+
+If you need to install another desktop than Gnome and Gnome is already installed, exit tasksel and:
+
+https://unix.stackexchange.com/questions/110882/installing-and-uninstalling-gnome-on-debian/518850
+
+rm /usr/share/xsessions/gnome.desktop 
+
+rm /usr/share/xsessions/openbox.desktop 
+
+aptitude purge `dpkg --get-selections | grep gnome | cut -f 1`
+
+aptitude -f install
+
+aptitude purge `dpkg --get-selections | grep deinstall | cut -f 1`
+
+aptitude -f install
+
+tasksel
+
+In tasksel select Debian Desktop Environment and also the Desktop you want like MATE on LXDE
+
+sync
+
+reboot
+
+ddd - if you want, use https:/github.com/iugamarian/debianims to optimize the installation
+
+
+# Example Ryzen 5 3500U notebook A315-41-R93M information
+
+The BIOS is actually E*.bin not D*.bin in the archive, in case you need to do BIOS recovery
+
+This particular model comes with M.2 SSD and missing the special SATA cable for SATA HDD / SSD
+
+and comes with Endless OS or Linpus Linux, where Linpus Linux is not with graphical Desktop
+
+because linux kernel is old 4.2 and so no GPU acceleration
 
 http://teknisi-indonesia.com/resources/aspire-3-a315-41-la-g021p-schematic.11166/
 
@@ -68,6 +167,7 @@ https://www.notebookcheck.net/UHD-Graphics-630-vs-Vega-8-vs-Vega-10_8126_8144_81
 https://superuser.com/questions/1324323/how-to-disable-secure-boot-on-an-acer-aspire-3-laptop
 
 Specific steps
+
 Completely shut down your laptop.
 
 Power on the system and as soon as the first logo screen appears, immediately press F2 to enter the BIOS.
@@ -99,6 +199,7 @@ In your case installing grub to sda3 the efi partition is correct. You should se
 Grub2's os-prober has a bug and only creates BIOS boot entries which do not work with UEFI. You do not chainload to the Windows install like BIOS, but chain load to the efi partition. Boot-Repair can automatically create entries in 25_custom or you can manually add entries as shown in bug report to your 40_custom.
 
 grub2's os-prober creates wrong style (BIOS) chain boot entry https://bugs.launchpad.net/ubuntu/+source/grub2/+bug/1024383 type of entry from Boot-Repair that should work. menuentry "Windows UEFI bkpbootmgfw.efi" { menuentry "Windows Boot UEFI loader" { Type of entry that does not work: 'Windows ...) (on /dev/sdXY)' Some info in Post #3 on cleaning up menus, if desired. http://ubuntuforums.org/showthread.php?t=2085530
+
 
 # Raspberry Pi VPN and iptables
 
