@@ -15,6 +15,8 @@ or install Debian without any desktop, then installing kernel (and maybe mesa) f
 
 also firmware-amd-graphics from backports
 
+https://backports.debian.org/Instructions/
+
 https://wiki.debian.org/Backports
 
 http://teknisi-indonesia.com/resources/aspire-3-a315-41-la-g021p-schematic.11166/
