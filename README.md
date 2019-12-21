@@ -1,4 +1,4 @@
-# Windows 10 LTSB can be left unactivated
+# Windows 10 LTSB can be left unactivated but only for trial period
 
 https://linustechtips.com/main/topic/956409-windows-10-ltsb-no-more-damn-updates/
 
@@ -9,7 +9,13 @@ https://www.reddit.com/r/windows/comments/6tn72g/windows_10_enterprise_ltsb/
 
 # Ryzen 5 decoding information
 
-Debian 10.2 does not have "driver" in amdgpu for Ryzen 5 Picasso. Need to use Ubuntu 19.10.
+Debian 10.2 does not have "driver" in amdgpu for Ryzen 5 Picasso. Need to use Ubuntu 19.10
+
+or install Debian without any desktop, then installing kernel (and maybe mesa) from backports
+
+also firmware-amd-graphics from backports
+
+https://wiki.debian.org/Backports
 
 http://teknisi-indonesia.com/resources/aspire-3-a315-41-la-g021p-schematic.11166/
 
