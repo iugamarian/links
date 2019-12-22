@@ -1,3 +1,36 @@
+# Play 64 bit games in Wine - EVE Online
+
+su -
+
+dpkg --add-architecture i386 && apt-get update && apt-get install -y wine && sync
+
+apt-get install -y winetricks mono-complete fonts-wine ttf-mscorefonts-installer
+
+exit
+
+Download EVE Online from www.eveonline.com (signup if not already)
+
+rm -rf .wine/
+
+Do not create 32 bit Wine prefix, leave it 64 bit.
+
+Do not disable d3d11 library - it is working fine in the default Wine package from Debian Buster.
+
+winecfg
+
+winetricks d3dx9_36
+
+winetricks ddr=opengl multisampling=enabled orm=fbo videomemorysize=2048 strictdrawordering=enabled
+
+wine ~/Downloads/EveLauncher-1602194.exe
+
+mv ~/.wine/drive_c/EVE/ ~/
+
+cd EVE/
+
+wine eve.exe 
+
+
 # Windows 10 Home, Pro, Enterprise, Enterprise LTSB can be left unactivated but only for trial period
 
 https://linustechtips.com/main/topic/956409-windows-10-ltsb-no-more-damn-updates/
