@@ -1,5 +1,9 @@
 # Play 64 bit games in Wine - EVE Online
 
+EVE Online is not easy as Alpha, you need Omega account which costs some money.
+
+But it is good for testing wine 64 bit functionality.
+
 su -
 
 dpkg --add-architecture i386 && apt-get update && apt-get install -y wine && sync
@@ -143,13 +147,33 @@ ddd - if you want, use https:/github.com/iugamarian/debianims to optimize the in
 
 # Example Ryzen 5 3500U notebook A315-41-R93M information
 
-The BIOS is actually E*.bin not D*.bin in the archive, in case you need to do BIOS recovery
+Use external HDMI monitor only, at each boot run in terminal, better not make startup script:
+
+xrandr --output eDP --off
+
+The BIOS is actually E*.bin not D*.bin in the archive, in case you need to do BIOS recovery.
+
+Bios recovery is made by creating FAT32 partition on a GPT USB stick and copying the BIOS in it,
+
+rename your Bios .bin file extension to .fd file extension. Example: AB7HG.fd or maybe you need
+
+to add x64 in your filename. Example: AB7HGx64.fd then power off, remove power adapter, plug your
+
+USB, press FN+ESC keys, plug your AC Adapter, press power button while still holding FN+ESC keys
+
+and Hold it for 5 secs then Release the pressed keys. (You can hear that your fan is spinning at max.)
+
+There will be an indication on both of your USB and Power Indicator (might also blink.)
+
+Wait for about 5 minutes until the process is finished. (Your Laptop will automatically Shuts off or
+
+Reboot itself, Then that's it. You are done and your Waifu laptop is now or would be breathing again.)
 
 This particular model comes with M.2 SSD and missing the special SATA cable for SATA HDD / SSD
 
 and comes with Endless OS or Linpus Linux, where Linpus Linux is not with graphical Desktop
 
-because linux kernel is old 4.2 and so no GPU acceleration
+because linux kernel is old 4.2 and so no GPU acceleration for Ryzen 3500U.
 
 http://teknisi-indonesia.com/resources/aspire-3-a315-41-la-g021p-schematic.11166/
 
