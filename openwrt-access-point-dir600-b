@@ -1,0 +1,70 @@
+# DIR600 B1
+
+cat <<EOF > /etc/config/network
+config interface 'loopback'
+        option ifname 'lo'
+        option proto 'static'
+        option ipaddr '127.0.0.1'
+        option netmask '255.0.0.0'
+
+config globals 'globals'
+        option ula_prefix 'fd38:5c1e:16c3::/48'
+
+config interface 'lan'
+        option type 'bridge'
+        option ifname 'eth0.1'
+        option proto 'static'
+        option netmask '255.255.255.0'
+        option ip6assign '60'
+        option ipaddr '192.168.1.20'
+        option gateway '192.168.1.1'
+        option dns '208.67.222.222 208.67.220.220'
+
+config interface 'wan'
+        option ifname 'eth0.2'
+        option proto 'dhcp'
+        option auto '0'
+
+config route
+        option interface 'lan'
+        option target '0.0.0.0'
+        option netmask '0.0.0.0'
+        option gateway '192.168.1.1'
+
+config device 'lan_dev'
+        option name 'eth0.1'
+        option macaddr '1c:af:f7:49:41:0a'
+
+config device 'wan_dev'
+        option name 'eth0.2'
+        option macaddr '1c:af:f7:49:41:0b'
+
+config switch
+        option name 'rt305x'
+        option reset '1'
+        option enable_vlan '1'
+
+config switch_vlan
+        option device 'rt305x'
+        option vlan '1'
+        option ports '0 1 2 3 5 6t'
+
+config switch_vlan
+        option device 'rt305x'
+        option vlan '2'
+        option ports '4 6t'
+EOF
+
+cat <<EOF > /etc/config/dhcp
+config dhcp 'lan'
+        option interface 'lan'
+        option ignore '1'
+EOF
+
+/etc/init.d/firewall disable
+/etc/init.d/firewall stop
+/etc/init.d/dnsmasq disable
+/etc/init.d/dnsmasq stop
+/etc/init.d/odhcp disable
+/etc/init.d/odhcp stop
+
