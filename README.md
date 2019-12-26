@@ -76,7 +76,9 @@ config route6
 etc config dhcp
 
 config dhcp 'lan'
+
     option interface 'lan'
+    
     option ignore '1'
 
 
