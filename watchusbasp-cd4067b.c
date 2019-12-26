@@ -402,11 +402,11 @@
 static volatile unsigned char hours = 10;
 static volatile unsigned char minutes = 0;
 static volatile unsigned char seconds = 0;
-static volatile unsigned char day = 11;
-static volatile unsigned char month = 07;
+static volatile unsigned char day = 26;
+static volatile unsigned char month = 12;
 static volatile unsigned char year = 19; // up to 254 - allow 255 reserve, display can show up to 199
 static volatile unsigned char pot_value = 0;
-static volatile unsigned char pot_value_at_zero = 1;
+static volatile unsigned char pot_status = 0;
 static volatile unsigned char interruptdetected = 0;
 // need to be fast here, so no RAM usage if possible
 unsigned char ledstep = 0;
@@ -426,8 +426,6 @@ unsigned char ledcurrentdigit2 = 0;
 unsigned char ledcurrentdigit3 = 0;
 unsigned char ledcurrentdigit4 = 0;
 unsigned char ledcurrentdigit5 = 0;
-unsigned char pointsfortime = 0;
-unsigned char pointsfordate = 0;
 unsigned char ledhours = 10;
 unsigned char ledminutes = 0;
 unsigned char ledday = 11;
@@ -494,19 +492,26 @@ pot_value = 128;
 
 }
 
-void updatecdselection() {
+void updatecdselection() { // larger tranzistors will switch slower
 
-//  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-//  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+_delay_us(100); // allow time for the LED larger flip flops to finish switching
 
-  _delay_ms(1);  // allow time for CD4067BE flip flops speed
+// get all CD4067 flip flop enable pins up so another reset will work later, when pins will be down then enable will be ON
+
+  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
+  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
+
+  _delay_us(50);  // allow time for the CD4067BE enable small tranzistors to be all off
   PORTB = (ledstep<<2);	// select CD4067BE channel
-  _delay_ms(1);  // allow time for CD4067BE flip flops speed
-  // a total of 16 x 2 = 32 ms this is very good
+  _delay_us(50);  // allow time for the CD4067BE selection small tranzistors to be on
+
+  // a total time of 16 x (100 + 50 + 50) = 3200 us which is 3.2 ms this is very good
 
 }
 
 void updatecdcommandled0() {
+
+updatecdselection();
 
 //////////////////////////////////////// field 1 of 5
 	
@@ -530,16 +535,11 @@ void updatecdcommandled0() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(1); // time to switch flip flop
-
-// get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
-
 }
 
 void updatecdcommandled1() {
+
+updatecdselection();
 
 //////////////////////////////////////// field 1 of 5
 
@@ -563,41 +563,88 @@ void updatecdcommandled1() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(1); // time to switch flip flop
-
-// get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
-
 }
 
 
 void updatecdcommandled2() {
 
+updatecdselection();
 
 //        106 - 149 = 43 steps = keep constant but display how far from the middle the potentiometer is
 
 //        3 - 3 - [[[ 31 ]]] - 3 - 3  steps:  106 - 109 - [[[ 112 - 143 ]]] - 146 - 149
 
+// This are the "point" LED's, used to indicate potentiometer status and year over 100 status
 
-//////////////////////////////////////// show potentiometer position for time
+// "o" = ON, "-" = OFF as follows:
 
-if((pointsfortime == 0) && (ledstep == 10)) PORTC &= ~ (1<<0); 	     // 01xx
-if(pointsfortime > 4) PORTC &= ~ (1<<0);			     // 11xx
-if((pointsfortime == 4 ) && (ledstep == 2)) PORTC &= ~ (1<<0);	     // 10xx
-if((pointsfortime == 2) && (ledstep == 10)) PORTC &= ~ (1<<1); 	     // xx01
-if((pointsfortime < 2)) PORTC &= ~ (1<<1); 			     // xx11
-if((pointsfortime == 6) && (ledstep == 2)) PORTC &= ~ (1<<1);	     // xx10
+/*
 
-//////////////////////////////////////// show middle potentiometer position for date
+17
+-ooo
+oooo
+16
+-ooo
+-ooo
+15
+-ooo
+--oo
+14
+-ooo
+---o
+13
+-ooo
+----
+12
+--oo
+----
+11
+---o
+----
+0
+----
+----
+21
+o---
+----
+22
+oo--
+----
+23
+ooo-
+----
+24
+ooo-
+o---
+25
+ooo-
+oo--
+26
+ooo-
+ooo-
+27
+ooo-
+oooo
+*/
 
-if((pointsfordate == 0) && (ledstep == 10)) PORTC &= ~ (1<<2); 	     // 01xx
-if(pointsfordate > 4) PORTC &= ~ (1<<2);			     // 11xx
-if((pointsfordate == 4 ) && (ledstep == 2)) PORTC &= ~ (1<<2);	     // 10xx
-if((pointsfordate == 2) && (ledstep == 10)) PORTD &= ~ (1<<0); 	     // xx01
-if((pointsfordate < 2)) PORTD &= ~ (1<<0); 			     // xx11
-if((pointsfordate == 6) && (ledstep == 2)) PORTD &= ~ (1<<0);	     // xx10
+
+//////////////////////////////////////// show potentiometer status in the time fields, x = not affecting the current field
+
+if((pot_status == 11) && (ledstep == 10)) PORTC &= ~ (1<<1); 				// xx-o
+if((pot_status > 11) && (pot_status < 18)) PORTC &= ~ (1<<1); 				// xxoo
+if((pot_status > 12) && (pot_status < 18) && (ledstep == 10)) PORTC &= ~ (1<<0);	// -oxx
+if((pot_status == 21) && (ledstep == 2)) PORTC &= ~ (1<<0);				// o-xx
+if((pot_status > 21) && (pot_status < 28)) PORTC &= ~ (1<<0);				// ooxx
+if((pot_status > 22) && (pot_status < 28) && (ledstep == 2)) PORTC &= ~ (1<<1);		// xxo-
+
+//////////////////////////////////////// show potentiometer status in the date fields
+
+if((pot_status == 16) && (ledstep == 10)) PORTC &= ~ (1<<2);				// -oxx
+if((pot_status == 17) || ((pot_status > 24) && (pot_status < 28))) PORTC &= ~ (1<<2);	// ooxx
+if((pot_status == 24) && (ledstep == 2)) PORTC &= ~ (1<<2);				// o-xx
+if((pot_status == 14) && (ledstep == 10)) PORTD &= ~ (1<<0);				// xx-o
+if((pot_status == 27) || ((pot_status > 14) && (pot_status < 18))) PORTD &= ~ (1<<0);	// xxoo
+if((pot_status == 26) && (ledstep == 2)) PORTD &= ~ (1<<0);				// xxo-
 
 //////////////////////////////////////// field 5 of 5 this are the two points, used to command displaying year 20xx OFF or 21xx ON
 	
@@ -605,17 +652,12 @@ if((pointsfordate == 6) && (ledstep == 2)) PORTD &= ~ (1<<0);	     // xx10
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(1); // time to switch flip flop
-
-// get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
-
 }
 
 
 void updatecdcommandled3() {
+
+updatecdselection();
 
 //////////////////////////////////////// field 1 of 5
 	
@@ -639,17 +681,12 @@ void updatecdcommandled3() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(1); // time to switch flip flop
-
-// get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
-
 }
 
 
 void updatecdcommandled4() {
+
+updatecdselection();
 
 //////////////////////////////////////// field 1 of 5
 	
@@ -673,17 +710,12 @@ void updatecdcommandled4() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(1); // time to switch flip flop
-
-// get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
-
 }
 
 
 void updatecdcommandled5() {
+
+updatecdselection();
 
 //////////////////////////////////////// field 1 of 5
 	
@@ -707,17 +739,12 @@ void updatecdcommandled5() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(1); // time to switch flip flop
-
-// get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
-
 }
 
 
 void updatecdcommandled6() {
+
+updatecdselection();
 
 //////////////////////////////////////// field 1 of 5
 	
@@ -741,18 +768,12 @@ void updatecdcommandled6() {
 
 ///////////////////////////////////////////  END of fields
 
-  _delay_ms(1); // time to switch flip flop
-
-// get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
-
-
 }
 
 
 void updatecdcommandled7() {
+
+updatecdselection();
 
 //////////////////////////////////////// field 1 of 5
 	
@@ -775,14 +796,6 @@ void updatecdcommandled7() {
 	if( ( ledcurrentdigit5 == 0 ) || ( ledcurrentdigit5 == 2 ) || ( ledcurrentdigit5 == 6 ) || ( ledcurrentdigit5 == 8 ) ) PORTD &= ~ (1<<3);
 
 ///////////////////////////////////////////  END of fields
-
-
-  _delay_ms(1); // time to switch flip flop
-
-// get all CD4067 flip flop setting pins up so another reset will work later
-
-  PORTC |= (1<<0) | (1<<1) | (1<<2);  // Set to 1 to not trigger LED ON
-  PORTD |= (1<<3) | (1<<0);  // Set to 1 to not trigger LED ON
 
 }
 
@@ -807,8 +820,9 @@ ledyear = year;
 // 2 - reset all LED flip flops turning them off
 
   PORTD &= ~ (1<<1);
-  _delay_ms(2);
+  _delay_us(200); // wait for the big and slow reset tranzistors to be on
   PORTD |= (1<<1);
+  _delay_us(200); // wait for the big and slow reset tranzistors to be off
 
 // 3 - through each of 16 steps see fast if LED's from the 5 CD4067BE fields need to be ON
 
@@ -857,7 +871,7 @@ ledyear = year;
   if(ledyear > 99)
 	{
 		yearover100detected = 1;
-		ledyear = 100 - ledyear;
+		ledyear = ledyear - 100;
 	}
 
   ledleftdigit5 = ledyear/10;
@@ -876,37 +890,29 @@ ledcurrentdigit2 = ledleftdigit2;
 ledcurrentdigit3 = ledleftdigit3;
 ledcurrentdigit4 = ledleftdigit4;
 ledcurrentdigit5 = ledleftdigit5;
+
   ledstep = 0;
-  updatecdselection();
   updatecdcommandled0();
 
-
   ledstep = 1;
-  updatecdselection();
   updatecdcommandled1();
 
   ledstep = 2;
-  updatecdselection();
   updatecdcommandled2();
 
   ledstep = 3;
-  updatecdselection();
   updatecdcommandled3();
 
   ledstep = 4;
-  updatecdselection();
   updatecdcommandled4();
 
   ledstep = 5;
-  updatecdselection();
   updatecdcommandled5();
 
   ledstep = 6;
-  updatecdselection();
   updatecdcommandled6();
 
   ledstep = 7;
-  updatecdselection();
   updatecdcommandled7();
 
 //  Right LED segment = 8 - 15
@@ -918,36 +924,30 @@ ledcurrentdigit4 = ledrightdigit4;
 ledcurrentdigit5 = ledrightdigit5;
 
   ledstep = 8;
-  updatecdselection();
   updatecdcommandled0();
 
   ledstep = 9;
-  updatecdselection();
   updatecdcommandled1();
 
   ledstep = 10;
-  updatecdselection();
   updatecdcommandled2();
 
   ledstep = 11;
-  updatecdselection();
   updatecdcommandled3();
 
   ledstep = 12;
-  updatecdselection();
   updatecdcommandled4();
 
   ledstep = 13;
-  updatecdselection();
   updatecdcommandled5();
 
   ledstep = 14;
-  updatecdselection();
   updatecdcommandled6();
 
   ledstep = 15;
-  updatecdselection();
   updatecdcommandled7();
+
+  updatecdselection(); // to get all the CD4067 enable pins off while waiting for a display later
 
 }
 
@@ -1103,10 +1103,12 @@ void potentiometerincreasemonths() {
 }
 
 void potentiometerdecreaseyears() {
-	if(year < 19) // year when the watch was made
+	if(year < 19) { // year when the watch was made
 		year = 199;	// 199 for 256 years - allow 255 reserve
-	else
+	}
+	else {
 		year--;
+	}
 	if(month == 2) {
 		if(year%4 == 0) {   // leap year
 			if(day > 29) {
@@ -1160,16 +1162,16 @@ int main(void) {
 	_delay_ms(5);
 	led_update_fields();   // update fields for the first time
 	while(1)
-    	{
+    		{
 
 		if (!(ADCSRA & (1<<ADSC))) // detect that ADSC is 0 and then do what is in the accolades
-		{
+			{
 			// avoid until conversion completes; ADSC=0 means Complete
 			_delay_ms(5);
 			pot_value = ADCH;
 			_delay_ms(5);
 			ADCSRA |= (1<<ADSC); // After setting ADMUX, start ADC read
-		}
+			}
 
 
 ////////////  ACT ON POTENTIOMETER COMMANDS
@@ -1178,7 +1180,13 @@ int main(void) {
 
 // Bug !!!!!!!! after selecting ADC 6 channel, ADC7 can't be selected. Probably because of "|=" instead of "="
 
-// So limited to one potentiometer
+// So limited to one potentiometer, will use potentiometer status to indicate:
+
+// -decrease mode = 1x
+// -constant near decrease 1x
+// -constant mode = 0
+// -constant near increase 2x
+// -increase mode = 2x
 
 //          0 -    4 = 4 steps = year decrease - easy a to set at minimum position
 //          5 -   29 = 25 steps = month decrease
@@ -1196,49 +1204,58 @@ int main(void) {
 //        225 - 250 = 25 steps = month increase
 //        250 - 255 = 5 steps = year increase - easy a to set at maximum position
 
-
-	if(pot_value < 5)
-		{
-			pointsfordate = 0;
-			pot_value_at_zero = 1;
+		if(pot_value < 5)
+			{
+			pot_status = 17;
 			potentiometerdecreaseyears();
-			led_update_fields();
-		}
+			}
 
-	if((pot_value > 4) && (pot_value < 30))
-		{
-			pointsfordate = 1;
-			pot_value_at_zero = 1;
+		if((pot_value > 4) && (pot_value < 30))
+			{
+			pot_status = 16;
 			potentiometerdecreasemonths();
-			led_update_fields();
-		}
-	if((pot_value > 29) && (pot_value < 55))
-		{
-			pointsfordate = 2;
-			pot_value_at_zero = 1;
+			}
+		if((pot_value > 29) && (pot_value < 55))
+			{
+			pot_status = 15;
 			potentiometerdecreasedays();
-			led_update_fields();
-		}
-	if((pot_value > 54) && (pot_value < 80))
-		{
-			pointsfortime = 1;
-			pot_value_at_zero = 1;
+			}
+		if((pot_value > 54) && (pot_value < 80))
+			{
+			pot_status = 14;
 			potentiometerdecreasehours();
-			led_update_fields();
-		}
-	if((pot_value > 79) && (pot_value < 106))
-		{
-			pointsfortime = 2;
-			pot_value_at_zero = 1;
+			}
+		if((pot_value > 79) && (pot_value < 106))
+			{
+			pot_status = 13;
 			potentiometerdecreaseminutes();
-			led_update_fields();
-		}
+			}
 
 
-	if((pot_value > 105) && (pot_value < 150))
-		{
-			pointsfordate = 3;
-		}
+//        106 - 149 = 43 steps = keep constant but display how far from the middle the potentiometer is
+
+//        3 - 3 - [[[ 31 ]]] - 3 - 3  steps:  106 - 109 - [[[ 112 - 143 ]]] - 146 - 149
+
+		if((pot_value > 105) && (pot_value < 110))
+			{
+			pot_status = 12;
+			}
+		if((pot_value > 109) && (pot_value < 112))
+			{
+			pot_status = 11;
+			}
+		if((pot_value > 111) && (pot_value < 144))
+			{
+			pot_status = 0;
+			}
+		if((pot_value > 143) && (pot_value < 150))
+			{
+			pot_status = 21;
+			}
+		if((pot_value > 149) && (pot_value < 150))
+			{
+			pot_status = 22;
+			}
 
 //          0 -    4 = 4 steps = year decrease - easy a to set at minimum position
 //          5 -   29 = 25 steps = month decrease
@@ -1256,93 +1273,52 @@ int main(void) {
 //        225 - 250 = 25 steps = month increase
 //        250 - 255 = 5 steps = year increase - easy a to set at maximum position
 
-	if((pot_value > 149) && (pot_value < 175))
-		{
-			pointsfortime = 4;
-			pot_value_at_zero = 1;
-			potentiometerincreaseminutes();
-			led_update_fields();
-		}
-	if((pot_value > 174) && (pot_value < 200))
-		{
-			pointsfortime = 5;
-			pot_value_at_zero = 1;
-			potentiometerincreasehours();
-			led_update_fields();
-		}
-	if((pot_value > 199) && (pot_value < 225))
-		{
-			pointsfordate = 4;
-			pot_value_at_zero = 1;
-			led_update_fields();
-			potentiometerincreasedays();
-		}
-	if((pot_value > 224) && (pot_value < 250))
-		{
-			pointsfordate = 5;
-			pot_value_at_zero = 1;
-			potentiometerincreasemonths();
-			led_update_fields();
-		}
-	if(pot_value > 249)
-		{
-			pointsfordate = 6;
-			pot_value_at_zero = 1;
-			potentiometerincreaseyears();
-			led_update_fields();
-		}
-
-//        106 - 149 = 43 steps = keep constant but display how far from the middle the potentiometer is
-
-//        3 - 3 - [[[ 31 ]]] - 3 - 3  steps:  106 - 109 - [[[ 112 - 143 ]]] - 146 - 149
-
-	if((pot_value > 105) && (pot_value < 110))
-		{
-			pointsfortime = 0;
-			pot_value_at_zero = 1;
-			led_update_fields();
-		}
-	if((pot_value > 109) && (pot_value < 112))
-		{
-			pointsfortime = 2;
-			pot_value_at_zero = 1;
-			led_update_fields();
-		}
-	if((pot_value > 111) && (pot_value < 144))
-		{
-			pointsfortime = 3;
-			if(pot_value_at_zero == 1)
+		if((pot_value > 149) && (pot_value < 175))
 			{
-				pot_value_at_zero = 0;
-				led_update_fields();
+			pot_status = 23;
+			potentiometerincreaseminutes();
 			}
-		}
-	if((pot_value > 143) && (pot_value < 150))
-		{
-			pointsfortime = 4;
-			pot_value_at_zero = 1;
+		if((pot_value > 174) && (pot_value < 200))
+			{
+			pot_status = 24;
+			potentiometerincreasehours();
+			}
+		if((pot_value > 199) && (pot_value < 225))
+			{
+			pot_status = 25;
+			potentiometerincreasedays();
+			}
+		if((pot_value > 224) && (pot_value < 250))
+			{
+			pot_status = 26;
+			potentiometerincreasemonths();
+			}
+		if(pot_value > 249)
+			{
+			pot_status = 27;
+			potentiometerincreaseyears();
+			}
+
+// Potentiometer is not at constant mode, display changed status:
+
+		if(pot_status > 0)
+			{
 			led_update_fields();
-		}
-	if((pot_value > 149) && (pot_value < 150))
-		{
-			pointsfortime = 6;
-			pot_value_at_zero = 1;
-			led_update_fields();
-}
+			}
 
 ///////////  ACT ON INTERRUPT DETECTED AT THE PASS OF A MINUTE
 
-	if((interruptdetected == 1) && (seconds == 0))
-		{
+		if((interruptdetected == 1) && (seconds == 0))
+			{
 			interruptdetected = 0;
 			led_update_fields();
-		}
+			}
 
 
-	_delay_ms(200);		//  simulate slow / lazy program ( so the microcontroller does not get hot and decreases poissible battery lifetime ) 
+		_delay_ms(500);		//  simulate slow / lazy program ( so the microcontroller does not get hot and decreases poissible battery lifetime ) 
 
 
-	} // acolade from while(1)
+		} // end  of while(1)
 
 	return 0;
 }
@@ -1352,7 +1328,7 @@ ISR(TIMER1_COMPA_vect)
 {
 	interruptdetected = 1;
 	seconds++;
-	if(pot_value_at_zero == 1) seconds = 0; // when potentiometer not at middle reset seconds to zero
+	if(pot_status > 0) seconds = 0; // when potentiometer not at middle reset seconds to zero
 	if(seconds > 59)
 	{
 		seconds = 0;
