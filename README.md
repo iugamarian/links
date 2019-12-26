@@ -1,3 +1,85 @@
+# OpenWRT access point
+
+https://roll.urown.net/router/bridged-ap.html
+
+
+etc config network
+
+config interface 'lan'
+
+    option type 'bridge'
+    
+    option ifname 'eth0'
+    
+    option _orig_ifname 'eth0 wlan0 wlan1'
+    
+    option _orig_bridge 'true'
+    
+    option proto 'static'
+    
+    option ipaddr '192.0.2.2'
+    
+    option netmask '255.255.255.0'
+    
+    option gateway '192.0.2.1'
+    
+    option broadcast '192.0.2.255'
+    
+    option dns '192.0.2.2 192.0.2.1'
+    
+    option ip6gw 'fe80::4e5e:cff:fe40:11a5'
+    
+    option ip6addr '2001:db8:c0de:10:2cb0:5dff:fe7f:2dba/64'
+
+config interface 'wan'
+
+    option ifname 'eth1'
+    
+    option proto 'dhcp'
+    
+    option auto '0'
+
+config interface 'wan6'
+
+    option ifname 'eth1'
+    
+    option proto 'dhcpv6'
+    
+    option auto '0'
+    
+    option reqaddress 'try'
+    
+    option reqprefix 'auto'
+
+config route
+
+    option interface 'lan'
+    
+    option target '0.0.0.0'
+    
+    option netmask '0.0.0.0'
+    
+    option gateway '192.0.2.1'
+
+config route6
+
+    option interface 'lan'
+    
+    option target '::/0'
+    
+    option gateway 'fe80::4e5e:cff:fe40:11aa'
+    
+    option metric '1024'
+
+
+
+etc config dhcp
+
+config dhcp 'lan'
+    option interface 'lan'
+    option ignore '1'
+
+
 # Play 64 bit games in Wine - EVE Online
 
 EVE Online is not easy as Alpha, you need Omega account which costs some money.
