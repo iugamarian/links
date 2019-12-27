@@ -1,5 +1,7 @@
 # OpenWRT access point
 
+https://www.hanselman.com/blog/ConfiguringTwoWirelessRoutersWithOneSSIDNetworkNameAtHomeForFreeRoaming.aspx
+
 https://openwrt.org/docs/guide-user/network/wifi/dumbap
 
 https://roll.urown.net/router/bridged-ap.html
