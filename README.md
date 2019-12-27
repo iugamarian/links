@@ -1,5 +1,7 @@
 # OpenWRT access point
 
+https://openwrt.org/docs/guide-user/network/wifi/dumbap
+
 https://roll.urown.net/router/bridged-ap.html
 
 
