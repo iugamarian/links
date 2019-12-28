@@ -253,7 +253,7 @@ https://ubuntuforums.org/showthread.php?t=2181530
 
 Solution 1 - Laptop has gigabit LAN port use the LAN, if does not have LAN use USB 3.0 LAN gigabit dongle.
 
-Solution 2 - keep active with constant ping to home device and if disconecteted just reconnect.
+Solution 2 - keep active with constant ping to home device and if disconnected disconnect and reconnect wifi.
 
 The BIOS is actually E*.bin not D*.bin in the archive, in case you need to do BIOS recovery.
 
