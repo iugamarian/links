@@ -56,6 +56,12 @@ config switch_vlan
         option ports '0 6t'
 EOF
 
+cat <<EOF > /etc/config/dhcp
+config dhcp 'lan'
+        option interface 'lan'
+        option ignore '1'
+EOF
+
 /etc/init.d/firewall disable
 /etc/init.d/firewall stop
 /etc/init.d/dnsmasq disable
