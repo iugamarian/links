@@ -65,6 +65,109 @@ EOF
 /etc/init.d/firewall stop
 /etc/init.d/dnsmasq disable
 /etc/init.d/dnsmasq stop
-/etc/init.d/odhcp disable
-/etc/init.d/odhcp stop
 
+#/etc/init.d/odhcp disable
+#/etc/init.d/odhcp stop
+
+# wireless setup
+
+cat <<EOF > /etc/config/dhcp
+
+config wifi-device 'radio0'
+	option type 'mac80211'
+	option hwmode '11g'
+	option path 'platform/10180000.wmac'
+	option htmode 'HT20'
+	option channel '3'
+	option country '00'
+	option legacy_rates '1'
+
+config wifi-iface 'default_radio0'
+	option device 'radio0'
+	option network 'lan'
+	option mode 'ap'
+	option ssid 'OpenWrtD-Link'
+	option encryption 'psk2'
+	option key 'password'
+EOF
+
+# installed packages
+
+# opkg list-installed
+
+base-files - 192-r7258-5eb055306f
+busybox - 1.28.4-2
+dnsmasq - 2.80-1
+dropbear - 2017.75-7.1
+firewall - 2018-08-13-1c4d5bcd-1
+fstools - 2018-04-16-e2436836-1
+fwtool - 1
+hostapd-common - 2018-05-21-62566bc2-5
+ip6tables - 1.6.2-1
+iptables - 1.6.2-1
+iw-full - 4.14-1
+jshn - 2018-07-25-c83a84af-2
+jsonfilter - 2018-02-04-c7e938d6-1
+kernel - 4.14.63-1-dc5bce12ec13037c5b0db4771928114c
+kmod-cfg80211 - 4.14.63+2017-11-01-9
+kmod-eeprom-93cx6 - 4.14.63-1
+kmod-gpio-button-hotplug - 4.14.63-2
+kmod-ip6tables - 4.14.63-1
+kmod-ipt-conntrack - 4.14.63-1
+kmod-ipt-core - 4.14.63-1
+kmod-ipt-nat - 4.14.63-1
+kmod-ipt-offload - 4.14.63-1
+kmod-leds-gpio - 4.14.63-1
+kmod-lib-crc-ccitt - 4.14.63-1
+kmod-lib-crc-itu-t - 4.14.63-1
+kmod-mac80211 - 4.14.63+2017-11-01-9
+kmod-nf-conntrack - 4.14.63-1
+kmod-nf-conntrack6 - 4.14.63-1
+kmod-nf-flow - 4.14.63-1
+kmod-nf-ipt - 4.14.63-1
+kmod-nf-ipt6 - 4.14.63-1
+kmod-nf-nat - 4.14.63-1
+kmod-nf-reject - 4.14.63-1
+kmod-nf-reject6 - 4.14.63-1
+kmod-ppp - 4.14.63-1
+kmod-pppoe - 4.14.63-1
+kmod-pppox - 4.14.63-1
+kmod-rt2800-lib - 4.14.63+2017-11-01-9
+kmod-rt2800-mmio - 4.14.63+2017-11-01-9
+kmod-rt2800-soc - 4.14.63+2017-11-01-9
+kmod-rt2x00-lib - 4.14.63+2017-11-01-9
+kmod-rt2x00-mmio - 4.14.63+2017-11-01-9
+kmod-slhc - 4.14.63-1
+libblobmsg-json - 2018-07-25-c83a84af-2
+libc - 1.1.19-1
+libgcc - 7.3.0-1
+libip4tc - 1.6.2-1
+libip6tc - 1.6.2-1
+libjson-c - 0.12.1-2
+libjson-script - 2018-07-25-c83a84af-2
+libnl-tiny - 0.1-5
+libpthread - 1.1.19-1
+libubox - 2018-07-25-c83a84af-2
+libubus - 2018-10-06-221ce7e7-1
+libuci - 2018-08-11-4c8b4d6e-1
+libuclient - 2018-11-24-3ba74ebc-1
+libxtables - 1.6.2-1
+logd - 2018-02-14-128bc35f-2
+mtd - 23
+netifd - 2018-11-19-4b83102d-2
+odhcp6c - 2018-07-14-67ae6a71-15
+odhcpd-ipv6only - 1.15-3
+openwrt-keyring - 2018-05-18-103a32e9-1
+opkg - 2019-01-18-7708a01a-1
+ppp - 2.4.7-12
+ppp-mod-pppoe - 2.4.7-12
+procd - 2018-03-28-dfb68f85-1
+swconfig - 11
+ubox - 2018-02-14-128bc35f-2
+ubus - 2018-10-06-221ce7e7-1
+ubusd - 2018-10-06-221ce7e7-1
+uci - 2018-08-11-4c8b4d6e-1
+uclient-fetch - 2018-11-24-3ba74ebc-1
+usign - 2015-07-04-ef641914-1
+wireless-regdb - 2017-10-20-4343d359
+wpad-mini - 2018-05-21-62566bc2-5
