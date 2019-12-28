@@ -1,0 +1,209 @@
+# ASUS RT-AC57U
+
+# https://openwrt.org/toh/asus/asus_rt-ac57u
+
+cat <<EOF > /etc/config/network
+config interface 'loopback'
+        option ifname 'lo'
+        option proto 'static'
+        option ipaddr '127.0.0.1'
+        option netmask '255.0.0.0'
+
+config globals 'globals'
+        option ula_prefix 'fd9e:9854:428b::/48'
+
+config interface 'lan'
+        option type 'bridge'
+        option ifname 'eth0.1'
+        option proto 'static'
+        option ipaddr '192.168.1.30'
+        option netmask '255.255.255.0'
+        option gateway '192.168.1.1'
+        option dns '208.67.222.222 208.67.220.220'
+        option ip6assign '60'
+
+config interface 'wan'
+        option ifname 'eth0.2'
+        option proto 'dhcp'
+
+config route
+        option interface 'lan'
+        option target '0.0.0.0'
+        option netmask '0.0.0.0'
+        option gateway '192.168.1.1'
+
+config device 'wan_eth0_2_dev'
+        option name 'eth0.2'
+        option macaddr '04:d9:f5:56:ee:00'
+
+config interface 'wan6'
+        option ifname 'eth0.2'
+        option proto 'dhcpv6'
+
+config switch
+        option name 'switch0'
+        option reset '1'
+        option enable_vlan '1'
+
+config switch_vlan
+        option device 'switch0'
+        option vlan '1'
+        option ports '1 2 3 4 6t'
+
+config switch_vlan
+        option device 'switch0'
+        option vlan '2'
+        option ports '0 6t'
+EOF
+
+/etc/init.d/firewall disable
+/etc/init.d/firewall stop
+/etc/init.d/dnsmasq disable
+/etc/init.d/dnsmasq stop
+
+#/etc/init.d/odhcp disable
+#/etc/init.d/odhcp stop
+
+# installed extra packages: https://forum.openwrt.org/t/solved-opkg-how-to-list-only-packages-that-i-have-installed/11983
+
+# github.com/iugamarian/openwrtsetup
+
+# alsa-lib instead of alsa-libs, mc, ntfs-3g, ntfs-3g-utils
+
+# opkg list-installed
+
+alsa-lib - 1.1.9-1
+alsa-utils - 1.1.9-1
+alsa-utils-tests - 1.1.9-1
+base-files - 210-r11823-b2d10977a8
+blkid - 2.34-2
+block-mount - 2019-12-22-b4e25d54-1
+busybox - 1.31.1-1
+dnsmasq - 2.80-15
+dropbear - 2019.78-2
+e2fsprogs - 1.44.5-2
+fdisk - 2.34-2
+firewall - 2019-11-22-8174814a-1
+fstools - 2019-12-22-b4e25d54-1
+fwtool - 2019-11-12-8f7fe925-1
+getrandom - 2019-06-16-4df34a4d-3
+glib2 - 2.58.3-3
+hostapd-common - 2019-08-08-ca8c2bd2-2
+ip6tables - 1.8.3-2
+iptables - 1.8.3-2
+iw - 5.3-2
+iwinfo - 2019-10-16-07315b6f-1
+jshn - 2019-12-26-eb7eb639-1
+jsonfilter - 2018-02-04-c7e938d6-1
+kernel - 4.14.160-1-ec7a71496d3cfbaf8e66dac02bd69fc2
+kmod-cfg80211 - 4.14.160+5.4-rc8-1-1
+kmod-crypto-crc32c - 4.14.160-1
+kmod-crypto-hash - 4.14.160-1
+kmod-fs-ext4 - 4.14.160-1
+kmod-fs-vfat - 4.14.160-1
+kmod-fuse - 4.14.160-1
+kmod-gpio-button-hotplug - 4.14.160-3
+kmod-input-core - 4.14.160-1
+kmod-ip6tables - 4.14.160-1
+kmod-ipt-conntrack - 4.14.160-1
+kmod-ipt-core - 4.14.160-1
+kmod-ipt-nat - 4.14.160-1
+kmod-ipt-offload - 4.14.160-1
+kmod-leds-gpio - 4.14.160-1
+kmod-lib-crc-ccitt - 4.14.160-1
+kmod-lib-crc16 - 4.14.160-1
+kmod-mac80211 - 4.14.160+5.4-rc8-1-1
+kmod-mt76-core - 4.14.160+2019-12-27-4cb1195a-1
+kmod-mt7603 - 4.14.160+2019-12-27-4cb1195a-1
+kmod-mt76x02-common - 4.14.160+2019-12-27-4cb1195a-1
+kmod-mt76x2 - 4.14.160+2019-12-27-4cb1195a-1
+kmod-mt76x2-common - 4.14.160+2019-12-27-4cb1195a-1
+kmod-nf-conntrack - 4.14.160-1
+kmod-nf-conntrack6 - 4.14.160-1
+kmod-nf-flow - 4.14.160-1
+kmod-nf-ipt - 4.14.160-1
+kmod-nf-ipt6 - 4.14.160-1
+kmod-nf-nat - 4.14.160-1
+kmod-nf-reject - 4.14.160-1
+kmod-nf-reject6 - 4.14.160-1
+kmod-nls-base - 4.14.160-1
+kmod-nls-cp437 - 4.14.160-1
+kmod-nls-iso8859-1 - 4.14.160-1
+kmod-nls-utf8 - 4.14.160-1
+kmod-ppp - 4.14.160-1
+kmod-pppoe - 4.14.160-1
+kmod-pppox - 4.14.160-1
+kmod-scsi-core - 4.14.160-1
+kmod-slhc - 4.14.160-1
+kmod-sound-core - 4.14.160-1
+kmod-usb-audio - 4.14.160-1
+kmod-usb-core - 4.14.160-1
+kmod-usb-ledtrig-usbport - 4.14.160-1
+kmod-usb-storage - 4.14.160-1
+kmod-usb-storage-extras - 4.14.160-1
+kmod-usb3 - 4.14.160-1
+libattr - 2.4.48-2
+libblkid1 - 2.34-2
+libblobmsg-json - 2019-12-26-eb7eb639-1
+libc - 1.1.24-2
+libcomerr0 - 1.44.5-2
+libext2fs2 - 1.44.5-2
+libfdisk1 - 2.34-2
+libffi - 3.2.1-3
+libgcc1 - 8.3.0-2
+libgcrypt - 1.8.5-1
+libgpg-error - 1.36-3
+libip4tc2 - 1.8.3-2
+libip6tc2 - 1.8.3-2
+libiwinfo20181126 - 2019-10-16-07315b6f-1
+libjson-c4 - 0.13.1-1
+libjson-script - 2019-12-26-eb7eb639-1
+libmbedtls12 - 2.16.3-1
+libmount1 - 2.34-2
+libncurses6 - 6.1-5
+libnl-tiny - 2019-10-29-0219008c-1
+libpthread - 1.1.24-2
+librt - 1.1.24-2
+libsmartcols1 - 2.34-2
+libsndfile - 2019-04-21-25824cb9-1
+libss2 - 1.44.5-2
+libssh2-1 - 1.9.0-2
+libubox20191226 - 2019-12-26-eb7eb639-1
+libubus20191219 - 2019-12-19-a1523d76-1
+libuci20130104 - 2019-12-12-165b4441-3
+libuclient20160123 - 2019-05-30-3b3e368d-1
+libusb-1.0-0 - 1.0.22-2
+libuuid1 - 2.34-2
+libxtables12 - 1.8.3-2
+logd - 2019-06-16-4df34a4d-3
+lsblk - 2.34-2
+mc - 4.8.23-2
+mtd - 25
+nano - 4.6-1
+netifd - 2019-11-20-e45b1408-2
+ntfs-3g - 2017.3.23-2-fuseint
+ntfs-3g-utils - 2017.3.23-2-fuseint
+odhcp6c - 2019-01-11-e199804b-16
+odhcpd-ipv6only - 2019-12-15-d60f0a62-3
+openwrt-keyring - 2019-07-25-8080ef34-1
+opkg - 2019-06-14-dcbc142e-1
+ppp - 2.4.7.git-2019-10-04-2
+ppp-mod-pppoe - 2.4.7.git-2019-10-04-2
+procd - 2019-11-04-3aa051b4-4
+resize2fs - 1.44.5-2
+swconfig - 12
+terminfo - 6.1-5
+tune2fs - 1.44.5-2
+ubi-utils - 2.1.1-1
+ubox - 2019-06-16-4df34a4d-3
+ubus - 2019-12-19-a1523d76-1
+ubusd - 2019-12-19-a1523d76-1
+uci - 2019-12-12-165b4441-3
+uclient-fetch - 2019-05-30-3b3e368d-1
+urandom-seed - 1.0-1
+urngd - 2019-10-21-40f939d5-1
+usbutils - 007-10
+usign - 2019-09-21-f34a383e-1
+wireless-regdb - 2019.06.03
+wpad-basic - 2019-08-08-ca8c2bd2-2
+zlib - 1.2.11-3
