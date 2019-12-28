@@ -64,6 +64,41 @@ EOF
 #/etc/init.d/odhcp disable
 #/etc/init.d/odhcp stop
 
+# wireless setup
+
+cat <<EOF > /etc/config/wireless
+config wifi-device 'radio0'
+        option type 'mac80211'
+        option channel '11'
+        option hwmode '11g'
+        option path 'pci0000:00/0000:00:01.0/0000:02:00.0'
+        option htmode 'HT20'
+
+config wifi-iface 'default_radio0'
+        option device 'radio0'
+        option network 'lan'
+        option mode 'ap'
+        option ssid 'OpenWrtAsus'
+        option encryption 'psk2'
+        option key 'password'
+
+config wifi-device 'radio1'
+        option type 'mac80211'
+        option channel '36'
+        option hwmode '11a'
+        option path 'pci0000:00/0000:00:00.0/0000:01:00.0'
+        option htmode 'VHT80'
+
+config wifi-iface 'default_radio1'
+        option device 'radio1'
+        option network 'lan'
+        option mode 'ap'
+        option ssid 'OpenWrtAsus-5g'
+        option encryption 'psk2'
+        option key 'password'
+EOF
+
+
 # installed extra packages: https://forum.openwrt.org/t/solved-opkg-how-to-list-only-packages-that-i-have-installed/11983
 
 # github.com/iugamarian/openwrtsetup
