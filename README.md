@@ -235,9 +235,25 @@ ddd - if you want, use https:/github.com/iugamarian/debianims to optimize the in
 
 # Example Ryzen 5 3500U notebook A315-41-R93M information
 
+/etc/default/grub
+
+GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 video=HDMI-A-1:1920x1080@60:D"
+
+update-grub
+
 Use external HDMI monitor only, at each boot run in terminal, better not make startup script:
 
 xrandr --output eDP --off
+
+On access point it disconnects after some time:
+
+https://ubuntuforums.org/showthread.php?p=12350385#post12350385
+
+https://ubuntuforums.org/showthread.php?t=2181530
+
+Solution 1 - Laptop has gigabit LAN port use the LAN, if does not have LAN use USB 3.0 LAN gigabit dongle.
+
+Solution 2 - keep active with constant ping to home device and if disconecteted just reconnect.
 
 The BIOS is actually E*.bin not D*.bin in the archive, in case you need to do BIOS recovery.
 
