@@ -71,7 +71,7 @@ EOF
 
 # wireless setup
 
-cat <<EOF > /etc/config/dhcp
+cat <<EOF > /etc/config/wireless
 
 config wifi-device 'radio0'
 	option type 'mac80211'
