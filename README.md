@@ -1,3 +1,12 @@
+# Linux view CPU-Z like info
+
+https://www.cyberciti.biz/faq/check-ram-speed-linux/
+
+https://packages.debian.org/stretch/dmidecode
+
+dmidecode --type 17
+
+
 # OpenWRT access point
 
 https://www.hanselman.com/blog/ConfiguringTwoWirelessRoutersWithOneSSIDNetworkNameAtHomeForFreeRoaming.aspx
