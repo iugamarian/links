@@ -244,6 +244,12 @@ ddd - if you want, use https:/github.com/iugamarian/debianims to optimize the in
 
 # Example Ryzen 5 3500U notebook A315-41-R93M information
 
+https://unix.stackexchange.com/questions/183375/how-can-i-change-screen-brightness-in-debian-wheezy-that-installed-in-laptop
+
+As root:
+
+echo 64 > /sys/class/backlight/amdgpu_bl0/brightness
+
 /etc/default/grub
 
 GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 video=HDMI-A-1:1920x1080@60:D"
