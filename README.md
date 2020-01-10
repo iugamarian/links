@@ -386,6 +386,8 @@ https://www.comparitech.com/blog/vpn-privacy/raspberry-pi-vpn/
 
 https://openwrt.org/toh/asus/asus_rt-ac57u
 
+http://downloads.openwrt.org/releases/19.07.0/targets/ramips/mt7621/openwrt-19.07.0-ramips-mt7621-asus_rt-ac57u-squashfs-sysupgrade.bin
+
 
 # Raspberry Pi Raspbian has Real VNC
 
