@@ -1,3 +1,12 @@
+# Open book reader
+
+https://github.com/joeycastillo/The-Open-Book
+
+https://liliputing.com/2020/01/the-open-book-ereader-will-be-a-real-thing-you-can-buy-eventually.html
+
+https://hackaday.io/contest/168107-take-flight-with-feather
+
+
 # Linux view CPU-Z like info
 
 https://www.cyberciti.biz/faq/check-ram-speed-linux/
