@@ -4,6 +4,8 @@ https://github.com/joeycastillo/The-Open-Book
 
 https://liliputing.com/2020/01/the-open-book-ereader-will-be-a-real-thing-you-can-buy-eventually.html
 
+https://hackaday.io/project/168761-the-open-book-feather
+
 https://hackaday.io/contest/168107-take-flight-with-feather
 
 
