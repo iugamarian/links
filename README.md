@@ -1,3 +1,8 @@
+# Zyxel NSA3xx install ssh as dropbear with 2019 repository
+
+http://zyxel.diskstation.eu/Users/Mijzelf/zypkg-repo/README.html
+
+
 # Scart to HDMI
 
 https://www.ebay.com/itm/SCART-HDMI-To-HDMI-720-1080P-HD-Video-Converter-Box-For-HDTV-DVD-US-EU-Adapter/293202446742?hash=item44443a4996:m:msRHB4Y1RUNnc2xfZC4MKNw
