@@ -2,6 +2,10 @@
 
 http://zyxel.diskstation.eu/Users/Mijzelf/zypkg-repo/README.html
 
+https://linuxize.com/post/how-to-mount-an-nfs-share-in-linux/
+
+NFS full path not just folder name.
+
 
 # Scart to HDMI
 
