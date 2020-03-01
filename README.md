@@ -1,10 +1,98 @@
-# Zyxel NSA3xx install ssh as dropbear with 2019 repository
+# Zyxel NSA3xx install ssh as dropbear and nfs with 2019 repository
 
 http://zyxel.diskstation.eu/Users/Mijzelf/zypkg-repo/README.html
 
 https://linuxize.com/post/how-to-mount-an-nfs-share-in-linux/
 
 NFS full path not just folder name.
+
+
+# Zyxel NSA3xx install latest uboot for loading modern kernels
+
+https://forum.doozan.com/read.php?3,12381
+
+https://forum.doozan.com/read.php?3,27280
+
+1) get root access in stock firmware
+
+2) get a share started to put files in
+
+3) put in the share:
+
+https://bitly.com/2iC3E69 as uboot.tar
+
+https://bitly.com/1RdYW8S as tools.tar.gz
+
+https://bitly.com/1sMwD7b as uenv.tar
+
+4) extract all files in one folder
+
+5) as root in stock firmware copy all the extracted files to /tmp
+
+6) install as instructed from /tmp, first try ./executable an then executable  
+
+7) also do the environment install command updates
+
+
+# Zyxel NSA320 install working Debian
+
+https://stackoverflow.com/questions/3913246/cannot-send-character-with-minicom
+
+https://forum.doozan.com/read.php?2,12096
+
+https://forum.doozan.com/read.php?2,25643
+
+https://forum.doozan.com/read.php?2,88409,88424
+
+https://forum.doozan.com/read.php?3,62649,63144
+
+Avoid Archlinuxarm for NSA320 - tested not ok
+
+1) get the rootfs:
+
+https://bitly.com/2Nx3XfY as debianrootfs.tar.bz2
+
+2) extract to new ext2/3/4 partition on storage to be used inside NSA3xx
+
+3) having newest uboot 2017xxxx add /boot/uEnv.txt having dtb_file=/boot/dts/kirkwood-nsa320.dtb
+
+without correct dtb_file eth0 network may not work
+
+4) make static ip:
+
+On another computer edit /etc/network/interfaces
+
+auto lo eth0
+
+iface lo inet loopback
+
+iface eth0 inet static
+
+	address	ip.ip.ip.wanted
+	
+	netmask	255.255.255.0
+	
+	network	ip.ip.ip.0
+	
+	broadcast ip.ip.ip.255
+	
+	gateway	ip.ip.ip.1
+
+Maybe it is not eth0 and something else:
+
+https://wiki.debian.org/NetworkConfiguration#Using_DHCP_to_automatically_configure_the_interface
+
+No ttl serial really needed if for editing you remove storage from NSA320 and edit on another computer
+
+Green second LED = boot is OK
+
+Yellow second LED = kernel booted but something else not ok, try fixing with makeimage commands on uInitrd
+
+Blinking second yellow LED = kernel not booted, try makeimage commands on uImage, /boot/uEnv.txt, repartition
+
+LAN green LED = eth0 working
+
+LAN only yellow LED = eth0 not working
 
 
 # Scart to HDMI
