@@ -82,6 +82,32 @@ Maybe it is not eth0 and something else:
 
 https://wiki.debian.org/NetworkConfiguration#Using_DHCP_to_automatically_configure_the_interface
 
+rm /etc/ssh/ssh_host*
+
+ssh-keygen -A
+
+apt-get update
+
+apt-get upgrade
+
+If upgrade log has update-initramfs: Generating /boot/initrd.img-5.2.9-kirkwood-tld-1
+
+cd /boot
+mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.2.9-kirkwood-tld-1 -d initrd.img-5.2.9-kirkwood-tld-1 uInitrd
+
+Activate systemd:
+
+nano /boot/uEnv.txt
+
+Add line:
+custom_params=init=/bin/systemd
+
+For safety check uboot has this info correct, if not or to be sure add to /boot/uEnv.txt
+
+fw_setenv mtdparts 'xxxxxxxxx'
+
+fw_setenv ethaddr 'xx:xx:xx:xx:xx:xx'
+
 No ttl serial really needed if for editing you remove storage from NSA320 and edit on another computer
 
 Green second LED = boot is OK
