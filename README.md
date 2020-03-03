@@ -108,6 +108,20 @@ fw_setenv mtdparts 'xxxxxxxxx'
 
 fw_setenv ethaddr 'xx:xx:xx:xx:xx:xx'
 
+Also check you add this info in the uboot environment:
+
+fw_setenv dtb_file '/boot/dts/kirkwood-nsa320.dtb'
+
+https://www.denx.de/wiki/view/DULG/UBootEnvVariables
+
+serverip = TFTP server ip address
+
+https://archlinuxarm.org/forum/viewtopic.php?f=53&t=9823
+
+ncip = netconsole uboot ip
+
+ncipk = netconsole kernel ip
+
 No ttl serial really needed if for editing you remove storage from NSA320 and edit on another computer
 
 Green second LED = boot is OK
