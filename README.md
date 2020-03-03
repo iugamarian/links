@@ -29,9 +29,71 @@ https://bitly.com/1sMwD7b as uenv.tar
 
 5) as root in stock firmware copy all the extracted files to /tmp
 
-6) install as instructed from /tmp, first try ./executable an then executable  
+6) save the current environment values as MAC network address, etc. will be lost !
 
-7) also do the environment install command updates
+fw_printenv > oldenvuboot.txt
+
+7) Copy oldenvuboot.txt to desktop PC
+
+8) install as instructed from /tmp, first try ./executable an then executable  
+
+9) also do the environment install command updates
+
+For safety check uboot has this info correct, if not or to be sure add to /boot/uEnv.txt
+
+fw_setenv mtdparts 'xxxxxxxxx'
+
+fw_setenv ethaddr 'xx:xx:xx:xx:xx:xx'
+
+Also check you add this info in the uboot environment:
+
+fw_setenv dtb_file '/boot/dts/kirkwood-nsa320.dtb'
+
+https://www.denx.de/wiki/view/DULG/UBootEnvVariables
+
+ipaddr = ip address of the booted device
+
+serverip = TFTP server ip address or desktop PC to view netconsole messages
+
+netmask = 255.255.255.0 used to know broadcast address of local network (no broadcast to internet)
+
+https://forum.doozan.com/read.php?3,14,14
+
+https://archlinuxarm.org/forum/viewtopic.php?f=53&t=9823
+
+https://wiki.archlinux.org/index.php/Netconsole
+
+fw_setenv preboot_nc 'setenv nc_ready 0; for pingstat in 1 2 3 4 5; do; sleep 1; if run if_netconsole; then setenv nc_ready 1; fi; done; if test $nc_ready -eq 1; then run start_netconsole; fi'
+
+fw_setenv preboot 'run preboot_nc'
+
+fw_setenv ipaddr    '192.168.1.xxx'
+
+fw_setenv serverip '192.168.1.yyy'
+
+fw_setenv netmask '255.255.255.0'
+
+Not required to be used in this case:
+
+ncip = netconsole uboot ip
+
+ncipk = netconsole kernel ip
+
+From what I understand netconsole will only transmit on local network, worst case broadcast address,
+
+when kernel is being booted netconsole of kernel takes over and netconsole of Uboot stops sending.
+
+No ttl serial really needed if for editing you remove storage from NSA320 and edit on another computer
+
+Green second LED = boot is OK
+
+Yellow second LED = kernel booted but something else not ok, try fixing with makeimage commands on uInitrd
+
+Blinking second yellow LED = kernel not booted, try makeimage commands on uImage, /boot/uEnv.txt, repartition
+
+LAN green LED = eth0 working
+
+LAN only yellow LED = eth0 not working
 
 
 # Zyxel NSA320 install working Debian
@@ -101,62 +163,6 @@ nano /boot/uEnv.txt
 
 Add line:
 custom_params=init=/bin/systemd
-
-For safety check uboot has this info correct, if not or to be sure add to /boot/uEnv.txt
-
-fw_setenv mtdparts 'xxxxxxxxx'
-
-fw_setenv ethaddr 'xx:xx:xx:xx:xx:xx'
-
-Also check you add this info in the uboot environment:
-
-fw_setenv dtb_file '/boot/dts/kirkwood-nsa320.dtb'
-
-https://www.denx.de/wiki/view/DULG/UBootEnvVariables
-
-ipaddr = ip address of the booted device
-
-serverip = TFTP server ip address or desktop PC to view netconsole messages
-
-netmask = 255.255.255.0 used to know broadcast address of local network (no broadcast to internet)
-
-https://forum.doozan.com/read.php?3,14,14
-
-https://archlinuxarm.org/forum/viewtopic.php?f=53&t=9823
-
-https://wiki.archlinux.org/index.php/Netconsole
-
-fw_setenv preboot_nc 'setenv nc_ready 0; for pingstat in 1 2 3 4 5; do; sleep 1; if run if_netconsole; then setenv nc_ready 1; fi; done; if test $nc_ready -eq 1; then run start_netconsole; fi'
-
-fw_setenv preboot 'run preboot_nc'
-
-fw_setenv ipaddr    '192.168.1.xxx'
-
-fw_setenv serverip '192.168.1.yyy'
-
-fw_setenv netmask '255.255.255.0'
-
-Not required to be used in this case:
-
-ncip = netconsole uboot ip
-
-ncipk = netconsole kernel ip
-
-From what I understand netconsole will only transmit on local network, worst case broadcast address,
-
-when kernel is being booted netconsole of kernel takes over and netconsole of Uboot stops sending.
-
-No ttl serial really needed if for editing you remove storage from NSA320 and edit on another computer
-
-Green second LED = boot is OK
-
-Yellow second LED = kernel booted but something else not ok, try fixing with makeimage commands on uInitrd
-
-Blinking second yellow LED = kernel not booted, try makeimage commands on uImage, /boot/uEnv.txt, repartition
-
-LAN green LED = eth0 working
-
-LAN only yellow LED = eth0 not working
 
 
 # Scart to HDMI
