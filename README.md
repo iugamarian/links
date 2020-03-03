@@ -116,6 +116,8 @@ https://www.denx.de/wiki/view/DULG/UBootEnvVariables
 
 serverip = TFTP server ip address
 
+https://forum.doozan.com/read.php?3,14,14
+
 https://archlinuxarm.org/forum/viewtopic.php?f=53&t=9823
 
 ncip = netconsole uboot ip
