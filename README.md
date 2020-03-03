@@ -118,7 +118,7 @@ ipaddr = ip address of the booted device
 
 serverip = TFTP server ip address or desktop PC to view netconsole messages
 
-netmask = 255.255.255.0 used to know boradcast address of local network (no broadcast to internet)
+netmask = 255.255.255.0 used to know broadcast address of local network (no broadcast to internet)
 
 https://forum.doozan.com/read.php?3,14,14
 
@@ -142,9 +142,9 @@ ncip = netconsole uboot ip
 
 ncipk = netconsole kernel ip
 
-From what I understand netconsole will only transmit on local network, worst case broadcast address.
+From what I understand netconsole will only transmit on local network, worst case broadcast address,
 
-When kernel is being booted netconsole of kernel takes over and netconsole of Uboot stops.
+when kernel is being booted netconsole of kernel takes over and netconsole of Uboot stops sending.
 
 No ttl serial really needed if for editing you remove storage from NSA320 and edit on another computer
 
