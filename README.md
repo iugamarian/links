@@ -120,9 +120,13 @@ https://forum.doozan.com/read.php?3,14,14
 
 https://archlinuxarm.org/forum/viewtopic.php?f=53&t=9823
 
+https://wiki.archlinux.org/index.php/Netconsole
+
 ncip = netconsole uboot ip
 
 ncipk = netconsole kernel ip
+
+From what I understand netconsole will only transmit on local network, worst case broadcast address.
 
 No ttl serial really needed if for editing you remove storage from NSA320 and edit on another computer
 
