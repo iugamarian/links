@@ -1,3 +1,8 @@
+# Udev rules for automounting USB drives
+
+https://forum.doozan.com/read.php?2,24139
+
+
 # Zyxel NSA3xx install ssh as dropbear and nfs with 2019 repository
 
 http://zyxel.diskstation.eu/Users/Mijzelf/zypkg-repo/README.html
