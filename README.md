@@ -2,6 +2,8 @@
 
 https://forum.doozan.com/read.php?2,33146,33148
 
+https://forum.doozan.com/read.php?2,23630
+
 
 # Udev rules for automounting USB drives
 
