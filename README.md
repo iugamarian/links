@@ -1,3 +1,10 @@
+# NFS on Debian (5 times sshfs transfer speeds for very slow CPU)
+
+https://wiki.debian.org/NFS/Kerberos
+
+https://wiki.debian.org/NFSServerSetup
+
+
 # BTRFS on Kirkwood Zyxel NSA3xx
 
 https://forum.doozan.com/read.php?2,33146,33148
