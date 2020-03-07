@@ -1,8 +1,14 @@
-# NFS on Debian (5 times sshfs transfer speeds for very slow CPU)
+# NFS on Debian (6 times faster than sshfs transfer for very slow CPU)
 
 https://wiki.debian.org/NFS/Kerberos
 
 https://wiki.debian.org/NFSServerSetup
+
+https://forum.doozan.com/read.php?2,28351
+
+https://kerneltalks.com/troubleshooting/mount-nfs-requested-nfs-version-or-transport-protocol-is-not-supported/
+
+https://www.cyberciti.biz/faq/howto-see-shares-on-nfs-server-exported-filesystems/
 
 
 # BTRFS on Kirkwood Zyxel NSA3xx
