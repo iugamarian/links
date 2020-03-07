@@ -10,6 +10,8 @@ https://kerneltalks.com/troubleshooting/mount-nfs-requested-nfs-version-or-trans
 
 https://www.cyberciti.biz/faq/howto-see-shares-on-nfs-server-exported-filesystems/
 
+http://www.brennan.id.au/19-Network_File_System.html#nfs4
+
 
 # BTRFS on Kirkwood Zyxel NSA3xx
 
