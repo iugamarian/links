@@ -135,6 +135,12 @@ https://forum.doozan.com/read.php?2,88409,88424
 
 https://forum.doozan.com/read.php?3,62649,63144
 
+https://forum.doozan.com/read.php?2,79219,79334
+
+Read CPU temperature:
+
+cat /sys/class/hwmon/hwmon0/device/hwmon/hwmon0/temp1_input
+
 Avoid Archlinuxarm for NSA320 - tested not ok
 
 1) get the rootfs:
