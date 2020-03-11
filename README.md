@@ -4,6 +4,10 @@ https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=195178
 
 https://www.raspberrypi-spy.co.uk/2014/07/raspberry-pi-model-b-3-5mm-audiovideo-jack/
 
+https://www.element14.com/community/thread/42067/l/audio-line-in-for-raspberry-pi?displayFullThread=true
+
+https://www.element14.com/community/community/raspberry-pi/raspberry-pi-accessories/cirrus_logic_audio_card?ICID=Pi-Accessories-wolfson-audio-space
+
 
 # NFS on Debian (6 times faster than sshfs transfer for very slow CPU)
 
