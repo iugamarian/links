@@ -1,3 +1,8 @@
+# Raspberry Pi default analog sound driver upgraded, about from 30% CD to 90% CD
+
+https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=195178
+
+
 # NFS on Debian (6 times faster than sshfs transfer for very slow CPU)
 
 https://wiki.debian.org/NFS/Kerberos
