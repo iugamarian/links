@@ -2,6 +2,8 @@
 
 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=195178
 
+https://www.raspberrypi-spy.co.uk/2014/07/raspberry-pi-model-b-3-5mm-audiovideo-jack/
+
 
 # NFS on Debian (6 times faster than sshfs transfer for very slow CPU)
 
