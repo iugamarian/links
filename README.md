@@ -8,6 +8,8 @@ https://www.element14.com/community/thread/42067/l/audio-line-in-for-raspberry-p
 
 https://www.element14.com/community/community/raspberry-pi/raspberry-pi-accessories/cirrus_logic_audio_card?ICID=Pi-Accessories-wolfson-audio-space
 
+https://www.richardmudhar.com/blog/2018/02/cirrus-logic-audio-card-for-the-raspberry-pi-revisited/
+
 
 # NFS on Debian (6 times faster than sshfs transfer for very slow CPU)
 
