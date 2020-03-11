@@ -10,6 +10,72 @@ https://www.element14.com/community/community/raspberry-pi/raspberry-pi-accessor
 
 https://www.richardmudhar.com/blog/2018/02/cirrus-logic-audio-card-for-the-raspberry-pi-revisited/
 
+https://www.horus.com/~hias/cirrus-driver.html
+
+Configuration for kernel 4.9 and newer
+
+Enable the driver
+
+Add the following line to /boot/config.txt to enable the Cirrus Logic card driver
+
+dtoverlay=rpi-cirrus-wm5102
+
+Note: MMAP support is already enabled by default in kernel 4.9, you no longer need to add the i2s-mmap overlay.
+
+Setup module dependencies
+
+The cirrus driver requires some manually defined module dependencies, if you fail to add them the driver won't load properly.
+
+Create a file /etc/modprobe.d/cirrus.conf with the following content:
+
+softdep arizona-spi pre: arizona-ldo1
+
+Download and install "usecase" mixer scripts
+
+Download cirrus-ng-scripts.tgz and extract it for example in /home/pi/bin.
+
+
+wget http://www.horus.com/~hias/tmp/cirrus/cirrus-ng-scripts.tgz
+
+mkdir bin
+
+cd bin
+
+tar zxf ../cirrus-ng-scripts.tgz
+
+Note: If you had installed the older usecase scripts for kernel 4.4 you need to remove them.
+
+You have to start the appropriate scripts before you can use the card. For example:
+
+./Reset_paths.sh
+
+./Playback_to_Lineout.sh
+
+./Playback_to_SPDIF.sh
+
+./Record_from_Linein.sh
+
+Additional configuration steps
+
+Disable RPi on-board audio device snd-bcm2835
+
+On Raspbian the RPi on-board audio device snd-bcm2835 is enabled by default. When you run aplay -l you'll see two cards, the Cirrus card sndrpiwsp and the on-board card bcm2835.
+
+
+If you don't need on-board audio you can disable it by removing (or commenting out) the dtparam=audio=on line from /boot/config.txt.
+
+#dtparam=audio=on
+
+Optionally: use fixed card number
+
+If you don't want to disable snd-bcm2835 or if you also have an USB audio device connected you might notice that the card numbers under which the drivers register will change. Sometimes the Cirrus card will card 0, sometimes on-board audio. The card number depends on which driver is registered first, which is purely random.
+
+You can manually assign fixed card (slot/index) numbers using the slot option of the snd module. For example, if you want the Cirrus card always to be the first and on-board audio the second one, add the following line to your /etc/modprobe.d/cirrus.conf file:
+
+For kernel 4.9 add this line:
+
+options snd slots=snd-soc-rpi-cirrus,snd-bcm2835
+
 
 # NFS on Debian (6 times faster than sshfs transfer for very slow CPU)
 
