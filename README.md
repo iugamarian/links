@@ -1,3 +1,10 @@
+# Bucharest good food restaurant:
+
+https://start-up.ro/ciotoianu-omul-care-ncinge-gratarele-in-popesti/
+
+https://utopiabalcanica.net/2018/04/16/la-o-parte-cocosatu-regele-micilor-e-la-popesti-si-i-spune-ciotoianu/
+
+
 # Raspberry Pi default analog sound driver upgraded, about from 30% CD to 90% CD
 
 https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=195178
