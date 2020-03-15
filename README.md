@@ -2121,6 +2121,8 @@ audio-normalize-downmix=yes
 
 volume=100
 
+audio-channels=stereo
+
 
 # MPV 2018 best with AMD Polaris, can't select on timeline,  configuration in ~/.config/mpv/mpv.conf:
 
@@ -2135,6 +2137,8 @@ save-position-on-quit
 audio-normalize-downmix=yes
 
 volume=100
+
+audio-channels=stereo
 
 
 # MPV 2017 medium with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
