@@ -8,25 +8,31 @@ https://utopiabalcanica.net/2018/04/16/la-o-parte-cocosatu-regele-micilor-e-la-p
 
 https://www.reddit.com/r/raspberry_pi/comments/aki1is/reducing_power_of_the_raspberry_pi_3_b/
 
+https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md
+
 dtoverlay=pi3-disable-wifi
 
 dtoverlay=pi3-disable-bt
 
-arm_freq=900
+arm_freq=600
 
-arm_freq_max=900
+arm_freq_max=600
 
-arm_freq_min=150
+arm_freq_min=600
 
 gpu_freq=250
 
+core_freq=250
+
 core_freq_min=250
+
+sdram_freq=250
 
 sdram_freq_min=250
 
-over_voltage=-3
+over_voltage=-4
 
-over_voltage_min=-8
+over_voltage_min=-4
 
 initial_turbo=30
 
