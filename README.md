@@ -4,6 +4,34 @@ https://start-up.ro/ciotoianu-omul-care-ncinge-gratarele-in-popesti/
 
 https://utopiabalcanica.net/2018/04/16/la-o-parte-cocosatu-regele-micilor-e-la-popesti-si-i-spune-ciotoianu/
 
+# Raspberry Pi reduce power consumption
+
+https://www.reddit.com/r/raspberry_pi/comments/aki1is/reducing_power_of_the_raspberry_pi_3_b/
+
+dtoverlay=pi3-disable-wifi
+
+dtoverlay=pi3-disable-bt
+
+arm_freq=900
+
+arm_freq_max=900
+
+arm_freq_min=150
+
+gpu_freq=250
+
+core_freq_min=250
+
+sdram_freq_min=250
+
+over_voltage=-3
+
+over_voltage_min=-8
+
+initial_turbo=30
+
+temp_limit=60
+
 
 # Raspberry Pi default analog sound driver upgraded, about from 30% CD to 90% CD
 
