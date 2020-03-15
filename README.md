@@ -30,9 +30,9 @@ sdram_freq=250
 
 sdram_freq_min=250
 
-over_voltage=-4
+over_voltage=-3
 
-over_voltage_min=-4
+over_voltage_min=-3
 
 initial_turbo=30
 
