@@ -10,6 +10,8 @@ https://www.reddit.com/r/raspberry_pi/comments/aki1is/reducing_power_of_the_rasp
 
 https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md
 
+https://www.raspberrypi.org/forums/viewtopic.php?t=257144
+
 dtoverlay=pi3-disable-wifi
 
 dtoverlay=pi3-disable-bt
