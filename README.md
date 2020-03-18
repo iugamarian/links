@@ -1,6 +1,18 @@
 # Test hard disk reliability before using it, deletes all data
 
+su -
+
+sudo -s
+
 badblocks -wsv -b 4096 /dev/sdX
+
+Just do a single pass of writes, and a short SMART test. Should be enough if you
+
+want an initial "is the disk clean" check. After buying, or before selling a drive:
+
+badblocks -wsv -t 0x00 /dev/sdX
+
+smartctl -t short /dev/sdX
 
 
 # Bucharest good food restaurant:
