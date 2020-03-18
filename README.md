@@ -2,6 +2,8 @@
 
 https://www.reddit.com/r/DataHoarder/comments/575vn4/is_there_anything_faster_than_badblocks_wsv/
 
+https://explainshell.com/explain?cmd=badblocks+-wsv
+
 su -
 
 sudo -s
