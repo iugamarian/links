@@ -1,3 +1,8 @@
+# Test hard disk reliability before using it, deletes all data
+
+badblocks -wsv -b 4096 /dev/sdX
+
+
 # Bucharest good food restaurant:
 
 https://start-up.ro/ciotoianu-omul-care-ncinge-gratarele-in-popesti/
