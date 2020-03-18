@@ -1,5 +1,7 @@
 # Test hard disk reliability before using it, deletes all data
 
+https://www.reddit.com/r/DataHoarder/comments/575vn4/is_there_anything_faster_than_badblocks_wsv/
+
 su -
 
 sudo -s
@@ -10,7 +12,7 @@ Just do a single pass of writes, and a short SMART test. Should be enough if you
 
 want an initial "is the disk clean" check. After buying, or before selling a drive:
 
-badblocks -wsv -t 0x00 /dev/sdX
+badblocks -wsv -b 4096 -t 0x00 /dev/sdX
 
 smartctl -t short /dev/sdX
 
