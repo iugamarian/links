@@ -1,3 +1,22 @@
+# Change default ssh server port
+
+https://www.ubuntu18.com/ubuntu-change-ssh-port/
+
+https://forum.mxlinux.org/viewtopic.php?f=108&t=47652
+
+su -
+
+sudo -s
+
+nano /etc/ssh/sshd_config
+
+Port 22000
+
+systemctl restart sshd
+
+/etc/init.d/ssh restart
+
+
 # Test hard disk reliability before using it, deletes all data
 
 https://www.reddit.com/r/DataHoarder/comments/575vn4/is_there_anything_faster_than_badblocks_wsv/
