@@ -1,3 +1,34 @@
+# Trick for adding icu-config in Debian 10 which is missing this library
+
+http://forum.tinycorelinux.net/index.php?topic=1884.0
+
+https://github.com/LinearTapeFileSystem/ltfs/issues/153
+
+nano /usr/bin/icu-config
+
+#!/bin/sh
+
+opts=$1
+
+case $opts in
+
+  '--cppflags')
+  
+    echo '' ;;
+    
+  '--ldflags')
+  
+    echo '-licuuc -licudata' ;;
+    
+  *)
+  
+    echo '/usr/lib/x86_64-linux-gnu/icu/pkgdata.inc' ;;
+    
+esac
+
+chmod +x /usr/bin/icu-config
+
+
 # Change default ssh server port
 
 https://www.ubuntu18.com/ubuntu-change-ssh-port/
