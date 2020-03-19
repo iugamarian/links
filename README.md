@@ -1,4 +1,54 @@
-# Trick for adding icu-config in Debian 10 which is missing this library
+# Debian graphical OpenVPN
+
+https://torguard.net/knowledgebase.php?action=displayarticle&id=53
+
+apt-get install network-manager-openvpn-gnome
+
+
+# Debian remove Wicd
+
+https://help.ubuntu.com/community/WICD
+
+Reverting to NetworkManager
+
+For Gnome / Unity
+
+Open up a Terminal and execute the following commands:
+
+Install NetworkManager:
+
+sudo apt-get install network-manager-gnome network-manager
+
+Then remove WICD:
+
+sudo apt-get remove wicd wicd-gtk
+
+Restart your system.
+
+Confirm everything is working, then remove WICD config files:
+
+sudo dpkg --purge wicd wicd-gtk
+
+For KDE (Kubuntu)
+
+Open up a Terminal and execute the following commands:
+
+Install NetworkManager:
+
+sudo apt-get install plasma-widget-networkmanagement network-manager
+
+Then remove WICD:
+
+sudo apt-get remove wicd wicd-kde
+
+Restart your system.
+
+Confirm everything is working, then remove WICD config files:
+
+sudo dpkg --purge wicd wicd-kde
+
+
+# Trick for adding icu-config in Debian 10 which is missing this library (work in progress)
 
 http://forum.tinycorelinux.net/index.php?topic=1884.0
 
