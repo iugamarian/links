@@ -1,3 +1,20 @@
+# Gimp scale images
+
+https://graphicdesign.stackexchange.com/questions/49941/how-can-i-shrink-these-areas-using-gimp
+
+Open image in Gimp
+
+CTRL+A
+
+Select > Float
+
+Float > Scale Layer
+
+114 %
+
+File > Export as...
+
+
 # Debian Live
 
 https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/current-live/
