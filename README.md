@@ -1,3 +1,8 @@
+# Debian Live
+
+https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/current-live/
+
+
 # Debian graphical OpenVPN
 
 https://torguard.net/knowledgebase.php?action=displayarticle&id=53
