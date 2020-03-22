@@ -1,3 +1,25 @@
+# Log files detection
+
+https://wiki.debian.org/RunningOnFlash
+
+find / -xdev -printf '%T+ %P\n' | sort -n | tail -99
+
+Edit /etc/rsyslog.conf and comment out any log files that are not required.
+
+/var/run and /var/lock
+
+sudoedit /etc/default/rcS
+
+..then edit these lines:
+
+
+RAMRUN=yes
+
+RAMLOCK=yes
+
+..so that /var/run and /var/lock are mounted in RAM.
+
+
 # Gimp scale images
 
 https://graphicdesign.stackexchange.com/questions/49941/how-can-i-shrink-these-areas-using-gimp
