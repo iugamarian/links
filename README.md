@@ -16,7 +16,11 @@ Exactly 65 MB:
 
 openssl rand -out sample.txt -base64 $(( 2**26 * 3/4 ))
 
-Exactly 260 MB can be divided by 4:
+Exactly 80 MB:
+
+openssl rand -out sample.txt -base64 61946641
+
+Exactly 260 MB:
 
 openssl rand -out sample.txt -base64 $(( 2**28 * 3/4 ))
 
