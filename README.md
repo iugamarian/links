@@ -1,3 +1,12 @@
+# Detect free space in MB for a mounted partition
+
+THEFREESPACE=$[$(df -m|grep /dev/sda1|awk '{print $4}')]
+
+echo $THEFREESPACE
+
+echo $((THEFREESPACE/80-1))
+
+
 # Create random files fast avoiding /dev/random and /dev/urandom
 
 https://superuser.com/questions/470949/how-do-i-create-a-1gb-random-file-in-linux
