@@ -1,3 +1,19 @@
+# Create random files fast avoiding /dev/random and /dev/urandom
+
+https://superuser.com/questions/470949/how-do-i-create-a-1gb-random-file-in-linux
+
+A little over 1 GB:
+openssl rand -out sample.txt -base64 $(( 2**30 * 3/4 ))
+
+Exactly 65 MB:
+openssl rand -out sample.txt -base64 $(( 2**26 * 3/4 ))
+
+Exactly 260 MB can be divided by 4:
+openssl rand -out sample.txt -base64 $(( 2**28 * 3/4 ))
+
+Time for 260 MB on Marvell Kirkwood about 50 seconds.
+
+
 # Log files detection
 
 https://wiki.debian.org/RunningOnFlash
