@@ -1,5 +1,9 @@
 # Detect free space in MB for a mounted partition
 
+https://stackoverflow.com/questions/7315587/bash-shortest-way-to-get-n-th-column-of-output/7315628
+
+https://www.tecmint.com/how-to-check-disk-space-in-linux/
+
 THEFREESPACE=$[$(df -m|grep /dev/sda1|awk '{print $4}')]
 
 echo $THEFREESPACE
