@@ -2,7 +2,7 @@
 
 https://superuser.com/questions/470949/how-do-i-create-a-1gb-random-file-in-linux
 
-A little over 1 GB:
+A little over 1 GB, base64 expands by about 33.(3) % :
 
 openssl rand -out sample.txt -base64 $(( 2**30 * 3/4 ))
 
