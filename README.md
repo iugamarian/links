@@ -3,12 +3,21 @@
 https://superuser.com/questions/470949/how-do-i-create-a-1gb-random-file-in-linux
 
 A little over 1 GB:
+
 openssl rand -out sample.txt -base64 $(( 2**30 * 3/4 ))
 
+Exactly 1 GB:
+
+The openssl command makes a file exactly 1 byte too big. The truncate command trims that byte off.
+
+openssl rand -out sample.txt -base64 792917038; truncate -s-1 sample.txt
+
 Exactly 65 MB:
+
 openssl rand -out sample.txt -base64 $(( 2**26 * 3/4 ))
 
 Exactly 260 MB can be divided by 4:
+
 openssl rand -out sample.txt -base64 $(( 2**28 * 3/4 ))
 
 Time for 260 MB on Marvell Kirkwood about 50 seconds.
