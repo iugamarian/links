@@ -2,9 +2,9 @@
 
 https://www.cyberciti.biz/faq/extracting-single-file-directory-from-tarball-2/
 
-tar xvf archive.tar  -C /extract-folder file-name
+tar -xvf archive.tar  -C /extract-folder file-name
 
-tar xvf archive.tar  -C /extract-folder folder-name
+tar -xvf archive.tar  -C /extract-folder folder-name
 
 tar -zxvf archive.tar.gz  -C /extract-folder file-name
 
