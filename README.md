@@ -1,3 +1,20 @@
+# tar extract a file/folder not all
+
+https://www.cyberciti.biz/faq/extracting-single-file-directory-from-tarball-2/
+
+tar xvf archive.tar  -C /extract-folder file-name
+
+tar xvf archive.tar  -C /extract-folder folder-name
+
+tar -zxvf archive.tar.gz  -C /extract-folder file-name
+
+tar -zxvf archive.tar.gz  -C /extract-folder folder-name
+
+tar -jxvf archive.tar.bz2  -C /extract-folder file-name
+
+tar -jxvf archive.tar.bz2  -C /extract-folder folder-name
+
+
 # tar list contents
 
 https://www.if-not-true-then-false.com/2010/list-tar-tar-gz-tar-bz2-contents/
