@@ -1,3 +1,49 @@
+# tar list contents
+
+https://www.if-not-true-then-false.com/2010/list-tar-tar-gz-tar-bz2-contents/
+
+tar -tvf archive.tar
+
+or
+
+tar --list --verbose --file=archive.tar
+
+Add:
+
+> list_of_archive.tar.txt
+
+
+# tar.gz list contents
+
+https://www.if-not-true-then-false.com/2010/list-tar-tar-gz-tar-bz2-contents/
+
+tar -ztvf archive.tar.gz
+
+or
+
+tar --gzip --list --verbose --file=archive.tar
+
+
+Add:
+
+> list_of_archive.tar.gz.txt
+
+
+# tar.bz2 list contents
+
+https://www.if-not-true-then-false.com/2010/list-tar-tar-gz-tar-bz2-contents/
+
+tar -jtvf archive.tar.bz2
+
+or
+
+tar --bzip2 --list --verbose --file=archive.tar
+
+Add:
+
+> list_of_archive.tar.bz2.txt
+
+
 # Detect free space in MB for a mounted partition
 
 https://stackoverflow.com/questions/7315587/bash-shortest-way-to-get-n-th-column-of-output/7315628
