@@ -1,3 +1,24 @@
+# Virtual machine in Debian Buster:
+
+https://wiki.debian.org/KVM
+
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/virtualization_host_configuration_and_guest_installation_guide/sect-virtualization_host_configuration_and_guest_installation_guide-windows_installations-installing_windows_xp_as_a_fully_virtualized_guest
+
+https://www.linuxquestions.org/questions/linux-virtualization-and-cloud-90/virt-install-error-host-does-not-support-any-virtualization-options-4175483456/
+
+apt-get install -y qemu-kvm libvirt-clients libvirt-daemon-system
+
+apt-get install -y virt-manager
+
+virt-install \
+   --name=windowsos \
+   --os-type=windows \
+   --network network=default \
+   --disk path=/var/lib/libvirt/images/windowsos.img,size=20 \
+   --cdrom=/dev/sr0 \
+   --graphics spice --ram=2048
+
+
 # tar extract a file/folder not all
 
 https://www.cyberciti.biz/faq/extracting-single-file-directory-from-tarball-2/
