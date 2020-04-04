@@ -1,3 +1,48 @@
+# Write corrupted flash BIOS chip:
+
+https://www.flashrom.org/RaspberryPi
+
+Prerequisites
+
+Use latest Raspbian (or any other distribution with a recent kernel). Run the following commands (or make sure these kernel modules are loaded successfully):
+
+modprobe spi_bcm2835 # If that fails you may wanna try the older spi_bcm2708 module instead
+
+modprobe spidev
+
+Connecting the flash chip
+
+To learn more about the RPi's expansion header refer to http://elinux.org/Rpi_Low-level_peripherals . Please do not try to draw more than 50mA from the 3.3V pin. If the flash chip is still placed in a foreign circuit (e.g. soldered to a PC mainboard) please refer to ISP for further details.
+
+RPi header	SPI flash
+
+25	GND
+
+24	/CS
+
+23	SCK
+
+21	DO
+
+19	DI
+
+17	VCC 3.3V (+ /HOLD, /WP)
+
+Always connect all input pins of integrated circuits (not only flash chips).
+
+In general the other pins (usually pin 3 is /WP and pin 7 is /HOLD) should be connected to Vcc unless they are required to be floating or connected to GND (both extremely uncommon for SPI flash chips). Please consult the datasheet for the flash chip in question.
+
+If your flash chip is detected but your read/write/verify operations tend to fail, try to add decoupling capacitors (one 100nF and one 4.7uF ceramic capacitor is preferred) close to the flash chip's power pin.
+
+See Micron's TN-25-09: Layout Guidelines PCB Design Recommendations/VCC Power Supply Decoupling [1]
+
+Running flashrom
+
+Flashrom uses the Linux-native SPI driver, which is implemented by flashrom's linux_spi module. To use the RaspberryPi with flashrom, you have to specify that driver. You should always tell it at what speed the SPI bus should run; you specify that with the spispeed parameter (given in kHz). You also have to specify the Linux SPI device, e.g.
+
+flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=1000
+
+
 # Virtual machine in Debian Buster:
 
 https://wiki.debian.org/KVM
