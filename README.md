@@ -1,3 +1,34 @@
+# Stop Windows 10 feature updates
+
+https://www.askvg.com/fix-your-device-isnt-quite-ready-for-feature-update-to-windows-10/
+
+https://www.askvg.com/how-to-prevent-or-skip-feature-update-installation-in-windows-10/
+
+Type regedit in RUN or Start search box and press Enter. It'll open Registry Editor.
+
+Now go to following key:
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows
+
+Create a new key under Windows key and set its name as WindowsUpdate. If the key is already present, skip to next step.
+
+Now in right-side pane, create a new DWORD DisableOSUpgrade and set its value to 1
+
+Again go to following key in Registry Editor:
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate
+
+Create a new key under WindowsUpdate key and set its name as OSUpgrade
+
+Now in right-side pane, create a new DWORD AllowOSUpgrade and set its value to 0
+
+Close Registry Editor and restart your computer to take effect.
+
+Now Windows 10 will not upgrade to new feature update in your computer.
+
+PS: In future, if you want to install feature update, delete both DWORDs created in steps 4 and 7.
+
+
 # Fix Windows 10 update corruption
 
 Follow these instructions to download and install Windows 10 updates manually:
