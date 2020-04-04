@@ -1,3 +1,80 @@
+# Fix Windows 10 update corruption
+
+Follow these instructions to download and install Windows 10 updates manually:
+
+Open Edge (another Microsoft’s try to enforce Edge) and navigate to
+
+https://www.catalog.update.microsoft.com/Home.aspx
+
+In the search bar, type the exact registration number of the troubling update and search for it.
+
+Download the update and install it.
+
+Restart your PC.
+
+OR
+
+https://windowsreport.com/windows-10-update-is-not-ready/
+
+Open Command Prompt with the administrative permission.
+
+Copy-paste the following commands in the command line and press Enter after each:
+
+net stop wuauserv
+
+net stop bits
+
+net stop cryptsvc
+
+Ren %systemroot%SoftwareDistributionSoftwareDistribution.bak
+
+Ren %systemroot%system32catroot2 catroot2.bak
+
+net start wuauserv
+
+net start bits
+
+net start cryptsvc
+
+Restart PC, navigate to Updates and try updating again.
+
+OR
+
+Right-click on the Start and open Command Prompt (Admin).
+
+In the command line, type the following line and press Enter:
+
+DISM /online /Cleanup-Image / ScanHealth
+
+DISM /Online /Cleanup-Image /RestoreHealth
+
+It’ll take up to 10 minutes for the DISM tool to repair corrupted files.
+
+Restart your PC.
+
+With the external installation media (if the first way fails):
+
+Mount your Windows 10 installation media, either USB or ISO DVD.
+
+Open Command Prompt (Admin) again.
+
+In the command line, type the following commands and press Enter after each:
+
+DISM /online /Cleanup-Image /CheckHealth
+
+If there’s not any single error, enter this command and press Enter:
+
+DISM /online /Cleanup-Image / ScanHealth
+
+If DISM finds any errors, enter the following commands and tap Enter:
+
+DISM /Online /Cleanup-Image /RestoreHealth /Source:repairSourceinstall.wim
+
+Have in mind that you’ll need to replace the ”repair source” part of your installation media with the source path.
+
+Wait for the procedure to end and restart your PC.
+
+
 # Write corrupted flash BIOS chip:
 
 https://www.flashrom.org/RaspberryPi
