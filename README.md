@@ -1,3 +1,30 @@
+# Mount Windows 10 share in Linux path
+
+https://stackoverflow.com/questions/18442846/how-to-access-shared-folder-without-giving-username-and-password
+
+https://www.thomas-krenn.com/en/wiki/Mounting_a_Windows_Share_in_Linux
+
+Windows 10:
+
+Network and sharing center > Change advanced sharing settings > Enable Turn Off password protect sharing option.
+
+Do this to all by pressing ( \/ ) further down.
+
+Enable 48 bit not 128 bit encryption.
+
+Linux:
+
+su -
+
+apt install -y samba smbclient cifs-utils
+
+mkdir /mnt/win10
+
+sync
+
+mount -t cifs //IP/share /mnt/win10 -o user=username
+
+
 # Stop Windows 10 feature updates
 
 https://www.askvg.com/fix-your-device-isnt-quite-ready-for-feature-update-to-windows-10/
