@@ -1,3 +1,8 @@
+# Make potato computer about 10% faster
+
+https://www.youtube.com/watch?v=_kVIBfofamQ
+
+
 # Mount Windows 10 share in Linux path
 
 https://stackoverflow.com/questions/18442846/how-to-access-shared-folder-without-giving-username-and-password
