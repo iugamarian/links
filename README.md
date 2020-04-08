@@ -1,3 +1,8 @@
+# DRM free guide
+
+https://www.defectivebydesign.org/guide
+
+
 # Make potato computer about 10% faster
 
 https://www.youtube.com/watch?v=_kVIBfofamQ
