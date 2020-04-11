@@ -2457,6 +2457,52 @@ Slower mouse speed.
 
 ========================
 
+Permanent in LXDE, with example found from LXRandR for external monitor
+
+https://wiki.lxde.org/en/Autostart
+
+/home/pi/.config/autostart/lxrandr-autostart.desktop
+
+[Desktop Entry]
+
+Type=Application
+
+Name=LXRandR autostart
+
+Comment=Start xrandr with settings done in LXRandR
+
+Exec=sh -c 'xrandr --output eDP --off --output HDMI-A-0 --mode 1920x1080 --rate 60.00 --same-as eDP'
+
+OnlyShowIn=LXDE
+
+========================
+
+su -
+
+apt update
+
+apt install -y xinput
+
+exit
+
+nano /home/pi/.config/autostart/mouseslower-autostart.desktop
+
+========================
+
+[Desktop Entry]
+
+Type=Application
+
+Name=Mouseslower autostart
+
+Comment=Start Mouseslower
+
+Exec=sh -c '/usr/bin/mouseslower'
+
+OnlyShowIn=LXDE
+
+========================
+
 And similarly for other desktop environments.
 
 
