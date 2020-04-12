@@ -1,3 +1,30 @@
+# Install mpv on Windows 10 Pro
+
+https://mpv.io/installation/
+
+https://sourceforge.net/projects/mpv-player-windows/files/
+
+https://github.com/rossy/mpv-install/blob/master/README.md
+
+https://www.reddit.com/r/mpv/comments/f0hsej/im_really_confused_about_how_to_get_hwdec_working/
+
+PATH\mpv\mpv.conf
+
+hwdec=d3d11va-copy
+
+gpu-context=d3d11
+
+gpu-api=auto
+
+save-position-on-quit
+
+audio-normalize-downmix=yes
+
+volume=100
+
+audio-channels=stereo
+
+
 # Mount NFS share (Linux NAS) on Windows 10 Pro
 
 https://graspingtech.com/mount-nfs-share-windows-10/
