@@ -1,3 +1,16 @@
+# Mount NFS share (Linux NAS) on Windows 10 Pro
+
+https://graspingtech.com/mount-nfs-share-windows-10/
+
+Turn Windows features on or off.
+
+Scroll down and press + on Services for NFS and select all inside, then click OK.
+
+Close.
+
+mount -o anon \\10.1.1.211\mnt\vms X:
+
+
 # DRM free guide
 
 https://www.defectivebydesign.org/guide
