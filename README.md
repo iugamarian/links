@@ -1,4 +1,4 @@
-# Repair now functional GPU with corrupted VBIOS
+# Repair non functional GPU with corrupted VBIOS
 
 https://www.youtube.com/watch?v=gYf_gh1myEs
 
