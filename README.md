@@ -1,3 +1,8 @@
+# Repair now functional GPU with corrupted VBIOS
+
+https://www.youtube.com/watch?v=gYf_gh1myEs
+
+
 # Install mpv on Windows 10 Pro
 
 https://mpv.io/installation/
