@@ -1,3 +1,28 @@
+# Found cheaper mini PC solution with better cooling:
+
+Asrock Deskmini A300 with Ryzen 3 3200G
+
+https://www.youtube.com/watch?v=G62LbZHcO6o
+
+https://www.youtube.com/watch?v=eZy4vKl9zDk
+
+https://www.youtube.com/watch?v=U9eDqWqBt1U
+
+AMD Ryzen 2400G has Wraith Stealth:
+
+- just fits but scratches, no BIOS update required
+
+AMD Ryzen 3400G has Wraith Spire:
+
+- needs BIOS update
+
+- can fit if the FAN is mounted outside the case on top of the cooler
+
+Noctua NH-L9a-AM4 is the best cooler for Asrock Deskmini A300 :
+
+https://www.youtube.com/watch?v=FbUm47PwpGo
+
+
 # Repair non functional GPU with corrupted VBIOS
 
 https://www.youtube.com/watch?v=gYf_gh1myEs
