@@ -14,11 +14,15 @@ AMD Ryzen 2400G has Wraith Stealth:
 
 AMD Ryzen 3400G has Wraith Spire:
 
-- needs BIOS update
+- needs BIOS update, can be done with additional very low price and easy to find CPU:
 
-- can fit if the FAN is mounted outside the case on top of the cooler
+Athlon 200GE
 
-Noctua NH-L9a-AM4 is the best cooler for Asrock Deskmini A300 :
+- cooler can fit if the fan is removed and mounted outside the case right on top of the cooler:
+
+https://www.youtube.com/watch?v=QDlOwChawx0
+
+Noctua NH-L9a-AM4 is the best cooler, thermals not much different than Wraith Spire:
 
 https://www.youtube.com/watch?v=FbUm47PwpGo
 
