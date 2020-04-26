@@ -1,3 +1,8 @@
+# Check memory has ECC enabled:
+
+https://www.pugetsystems.com/labs/articles/How-to-Check-ECC-RAM-Functionality-462
+
+
 # Found cheaper mini PC solution with better cooling:
 
 Asrock Deskmini A300 with Ryzen 3 3200G
