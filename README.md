@@ -1,3 +1,14 @@
+# Windows 10 skip login screen
+
+https://www.isunshare.com/windows-10/2-ways-to-automatically-skip-windows-10-login-screen.html
+
+WIN + R
+
+netplwiz
+
+Uncheck "User must enter a user name and password to use the computer".
+
+
 # Check memory has ECC enabled:
 
 https://www.pugetsystems.com/labs/articles/How-to-Check-ECC-RAM-Functionality-462
