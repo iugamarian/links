@@ -1334,6 +1334,10 @@ https://www.linux.com/tutorials/gnu-ddrescue-best-damaged-drive-rescue/
 
 https://help.uaudio.com/hc/en-us/articles/213195423-How-To-Disable-Fast-Startup-in-Windows-10
 
+https://appuals.com/enable-disable-hibernation-windows-7/
+
+https://www.howtogeek.com/102897/whats-the-difference-between-sleep-and-hibernate-in-windows/
+
 https://win10faq.com/how-to-clone-windows-10-with-clonezilla/
 
 https://pureinfotech.com/clone-windows-10-drive-clonezilla/
@@ -1345,6 +1349,48 @@ https://www.quora.com/If-you-clone-the-OS-hard-drive-will-Windows-require-a-new-
 https://www.tigraine.at/2014/01/04/how-to-upgrade-to-an-ssd-with-minimal-effort
 
 https://www.technibble.com/forums/threads/gnu-ddrescue-ridiculous-learning-curve.34594/
+
+In Windows 10 three steps are required to disable fast startup, GUI, Hybrid and CMD:
+
+1) GUI disable Fast Startup, press the Windows Key + R to bring up the Run dialog, type powercfg.cpl and hit Enter.
+
+The Power Options window should appear. Click "Choose what the power buttons do" from the column on the left.
+
+Click "Change settings that are currently unavailable".
+
+Scroll down to "Shutdown settings" and uncheck the box for "Turn on fast startup".
+
+Click the "Save changes" button to apply the changes.
+
+2) Hybrid disable Fast Startup, press the Windows Key + R to bring up the Run dialog, type powercfg.cpl and hit Enter.
+
+The Power Options window should appear. Click "Change when the computer sleeps" from the column on the left.
+
+Click "Change advanced power settings".
+
+If the computer is a laptop: Sleep -> Allow hybrid sleep -> On battery -> Off
+
+Sleep -> Allow hybrid sleep -> Plugged in -> Off
+
+Click OK.
+
+Step 3 hides the option Allow hybrid sleep.
+
+3) CMD disable Fast Startup, click Start, and then type cmd in the Start Search box.
+
+Don’t use run since it won’t allow you to run as an administrator.
+
+In the search results list, right-click Command Prompt or CMD, and then click Run as Administrator.
+
+When you are prompted by User Account Control, click Continue.
+
+At the command prompt, type:
+
+powercfg.exe /hibernate off
+
+and then press Enter. Type exit, and then press Enter to close the Command Prompt window.
+
+Optional:
 
 For harddisk to 240 GB SSD we know it actually has about 220 GB and we should leave at least 10 % free
 
@@ -1374,6 +1420,7 @@ https://github.com/sakaki-/genpi64-overlay/blob/master/sys-apps/rpi3-init-script
 https://github.com/sakaki-/gentoo-on-rpi-64bit
 
 https://github.com/sakaki-/gentoo-on-rpi-64bit/blob/master/configs/bcmrpi3_defconfig
+
 
 # Gentoo Raspberry Pi fix keyboard issues ( UK to US )
 
