@@ -1,3 +1,18 @@
+# WD Red white label:
+
+https://www.techradar.com/reviews/g-technology-g-drive-4tb
+
+WD Elements Desktop, 4TB, 3.5", USB 3.0, Black
+
+Found inside a:
+
+Western Digital WD40EMRX-82UZ0N0, otherwise known as the WD Red.
+
+This is a 4TB hard disk drive spinning at 5400RPM with 64MB cache
+
+Fine-tuned to deliver cooler temperatures in use and targets NAS users.
+
+
 # Windows 10 skip login screen
 
 https://www.isunshare.com/windows-10/2-ways-to-automatically-skip-windows-10-login-screen.html
