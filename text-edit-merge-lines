@@ -64,7 +64,8 @@ fi
 # text-01.txt seems to have the same lines with text-02.txt
 LASTLINEALL=$((LASTLINEONE+1))
 rm "$RESULTTEXT"
-while "$LINE" -lt "$LASTLINEALL"
+while [ "$LINE" -lt "$LASTLINEALL" ]
+do
 STRINGONE=`cat "$TEXTONE" | sed -n "$LINE"p`
 STRINGTWO=`cat "$TEXTTWO" | sed -n "$LINE"p`
 echo "$STRINGONE" >> "$RESULTTEXT"
