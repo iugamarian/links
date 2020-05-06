@@ -1,0 +1,149 @@
+#!/bin/bash
+# Example:
+# text-01.txt
+# 1
+# 2
+# 3
+# 4
+# text-02.txt
+# a
+# b
+# c
+# d
+# text-03.txt
+# 10
+# 11
+# 12
+# 13
+# result-01-02.txt
+# 1
+# a
+# 2
+# b
+# 3
+# c
+# 4
+# d
+# result-03-xx.txt
+# 10
+#
+# 11
+#
+# 12
+#
+# 13
+#
+# result-04-05.txt <-- (as result-03-xx.txt but 0 in place of blank)
+# 10
+# 0
+# 11
+# 0
+# 12
+# 0
+# 13
+# 0
+###########################
+LASTLINEONE="0"
+LASTLINETWO="0"
+LASTLINETHREE="0"
+LASTLINEALL="0"
+TEXTONE="text-01.txt"
+TEXTTWO="text-02.txt"
+TEXTTHREE="text-03.txt"
+RESULTONETWO="result-01-02.txt"
+RESULTTHREE="result-03-xx.txt"
+RESULTFOURFIVE="result-04-05.txt"
+STRINGONE=""
+STRINGTWO=""
+STRINGTHREE=""
+LINE="1"
+if [ -f "$TEXTONE" ]
+then
+LASTLINEONE=`cat "$TEXTONE" | wc -l`
+else
+echo ""
+echo "text-01.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ -f "$TEXTTWO" ]
+then
+LASTLINETWO=`cat "$TEXTTWO" | wc -l`
+else
+echo ""
+echo "text-02.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ -f "$TEXTTHREE" ]
+then
+LASTLINETHREE=`cat "$TEXTTHREE" | wc -l`
+else
+echo ""
+echo "text-03.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINETWO" -lt "$LASTLINEONE" ]
+then
+echo ""
+echo "text-02.txt has less lines than text-01.txt. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINETHREE" -lt "$LASTLINETWO" ]
+then
+echo ""
+echo "text-03.txt has less lines than text-02.txt. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINEONE" -lt "$LASTLINETWO" ]
+then
+echo ""
+echo "text-01.txt has less lines than text-02.txt. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINETWO" -lt "$LASTLINETHREE" ]
+then
+echo ""
+echo "text-02.txt has less lines than text-03.txt. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINETHREE" -lt "$LASTLINEONE" ]
+then
+echo ""
+echo "text-03.txt has less lines than text-01.txt. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINEONE" -lt "$LASTLINETHREE" ]
+then
+echo ""
+echo "text-01.txt has less lines than text-03.txt. Exiting."
+echo ""
+exit
+fi
+# text-01.txt seems to have the same lines with text-02.txt and text-03.txt
+LASTLINEALL=$((LASTLINEONE+1))
+rm "$RESULTONETWO"
+rm "$RESULTTHREE"
+rm "$RESULTFOURFIVE"
+while [ "$LINE" -lt "$LASTLINEALL" ]
+do
+STRINGONE=`cat "$TEXTONE" | sed -n "$LINE"p`
+STRINGTWO=`cat "$TEXTTWO" | sed -n "$LINE"p`
+STRINGTHREE=`cat "$TEXTTHREE" | sed -n "$LINE"p`
+echo "$STRINGONE" >> "$RESULTONETWO"
+echo "$STRINGTWO" >> "$RESULTONETWO"
+echo "$STRINGTHREE" >> "$RESULTTHREE"
+echo "" >> "$RESULTTHREE"
+echo "$STRINGTHREE" >> "$RESULTFOURFIVE"
+echo "0" >> "$RESULTFOURFIVE"
+LINE=$((LINE+1))
+done
+echo ""
+echo "Done."
+echo ""
