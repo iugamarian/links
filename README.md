@@ -1,3 +1,24 @@
+# Windows clock setting like Linux
+
+https://superuser.com/questions/1336303/how-can-i-stop-linux-from-changing-windowss-clock
+
+https://superuser.com/questions/494432/force-windows-8-to-use-utc-when-dealing-with-bios-clock
+
+Linux time be like Windows:
+
+timedatectl set-local-rtc 1 --adjust-system-clock
+
+Windows time be like Linux:
+
+On the Windows computer, open the Registry Editor
+
+Run… regedit.exe and navigate to
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation.
+
+Create a DWORD named RealTimeIsUniversal, and set its value to 1.
+
+
 # WD Red white label:
 
 https://www.techradar.com/reviews/g-technology-g-drive-4tb
