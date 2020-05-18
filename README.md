@@ -2,11 +2,19 @@
 
 https://phoenixnap.com/kb/linux-chown-command-with-examples
 
-To change the owner of a symbolic link, use the -h option. Otherwise, the ownership of the linked file will be changed.
+To change the owner of a symbolic link, use the -h option. Otherwise, the ownership of the linked
 
-Tested: When using "chown -R user:user folder" it implies having -h also. Will modify permissions on symlinks not target files.
+file will be changed.
 
-But anyway to be sure better use "chown -hR user:user folder" because some /etc files may be symlinked and better keep root.
+Tested: When using "chown -R user:user folder" it implies having -h also. Will modify permissions
+
+on symlinks not target files. But anyway to be sure better use "chown -hR user:user folder" because
+
+some /etc files may be symlinked and better keep root.
+
+If the target file is in the same folder as the symlink chown -R or chown -hR do the same thing:
+
+permissions are changed on the symlink and on the file. So -R really is -hR
 
 
 # Very good 7 years old PC power supply
