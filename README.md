@@ -1,3 +1,10 @@
+# Very good 7 years old PC power supply
+
+https://www.mygarage.ro/teste-si-review-uri/469244-review-sursa-thermaltake-smart-se-630w-gold.html
+
+Nota: acesta este modelul SPS-0630M, a nu se confunda cu fratele SPS-630M
+
+
 # Windows clock setting like Linux
 
 https://superuser.com/questions/1336303/how-can-i-stop-linux-from-changing-windowss-clock
