@@ -30,6 +30,8 @@ https://superuser.com/questions/1336303/how-can-i-stop-linux-from-changing-windo
 
 https://superuser.com/questions/494432/force-windows-8-to-use-utc-when-dealing-with-bios-clock
 
+https://itectec.com/ubuntu/ubuntu-clock-time-is-off-on-dual-boot/
+
 Linux time be like Windows:
 
 timedatectl set-local-rtc 1 --adjust-system-clock
@@ -43,6 +45,37 @@ Run… regedit.exe and navigate to
 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation.
 
 Create a DWORD named RealTimeIsUniversal, and set its value to 1.
+
+Create a file named WindowsTimeFixUTC.reg with the following contents and then double
+click on it to merge the contents with the registry:
+
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation]
+
+     "RealTimeIsUniversal"=dword:00000001
+
+Note: Windows Time service will still write local time to the RTC regardless of the registry
+
+setting above on shutdown, so it is handy to disable Windows Time service with this command
+
+(if time sync is still required while in Windows use any third-party time sync solution):
+
+sc config w32time start= disabled
+
+Reversing the change
+
+You can create a file with the following contents and then double-click it to merge in the original changes, as above:
+
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation]
+
+     "RealTimeIsUniversal"=-
+
+If Windows Time service was disabled, enable it again with the command:
+
+sc config w32time start= demand
 
 
 # WD Red white label:
