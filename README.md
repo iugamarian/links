@@ -1,3 +1,8 @@
+# Top 1000 de lucruri uimitoare
+
+https://www.youtube.com/watch?v=y9TAzLJWANA
+
+
 # chown and symbolic links
 
 https://phoenixnap.com/kb/linux-chown-command-with-examples
