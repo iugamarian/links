@@ -2892,6 +2892,8 @@ volume=100
 
 audio-channels=stereo
 
+cache=yes
+
 demuxer-thread=yes
 
 demuxer-readahead-secs=200
@@ -2915,6 +2917,8 @@ audio-normalize-downmix=yes
 volume=100
 
 audio-channels=stereo
+
+cache=yes
 
 demuxer-thread=yes
 
