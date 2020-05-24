@@ -2892,10 +2892,17 @@ volume=100
 
 audio-channels=stereo
 
+demuxer-thread=yes
+
+demuxer-readahead-secs=200
+
+fullscreen
 
 # MPV 2018 best with AMD Polaris, can't select on timeline,  configuration in ~/.config/mpv/mpv.conf:
 
-# sudo apt install -y mesa-va-drivers
+https://www.reddit.com/r/nhl_games/comments/5ea3an/increasing_cachereadahead_in_mpv/
+
+# sudo apt install -y ffmpeg mesa-va-drivers vainfo
 
 hwdec=vaapi
 
@@ -2909,10 +2916,16 @@ volume=100
 
 audio-channels=stereo
 
+demuxer-thread=yes
+
+demuxer-readahead-secs=200
+
+fullscreen
+
 
 # MPV 2017 medium with AMD Polaris, configuration in ~/.config/mpv/mpv.conf:
 
-# sudo apt install -y mesa-va-drivers
+# sudo apt install -y ffmpeg mesa-va-drivers vainfo
 
 opengl-hwdec-interop=vaapi-copy
 
