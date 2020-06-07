@@ -1984,7 +1984,21 @@ chroot /mnt
 
 apt install -y grub2
 
+For Legacy BIOS:
+
 grub-install /dev/sda
+
+update-grub
+
+===========================================
+
+For UEFI BIOS:
+
+First if Windows boots directly check in the BIOS scroll down UEFI Hardware BBS Priorities and
+
+select Ubuntu if it is there as first boot option, this is actually GRUB,
+
+if GRUB menu does not appear and Ubuntu loads directly, run: sudo update-grub && sync && restart
 
 If can't find EFI directory, verify the size of the EFI partition in Windows:
 
@@ -1994,17 +2008,15 @@ And then in the Linux chroot lsblk or cat /proc/partitions to find same size par
 
 (usually it is /dev/sda1) and run this additional commands:
 
-========================================
-
 mkdir -p /boot/efi
 
 mount /dev/sda1 /boot/efi
 
 grub-install /dev/sda1
 
-========================================
-
 update-grub
+
+===========================================
 
 nano /etc/fstab
 
@@ -2025,6 +2037,7 @@ btrfs device add -f /dev/sdb1 /
 btrfs balance start -dconvert=raid1 -mconvert=raid1 /
 
 ERROR: error during balancing '/': Input/output error
+
 There may be more info in syslog - try dmesg | tail
 
 BTRFS warning (device sda1): csum failed root
