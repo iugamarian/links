@@ -1940,6 +1940,8 @@ https://askubuntu.com/questions/32418/is-there-an-easier-way-to-chroot-than-bind
 
 https://bartsimons.me/ubuntu-linux-chroot-guide/
 
+https://unix.stackexchange.com/questions/405472/cannot-find-efi-directory-issue-with-grub-install
+
 -boot (netinst or cd or dvd) Debian GNU/Linux
 
 -Enter rescue mode drop to shell root
@@ -1983,6 +1985,24 @@ chroot /mnt
 apt install -y grub2
 
 grub-install /dev/sda
+
+If can't find EFI directory, verify the size of the EFI partition in Windows:
+
+This PC -> Manage -> Disk management
+
+And then in the Linux chroot lsblk or cat /proc/partitions to find same size partition
+
+(usually it is /dev/sda1) and run this additional commands:
+
+========================================
+
+mkdir -p /boot/efi
+
+mount /dev/sda1 /boot/efi
+
+grub-install /dev/sda1
+
+========================================
 
 update-grub
 
