@@ -443,15 +443,15 @@ void setup() {
 //  Also check #define F_CPU clocks
 //	OCR1A = 15625; // 1 second on 16mhz with prescaler 1024 => 	TCCR1B |= (1<<CS12) | (1<<CS10);
 //	OCR1A = 46875; // 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
-//      The OCR1A for prescaler 256 is a little fast, by about 1 minute per month forward
+//  The OCR1A for prescaler 256 is a little fast, so 1 minute per month forward
 //  Adjusting to be slower by about 1 minute per month
 //  1 minute = 60 seconds
 //  1 month = 30 days x 24 hours x 3600 seconds = 2592000 seconds
 //  46875 ......... 2592000
 //    x   ......... 60
 //  x = 46875 x 60 / 2592000 = 2812500 / 2592000 = 1,08
-//  So instead of 46875 it should be 46875 - 1 = 46874
-	OCR1A = 46874; // adjusted 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
+//  So instead of 46875 it should be 46875 + 1 = 46876 to be slower by about 1 minute per month
+	OCR1A = 46876; // adjusted 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
 
 	TIMSK |= (1<<OCIE1A); // when OCR1A is reached, go to ISR(TIMER1_COMPA_vect) interrupt
 
