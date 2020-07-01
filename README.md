@@ -1,3 +1,8 @@
+# LibreOffice display issues
+
+https://ask.libreoffice.org/en/question/111594/libreoffice-does-not-display-correctly/
+
+
 # Top 1000 de lucruri uimitoare
 
 https://www.youtube.com/watch?v=y9TAzLJWANA
