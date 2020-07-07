@@ -1,6 +1,17 @@
+# US power get 240V if needed
+
+https://www.youtube.com/watch?v=jMmUoZh3Hq4
+
+-120V - 0V GND - +120V
+
+
 # LibreOffice display issues
 
 https://ask.libreoffice.org/en/question/111594/libreoffice-does-not-display-correctly/
+
+Try to disable Tools - Options - View - Use OpenGL for all rendering
+
+If you cannot open the 'Options' dialog using the mouse, you can try Alt+T Alt+O.
 
 
 # Top 1000 de lucruri uimitoare
