@@ -1,3 +1,21 @@
+# OpenJDK vs OracleJDK
+
+https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk
+
+Both OpenJDK and Oracle JDK are created and maintained currently by Oracle only.
+
+OpenJDK and Oracle JDK are implementations of the same Java specification passed the TCK (Java Technology Certification Kit).
+
+Most of the vendors of JDK are written on top of OpenJDK by doing a few tweaks to [mostly to replace licensed proprietary parts / replace with more high-performance items that only work on specific OS] components without breaking the TCK compatibility.
+
+Many vendors implemented the Java specification and got TCK passed. For example, IBM J9, Azul Zulu, Azul Zing, and Oracle JDK.
+
+Almost every existing JDK is derived from OpenJDK.
+
+As suggested by many, licensing is a change between JDKs.
+
+Starting with JDK 11 accessing the long time support Oracle JDK/Java SE will now require a commercial license. You should now pay attention to which JDK you're installing as Oracle JDK without subscription could stop working. !!!
+
 # US power get 240V if needed
 
 https://www.youtube.com/watch?v=jMmUoZh3Hq4
