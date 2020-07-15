@@ -451,7 +451,8 @@ void setup() {
 //    x   ......... 60
 //  x = 46875 x 60 / 2592000 = 2812500 / 2592000 = 1,08
 //  So instead of 46875 it should be 46875 + 1 = 46876 to be slower by about 1 minute per month
-	OCR1A = 46876; // adjusted 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
+	// additional testing shows it needs to be slower by total 2 minutes per month so 46875 + 1 + 1 = 46877
+	OCR1A = 46877; // adjusted 1 second on 12mhz with prescaler 256  =>  TCCR1B |= (1<<CS12);
 
 	TIMSK |= (1<<OCIE1A); // when OCR1A is reached, go to ISR(TIMER1_COMPA_vect) interrupt
 
