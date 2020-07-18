@@ -407,6 +407,7 @@ static volatile unsigned char month = 12;
 static volatile unsigned char year = 19; // up to 254 - allow 255 reserve, display can show up to 199
 static volatile unsigned char pot_value = 0;
 static volatile unsigned char pot_status = 0;
+static volatile unsigned char led_update_needed = 0;
 static volatile unsigned char interruptdetected = 0;
 // need to be fast here, so no RAM usage if possible
 unsigned char ledstep = 0;
@@ -584,8 +585,9 @@ updatecdselection();
 
 //        3 - 3 - [[[ 31 ]]] - 3 - 3  steps:  106 - 109 - [[[ 112 - 143 ]]] - 146 - 149
 
-// This are the "point" LED's, used to indicate potentiometer status and year over 100 status
-
+// This are the "point" LED's, used to indicate potentiometer status in time and date areas and year over 100 status in the year area
+// Potentiometer is decreasing so animate amount of decrease: <-<-<-<-<-<-<-
+// Potentiometer is increasing so animate amount of increase: ->->->->->->->
 // "o" = ON, "-" = OFF as follows:
 
 /*
@@ -635,6 +637,7 @@ ooo-
 27
 ooo-
 oooo
+
 */
 
 
@@ -1308,22 +1311,30 @@ int main(void) {
 			pot_status = 27;
 			potentiometerincreaseyears();
 			}
+///////////  ACT ON INTERRUPT DETECTED AT THE PASS OF A MINUTE
+
+		if((interruptdetected == 1) && (seconds == 0))
+			{
+			interruptdetected = 0;
+			//led_update_fields();
+			led_update_needed = 1; // this will trigger 1 led_update_fields(); if pot_status is already zero
+			}
 
 // Potentiometer is not at constant mode, display changed status:
 
 		if(pot_status > 0)
 			{
 			led_update_fields();
+			led_update_needed = 1; // after pot_status is zero, led_update_needed will allow 1 more needed led_update_fields();
 			}
+			
+// Potentiometer is at constant mode, display changed status one more time if led_update_needed is 1, then set led_update_needed to 0:
 
-///////////  ACT ON INTERRUPT DETECTED AT THE PASS OF A MINUTE
-
-		if((interruptdetected == 1) && (seconds == 0))
+		if((pot_status == 0) && (led_update_needed == 1))
 			{
-			interruptdetected = 0;
 			led_update_fields();
+			led_update_needed = 0; // after pot_status is zero and led_update_needed is zero, will avoid fast led_update_fields();
 			}
-
 
 		_delay_ms(500);		//  simulate slow / lazy program ( so the microcontroller does not get hot and decreases poissible battery lifetime ) 
 
