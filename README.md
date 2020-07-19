@@ -1,3 +1,8 @@
+# Lopifit band bike 2600 euro Netherlands
+
+https://www.lopifit.nl/en/what-is-a-lopifit/
+
+
 # OpenJDK vs OracleJDK
 
 https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk
