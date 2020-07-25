@@ -1,3 +1,8 @@
+# ATEN 4 HDMI ports 4K 4:4:4 switch, very good for TV, cable length 15 m not 6 m
+
+https://www.aten.com/eu/en/products/professional-audiovideo/video-switches/vs481b/
+
+
 # Lopifit band bike 2600 euro Netherlands
 
 https://www.lopifit.nl/en/what-is-a-lopifit/
