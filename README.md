@@ -2,6 +2,18 @@
 
 https://www.aten.com/eu/en/products/professional-audiovideo/video-switches/vs481b/
 
+Package Contents
+
+    1x VS481B 4-Port HDMI Switch
+    
+    1x 2L-7D02H HDMI Cable (1,8m)
+    
+    1x 2XRT-0101G IR Remote Control
+    
+    1x 0AD6-1005-10AG Power Adapter
+    
+    1x User Instructions
+
 
 # Lopifit band bike 2600 euro Netherlands
 
