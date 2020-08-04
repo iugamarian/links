@@ -2338,9 +2338,13 @@ Beta works perfect! I've modified a byte in parity, scrub found 1 error and fix 
 
 # 32 MB block size => 32 x 32 GB = 1024 GB maximum for backups
 
+See here file par2aaron.txt having:
+
+https://pthree.org/2014/04/01/protect-against-bit-rot-with-parchive/
+
 https://news.ycombinator.com/item?id=13615978
 
- Thanks for the heads up but that's not the one. I posted it in 1998 or 1999 and I tried to find the exact Usenet archive link similar to the direct link for Larry Page's famous 1996 post on comp.lang.java
+Thanks for the heads up but that's not the one. I posted it in 1998 or 1999 and I tried to find the exact Usenet archive link similar to the direct link for Larry Page's famous 1996 post on comp.lang.java
 
 To go back to the article, the author mentions posting the files to newsgroup "alt.binaries.backup". With Usenet, there isn't exactly a contractual SLA (Service Level Agreement) for that group. It's a gentlemen's agreement between those commercial Usenet providers (and non-commercials ones like universities) to replicate messages. Maybe because I posted the message to my GTE/Verizon ISP's Usenet server meant that it only got replicated to a few peers and it "died".
 
