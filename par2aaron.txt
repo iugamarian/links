@@ -1,0 +1,117 @@
+https://pthree.org/2014/04/01/protect-against-bit-rot-with-parchive/
+
+Introduction
+Yes, this post was created on April 1. No, it's not an April Fool's joke.
+
+So, I need to begin with post with a story. In 2007, I adopted my daughter, and my wife decided that she wanted to stay home rather than work. In 2008, she quit her job. She was running a website on my web server, which only had a 100G IDE PATA drive. I was running low on space, so I asked if I could archive her site, and move it to my ext4 Linux MD RAID-10 array. She was fine with that, so off it went. I archived it using GNU tar(1), and compressed the archive with LZMA. Before taking her site offline, I verified that I could restore her site with my compressed archive.
+
+From 2008 to 2012, it just sat on my ext4 RAID array. In 2012, I built a larger ZFS RAID-10, and moved her compressed archive there. Just recently, my wife has decided that she may want to go back to work. As such, she wants her site back online. No problem, I thought. I prepared Apache, got the filesystem in order, and decompressed the archive:
+
+$ unlzma site-backup.tar.lzma
+unlzma: Decoder error
+Uhm...
+
+$ tar -xf site-backup.tar.lzma
+xz: (stdin): Compressed data is corrupt
+tar: Unexpected EOF in archive
+tar: Unexpected EOF in archive
+tar: Error is not recoverable: exiting now
+Oh no. Not now. Please, not now. My wife has put in hundreds of hours into this site, and many, many years. PDFs, images, other media, etc. Tons, and tons of content. And the archive is corrupt?! Needless to say, my wife is NOT happy, and neither am I.
+
+I'm doing my best to restore the data, but it seems that all hope is lost. From the GNU tar(1) documentation:
+
+Compressed archives are easily corrupted, because compressed files have little redundancy. The adaptive nature of the compression scheme means that the compression tables are implicitly spread all over the archive. If you lose a few blocks, the dynamic construction of the compression tables becomes unsynchronized, and there is little chance that you could recover later in the archive.
+
+I admit to not knowing a lot about the internal workings of compression algorithms. It's something I've been meaning to understand more fully. However, best I can tell, this archive experienced bit rot in the 4 years it was on my ext4 RAID array, and as a result, the archive is corrupt. Had I known about Parchive, and that ext4 doesn't offer any sort of self healing with bit rot, I would have been more careful storing that compressed archive.
+
+Because most general purpose filesystems do not protect against silent data errors, like Btrfs or ZFS, there is no way to fix a file that suffers from bit rot, outside of restoring from a snapshot or backup, or the internal file type has some sort of redundancy. Unfortunately, I learned that compression algorithms have very little to no redundancy in the final compressed file. It makes sense, as compression algorithms are designed to remove redundant data, either using lossy or lossless techniques. However, I would be willing to grow the compressed file, say 15%, if I knew that I could suffer some damage on the compressed file, and still get my data back.
+
+Parchive
+Parchive is a Reed-Solomon error correcting utility for general files. It does not handle Unicode, and it does not work on directories. It's initial use was to maintain the integrity of Usenet posts on the Usenet server against bit rot. It has since been used by anyone who is interested in maintaining data integrity for any sort of regular file on the filesystem.
+
+It works by creating "parity files" on a source file. Should the source file suffer some damage, up to a certain point, the parity files can rebuild the data, and restore the source file, much like parity in a RAID array when a disk is missing. To see this in action, let's create a 100M file full of random data, and get the SHA256 of that file:
+
+$ dd if=/dev/urandom of=file.img bs=1M count=100
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB) copied, 7.76976 s, 13.5 MB/s
+$ sha256sum file.img > SUM
+$ cat SUM
+5007501cb7f7c9749a331d1b1eb9334c91950268871ed11e36ea8cdc5a8012a2  file.img
+Should this file suffer any sort of corruption, the resulting SHA256 hash will likely change. As such, we can protect the file against some mild corruption with Parchive (removing newlines and cleaning up the output a bit):
+
+$ sudo aptitude install par2
+(...snip...)
+$ par2 create file.img.par2 file.img
+(...snip...)
+Block size: 52440
+Source file count: 1
+Source block count: 2000
+Redundancy: 5%
+Recovery block count: 100
+Recovery file count: 7
+Opening: file.img
+Computing Reed Solomon matrix.
+Constructing: done.
+Wrote 5244000 bytes to disk
+Writing recovery packets
+Writing verification packets
+Done
+As shown in the output, the redundancy of file is 5%. This means that we can suffer up to 5% damage on the source file, or the parity files, and still reconstruct the data. This redundancy is default behavior, and can be changed by passing the "-r" switch.
+
+If we do a listing, we will see the following files:
+
+$ ls -l file.img*
+-rw-rw-r-- 1 atoponce atoponce 104857600 Apr  1 08:06 file.img
+-rw-rw-r-- 1 atoponce atoponce     40400 Apr  1 08:08 file.img.par2
+-rw-rw-r-- 1 atoponce atoponce     92908 Apr  1 08:08 file.img.vol000+01.par2
+-rw-rw-r-- 1 atoponce atoponce    185716 Apr  1 08:08 file.img.vol001+02.par2
+-rw-rw-r-- 1 atoponce atoponce    331032 Apr  1 08:08 file.img.vol003+04.par2
+-rw-rw-r-- 1 atoponce atoponce    581364 Apr  1 08:08 file.img.vol007+08.par2
+-rw-rw-r-- 1 atoponce atoponce   1041728 Apr  1 08:08 file.img.vol015+16.par2
+-rw-rw-r-- 1 atoponce atoponce   1922156 Apr  1 08:08 file.img.vol031+32.par2
+-rw-rw-r-- 1 atoponce atoponce   2184696 Apr  1 08:08 file.img.vol063+37.par2
+Let's go ahead and corrupt our "file.img" file, and verify that the SHA256 hash no longer matches:
+
+$ dd seek=5k if=/dev/zero of=file.img bs=1k count=128 conv=notrunc
+128+0 records in
+128+0 records out
+131072 bytes (131 kB) copied, 0.00202105 s, 64.9 MB/s
+$ sha256sum -c SUM
+file.img: FAILED
+sha256sum: WARNING: 1 computed checksum did NOT match
+This should be expected. We've corrupted our file through a simulated bit rot. Of course, we could have corrupted up to 5% of the file, or 5 MB worth of data. Instead, we only wrote 128k of bad data.
+
+Now that we know our file is corrupt, let's see if we can recover the data. Parchive to the rescue (again, cleaning up the output):
+
+$ par2 repair -q file.img.par2 
+(...snip...)
+Loading "file.img.par2".
+Loading "file.img.vol031+32.par2".
+Loading "file.img.vol063+37.par2".
+Loading "file.img.vol000+01.par2".
+Loading "file.img.vol001+02.par2".
+Loading "file.img.vol003+04.par2".
+Loading "file.img.vol007+08.par2".
+Loading "file.img.vol015+16.par2".
+Target: "file.img" - damaged. Found 1996 of 2000 data blocks.
+Repair is required.
+Repair is possible.
+Verifying repaired files:
+Target: "file.img" - found.
+Repair complete.
+Does the resulting SHA256 hash now match?
+
+$ sha256sum -c SUM 
+file.img: OK
+Perfect! Parchive was able to fix my "file.img" by loading up the parity files, recalculating the Reed-Solomon error correction, and using the resulting math to fix my data. I could have also done some damage to the parity files to demonstrate that I can still repair the source file, but this should be sufficient to demonstrate my point.
+
+Conclusion
+Hindsight is always 20/20. I know that. However, had I known about Parchive in 2008, I would have most certainly used it on all my compressed archives, including my wife's backup (in reality, a backup is not a backup unless you have more than one copy). Thankfully, the rest of the compressed archives did not suffer bit rot like my wife's backup did, and thankfully, all of my backups are now on a 2-node GlusterFS replicated ZFS data store. As such, I have 2 copies of everything, and I have self healing against bit rot with ZFS.
+
+This is the first time in my life where bit rot has reared its ugly head, and really caused a great deal of pain in my life. Parchive can fix that for those who have sensitive data where data integrity MUST be maintained on filesystems that do not provide protection against bit rot. Of course, I should have also had multiple copies of the archive to have a true backup. Lesson learned. Again.
+
+Parchive is no substitution for a backup. But it is a protection against bit rot.
+
+Posted by Aaron Toponce on Tuesday, April 1, 2014, at 8:49 am.
+Filed under Debian, Linux, ZFS.
