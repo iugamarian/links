@@ -1,3 +1,32 @@
+# Root make backup copy while mounted
+
+https://unix.stackexchange.com/questions/256704/what-does-cp-x-do
+
+cp -ax ,rsync -xor tar -one-file-system, all are the same.
+
+It means not to cross file system boundaries.
+
+A boundary between file systems is a mount point.
+
+If you run df -a, you will see all files and mount points.
+
+To help you understand with an example:
+
+If you run df on your filesystem: df /, or on /usr directory: df /usr, you will
+
+see that they are mounted on /, your installation partition. But if you run it on
+
+/proc df /proc you will see that the mount point is different.
+
+So if you issue a recursive copy on your filesystem cp -ax /, it won't copy /proc directory.
+
+You could add -v option if you want to see exactly what is discarded and what is being copied.
+
+As others pointed out, it's used with recursive and people generally use it for backup.
+
+Also will not copy mounted partitions if using -x
+
+
 # ATEN 4 HDMI ports 4K 4:4:4 switch, very good for TV, cable length 15 m not 6 m
 
 https://www.aten.com/eu/en/products/professional-audiovideo/video-switches/vs481b/
