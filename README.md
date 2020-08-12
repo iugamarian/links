@@ -1,3 +1,62 @@
+# Tar extract to another directory
+
+https://www.cyberciti.biz/faq/howto-extract-tar-file-to-specific-directory-on-unixlinux/
+
+https://unix.stackexchange.com/questions/170699/how-to-specify-a-different-top-level-name-for-tar
+
+Syntax
+
+Untarring a file can be done using the following syntax. Typical Unix tar syntax:
+
+tar -xf file.name.tar -C /path/to/directory
+
+GNU/tar Linux syntax:
+
+tar xf file.tar -C /path/to/directory
+
+OR
+
+tar xf file.tar --directory /path/to/directory
+
+Extract .tar.gz archive:
+
+tar -zxf file.tar --directory /path/to/directory
+
+Extract .tar.bz2/.tar.zx archive:
+
+tar -jxf file.tar --directory /path/to/directory
+
+Where,
+
+    x : Extract files
+
+    f : Tar archive name
+
+    --directory : Set directory name to extract files
+
+    -C : Set dir name to extract files
+
+    -j : Work on .tar.gz file format
+
+    -z : Work on .tar.bz2 file format
+
+    -v : Verbose output i.e. show progress on screen
+
+Example: Extract files to another directory
+
+In this example, I’m extracting $HOME/etc.backup.tar file to a directory called /tmp/data. First, you have to create the directory manually, enter:
+
+mkdir /tmp/data
+
+To extract a tar archive $HOME/etc.backup.tar into a /tmp/data, enter:
+
+tar -xf $HOME/etc.backup.tar -C /tmp/data
+
+To see a progress pass the -v option:
+
+tar -xvf $HOME/etc.backup.tar -C /tmp/data
+
+
 # Root make backup copy while mounted
 
 https://unix.stackexchange.com/questions/256704/what-does-cp-x-do
