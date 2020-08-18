@@ -970,6 +970,67 @@ http://zyxel.diskstation.eu/Users/Mijzelf/zypkg-repo/README.html
 
 https://linuxize.com/post/how-to-mount-an-nfs-share-in-linux/
 
+1) Download this file
+
+http://zyxel.diskstation.eu/Users/Mijzelf/zypkg-repo/web_prefix
+
+2) Put the file in the directory \\<NAS>\admin\zy-pkgs\ on the NAS. Make sure your browser doesn't
+	
+add any extensions to the file. The filename is web_prefix, without extension, all lowercase characters.
+
+3) More info
+
+For the NSA212, there is no support for the web_prefix file, so the procedure is a bit different. Enable the Telnet Backdoor, login over telnet (as root), and execute
+
+echo http://zyxel.diskstation.eu/Users/Mijzelf/zypkg-repo/Medion >/etc/package_src_url
+
+NSA series
+
+In the packages menu in the webinterface execute 'Retreive list from Internet'.
+
+Install MetaRepository. Execute 'Retreive list from Internet' again.
+
+NAS series
+
+On the webinterface desktop, open the 'App Centre'. Goto 'Browse->All Apps'. Now there is a
+
+cycle icon on the page. Push it. install MetaRepository. Push the cycle icon again.
+
+Medion
+In the package menu in the webinterface execute 'Retreive list from Internet'. Do not try to
+
+install anything else than MetaRepository. When MetaRepsitory is installed, goto the MetaRepository page, and change
+
+'ftp://ftp2.zyxel.com/+' in 'ftp://ftp2.zyxel.com/NSA310/4.40/zypkg/' (without the quotes), and if you also want the
+
+Medion repository add a line 'ftp://nas-download:sEhtalr@download.medion.de/package/'. Now hit apply, and re-retreive
+
+the package list. Warning: not all ZyXEL packages run on a Medion. Make sure you first install dropbear, and test it,
+
+to have an entrance if the webinterface fails.
+
+How to configure
+
+NSA series, Medion
+
+In the package menu you can open the configuration page of MetaRepository.
+
+NAS series
+
+On the desktop you'll find a MetaRepository icon to open the configuration page.
+
+Here you can enter the source repositories. When a package with the same name and version can be found in several
+
+repositories, the repository highest in this list is used. Further you can blacklist packages.
+
+How to create your own (local) repository
+
+Just put the package(s) in a share, in combination with a describing ZYPKGS file (case sensitive). Add the full
+
+path to the 'Repositories' list. Done. You can also supply a ZYPKG_INFO.tgz if you like. The script first tries
+
+to download/copy the ZYPKG_INFO.tgz file, and if that fails it tries ZYPKGS.
+
 NFS full path not just folder name.
 
 
@@ -1042,10 +1103,13 @@ h) You can now login with Dropbear (small SSH server) as root anytime
 i) Dropbear is very simple and will not allow a lot of things like complex bash scripting
 
 Backdoor
+
 You can open a telnet backdoor by pressing the reset button for about 6 seconds (until you hear
+
 the second beep). This backdoor will close after about 2 minutes without activity.
 
 On newer firmwares (>3.23?) this backdoor is closed, but now there is a webinterface backdoor;
+
 login on the userinterface as admin, and then enter the url:
 
 http://<ip-of-nas>/zyxel/cgi-bin/remote_help-cgi?type=backdoor
@@ -1073,6 +1137,7 @@ Copy to the NSA, and open through a Web share (not File Explorer) - your
 NsaRescueAngel password is returned.
 
 Use an FFP stick, and run /sbin/makekey
+
 Run makekey on another NSA-2xx, and provide the right MAC address (All caps,
 
 seperated by colons) /sbin/makekey AA:BB:CC:DD:EE:FF
@@ -1102,6 +1167,7 @@ Open up telnet backdoor.
 This is done by logging into the normal web administration GUI and then opening this URL:
 
 http://<ip-of-nas>/r41773,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+	
 The r41773 part is some number that changes by firmware revision but will be the same part as the URL you normally get when opening the administration GUI.
 
 Telnet to find root password
@@ -1129,6 +1195,7 @@ This time use user NsaRescueAngel and the short password you got from step 2 abo
 Now you should have full root and own the box.
 
 Update NSA-320/NSA-325 Firmware 4.40
+
 The SSH webinterface backdoor does not seem to work (returns result=0). The telnet webinterface
 
 backdoor can be used with this URL:
