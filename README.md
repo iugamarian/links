@@ -1129,9 +1129,12 @@ On newer firmwares the default shell for this user is none.
 To find the password on a newer firmware, there are several options:
 
 Make a file with name "mykey.php" containing:
-<? 
+< ? 
+
   echo shell_exec('/sbin/makekey'); 
+  
   exit;
+  
 Copy to the NSA, and open through a Web share (not File Explorer) - your
 
 NsaRescueAngel password is returned.
