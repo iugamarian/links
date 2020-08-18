@@ -1128,7 +1128,8 @@ On newer firmwares the default shell for this user is none.
 
 To find the password on a newer firmware, there are several options:
 
-Make a file with name "mykey.php" containing:
+Make a file with name "mykey.php" containing with no spaces " " :
+
 < ? 
 
   echo shell_exec('/sbin/makekey'); 
