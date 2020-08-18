@@ -979,7 +979,229 @@ https://forum.doozan.com/read.php?3,12381
 
 https://forum.doozan.com/read.php?3,27280
 
-1) get root access in stock firmware
+1) get root access in stock firmware by 
+
+a) resetting the NAS
+
+Locate the reset button hole between the power connector and Ethernet cable at the back of the NSA box.
+
+Take a small pin and push the button until you hear a single beep (it will beep in about 1 or 2 seconds).
+
+Now remove the pin (ie; dont push anymore). Now, you can login with your default admin userid/password
+
+of admin/1234
+
+None of your data or settings are lost by doing this!
+
+b) start the NAS, find the ip address, setup and login as admin with web browser
+
+c) copy the full http link address while logged in from the browser into a file
+
+d) with XXXXX available from the saved link make this new link and put it in browser and press enter
+
+Firmware 4.40
+
+http://<ip-of-nas>/zyxel/cgi-bin/remote_help-cgi?type=backdoor
+
+Firmware 4.60
+
+http://<ip-of-nas>/rXXXXX,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+
+e) only a white page or error page will be displayed but this has started something needed in the NAS
+
+f) this started something will allow telnet login as root with the password from admin or if this does
+
+not give full root access you can use the root as NsaRescueAngel method:
+
+telnet <ip-of-nas>
+	
+user is admin and the password is the same as you use for the web administration GUI.
+
+This user does not have full root rights but can be used to generate the NsaRescueAngel (root) password. Run:
+
+/sbin/makekey
+
+This will give you some short password e.g.
+
+FaEWaQO3
+
+Disconnect Telnet
+
+Telnet again and login as root
+
+telnet <ip-of-nas>
+	
+This time use user NsaRescueAngel and the short password you got from step 2 above. e.g. FaEWaQO3
+
+Now you should have full root and own the box.
+
+g) As root or NsaRescueAngel having maximum power change the root password with passwd
+
+h) You can now login with Dropbear (small SSH server) as root anytime
+
+i) Dropbear is very simple and will not allow a lot of things like complex bash scripting
+
+Backdoor
+You can open a telnet backdoor by pressing the reset button for about 6 seconds (until you hear
+the second beep). This backdoor will close after about 2 minutes without activity.
+
+On newer firmwares (>3.23?) this backdoor is closed, but now there is a webinterface backdoor;
+login on the userinterface as admin, and then enter the url:
+
+http://<ip-of-nas>/zyxel/cgi-bin/remote_help-cgi?type=backdoor
+
+This will give a white page, there is no further conformation.
+
+There is 1 usable login account, username NsaRescueAngel, which has root rights. The password
+
+can be found by running /sbin/makekey. It outputs a hash on the MAC address of the box.
+
+This is a Catch-22. On older firmwares (< 3.0?) there is a second login, username admin password
+
+root, which has limited rights, but which can be used to determine the NsaRescueAngel password.
+
+On newer firmwares the default shell for this user is none.
+
+To find the password on a newer firmware, there are several options:
+
+Make a file with name "mykey.php" containing:
+<? 
+  echo shell_exec('/sbin/makekey'); 
+  exit;
+Copy to the NSA, and open through a Web share (not File Explorer) - your
+
+NsaRescueAngel password is returned.
+
+Use an FFP stick, and run /sbin/makekey
+Run makekey on another NSA-2xx, and provide the right MAC address (All caps,
+
+seperated by colons) /sbin/makekey AA:BB:CC:DD:EE:FF
+
+Download makekey and run it on your favorite ARM Linux box, providing the right
+
+MAC address (and hope that it runs).
+
+Update NSA310 Firmware 4.22
+
+The backdoor is opened by calling the script /usr/local/btn/open_backdoor.sh.
+
+The troubles with finding the key or using the NsaRscueAngel account are over!
+
+You can now use telnet with root and use the same password you use for admin!
+
+(Better would have been to allow login with "admin" only and then go su.)
+
+For the NSA-310 you can also use the webinterface backdoor
+
+http://<ip-of-nas>/zyxel/cgi-bin/remote_help-cgi?type=sshd_tdc
+	
+Root Access: NSA310 Firmware V4.70(AFK.1)
+
+Open up telnet backdoor.
+
+This is done by logging into the normal web administration GUI and then opening this URL:
+
+http://<ip-of-nas>/r41773,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+The r41773 part is some number that changes by firmware revision but will be the same part as the URL you normally get when opening the administration GUI.
+
+Telnet to find root password
+
+telnet <ip-of-nas>
+	
+user is admin and the password is the same as you use for the web administration GUI.
+
+This user does not have full root rights but can be used to generate the NsaRescueAngel (root) password. Run:
+
+/sbin/makekey
+
+This will give you some short password e.g.
+
+FaEWaQO3
+
+Disconnect Telnet
+
+Telnet again and login as root
+
+telnet <ip-of-nas>
+	
+This time use user NsaRescueAngel and the short password you got from step 2 above. e.g. FaEWaQO3
+
+Now you should have full root and own the box.
+
+Update NSA-320/NSA-325 Firmware 4.40
+The SSH webinterface backdoor does not seem to work (returns result=0). The telnet webinterface
+
+backdoor can be used with this URL:
+
+http://<ip-of-nas>/zyxel/cgi-bin/remote_help-cgi?type=backdoor
+	
+You can login using root with the admin password.
+
+Note: If you changed the admin password, telnet login might not work.
+
+Follow these steps to fix this problem:
+
+Change the admin password back to default using the web interface.
+
+Login using telnet with root and the default admin password
+
+Change the password through telnet using "passwd root".
+
+Afterwards, you can change the admin password on the web interface back to what you prefer.
+
+Update NSA-300 series Firmware 4.60
+
+The /zyxel/ part is exchanged by /r38657,/adv,/, so the complete url is
+
+http://<ip-of-nas>/r38657,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+	
+The number is different for each box and each firmware version. I think it's a revision number
+
+from SVN, or somethink like that. To find out what it's for you, have a look at the urls generated
+
+when you are entering the webinterface.
+
+Medion boxes
+
+On Medion boxes the /zyxel/ part of the url is obfuscated.
+
+Firmware 1.00:
+
+http://<ip-of-nas>/r32694,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+	
+Firmware 1.01(UZD.0):
+
+http://<ip-of-nas>/r34814,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+	
+Firmware 1.01(UZD.2):
+
+http://<ip-of-nas>/r36258,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+	
+You can login as root, using the admin web password.
+
+On Medion boxes it is possible to start a telnet daemon on the NAS, by requesting a webpage:
+
+Firmware 1.00:
+
+http://<ip-of-nas>/r32694,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+	
+Firmware 1.01(UZD.0):
+
+http://<ip-of-nas>/r34814,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+	
+Firmware 1.01(UZD.2):
+
+http://<ip-of-nas>/r36258,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+	
+You can login as admin, or as root, using the admin web password.
+
+If your firmware version is not listed here, login on the webinterface of your nas, and
+
+have a look at the url to find out the 'r value' of your firmware version. Some browsers
+
+won't show this, in that case copy the url and paste it in notepad, or something like that.
+
+(On most NSA boxes this telnet backdoor also works. Just find the 'r value' of your firmware.)
 
 2) get a share started to put files in
 
@@ -993,13 +1215,13 @@ https://bitly.com/1sMwD7b as uenv.tar
 
 4) extract all files in one folder
 
-5) as root in stock firmware copy all the extracted files to /tmp
+5) login as root with Dropbear in stock firmware and copy all the extracted files to /tmp
 
 6) save the current environment values as MAC network address, etc. will be lost !
 
 fw_printenv > oldenvuboot.txt
 
-7) Copy oldenvuboot.txt to desktop PC
+7) Copy oldenvuboot.txt to desktop PC. The MAC address is needed so it can be set up in the new uboot.
 
 8) install as instructed from /tmp, first try ./executable an then executable  
 
