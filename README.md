@@ -14,6 +14,12 @@ https://forum.doozan.com/read.php?3,10710,10816
 
 https://www.cyrius.com/debian/kirkwood/sheevaplug/boot/
 
+https://www.96boards.org/documentation/consumer/hikey/hikey620/guides/booting-linux-kernel-using-uboot.md.html
+
+https://openwrt.org/docs/techref/bootloader
+
+https://openwrt.org/docs/techref/bootloader/uboot
+
 https://github.com/mibodhi/u-boot-kirkwood
 
 CONFIG_EFI_PARTITION   GPT partition table, common when EFI is the
