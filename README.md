@@ -1,3 +1,10 @@
+# Archlinux install on Pogo computers that have uBoot
+
+https://archlinuxarm.org/platforms/armv5/pogoplug-v2-pinkgray
+
+https://obihoernchen.net/770/plug_computer_arch_linux/comment-page-2/
+
+
 # Tar extract to another directory
 
 https://www.cyberciti.biz/faq/howto-extract-tar-file-to-specific-directory-on-unixlinux/
