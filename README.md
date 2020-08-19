@@ -4,6 +4,22 @@ https://archlinuxarm.org/platforms/armv5/pogoplug-v2-pinkgray
 
 https://obihoernchen.net/770/plug_computer_arch_linux/comment-page-2/
 
+http://www.terminally-incoherent.com/blog/2012/09/19/set-up-a-home-linux-server-for-30-with-pogoplug/
+
+https://forum.odroid.com/viewtopic.php?t=26894
+
+https://www.hellion.org.uk/blog/posts/grub-on-uboot-on-qemu/
+
+https://forum.doozan.com/read.php?3,10710,10816
+
+https://www.cyrius.com/debian/kirkwood/sheevaplug/boot/
+
+https://github.com/mibodhi/u-boot-kirkwood
+
+CONFIG_EFI_PARTITION   GPT partition table, common when EFI is the
+				       bootloader.  Note 2TB partition limit; see
+				       disk/part_efi.c
+
 
 # Tar extract to another directory
 
