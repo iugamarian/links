@@ -28,6 +28,8 @@ http://mud-slide.blogspot.com/2013/12/installing-linux-on-zyxel-nsa-320-part_722
 
 http://modernhackers.com/install-debian-linux-into-zyxel-326-nas/#:~:text=TTL%20Console%20adaptor%20was%20not%20able%20to%20communicate%20with%20my
 
+https://watchmysys.com/blog/tag/nas/#:~:text=This%20method%20is%20not%20as%20reliable%20as%20soldering%20a%20header
+
 https://github.com/mibodhi/u-boot-kirkwood/issues/2
 
 https://github.com/mibodhi/u-boot-kirkwood
