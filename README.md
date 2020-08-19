@@ -24,6 +24,8 @@ https://github.com/pepe2k/u-boot_mod
 
 https://en.wikipedia.org/wiki/Linux_startup_process
 
+http://mud-slide.blogspot.com/2013/12/installing-linux-on-zyxel-nsa-320-part_722.html#:~:text=coloured%20wires%20matching%20the%20original%20Nokia%20wiring.%20The%20unlabelled%20red
+
 https://github.com/mibodhi/u-boot-kirkwood
 
 CONFIG_EFI_PARTITION   GPT partition table, common when EFI is the
