@@ -964,7 +964,7 @@ https://forum.doozan.com/read.php?2,23630
 https://forum.doozan.com/read.php?2,24139
 
 
-# Zyxel NSA3xx install ssh as dropbear and nfs with 2019 repository
+# Zyxel NSA3xx install ssh as dropbear and nfs with 2019 repository (not needed for replacing stock firmware and uboot)
 
 http://zyxel.diskstation.eu/Users/Mijzelf/zypkg-repo/README.html
 
@@ -1048,15 +1048,23 @@ Locate the reset button hole between the power connector and Ethernet cable at t
 
 Take a small pin and push the button until you hear a single beep (it will beep in about 1 or 2 seconds).
 
-Now remove the pin (ie; dont push anymore). Now, you can login with your default admin userid/password
+Now remove the pin (ie; dont push anymore). Now, you can login with your default admin
 
-of admin/1234
+userid/password of admin/1234 with the web browser.
 
 None of your data or settings are lost by doing this!
 
-b) start the NAS, find the ip address, setup and login as admin with web browser
+Maybe the configuration is corrupted and an over 5 second reset is needed (often I have needed this):
 
-c) copy the full http link address while logged in from the browser into a file
+Wait 1 minute after started, hold reset button, hear 1 beep, wait 5 seconds, hear 1 beep, wait 1 second,
+
+release reset button, hear 3 short beeps - this is the factory reset mode so wait 3 minutes for it to complete.
+
+All data will be lost by doing factory reset !
+
+b) start the NAS, find the ip address, setup and login as admin / 1234 with web browser
+
+c) copy the full http link address while logged in from the browser into a text file, save the text file
 
 d) with XXXXX available from the saved link make this new link and put it in browser and press enter
 
@@ -1070,9 +1078,11 @@ http://<ip-of-nas>/rXXXXX,/adv,/cgi-bin/remote_help-cgi?type=backdoor
 
 e) only a white page or error page will be displayed but this has started something needed in the NAS
 
-f) this started something will allow telnet login as root with the password from admin or if this does
+f) this started something will allow telnet login as admin/1234 but as regular user ($)
 
-not give full root access you can use the root as NsaRescueAngel method:
+if you reboot the NAS, go back to b) because the started something needs to be started after every boot
+
+g) to have root access there is NsaRescueAngel method that was used as a remote assistance tool for service:
 
 telnet <ip-of-nas>
 	
@@ -1094,13 +1104,17 @@ telnet <ip-of-nas>
 	
 This time use user NsaRescueAngel and the short password you got from step 2 above. e.g. FaEWaQO3
 
-Now you should have full root and own the box.
+Now you should have full root and own the box. This is enough to install new uboot, no need for ssh
 
-g) As root or NsaRescueAngel having maximum power change the root password with passwd
+(Dropbear) to be installed, anyway it is more complex to install ssh (Dropbear) so better avoid this.
 
-h) You can now login with Dropbear (small SSH server) as root anytime
+g) As NsaRescueAngel having maximum power change the root password with passwd
 
-i) Dropbear is very simple and will not allow a lot of things like complex bash scripting
+h) You can from now on login with root and the set up password but you still after every boot first need
+
+to login in the browser as admin/1234 and http://<ip-of-nas>/rXXXXX,/adv,/cgi-bin/remote_help-cgi?type=backdoor
+
+i) Telnet or Dropbear is very simple and will not allow a lot of things like complex bash scripting
 
 Backdoor
 
@@ -1274,9 +1288,15 @@ won't show this, in that case copy the url and paste it in notepad, or something
 
 (On most NSA boxes this telnet backdoor also works. Just find the 'r value' of your firmware.)
 
-2) get a share started to put files in
+2) get a volume formated and a public share started on that volume to put files in (can be external
 
-3) put in the share:
+on USB, but if external on USB install of ssh (Dropbear) can not be done because the needed /admin
+
+share in which to put the link to the repository is only allowed on an internal volume
+
+3) with Windows Download this files from Dropbox (top right of site has down arrow = Download file)
+
+and put in the NAS share (you can see it on Windows Network):
 
 https://bitly.com/2iC3E69 as uboot.tar
 
@@ -1284,19 +1304,65 @@ https://bitly.com/1RdYW8S as tools.tar.gz
 
 https://bitly.com/1sMwD7b as uenv.tar
 
-4) extract all files in one folder
+4) login as root and change directory to /e-data/xxxxxxxxx and extract all files in one folder
 
-5) login as root with Dropbear in stock firmware and copy all the extracted files to /tmp
+cd /e-data/xxxxxxxxx
+
+tar xf uboot.tar
+
+tar xzf tools.tar.gz
+
+tar xf as uenv.tar
+
+5) as root remove the 3 archive files, copy all the files from /e-data/xxxxxxxxx/tools in
+
+/e-data/xxxxxxxxx , remove directory /e-data/xxxxxxxxx/tools and copy all the files from
+
+/e-data/xxxxxxxxx to /tmp and change directory to /tmp
+
+cd /e-data/xxxxxxxxx
+
+rm uboot.tar
+
+rm tools.tar.gz
+
+rm uenv.tar
+
+cp /e-data/xxxxxxxxx/tools/* /e-data/xxxxxxxxx/
+
+rmdir /e-data/xxxxxxxxx/tools/
+
+cp /e-data/xxxxxxxxx/* /tmp
 
 6) save the current environment values as MAC network address, etc. will be lost !
 
-fw_printenv > oldenvuboot.txt
+./fw_printenv > oldenvuboot.txt
 
-7) Copy oldenvuboot.txt to desktop PC. The MAC address is needed so it can be set up in the new uboot.
+cp oldenvuboot.txt /e-data/xxxxxxxxx
 
-8) install as instructed from /tmp, first try ./executable an then executable  
+Copy oldenvuboot.txt from NAS in Windows C: drive
 
-9) also do the environment install command updates
+7) Copy oldenvuboot.txt from the NAS to Windows C: drive. The MAC address is needed so it can be set up in the new uboot.
+
+8) install as instructed from /tmp, first try ./executable an then executable
+
+From my tests I have found often that only erasing flash, writing uboot image and writing uboot environment configuration
+
+image works and what will not work is fw_setenv command writing to the configuration while still being in the stock firmware.
+
+And the uboot environment configuration has wrong settings for another architecture but this can be fixed by adding to the
+
+Debian rootfs a file boot/uEnv.txt having this:
+
+dtb_file=/boot/dts/kirkwood-nsa320.dtb
+
+And after this you can boot into the Debian rootfs and fix other fw_setenv commands so you have good MAC, SATA and USB
+
+9) Anyway try to also do the environment install command updates, I see that netconsole is actually not needed so avoid adding:
+
+fw_setenv preboot_nc 'setenv nc_ready 0; for pingstat in 1 2 3 4 5; do; sleep 1; if run if_netconsole; then setenv nc_ready 1; fi; done; if test $nc_ready -eq 1; then run start_netconsole; fi'
+
+fw_setenv preboot 'run preboot_nc'
 
 For safety check uboot has this info correct, if not or to be sure add to /boot/uEnv.txt
 
@@ -1344,15 +1410,29 @@ when kernel is being booted netconsole of kernel takes over and netconsole of Ub
 
 No ttl serial really needed if for editing you remove storage from NSA320 and edit on another computer
 
-Green second LED = boot is OK
+LED status information from this new uboot 2017
 
-Yellow second LED = kernel booted but something else not ok, try fixing with makeimage commands on uInitrd
+# Blue first LED = power is on
 
-Blinking second yellow LED = kernel not booted, try makeimage commands on uImage, /boot/uEnv.txt, repartition
+# Green blinking second LED = kernel has been found and is being loaded
 
-LAN green LED = eth0 working
+# Green second LED = boot has been OK, now ssh login to the NAS should work
 
-LAN only yellow LED = eth0 not working
+# Yellow blinking second LED = rootfs device not found, kernel not booted, try using USB stick with
+
+Debian rootfs in front USB port, makeimage commands on uImage, /boot/uEnv.txt, repartition
+
+uboot 2017 from my experinence can not see very fast USB sticks, larger than 2 TB HDD's and any SSD,
+
+probably uboot does not know to negociate SATA speed and USB speed for newer devices to ask to be slower
+
+# Yellow second LED = rootfs device has been found, kernel booted but something else not ok like uInitrd
+
+or bad information about architecture, try fixing with /boot/uEnv.txt or makeimage commands on uInitrd
+
+# LAN green LED = eth0 working, NAS should be seen on the network
+
+# LAN only yellow LED = eth0 not working, NAS is behaving like having LAN cable unplugged
 
 
 # Zyxel NSA320 install working Debian
