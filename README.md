@@ -1040,6 +1040,12 @@ https://forum.doozan.com/read.php?3,12381
 
 https://forum.doozan.com/read.php?3,27280
 
+http://davidegironi.blogspot.com/2018/12/debian-and-openmediavault-on-zyxtel.html#.XzzJPOgzaUk
+
+http://blog.qnology.com/2015/04/hacking-pogoplug-v3oxnas-proclassic.html
+
+https://forum.openmediavault.org/index.php?thread/4271-omv-on-zyxel-nsa320/
+
 1) get root access in stock firmware by 
 
 a) resetting the NAS
