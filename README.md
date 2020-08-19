@@ -26,6 +26,10 @@ https://en.wikipedia.org/wiki/Linux_startup_process
 
 http://mud-slide.blogspot.com/2013/12/installing-linux-on-zyxel-nsa-320-part_722.html#:~:text=coloured%20wires%20matching%20the%20original%20Nokia%20wiring.%20The%20unlabelled%20red
 
+http://modernhackers.com/install-debian-linux-into-zyxel-326-nas/#:~:text=TTL%20Console%20adaptor%20was%20not%20able%20to%20communicate%20with%20my
+
+https://github.com/mibodhi/u-boot-kirkwood/issues/2
+
 https://github.com/mibodhi/u-boot-kirkwood
 
 CONFIG_EFI_PARTITION   GPT partition table, common when EFI is the
