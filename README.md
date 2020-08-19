@@ -20,6 +20,8 @@ https://openwrt.org/docs/techref/bootloader
 
 https://openwrt.org/docs/techref/bootloader/uboot
 
+https://github.com/pepe2k/u-boot_mod
+
 https://github.com/mibodhi/u-boot-kirkwood
 
 CONFIG_EFI_PARTITION   GPT partition table, common when EFI is the
