@@ -32,6 +32,8 @@ https://watchmysys.com/blog/tag/nas/#:~:text=This%20method%20is%20not%20as%20rel
 
 https://forum.doozan.com/read.php?3,56534#:~:text=Attachments:%20open%20|%20download%20-%20back%20side%20mpcie%20usb%20card.jpg
 
+https://gironi3.rssing.com/chan-14530749/all_p6.html
+
 https://github.com/mibodhi/u-boot-kirkwood/issues/2
 
 https://github.com/mibodhi/u-boot-kirkwood
