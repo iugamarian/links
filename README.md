@@ -1500,6 +1500,97 @@ https://forum.doozan.com/read.php?3,62649,63144
 
 https://forum.doozan.com/read.php?2,79219,79334
 
+https://gironi3.rssing.com/chan-14530749/all_p6.html
+
+Configure network and ssh:
+
+Now edit the file etc/network/interface cause eth0 will be named enp1s0 on NSA310 as follow:
+
+  auto enp1s0
+  
+  allow-hotplug enp1s0
+  
+  iface enp1s0 inet dhcp
+  
+Plug the usb key to the NSA310 and boot it.
+
+The NSA should boot up with Debian.
+
+If you set your network interface as above you should found it on your DHCP leases.
+
+You should be able to log in the ssh terminal using the default username and passwod: root for both.
+
+One logged in renew the ssh keys by using the following 
+
+rm /etc/ssh/ssh_host*
+
+ssh-keygen -A
+
+apt-get update
+
+apt-get upgrade
+
+And change your root password using passwd.
+
+You are now ready to install things on your Debian NAS.
+
+Setup Debian:
+
+The most usefull software you can install in your NAS, to me, it's OpenMediaVault.
+
+Installing OpenMediaVault in your new NAS is really simple, you just have to add the openmediavault repository package,
+
+using the command (you can see this correctly by viewing raw text):
+
+
+cat <<EOF >> /etc/apt/sources.list.d/openmediavault.list
+deb http://packages.openmediavault.org/public arrakis main
+# deb http://downloads.sourceforge.net/project/openmediavault/packages arrakis main
+## Uncomment the following line to add software from the proposed repository.
+# deb http://packages.openmediavault.org/public arrakis-proposed main
+# deb http://downloads.sourceforge.net/project/openmediavault/packages arrakis-proposed main
+## This software is not part of OpenMediaVault, but is offered by third-party
+## developers as a service to OpenMediaVault users.
+# deb http://packages.openmediavault.org/public arrakis partner
+# deb http://downloads.sourceforge.net/project/openmediavault/packages arrakis partner
+EOF
+
+
+Then run the following come to install the openmediavault software:
+
+export LANG=C
+
+export DEBIAN_FRONTEND=noninteractive
+
+export APT_LISTCHANGES_FRONTEND=none
+
+apt-get update
+
+apt-get --allow-unauthenticated install openmediavault-keyring
+
+apt-get update
+
+apt-get --yes --auto-remove --show-upgraded \
+    --allow-downgrades --allow-change-held-packages \
+    --no-install-recommends \
+    --option Dpkg::Options::="--force-confdef" \
+    --option DPkg::Options::="--force-confold" \
+    install postfix openmediavault
+    
+Initialize the system and database:
+
+omv-initsystem
+
+Now you should be able to login to the web interface of your NSA310 openmediavault using the default username and password, that are admin and openmediavault.
+
+From the OpenMediaVault panel you can set the static address of your network card, of course you can to this by terminal also.
+
+You can format and mount your hard drive, and setup your sharing.
+
+You can find a lot usefull information on the openmendiavault documentation page https://openmediavault.readthedocs.io/en/latest/
+
+Completed openmediavault install.
+
 Read CPU temperature:
 
 cat /sys/class/hwmon/hwmon0/device/hwmon/hwmon0/temp1_input
