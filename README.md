@@ -30,6 +30,8 @@ http://modernhackers.com/install-debian-linux-into-zyxel-326-nas/#:~:text=TTL%20
 
 https://watchmysys.com/blog/tag/nas/#:~:text=This%20method%20is%20not%20as%20reliable%20as%20soldering%20a%20header
 
+https://forum.doozan.com/read.php?3,56534#:~:text=Attachments:%20open%20|%20download%20-%20back%20side%20mpcie%20usb%20card.jpg
+
 https://github.com/mibodhi/u-boot-kirkwood/issues/2
 
 https://github.com/mibodhi/u-boot-kirkwood
