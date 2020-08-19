@@ -22,6 +22,8 @@ https://openwrt.org/docs/techref/bootloader/uboot
 
 https://github.com/pepe2k/u-boot_mod
 
+https://en.wikipedia.org/wiki/Linux_startup_process
+
 https://github.com/mibodhi/u-boot-kirkwood
 
 CONFIG_EFI_PARTITION   GPT partition table, common when EFI is the
