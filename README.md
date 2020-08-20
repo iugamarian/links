@@ -1,3 +1,18 @@
+# Scan network with nmap:
+
+https://www.redhat.com/sysadmin/quick-nmap-inventory
+
+With MAC address:
+
+nmap -sn 192.168.1.0/24
+
+https://vitux.com/find-devices-connected-to-your-network-with-nmap/
+
+Less MAC address:
+
+nmap -sP 192.168.1.0/24
+
+
 # Archlinux install on Pogo computers that have uBoot
 
 https://archlinuxarm.org/platforms/armv5/pogoplug-v2-pinkgray
