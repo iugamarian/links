@@ -49,6 +49,8 @@ https://forum.doozan.com/read.php?3,56534#:~:text=Attachments:%20open%20|%20down
 
 https://gironi3.rssing.com/chan-14530749/all_p6.html
 
+https://jelleraaijmakers.nl/2015/01/sheevaplug-with-debian-wheezy
+
 https://github.com/mibodhi/u-boot-kirkwood/issues/2
 
 https://github.com/mibodhi/u-boot-kirkwood
