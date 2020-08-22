@@ -2,6 +2,17 @@
 
 https://en.wikipedia.org/wiki/Comparison_of_distributed_file_systems
 
+https://en.wikipedia.org/wiki/Moose_File_System
+
+https://github.com/moosefs/moosefs
+
+https://burnhamforensics.com/2019/04/06/moosefs-build-and-installation-guide/
+
+Needed:
+
+4 CentOS servers of default storage (16-20GB) placed on your LAN
+2 CentOS servers with two HDDs (16-20GB & ~15GB) attached and placed on your LAN, keeping one of the drives un-configured during OS installation
+    
 
 # Slow ARM CPU increase performance in sshfs while lowering security (use on LAN only)
 
