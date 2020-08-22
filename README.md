@@ -1,3 +1,646 @@
+# Glusterfs seems to use a key for data so fast encryption, but needs minimum 2 servers
+
+https://www.howtoforge.com/tutorial/high-availability-storage-with-glusterfs-on-debian-8-with-two-nodes/
+
+This tutorial shows how to set up a high-availability storage with two storage servers (Debian Jessie)
+
+that uses GlusterFS. Each storage server will be a mirror of the other storage server, and files will
+
+be replicated automatically across both storage nodes. The client system (Debian 8 as well) will be able
+
+to access the storage as if it was a local filesystem. GlusterFS is a clustered file-system capable of
+
+scaling to several peta-bytes. It aggregates various storage bricks over Infiniband RDMA or TCP/IP
+
+interconnect into one large parallel network file system. Storage bricks can be made of any commodity
+
+hardware such as x86_64 servers with SATA-II RAID and Infiniband HBA.
+
+ 
+1 Preliminary Note
+
+In this tutorial, I will use three systems, two servers and a client:
+
+    server1.example.com: IP address 192.168.1.100 (server)
+    
+    server2.example.com: IP address 192.168.1.101 (server)
+    
+    client1.example.com: IP address 192.168.1.102 (client)
+
+All three systems should be able to resolve the other systems' hostnames. If this cannot be done through
+
+DNS, you should edit the /etc/hosts file so that it looks as follows on all three systems:
+
+nano /etc/hosts
+
+127.0.0.1 localhost
+
+192.168.1.100 server1.example.com server1
+
+192.168.1.101 server2.example.com server2
+
+192.168.1.102 client1.example.com client1
+
+
+# The following lines are desirable for IPv6 capable hosts
+
+::1 localhost ip6-localhost ip6-loopback
+
+ff02::1 ip6-allnodes
+
+ff02::2 ip6-allrouters
+
+(It is also possible to use IP addresses instead of hostnames in the following setup. If you prefer to use
+
+IP addresses, you don't have to care about whether the hostnames can be resolved or not.)
+
+ 
+2 Setting up the GlusterFS Servers
+
+server1.example.com/server2.example.com:
+
+The latest GlusterFS version is available as Debian package from gluster.org. We can install it as follows:
+
+We add the public key of the gluster.org Debian repository on both servers.
+
+wget -O - http://download.gluster.org/pub/gluster/glusterfs/3.7/3.7.9/rsa.pub | apt-key add -
+
+Then add the GlusterFS repository (the command is one line!)
+
+echo deb http://download.gluster.org/pub/gluster/glusterfs/3.7/3.7.9/Debian/jessie/apt jessie main > /etc/apt/sources.list.d/gluster.list
+
+and update the repository list.
+
+apt-get update
+
+Now we can install the GlusterFS server software with apt.
+
+apt-get -y install glusterfs-server
+
+The command
+
+glusterfsd --version
+
+should now show the GlusterFS version that you've just installed (3.7.9 in this case):
+
+root@server1:/# glusterfsd --version
+
+glusterfs 3.7.9 built on Mar 23 2016 05:24:49
+
+Repository revision: git://git.gluster.com/glusterfs.git
+
+Copyright (c) 2006-2013 Red Hat, Inc. <http://www.redhat.com/>
+
+GlusterFS comes with ABSOLUTELY NO WARRANTY.
+
+It is licensed to you under your choice of the GNU Lesser
+
+General Public License, version 3 or any later version (LGPLv3
+
+or later), or the GNU General Public License, version 2 (GPLv2),
+
+in all cases as published by the Free Software Foundation.
+
+root@server1:/#
+
+If you use a firewall, ensure that TCP ports 111, 24007, 24008, 24009-(24009 + number of bricks
+
+across all volumes) are open on server1.example.com and server2.example.com.
+
+Glusterfs shall store its data in the directory /data on the servers. This location can be a normal
+
+directory if you have a smaller installation or you use a separate hard disk partition and mount it as /data.
+
+Run on both servers:
+
+mkdir /data
+
+to create the data directory.
+
+Next, we must add server2.example.com to the trusted storage pool (please note that I'm running all
+
+GlusterFS configuration commands from server1.example.com, but you can as well run them from
+
+server2.example.com because the configuration is repliacted between the GlusterFS nodes - just make
+
+sure you use the correct hostnames or IP addresses):
+
+server1.example.com:
+
+On server1.example.com, run
+
+gluster peer probe server2.example.com
+
+root@server1:/# gluster peer probe server2.example.com
+
+peer probe: success.
+
+root@server1:/#
+
+The status of the trusted storage pool should now be similar to this:
+
+gluster peer status
+
+root@server1:/# gluster peer status
+
+Number of Peers: 1
+
+Hostname: server2.example.com
+
+Uuid: 0f7ee46c-6a71-4a31-91d9-6076707eff95
+
+State: Peer in Cluster (Connected)
+
+root@server1:/#
+
+Next we create the share named testvol with two replicas (please note that the number
+of replicas is equal to the number of servers in this case because we want to set up mirroring)
+on server1.example.com and server2.example.com in the /data/testvol directory (this will be
+created if it doesn't exist):
+
+gluster volume create testvol replica 2 transport tcp server1.example.com:/data/testvol
+
+server2.example.com:/data/testvol force
+
+root@server1:/# gluster volume create testvol replica 2 transport tcp server1.example.com:/data/testvol server2.example.com:/data/testvol force
+
+volume create: testvol: success: please start the volume to access data
+
+root@server1:/#
+
+Start the volume:
+
+gluster volume start testvol
+
+root@server1:/# gluster volume start testvol
+
+volume start: testvol: success
+
+root@server1:/#
+
+Our test volume has been started successfully.
+
+It is possible that the above command tells you that the action was not successful:
+
+root@server1:~# gluster volume start testvol
+
+Starting volume testvol has been unsuccessful
+root@server1:~#
+
+In this case you should check the output of...
+
+server1.example.com/server2.example.com:
+
+netstat -tap | grep glusterfsd
+
+on both servers.
+
+If you get output like this...
+
+root@server1:/# netstat -tap | grep glusterfsd
+
+tcp 0 0 *:49152 *:* LISTEN 8007/glusterfsd
+
+tcp 0 0 server1.example.c:65533 server1.example.c:24007 ESTABLISHED 8007/glusterfsd
+
+tcp 0 0 server1.example.c:49152 server2.example.c:65531 ESTABLISHED 8007/glusterfsd
+
+tcp 0 0 server1.example.c:49152 server1.example.c:65532 ESTABLISHED 8007/glusterfsd
+
+tcp 0 0 server1.example.c:49152 server1.example.c:65531 ESTABLISHED 8007/glusterfsd
+
+tcp 0 0 server1.example.c:49152 server2.example.c:65526 ESTABLISHED 8007/glusterfsd
+
+root@server1:/#
+
+... everything is fine, but if you don't get any output...
+
+root@server2:~# netstat -tap | grep glusterfsd
+root@server2:~#
+
+... restart the GlusterFS daemon on the corresponding server (server1.example.com in this case):
+
+server2.example.com:
+
+service glusterfs-server restart
+
+Then check the output of...
+
+netstat -tap | grep glusterfsd
+
+... again on that server - it should now look like this:Advertisement
+
+root@server2:/# netstat -tap | grep glusterfsd
+tcp 0 0 *:49152 *:* LISTEN 7852/glusterfsd
+tcp 0 0 server2.example.c:49152 server2.example.c:65532 ESTABLISHED 7852/glusterfsd
+
+tcp 0 0 server2.example.c:49152 server1.example.c:65526 ESTABLISHED 7852/glusterfsd
+
+tcp 0 0 server2.example.c:49152 server2.example.c:65525 ESTABLISHED 7852/glusterfsd
+
+tcp 0 0 server2.example.c:65533 server2.example.c:24007 ESTABLISHED 7852/glusterfsd
+
+tcp 0 0 server2.example.c:49152 server1.example.c:65524 ESTABLISHED 7852/glusterfsd
+
+root@server2:/#
+
+Now back to server1.example.com:
+
+server1.example.com:
+
+You can check the status of the volume with the command
+
+gluster volume info
+
+root@server1:/# gluster volume info
+
+Volume Name: testvol
+
+Type: Replicate
+
+Volume ID: 3fc9af57-ca56-4a72-ad54-3d2ea03e5883
+
+Status: Started
+
+Number of Bricks: 1 x 2 = 2
+
+Transport-type: tcp
+
+Bricks:
+
+Brick1: server1.example.com:/data/testvol
+
+Brick2: server2.example.com:/data/testvol
+
+Options Reconfigured:
+
+performance.readdir-ahead: on
+
+root@server1:/#
+
+By default, all clients can connect to the volume. If you want to grant access to client1.example.com (= 192.168.1.102) only, run:
+
+gluster volume set testvol auth.allow 192.168.1.102
+
+root@server1:/# gluster volume set testvol auth.allow 192.168.1.102
+
+volume set: success
+
+root@server1:/#
+
+Please note that it is possible to use wildcards for the IP addresses (like 192.168.*) and
+that you can specify multiple IP addresses separated by comma (e.g. 192.168.1.102,192.168.1.103).
+
+The volume info should now show the updated status:
+
+gluster volume info
+
+root@server1:/# gluster volume info
+
+Volume Name: testvol
+
+Type: Replicate
+
+Volume ID: 3fc9af57-ca56-4a72-ad54-3d2ea03e5883
+
+Status: Started
+
+Number of Bricks: 1 x 2 = 2
+
+Transport-type: tcp
+
+Bricks:
+
+Brick1: server1.example.com:/data/testvol
+
+Brick2: server2.example.com:/data/testvol
+
+Options Reconfigured:
+
+auth.allow: 192.168.1.102
+
+performance.readdir-ahead: on
+
+root@server1:/#
+
+ 
+3 Setting up the GlusterFS Client
+
+client1.example.com:
+
+On the client system we add the public key of the gluster.org Debian repository first.
+
+wget -O - http://download.gluster.org/pub/gluster/glusterfs/3.7/3.7.9/rsa.pub | apt-key add -
+
+Then add the GlusterFS repository (the command is one line!)
+
+echo deb http://download.gluster.org/pub/gluster/glusterfs/3.7/3.7.9/Debian/jessie/apt jessie main > /etc/apt/sources.list.d/gluster.list
+
+and update the repository list.
+
+apt-get update
+
+Now we can install the GlusterFS client as follows.
+
+apt-get -y install glusterfs-client
+
+Then we create the following directory:
+
+mkdir /mnt/glusterfs
+
+That's it! Now we can mount the GlusterFS filesystem to /mnt/glusterfs with the following command:
+
+mount.glusterfs server1.example.com:/testvol /mnt/glusterfs
+
+(Instead of server1.example.com you can as well use server2.example.com in the above command!)
+
+You should now see the new share in the outputs of...
+
+mount
+
+root@client1:/# mount
+
+...
+
+server1.example.com:/testvol on /mnt/glusterfs type fuse.glusterfs (rw,relatime,user_id=0,group_id=0,default_permissions,allow_other,max_read=131072)
+
+root@client1:/#
+
+... and...
+
+df -h
+
+root@client1:/# df -h
+
+Filesystem Size Used Avail Use% Mounted on
+
+...
+
+server1.example.com:/testvol 57G 21G 34G 39% /mnt/glusterfs
+
+root@client1:/#
+
+Instead of mounting the GlusterFS share manually on the client, you could modify /etc/fstab
+so that the share gets mounted automatically when the client boots.
+
+Open /etc/fstab and append the following line:
+
+nano /etc/fstab
+
+[...]
+
+server1.example.com:/testvol /mnt/glusterfs glusterfs defaults,_netdev 0 0
+
+(Again, instead of server1.example.com you can as well use server2.example.com!)
+
+To test if your modified /etc/fstab is working, reboot the client:
+
+reboot
+
+After the reboot, you should find the share in the outputs of...
+
+df -h
+
+... and...
+
+mount
+
+ 
+4 Testing GlusterFS Replication
+
+Now let's create some test files on the GlusterFS share:
+
+client1.example.com:
+
+touch /mnt/glusterfs/test1
+
+touch /mnt/glusterfs/test2
+
+Now let's check the /data directory on server1.example.com and server2.example.com. The test1 and test2 files should be present on each node:
+
+server1.example.com/server2.example.com:
+
+ls -l /data/testvol
+
+root@server1:/# ls -l /data/testvol/
+
+total 0
+
+-rw-r--r-- 2 root root 0 Mar 23 2016 test1
+
+-rw-r--r-- 2 root root 0 Mar 23 2016 test2
+
+Now we shut down server1.example.com and add/delete some files on the GlusterFS share on client1.example.com.
+
+server1.example.com:
+
+shutdown -h now
+
+client1.example.com:
+
+touch /mnt/glusterfs/test3
+
+touch /mnt/glusterfs/test4
+
+rm -f /mnt/glusterfs/test2
+
+The changes should be visible in the /data/testvol directory on server2.example.com:
+
+server2.example.com:
+
+ls -l /data/testvol
+
+root@server2:/# ls -l /data/testvol
+
+total 8
+
+-rw-r--r-- 2 root root 0 Mar 23 08:06 test1
+
+-rw-r--r-- 2 root root 0 Mar 23 08:09 test3
+
+-rw-r--r-- 2 root root 0 Mar 23 08:09 test4
+
+root@server2:/#
+
+Let's boot server1.example.com again and take a look at the /data directory:
+
+server1.example.com:
+
+ls -l /data/testvol
+
+root@server1:/# ls -l /data/testvol
+
+total 0
+
+-rw-r--r-- 2 root root 0 Mar 23 08:06 test1
+
+-rw-r--r-- 2 root root 0 Mar 23 08:09 test3
+
+-rw-r--r-- 2 root root 0 Mar 23 08:09 test4
+
+root@server1:/#
+
+As you see, server1.example.com automatically synced the changed. In case that the change
+
+has not been synced yet, then this is easy to fix, all we need to do is invoke a read command
+
+on the GlusterFS share on client1.example.com, e.g.:
+
+client1.example.com:
+
+ls -l /mnt/glusterfs/
+
+root@client1:/# ls -l /mnt/glusterfs/
+
+total 0
+
+-rw-r--r-- 1 root root 0 Mar 23 08:06 test1
+
+-rw-r--r-- 1 root root 0 Mar 23 08:09 test3
+
+-rw-r--r-- 1 root root 0 Mar 23 08:09 test4
+
+root@client1:/#
+
+# Glusterfs with 1 server meaning one brick
+
+https://docs.gluster.org/en/latest/glossary/
+
+https://docs.gluster.org/en/latest/Administrator%20Guide/Setting%20Up%20Volumes/
+
+https://www.digitalocean.com/community/tutorials/how-to-create-a-redundant-storage-pool-using-glusterfs-on-ubuntu-18-04
+
+https://hexadix.com/setup-network-shared-folder-using-glusterfs-ubuntu-servers-backup-server-array-auto-mount/
+
+https://docs.gluster.org/en/latest/Administrator%20Guide/Setting%20Up%20Clients/
+
+https://www.maketecheasier.com/create-nas-with-glusterfs/
+
+How to Create Your Own NAS With GlusterFS
+
+By Sarah Li Cain / Mar 17, 2015 / Linux
+
+GlusterFS is a system that provides network storage which has the ability to be made fault-tolerant,
+redundant and scalable. It’s a great option for applications that need access to large files, such as
+scientific grade storage solutions. What the file system does is aggregates and memory sources through
+a single global namespace into a pool of storage and it is accessible through multi-file level protocols.
+
+The great thing about GlusterFS is that it is very easy to use and maintain. Here’s how you can set up
+your own NAS with GlusterFS.
+
+What You Need:
+
+    A network
+    
+    GlusterFS
+    
+    Linux Boxes
+
+1. Set Up Your Network
+
+Your best bet is connecting GlusterFS to Gigabit Ethernet and a huge array of servers, plus storage devices.
+If you don’t have these on hand, two computers or VMs are usually sufficient, particularly if you are just
+getting the hang of it. Copmuter 1 = server, Computer 2 = client
+
+2. Install Your Server
+
+Glusterfs is included in the repository of many Linux distros. Before installation, you can first compare the
+version numbers between the website and your distro. Keep in mind you might have to manually update the clients.
+If you have a pretty recent version, you can install the server by typing (in Debian-based distro):
+
+sudo apt-get install glusterfs-server
+
+3. Switch to Static IP and Adding/Removing Volumes
+
+Open up the file “etc/network/interfaces”:
+
+sudo nano /etc/network/interfaces
+
+and remove the line (if present) ifacetho0 inet dynamic, then add the lines:
+
+auto eth0
+
+iface eth0 inet static
+
+address 192.168.0.100
+
+netmask 255.255.255.0
+
+gateway 192.168.0.1
+
+broadcast 192.168.0.255
+
+network 192.168.0.0
+
+Restart your machine and make sure the network is working. If it does, type in the following:
+
+gluster volume create testvol 192.168.0.100:/data
+
+Typing this will create a volume “testvol” which will be stored on the server. Your files will
+then be located in the “/data” directory which is in the root system and what GlusterFS considers a brick.
+
+To verify that it works, type:
+
+gluster volume start testvol
+
+You can remove the volume later on by typing both:
+
+gluster volume stop testvol
+
+and
+
+gluster volume delete testvol
+
+4. Mounting the Volume Locally
+
+You can do this easily by finding:
+
+mkdir /mnt/gluster
+
+Then, use the command below to mount it.
+
+mount.glusterfs 192.168.0.100:/ testvol /mnt/glusterfs
+ 
+echo "It works" > /mnt/gluster/test. txt
+
+Make sure it works before proceeding.
+
+5. Sharing It Over NFS
+
+More recent versions automatically give NFS access to volumes. You still need to add a portmap
+package to the server in order to make it work though. To do you this, all you need to do is to
+add a mount point:
+
+sudo mkdir /mnt/nfsgluster
+
+and type:
+
+sudo mount -t nfs 192.168.0.100:/ testvol /mnt/nfstest/ -o tcp,vers=3
+
+To make a client mount the share on boot, add the details of the GlusterFS NFS share to /etc/fstab
+
+in the normal way. For our example, add the line:
+
+192.168.0.100:7997:/testvol / mnt/nfstest nfs defaults,_netdev 0 0
+
+That’s it!
+Conclusion
+
+Once you’re set up, you can add a new server by following the above steps. Make sure you give your new
+
+server a different IP address. To check the status of your new server, type:
+
+gluster peer probe 192.168.0.101
+
+gluster peer status
+
+If you’d like to work with names rather than IP addresses for your servers, you need to add them to the
+
+hosts file on your admin machine. All you have to do is edit /etc/hosts with your text editor and add a
+
+line (e.g. 192.168.0.101) for each server.
+
+
 # List of alternatives to NFS and sshfs
 
 https://en.wikipedia.org/wiki/Comparison_of_distributed_file_systems
