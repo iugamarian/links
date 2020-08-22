@@ -10,7 +10,22 @@ https://serverfault.com/questions/182671/how-could-one-speed-up-sshfs-in-lan
 
 https://www.reddit.com/r/linuxquestions/comments/9gs0bm/samba_vs_nfs_vs_sshfs/
 
+https://serverfault.com/questions/14577/what-network-file-sharing-protocol-has-the-best-performance-and-reliability
 
+
+I would advise against NFS. Simply put - we had a web server farm, with JBoss, Apache, Tomcat and Oracle all using NFS shares for common configuration files, and logging.
+
+When the NFS share disappeared (admittedly a rare-ish occurrence) the whole thing just collapsed (predictable really, and I advised the 'devlopers' against this config time shortcut).
+
+There seems to be an issue with the version of NFS we were using that, if the target disappeared during a write, the client would drop into a never ending wait loop, waiting for the NFS target to come back. Even if the NFS box reattached - the loop still did not end.
+
+We were using a mix of RHEL 3,4,5. Storage was on RHEL4, servers were on RHEL5, storage network was a separate lan, and not running on vlans.
+
+If there is a load balanced front end, checking single storage - would this not bottleneck your system?
+
+Have you considered a read-only iSCSI connection to your storage, with an event driven script to move the uploaded file to the storage via ftp/scp when a file is uploaded?
+
+The only time I have implemented a successful centralised storage for multiple read heads was on an EMC storage array... All other cost effective attempts had their drawbacks.
 
 For sftp with no encryption, use sshfs + socat
 
