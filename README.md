@@ -8,6 +8,51 @@ https://unix.stackexchange.com/questions/163767/how-can-i-use-arcfour-encryption
 
 https://serverfault.com/questions/182671/how-could-one-speed-up-sshfs-in-lan
 
+https://www.reddit.com/r/linuxquestions/comments/9gs0bm/samba_vs_nfs_vs_sshfs/
+
+
+
+For sftp with no encryption, use sshfs + socat
+
+On the server side run
+
+socat TCP4-LISTEN:7777 EXEC:/usr/lib/sftp-server
+
+And on the client side
+
+sshfs -o directport=7777 remote:/dir /local/dir
+
+Source: http://pl.atyp.us/wordpress/index.php/2009/09/file-transfer-fun/
+
+share improve this answer
+
+edited Jul 7 '13 at 21:46
+
+WhyNotHugo
+
+32333 silver badges1111 bronze badges
+
+answered Nov 30 '12 at 3:15
+
+endru
+
+8111 silver badge11 bronze badge
+
+    2
+    While this may theoretically solve the problem, it would be preferred tos
+    ummarize the link contents, and provide the link as reference – Canadian Luke Nov 30 '12 at 6:15
+    3
+    By default, socat TCP-LISTEN listens on all interfaces. To limit to one
+    specific network interface (e.g., localhost), use the ,bind=127.0.0.1 option.
+    To allow multiple connections to the server, add the ,fork option. Making a
+    read-only server? Add -R to the EXEC command. In the end, it will look like
+    this: socat TCP-LISTEN:7777,fork,bind=127.0.0.1 EXEC:'/usr/lib/sftp-server -R'
+    (on Arch Linux, I had to use /usr/lib/ssh/sftp-server instead). – Lekensteyn Mar 22 '14 at 15:51 
+
+For a bit more security, your can also restrict the IP range with e.g. ,range=192.168.1.2/32, to only
+allow one particular machine to connect. – Robin Dinse Jun 11 '18 at 13:11
+
+
 Order of encription from fast to slow:
 
 arcfour
