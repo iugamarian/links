@@ -1,6 +1,37 @@
 # Slow ARM CPU increase performance in sshfs while lowering security (use on LAN only)
 
+https://unix.stackexchange.com/questions/163767/how-can-i-use-arcfour-encryption-over-sshfs
+
 https://serverfault.com/questions/182671/how-could-one-speed-up-sshfs-in-lan
+
+Configure server to allow arcfour insecure encription
+
+Seems like the server does not want to allow it based onthe output of auth.log.
+
+I'd try adding arcfour back into the SSH server's sshd_config file.
+
+From the sshd_config man page:
+
+excerpt
+
+ Ciphers
+        Specifies the ciphers allowed for protocol version 2.  Multiple 
+        ciphers must be comma-separated.  The supported ciphers are 
+        “3des-cbc”, “aes128-cbc”, “aes192-cbc”, “aes256-cbc”, “aes128-ctr”, 
+        “aes192-ctr”, “aes256-ctr”, “aes128-gcm@openssh.com”, 
+        “aes256-gcm@openssh.com”, “arcfour128”, “arcfour256”,
+        “arcfour”, “blowfish-cbc”, and “cast128-cbc”.  The default is:
+
+            aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,
+            aes128-gcm@openssh.com,aes256-gcm@openssh.com,
+            aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,
+            aes256-cbc,arcfour
+
+Incidentally, there is nothing wrong with your -o Ciphers=arcfour switches from what I can tell.
+
+I even found this SU Q&A titled: sshfs mount without compression or encryption that shows the same approach.
+
+Mount with this options:
 
 sshfs -o Ciphers=arcfour,Compression=no
 
@@ -10,7 +41,7 @@ arcfour is blazing fast !!!WHILE!!!! not 100% safe. LAN ONLY
 
 Optional:
 
-auto_cache allows you to store file localy in temp somewhere so its not accessed via network second time.
+Adding auto_cache allows you to store file localy in temp somewhere so its not accessed via network second time.
 
 with this 1GB connection to server is twice as fast for me.
 
