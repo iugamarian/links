@@ -1,10 +1,30 @@
 # Slow ARM CPU increase performance in sshfs while lowering security (use on LAN only)
 
+https://serverfault.com/questions/924506/use-the-arcfour-cipher-with-sshfs-and-google-cloud
+
+https://superuser.com/questions/32884/sshfs-mount-without-compression-or-encryption
+
 https://unix.stackexchange.com/questions/163767/how-can-i-use-arcfour-encryption-over-sshfs
 
 https://serverfault.com/questions/182671/how-could-one-speed-up-sshfs-in-lan
 
-Configure server to allow arcfour insecure encription
+Order of encription from fast to slow:
+
+arcfour
+
+chacha20-poly1305@openssh.com
+
+rc4
+
+Arcfour encription is not allowed and not supported because it is insecure encription.
+
+The arcfour cipher is no longer supported in modern SSH servers because it is considered insecure.
+
+You may want to try aes128-ctr or chacha20-poly1305@openssh.com
+
+arcfour cipher deprecated and missing on most modern OpenSSH installations,
+
+You can use chacha20-poly1305@openssh.com instead. – Mesut Tasci Oct 10 '18
 
 Seems like the server does not want to allow it based onthe output of auth.log.
 
