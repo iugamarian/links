@@ -1,3 +1,8 @@
+# List of alternatives to NFS and sshfs
+
+https://en.wikipedia.org/wiki/Comparison_of_distributed_file_systems
+
+
 # Slow ARM CPU increase performance in sshfs while lowering security (use on LAN only)
 
 https://serverfault.com/questions/924506/use-the-arcfour-cipher-with-sshfs-and-google-cloud
