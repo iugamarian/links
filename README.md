@@ -1,3 +1,20 @@
+# Slow ARM CPU increase performance in sshfs while lowering security (use on LAN only)
+
+https://serverfault.com/questions/182671/how-could-one-speed-up-sshfs-in-lan
+
+sshfs -o Ciphers=arcfour,Compression=no
+
+compression slows on pack/unpack
+
+arcfour is blazing fast !!!WHILE!!!! not 100% safe. LAN ONLY
+
+Optional:
+
+auto_cache allows you to store file localy in temp somewhere so its not accessed via network second time.
+
+with this 1GB connection to server is twice as fast for me.
+
+
 # Scan network with nmap:
 
 https://www.redhat.com/sysadmin/quick-nmap-inventory
