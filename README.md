@@ -1,4 +1,63 @@
+# NFS async is 10 times faster for many small files on async then on sync
+
+https://serverfault.com/questions/372151/nas-performance-nfs-vs-samba-vs-glusterfs
+
+I am planning my new shared storage infrastructure for a small webserver farm.
+
+Therefore i ran a lot of tests with a lot of NAS filesystems. By doing so, i got some
+
+unexpected results and would like to know whether somebody here can confirm this.
+
+In short: Samba is hugely faster than NFS and GlusterFS for small file writes.
+
+Here what i did: I ran a simple "rsync benchmark" with a lot of files to compare the write
+
+performance for small files. For easier reproduction, i re-ran it just now with the contents
+
+of the current wordpress tar.gz.
+
+    GlusterFS replicated 2: 32-35 seconds, high CPU load
+    
+    GlusterFS single: 14-16 seconds, high CPU load
+    
+    GlusterFS + NFS client: 16-19 seconds, high CPU load
+    
+    NFS kernel server + NFS client (sync): 32-36 seconds, very low CPU load
+    
+    NFS kernel server + NFS client (async): 3-4 seconds, very low CPU load
+    
+    Samba: 4-7 seconds, medium CPU load
+    
+    Direct disk: < 1 second
+
+I am absolutely no samba guru (i think my last contact was with samba 2.x), so i did not optimize
+
+anything here - just out-of-the-box config (debian/squeeze package). The only thing I
+
+added "sync always = yes" which is supposed to enforce sync after write (but seeing those results..).
+
+Without it, the tests where about 1-2 seconds faster.
+
+All the tests where run on the same machine (self-mounted it's NAS export), so no network delays - pure protocol performance.
+
+Side node: As file system i used ext4 and xfs. The above results are with ext4. xfs performed up to 40% (less time) better.
+
+The machines are EC2 m1.small instances. NAS export are on EBS volumes, sources (extracted tar) on ephemeral disk.
+
+So here we go: Can anybody explain to me why samba is so much faster?
+
+Also: Is NFS performance with the kernel server supposed to be that horrible (outperformed by the GlusterFS NFS server)
+
+in sync mode? Any idea how to tune this?
+
+Thanks, L
+
+
 # Glusterfs seems to use a key for data so fast encryption, but needs minimum 2 servers
+
+https://www.gluster.org/
+
+https://en.wikipedia.org/wiki/Gluster#GlusterFS
 
 https://www.howtoforge.com/tutorial/high-availability-storage-with-glusterfs-on-debian-8-with-two-nodes/
 
