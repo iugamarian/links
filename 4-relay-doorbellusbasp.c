@@ -216,15 +216,16 @@ void makesnd(uint16_t frequency, uint8_t duration)	// duration represented as 16
 
 void alarmmusic() {
 	uint16_t alarmrepetition = 0;	
-	alarmrepetition = 18;
+	alarmrepetition = 9;
    	while(alarmrepetition)
 	{
-		makesnd(FDONE,4);
-		_delay_ms(25);
-		makesnd(FSOLNE,4);
-		_delay_ms(25);
+		makesnd(FDONC,4);
+		//_delay_ms(25);
+		makesnd(FSOLNC,4);
+		//_delay_ms(25);
     	 	alarmrepetition--;
 	}
+	_delay_ms(250);
 }
 
 int main(void) {
@@ -240,6 +241,8 @@ int main(void) {
 		PORTB |= (1<<2);	// speaker relays start at off witch is 1 logic
 		PORTB |= (1<<3);	// speaker relays start at off witch is 1 logic
 		PORTB |= (1<<4);	// speaker relays start at off witch is 1 logic
+		alarmmusic(); // ring door bell
+		alarmmusic(); // ring door bell
 		alarmmusic(); // ring door bell
 		PORTB |= (1<<2);	// speaker relays end at off witch is 1 logic
 		PORTB |= (1<<3);	// speaker relays end at off witch is 1 logic
