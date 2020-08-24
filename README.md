@@ -1,5 +1,7 @@
 # Western digital harddisk 8 seconds parking head idle fix
 
+https://www.reddit.com/r/DataHoarder/comments/dzthf6/elements_12tb_emaz_seek_noise_every_5_seconds/
+
 https://withblue.ink/2016/07/15/what-i-learnt-from-using-wd-red-disks-to-build-a-home-nas.html
 
 https://forums.unraid.net/topic/14854-do-not-run-wdidle3-d-on-the-new-western-digital-ezrx-drives/
@@ -33,6 +35,18 @@ https://techblog.jeppson.org/tag/zfs/
 https://nikolausdulgeridis.de.tl/FestplattenIdle.htm
 
 https://sigtar.com/tag/unraid/
+
+New seek issue:
+
+The 'noise' heard is due to a feature used to prevent disturbances in media lube due to prolonged dwelling
+
+at a single location. This is common for HDD suppliers as a preventive activity for reliability. Normal
+
+operation typically forces seek away and the seek noises heard are expected. During moments of idle, there
+
+is less activity and the unexpected sound is more noticeable (Approximately every 5 seconds). Directly
+
+attaching the drive to a metal chassis can amplify this occurrence to make the hard drive more audible.
 
 Test how bad it is already:
 
