@@ -11,6 +11,30 @@ https://onthefencedevelopment.com/2017/08/15/windows-10-builtin-md5-checksum-cal
 
 CertUtil -hashfile path-to-file MD5
 
+# Harddisk 8 seconds idle fix by script if firmware method fails
+
+https://forum.storj.io/t/anybody-using-wd-blue-drives-for-a-storagenode/5945/8
+
+Thanks for all the answers. I tried all the suggestions, but only ioping and dd
+
+(with and without ioflag) worked. With “touch” and “echo” the SMART value kept increasing.
+
+How I tested:
+
+in terminal 1 I requested the smart value every 20 seconds
+
+while true; do smartctl -a /dev/sdf|grep Load;sleep 20;done
+
+in terminal 2 I ran the command every 7 seconds (better make it every 6 seconds to be sure):
+
+while true;do dd if=/dev/zero of=/mnt/backup/keep_awake bs=4k count=1 oflag=direct;sleep 7;done
+
+oflag=direct should bypass write cache
+
+@Itsmenh: Thanks for your stats. As you can see disk 1 and 2 have already very high values for Load_Cycle_Count. I read somewhere that they are rated for “only” 300000.
+
+I bought 2 of these drives as external “MyBook” drives for my backups on offer for ~£100 each. The external cases I sold on Ebay for £20 each. So £80 for 6TB is not bad
+
 
 # Western digital harddisk 8 seconds parking head idle fix
 
