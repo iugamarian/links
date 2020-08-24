@@ -162,21 +162,35 @@ And in Ultimate Boot CD or MS-DOS:
 
 wdidle3 /d
 
-This one sets the timer to 8 minutes, the maximum allowed (run as root):
+This one sets the timer to the maximum allowed, in Linux a little over 60 minutes (run as root):
 
 idle3ctl -s 255
 
-And in Ultimate Boot CD or MS-DOS:
+And in Ultimate Boot CD or MS-DOS, 5 minutes:
 
 wdidle3 /S300
 
 Meaning of the returned raw value depending on the wdidle3 version
+
 The value 0 is used when the timer is disabled.
+
 The values 1 to 128 are reported in .1s by all wdidle3.exe versions.
+
 The values 129 to 255 are in .1s for version 1.00, but in 30s for versions 1.03 and 1.05
+
 The difference only affects the output, the stored timer is identical between versions. Maybe different WD drives have different beheviour.
 
 May not work over USB - if so remove the drive from USB case and connect it to SATA port then try setting timer.
+
+Tests on reddit and Youtube show that to use ok this needs to be done:
+
+1) SATA Mode set from AHCI to IDE in the BIOS
+
+2) All other SATA drives diconnected, only destination drive connected and boot from USB
+
+3) After the setting complete the drive will behave badu until it is powered off then on
+
+4) Tested working on the internet: 4 TB, 5 TB, 6 TB, 8TB, manufactured in 2019 or 2020.
 
 
 # NFS async is 10 times faster for many small files on async then on sync
