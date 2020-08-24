@@ -35,6 +35,28 @@ oflag=direct should bypass write cache
 
 I bought 2 of these drives as external “MyBook” drives for my backups on offer for ~£100 each. The external cases I sold on Ebay for £20 each. So £80 for 6TB is not bad
 
+In case someone is interested in my little script. Just fill in all the affected hard disk models you have in your system into the “model” variable of the script separated by a space. ioping needs to be installed too.
+
+#!/bin/bash
+
+models="WDC_WD60EZRZ"
+
+killall ioping 2>/dev/null
+
+for model in $models; do
+
+  disks=$(ls /dev/disk/by-id/*$model*|grep -v part)
+  
+  for disk in $disks;do
+  
+    ioping -i 7s -q $disk &
+    
+  done
+  
+done
+
+Disclaimer: as always, do it at your own risk
+
 
 # Western digital harddisk 8 seconds parking head idle fix
 
