@@ -13,6 +13,8 @@ CertUtil -hashfile path-to-file MD5
 
 # Harddisk 8 seconds idle fix by script if firmware method fails
 
+# idle3ctl can fix more drives than wdidle3, first try using idle3ctl
+
 https://forum.storj.io/t/anybody-using-wd-blue-drives-for-a-storagenode/5945/8
 
 Thanks for all the answers. I tried all the suggestions, but only ioping and dd
