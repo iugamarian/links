@@ -1,3 +1,17 @@
+# Ultimate Boot CD having wdidle3 version 1.05
+
+https://www.ultimatebootcd.com/download.html
+
+Download from down in the page.
+
+
+# Check MD5 built in Windows 7 and 10
+
+https://onthefencedevelopment.com/2017/08/15/windows-10-builtin-md5-checksum-calculator/
+
+CertUtil -hashfile path-to-file MD5
+
+
 # Western digital harddisk 8 seconds parking head idle fix
 
 https://www.reddit.com/r/DataHoarder/comments/dzthf6/elements_12tb_emaz_seek_noise_every_5_seconds/
