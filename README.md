@@ -1,3 +1,96 @@
+# Western digital harddisk 8 seconds parking head idle fix
+
+https://wiki.archlinux.org/index.php/Hdparm
+
+https://packages.gentoo.org/packages/sys-apps/idle3-tools
+
+http://www.openmutual.org/2018/02/fixing-the-western-digital-excessive-load-unload-problem-with-idle3-tools/
+
+https://www.reddit.com/r/DataHoarder/comments/aqmr4y/do_the_wd_white_drives_8tb_10tb_shucks_have/
+
+https://www.reddit.com/r/DataHoarder/comments/7670dg/wd_have_blocked_wdidle3_from_working/
+
+https://www.reddit.com/r/DataHoarder/comments/7670dg/wd_have_blocked_wdidle3_from_working/
+
+https://www.reddit.com/r/freenas/comments/91hzwt/western_digital_drives_and_idle3_time/
+
+https://www.ixsystems.com/community/threads/hacking-wd-greens-and-reds-with-wdidle3-exe.18171/page-15
+
+https://lukas.zapletalovi.com/2020/01/wd-idle-time-in-linux.html
+
+https://techblog.jeppson.org/tag/zfs/
+
+https://nikolausdulgeridis.de.tl/FestplattenIdle.htm
+
+Modern Western Digital "Green" Drives include the Intellipark feature that stops the disk when not in use.
+
+Unfortunately, the default timer setting is not perfect on linux/unix systems, including many NAS,
+
+and leads to a dramatic increase of the Load Cycle Count value (SMART attribute #193).
+
+Please deactivat it with http://idle3-tools.sourceforge.net/ (normally in the Distro)
+
+get the Info: idle3ctl -g /dev/sd(x)
+
+disabling :   idle3ctl -d /dev/sd(x)
+
+The idle3 timer seems to be a power on only setting. 
+
+That means that the drive needs to be powered OFF and then ON to use the new setting.
+
+I turn off the Computer, plug the power off and push the start button, for a short while the fan go's on.
+
+All power it out.
+
+Or turn off for few minutes to take the effect.
+
+To set idle3 timer raw value, option -s must be used. Value must be an integer between 1 and 255.
+
+The idle3 timer is set in 0.1s for the 1-128 range, and in 30s for the 129-255 range.
+
+Use idle3 to query current spindown status (update drive letters to suit your needs)
+
+for drive in {a..p}; do echo /dev/sd$drive; sudo idle3ctl -g /dev/sd$drive; done
+
+For anything that doesn’t say Idle3 timer is disabled run the following:
+
+sudo idle3ctl -s 0 /dev/sd(DRIVE_LETTER)
+
+No more drive spindown!
+
+idle3ctl -s 129 /dev/sdc
+
+which for new drives means 30 seconds ( and -s 130 would mean 60 seconds and so on).
+
+After you set the value in the drive you must turn off the power to your computer (drive)
+
+as the value is read at power up. So do a shutdown and then power off.
+
+This one completely disables the timer (run as root):
+
+idle3ctl -d /dev/sdc
+
+And in Ultimate Boot CD or MS-DOS:
+
+wdidle3 /d
+
+This one sets the timer to 8 minutes, the maximum allowed (run as root):
+
+idle3ctl -s 255
+
+And in Ultimate Boot CD or MS-DOS:
+
+wdidle3 /S300
+
+Meaning of the returned raw value depending on the wdidle3 version
+The value 0 is used when the timer is disabled.
+The values 1 to 128 are reported in .1s by all wdidle3.exe versions.
+The values 129 to 255 are in .1s for version 1.00, but in 30s for versions 1.03 and 1.05
+The difference only affects the output, the stored timer is identical between versions. Maybe different WD drives have different beheviour.
+
+May not work over USB - if so remove the drive from USB case and connect it to SATA port then try setting timer.
+
+
 # NFS async is 10 times faster for many small files on async then on sync
 
 https://serverfault.com/questions/372151/nas-performance-nfs-vs-samba-vs-glusterfs
