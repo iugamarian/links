@@ -1,6 +1,6 @@
 # Western digital harddisk 8 seconds parking head idle fix
 
-
+https://www.linuxsecrets.com/archlinux-wiki/wiki.archlinux.org/index.php/Advanced_Format.html
 
 https://deki.mpifr-bonn.mpg.de/Cooperations/EVN_TOG/Disk_Inventory
 
@@ -27,6 +27,32 @@ https://techblog.jeppson.org/tag/zfs/
 https://nikolausdulgeridis.de.tl/FestplattenIdle.htm
 
 https://sigtar.com/tag/unraid/
+
+This method will use a utility called idle3ctl to alter the firmware value for the idle3 timer on WD hard drives
+
+(similar to wdidle3.exe from WD). The advantage compared to the official utility is you do not need to create a DOS
+
+bootdisk first to change the idle3 timer value. Additionally idle3ctl might also work over USB-to-S-ATA bridges
+
+(in some cases). The utility is provided by the idle3-tools package.
+
+idle3ctl -g /dev/your_wd_hdd
+
+to get the raw idle3 timer value. You can disable the IntelliPark feature completely, with:
+
+idle3ctl -d /dev/your_wd_hdd
+
+or set it to a different value (0-255) with (e.g. 10 seconds):
+
+idle3ctl -s 100 /dev/your_wd_hd
+
+The range 0-128 is in 0.1s and 129-255 in 30s. For the changes to take effect, the drive needs to
+
+go through one powercycle, meaning powering it off and on again (on internal drives, a reboot is not sufficient).
+
+If your WD hard drive is not recognized, you can use the --force option. For more options see:
+
+$ idle3ctl -h
 
 To check current status
 
