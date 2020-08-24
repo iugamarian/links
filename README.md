@@ -1,5 +1,9 @@
 # Western digital harddisk 8 seconds parking head idle fix
 
+https://forums.unraid.net/topic/14854-do-not-run-wdidle3-d-on-the-new-western-digital-ezrx-drives/
+
+https://wiki.hackspherelabs.com/index.php?title=FreeBSD
+
 https://www.linuxsecrets.com/archlinux-wiki/wiki.archlinux.org/index.php/Advanced_Format.html
 
 https://deki.mpifr-bonn.mpg.de/Cooperations/EVN_TOG/Disk_Inventory
