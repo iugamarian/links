@@ -1,5 +1,7 @@
 # Western digital harddisk 8 seconds parking head idle fix
 
+https://withblue.ink/2016/07/15/what-i-learnt-from-using-wd-red-disks-to-build-a-home-nas.html
+
 https://forums.unraid.net/topic/14854-do-not-run-wdidle3-d-on-the-new-western-digital-ezrx-drives/
 
 https://wiki.hackspherelabs.com/index.php?title=FreeBSD
@@ -31,6 +33,16 @@ https://techblog.jeppson.org/tag/zfs/
 https://nikolausdulgeridis.de.tl/FestplattenIdle.htm
 
 https://sigtar.com/tag/unraid/
+
+Test how bad it is already:
+
+smartctl -a /dev/sda | grep "^193"
+
+Fix WD Red 8 seconds to 300 seconds official:
+
+wd5741.exe -Dall
+
+I tried this on a WD red 8tb "hdparm -S 120 /dev/sdX" (X being your drive letter) (apm must be 254 as default) and that makes the drive spin down after 17 minutes. I tried a couple of other values, but couldnt find anything else working. I would like to spin down after 1,5 hours
 
 This method will use a utility called idle3ctl to alter the firmware value for the idle3 timer on WD hard drives
 
