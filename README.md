@@ -1,5 +1,7 @@
 # Western digital harddisk 8 seconds parking head idle fix
 
+
+
 https://deki.mpifr-bonn.mpg.de/Cooperations/EVN_TOG/Disk_Inventory
 
 https://wiki.archlinux.org/index.php/Hdparm
@@ -23,6 +25,20 @@ https://lukas.zapletalovi.com/2020/01/wd-idle-time-in-linux.html
 https://techblog.jeppson.org/tag/zfs/
 
 https://nikolausdulgeridis.de.tl/FestplattenIdle.htm
+
+https://sigtar.com/tag/unraid/
+
+To check current status
+
+wdidle3 /r
+
+to disable intellipark
+
+wdidle3 /d
+
+to set to 300 (max) timeout
+
+wdidle3 /s300
 
 Modern Western Digital "Green" Drives include the Intellipark feature that stops the disk when not in use.
 
