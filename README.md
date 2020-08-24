@@ -1,5 +1,7 @@
 # Western digital harddisk 8 seconds parking head idle fix
 
+https://deki.mpifr-bonn.mpg.de/Cooperations/EVN_TOG/Disk_Inventory
+
 https://wiki.archlinux.org/index.php/Hdparm
 
 https://packages.gentoo.org/packages/sys-apps/idle3-tools
