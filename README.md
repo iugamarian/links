@@ -3837,6 +3837,8 @@ https://btrfs.wiki.kernel.org/index.php/Status#Defrag
 
 https://wiki.archlinux.org/index.php/Btrfs#Preparation
 
+https://wiki.gentoo.org/wiki/Btrfs
+
 https://wiki.gentoo.org/wiki/Btrfs/System_Root_Guide
 
 https://btrfs.wiki.kernel.org/index.php/UseCases
@@ -3846,6 +3848,459 @@ https://askubuntu.com/questions/32418/is-there-an-easier-way-to-chroot-than-bind
 https://bartsimons.me/ubuntu-linux-chroot-guide/
 
 https://unix.stackexchange.com/questions/405472/cannot-find-efi-directory-issue-with-grub-install
+
+Usage
+
+Typing long Btrfs commands can quickly become a hassle. Each command (besides the initial btrfs command)
+
+can be reduced to a very short set of instructions. This method is helpful when working from the command
+
+line to reduce the amount of characters typed.
+
+For example, to defragment a filesystem located at /, the following shows the long command:
+
+root #btrfs filesystem defragment -v /
+
+Shorten each of the longer commands after the btrfs command by reducing them to their unique,
+
+shortest prefix. In this context, unique means that no other btrfs commands will match the command
+
+at the command's shortest length. The shortened version of the above command is:
+root #btrfs fi de -v /
+
+No other btrfs commands start with fi; filesystem is the only one. The same goes for the de sub-command
+
+under the filesystem command.
+
+Creation
+
+Warning
+
+The mkfs.btrfs command irreversibly destroys any content of the partition it is told to format.
+
+Please be sure the correct drive and partition have been selected before running any mkfs command!
+
+To create a Btrfs filesystem on the /dev/sdXN partition:
+
+root #mkfs.btrfs /dev/sdXN
+
+In the example above, replace N with the partition number and X with the disk letter that is to be formatted.
+
+For example, to format the third partition of the first drive in the system with Btrfs, run:
+
+root #mkfs.btrfs /dev/sda3
+
+Important
+The last number column in /etc/fstab should be 0 for all Btrfs partitions. fsck.btrfs and btrfsck should
+
+not be run during each system boot.
+Mount
+
+After creation, filesystems can be mounted in several ways:
+
+    mount - Manual mount.
+    
+    fstab - Defining mount points in /etc/fstab enables automatic mounts on system boot.
+    
+    Removable media - Automatic mounts on demand (useful for USB drives).
+    
+    AutoFS - Automatic mount on filesystem access.
+
+Converting ext* based file systems
+
+It is possible to convert ext2, ext3, and ext4 filesystems to Btrfs using the btrfs-convert utility.
+
+The following instructions only supports the conversion of filesystems that are unmounted. To convert
+
+the root partition, boot to a system rescue disk (SystemRescueCD works nicely) and run on the conversion
+
+commands on the root partition.
+
+First be sure the the mount point is unmounted:
+
+root #umount <mounted_device>
+
+Check the integrity of the filesystem using the appropriate fsck tool. In the next example, the filesystem is ext4:
+
+root #fsck.ext4 -f <unmounted_device>
+
+Use btrfs-convert to convert the ext* formatted device into a Btrfs-formatted device:
+
+root #btrfs-convert <unmounted_device>
+
+Be sure to edit /etc/fstab after the device has been formatted to change the filesystem column from ext4 to Btrfs:
+
+FILE /etc/fstabChanging ext4 to btrfs
+
+<device>   <mountpoint>  btrfs  defaults  0 0
+
+Defragmentation
+
+Another feature of Btrfs is online defragmentation. To defragment a root Btrfs filesystem run:
+
+root #btrfs filesystem defragment -r -v /
+
+Warning
+
+Defragmenting with kernel versions < 3.9 or ≥ 3.14-rc2 as well as with Linux stable kernel
+
+versions ≥ 3.10.31, ≥ 3.12.12 or ≥ 3.13.4 breaks up ref-links between files and their COW
+
+copies[1] and thus may increase space usage considerably. Make sure to have enough free space
+
+available and not too many snapshots on the drive as full btrfs partitions can get really slow.
+
+Compression
+
+Btrfs supports transparent compression using the zlib, lzo, and zstd (v5.1.0)[2] compression algorithms.
+
+It is possible to compress specific files using the file attributes:
+
+user $chattr +c
+
+The compress mount option sets the default behavior to compress all the newly created files.
+
+To re-compress the whole filesystem, run the following command:
+
+root #btrfs filesystem defragment -r -v -clzo /
+
+Depending on the CPU and disk performance, using lzo compression could improve the overall throughput.
+
+As alternatives to lzo it is possible to use the zlib or zstd compression algorithms. Zlib is slower but
+
+has a higher compression ratio, whereas zstd has a good ratio between the two[3].
+
+To force zlib compression across the whole filesystem:
+
+root #btrfs filesystem defragment -r -v -czlib /
+
+Compression level
+
+Since kernel version 4.15.0[4], zlib compression can now be set by levels 1-9. Since kernel version 5.1.0
+
+zstd can be set to levels 1-15. For example, to set zlib to maximum compression at mount time:
+
+root #mount -o compress=zlib:9 /dev/sdXY /path/to/btrfs/mountpoint
+
+Or to set minimal compression:
+
+root #mount -o compress=zlib:1 /dev/sdXY /path/to/btrfs/mountpoint
+
+Or adjust compression by remounting:
+
+root #mount -o remount,compress=zlib:3 /path/to/btrfs/mountpoint
+
+The compression level should be visible in /proc/mounts or by checking the most recent dmesg
+
+output using the following command:
+
+root #dmesg | grep -i btrfs
+
+[    0.495284] Btrfs loaded, crc32c=crc32c-intel
+
+[ 3010.727383] BTRFS: device label My Passport devid 1 transid 31 /dev/sdd1
+
+[ 3111.930960] BTRFS info (device sdd1): disk space caching is enabled
+
+[ 3111.930973] BTRFS info (device sdd1): has skinny extents
+
+[ 9428.918325] BTRFS info (device sdd1): use zlib compression, level 3
+
+Compression ratio and disk usage
+
+The usual userspace tools for determining used and free space like du and df may provide inaccurate
+
+results on a Btrfs partition due to inherent design differences in the way files are written compared
+
+to, for example, ext2/3/4[5].
+
+It is therefore advised to use the du/df alternatives provided by the btrfs userspace tool btrfs filesystem.
+
+In addition to that, The compsize tool found in the sys-fs/compsize package can be helpful in providing
+
+additional information regarding compression ratios and the disk usage of compressed files. The following
+
+are example uses of these tools for a btrfs partition mounted under /media/drive.
+
+user $btrfs filesystem du -s /media/drive
+
+     Total   Exclusive  Set shared  Filename
+     
+ 848.12GiB   848.12GiB       0.00B  /media/drive/
+
+user $btrfs filesystem df /media/drive
+
+Data, single: total=846.00GiB, used=845.61GiB
+
+System, DUP: total=8.00MiB, used=112.00KiB
+
+Metadata, DUP: total=2.00GiB, used=904.30MiB
+
+GlobalReserve, single: total=512.00MiB, used=0.00B
+
+user $compsize /media/drive
+
+Processed 2262 files, 112115 regular extents (112115 refs), 174 inline.
+
+Type       Perc     Disk Usage   Uncompressed Referenced
+
+TOTAL       99%      845G         848G         848G
+
+none       100%      844G         844G         844G
+
+zlib        16%      532M         3.2G         3.2G
+
+
+Multiple devices (RAID)
+
+Btrfs can be used with multiple block devices in order to create RAIDs. Using Btrfs to create
+
+filesystems that span multiple devices is much easier than creating using mdadm since there is
+
+no initialization time needed for creation.
+
+BTRFS handles data and metadata separately. This is an important factor to keep in mind when using
+
+a multi-device filesystem. It is possible to use separate profiles for data and metadata block groups.
+
+For example, metadata could be configured across multiple devices in RAID1, while data could be configured
+
+to RAID5. This is profile possible when using three or more block devices, since RAID5 requires a minimum
+
+of 3 block devices.
+
+This type of profile offers the benefit of redundancy for metadata on each device and striping for data across
+
+devices, which increases read speeds. The drawback of this profile is more space than necessary is used for
+
+metadata, and write speeds are reduced for data blocks, since RAID5 uses a parity bit.
+Creation
+
+The simplest method is to use the entirety of unpartitioned block devices to create a filesystem spanning multiple
+
+devices. For example, to create a filesystem in RAID1 mode across two devices:
+
+root #mkfs.btrfs -m raid1 <device1> <device2> -d raid1 <device1> <device2>
+	
+Conversion
+
+Converting between RAID profiles is possible with the balance sub-command. For example, say three block devices
+
+are presently configured for RAID1 and mounted at /srv. It is possible to convert the data in this profile from
+
+RAID1 to RAID5 with using the following command:
+root #btrfs balance start -dconvert=raid5 --force /srv
+
+Conversion can be performed while the filesystem is online and in use. Possible RAID modes in btrfs include RAID0,
+
+RAID1, RAID5, RAID6, and RAID10. See the upstream BTRFS wiki for more information.
+
+Warning
+
+It is currently not safe to use the RAID 5 or 6 modes[6]. RAID 5 and 6 modes have seen some fixes[7] in Linux 4.12,
+
+but overall status is still marked as unstable.[8][9]. Users who want to use RAID5 or RAID6 functionality of btrfs
+
+are encouraged to check the btrfs status page for stability status of said modes before utilizing the modes.
+
+Removal
+
+By device path
+
+Block devices (disks) can be removed from multi-device filesystems using the btrfs device remove subcommand:
+
+root #sudo btrfs device remove /dev/sde /srv
+
+By device ID
+
+Use the usage subcommand to determine the device IDs:
+
+root #btrfs device usage /srv
+
+Next use the device ID to remove the device, in this case /dev/sde will be removed:
+
+root #btrfs device remove 5 /srv
+
+Subvolumes
+
+As mentioned above in the features list, Btrfs can create subvolumes. Subvolumes can be used to better organize
+
+and manage data. They become especially powerful when combined with snapshots. Important distinctions must be
+
+made between Btrfs subvolumes and subvolumes created by Logical Volume Management (LVM). Btrfs subvolumes are
+
+not block level devices, they are POSIX file namespaces.[10] They can be created at any location in the filesystem
+
+and will act like any other directory on the system with one caveat: subvolumes can be mounted and unmounted.
+
+Subvolumes are nestable (subvolumes can be created inside other subvolumes), and easily created or removed.
+Note
+A subvolume cannot be created across different Btrfs filesystems. If /dev/sda and /dev/sdb both contain separate
+
+(non-RAID) Btrfs filesystems, there is no way a subvolume can expand across the two filesystems. The snapshot can
+
+be moved from one filesystem to another, but it cannot span across the two. It must be on /dev/sda or /dev/sdb.
+Create
+
+To create a subvolume, issue the following command inside a Btrfs filesystem's name space:
+root #btrfs subvolume create <dest-name>
+
+Replace <dest-name> with the desired destination and subvolume name. For example, if a Btrfs filesystem exists
+
+at /mnt/btrfs, a subvolume could be created inside it using the following command:
+
+root #btrfs subvolume create /mnt/btrfs/subvolume1
+
+List
+
+To see the subvolume(s) that have been created, use the subvolume list command followed by a Btrfs filesystem
+
+location. If the current directory is somewhere inside a Btrfs filesystem, the following command will display
+
+the subvolume(s) that exist on the filesystem:
+
+root #btrfs subvolume list .
+
+If a Btrfs filesystem with subvolumes exists at the mount point created in the example command above, the output
+
+from the list command will look similar to the following:
+
+root #btrfs subvolume list /mnt/btrfs
+
+ID 309 gen 102913 top level 5 path mnt/btrfs/subvolume1
+
+Remove
+
+Subvolumes can be properly removed by using the subvolume delete command followed by the path to the subvolume.
+
+All available subvolume paths in a Btrfs filesystem can be seen using the list command above.
+
+root #btrfs subvolume delete <subvolume-path>
+
+As above, replace <subvolume-path> with the actual path to the subvolume to be removed. To delete the subvolume
+
+used in the examples above, the following command would be issued:
+
+root #btrfs subvolume delete /mnt/btrfs/subvolume1
+
+Delete subvolume (no-commit): '/mnt/btrfs/subvolume1'
+
+Snapshots
+
+Snapshots are subvolumes that share data and metadata with other subvolumes. This is made possible by Btrfs
+
+Copy on Write (CoW) ability.[10] Snapshots can be used for several purposes, one of which is to create backups
+
+of file system structures at specific points in time.
+
+If the root filesystem is Btrfs, it is possible to create a snapshot using the subvolume snapshot commands:
+
+root #mkdir -p /mnt/backup/rootfs
+
+root #btrfs subvolume snapshot / /mnt/backup/rootfs/
+
+The following small shell script can be added to a timed cron job to create a timestamped snapshot backup of
+
+a Btrfs formatted root filesystem. The timestamps can be adjusted to whatever is preferred by the user.
+
+FILE btrfs_snapshot.shBtrfs rootfs snapshot cron job example
+
+```bash
+#!/bin/bash
+NOW=$(date +"%Y-%m-%d_%H:%M:%S")
+ 
+if [ ! -e /mnt/backup ]; then
+mkdir -p /mnt/backup
+fi
+ 
+cd /
+/sbin/btrfs subvolume snapshot / "/mnt/backup/backup_${NOW}"
+```
+
+Mounting
+
+A subvolume can be mounted in a location different from where it was created, or users can choose to not mount
+
+them at all. For example, a user could create a Btrfs filesystem in /mnt/btrfs and create /mnt/btrfs/home and
+
+/mnt/btrfs/gentoo-repo subvolumes. The subvolumes could then be mounted at /home and /var/db/repos/gentoo, with
+
+the original top level subvolume left unmounted. This results in a configuration where the subvolumes' relative
+
+path from the top level subvolume is different from their actual path.
+
+To mount a subvolume, perform the following command, where <rel-path> is the relative path of the subvolume from
+
+the top level subvolume, obtainable through the subvolume list command:
+
+root #mount -o subvol=<rel-path> <device> <mountpoint>
+
+Similarly, one can update the filesystem tab to mount their Btrfs subvolumes like so:
+
+FILE /etc/fstabMounting Subvolumes
+
+<device>  <mountpoint>  btrfs  subvol=<rel-path>  0 2
+
+Troubleshooting
+Using with VM disk images
+
+When using Btrfs with virtual machine disk images, it is best to disable copy-on-write on the disk images in
+
+order to speed up IO performance. This can only be performed on files that are newly created. It also possible
+
+to disable CoW on all files created within a certain directory. For example, using the chattr command:
+root #chattr +C /var/lib/libvirt/images
+Clear the free space cache
+
+It is possible to clear Btrfs' free space cache by mounting the filesystem with the clear_cache mount option.
+
+For example:
+
+root #mount -o clear_cache /path/to/device /path/to/mountpoint
+
+Btrfs hogging memory (disk cache)
+
+When utilizing some of Btrfs' special abilities (like making many --reflink copies or creating high amounts
+
+of snapshots), a lot of memory can be consumed and not freed fast enough by the kernel's inode cache. This
+
+issue can go undiscovered since memory dedicated to the disk cache might not be clearly visible in traditional
+
+system monitoring utilities. The slabtop utility (available as part of the sys-process/procps package) was
+
+specifically created to determine how much memory kernel objects are consuming:
+
+root #slabtop
+
+If the inode cache is consuming too much memory, the kernel can be manually instructed to drop the cache by
+
+echoing an integer value to the /proc/sys/vm/drop_caches file[11].
+
+To be safe, and to help the kernel determine the maximum amount of freeable memory, be sure to run a sync
+
+before running the echo commands below:
+
+user $sync
+
+Most of the time Btrfs users will probably want to echo 2 to reclaim just the slab objects
+
+(dentries and btrfs_inodes):
+
+root #echo 2 > /proc/sys/vm/drop_caches
+
+To clear the entire disk cache (slab objects and the page cache) use echo 3 instead:
+
+root #echo 3 > /proc/sys/vm/drop_caches
+
+Warning
+
+While the above commands are non-destructive (as long as a sync was completed before running them),
+
+they could seriously but temporarily slow down the system while the kernel loads only the necessary
+
+items back into memory. Think twice before running the above commands for systems under heavy load!
+
+More information on kernel slabs can be found in this dedoimedo blog entry. 
 
 For defrag and autodefrag to work very well, avoid making any of this: subvolumes, reflinks and compression.
 
