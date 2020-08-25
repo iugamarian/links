@@ -15,6 +15,12 @@ CertUtil -hashfile path-to-file MD5
 
 # idle3ctl can fix more drives than wdidle3, first try using idle3ctl
 
+# WD Elements white label drives sometimes stop parking the heads after
+
+# being removed from USB case and used on SATA and idle3ctl -g /dev/sdx
+
+# Tested this on a 12 TB WD Elements drive from 2020 that I use on SATA now.
+
 https://forum.storj.io/t/anybody-using-wd-blue-drives-for-a-storagenode/5945/8
 
 Thanks for all the answers. I tried all the suggestions, but only ioping and dd
