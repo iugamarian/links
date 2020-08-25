@@ -1,3 +1,26 @@
+# Voice recognition offline free software supporting already 10 languages, Apache License 2.0
+
+https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1202341-mozilla-s-incredible-speech-to-text-engine-is-at-risk-following-layoffs/page2
+
+https://github.com/alphacep/vosk-api
+
+https://alphacephei.com/vosk/
+
+There are some good alternatives around, even better than DeepSpeech. Vosk for example supports 10 languages,
+
+works offline on Android and RPi with small 50Mb model and allows to configure grammar on the fly. Based on the
+
+testing I just did with Vosk, Mozilla DeepSpeech, Google Speech to Text and Microsoft Azure, I disagree with your
+
+arugment that SaaS has the best quality results.
+
+Mozilla DeepSpeech was definitely trailing the bleeding edge, but Vosk using the vosk-model-en-us-daanzu-20200328
+
+model produces very accurate results even on uncommon words, similar in performance to Google & Microsoft
+
+(which has generally better formatting than Google's STT)
+
+
 # Ultimate Boot CD having wdidle3 version 1.05
 
 https://www.ultimatebootcd.com/download.html
