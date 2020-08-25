@@ -34,15 +34,15 @@ https://onthefencedevelopment.com/2017/08/15/windows-10-builtin-md5-checksum-cal
 
 CertUtil -hashfile path-to-file MD5
 
-# Harddisk 8 seconds idle fix by script if firmware method fails
+# Harddisk 8 seconds idle fix script if firmware method fails
 
-# idle3ctl can fix more drives than wdidle3, first try using idle3ctl
+idle3ctl can fix more drives than wdidle3, first try using idle3ctl
 
-# WD Elements white label drives sometimes stop parking the heads after
+WD Elements white label drives sometimes stop parking the heads after
 
-# being removed from USB case and used on SATA and idle3ctl -g /dev/sdx
+being removed from USB case and used on SATA and idle3ctl -g /dev/sdx
 
-# Tested this on a 12 TB WD Elements drive from 2020 that I use on SATA now.
+Tested this on a 12 TB WD Elements drive from 2020 that I use on SATA now.
 
 https://forum.storj.io/t/anybody-using-wd-blue-drives-for-a-storagenode/5945/8
 
@@ -62,11 +62,17 @@ while true;do dd if=/dev/zero of=/mnt/backup/keep_awake bs=4k count=1 oflag=dire
 
 oflag=direct should bypass write cache
 
-@Itsmenh: Thanks for your stats. As you can see disk 1 and 2 have already very high values for Load_Cycle_Count. I read somewhere that they are rated for “only” 300000.
+@Itsmenh: Thanks for your stats. As you can see disk 1 and 2 have already very high values for Load_Cycle_Count.
 
-I bought 2 of these drives as external “MyBook” drives for my backups on offer for ~£100 each. The external cases I sold on Ebay for £20 each. So £80 for 6TB is not bad
+I read somewhere that they are rated for “only” 300000.
 
-In case someone is interested in my little script. Just fill in all the affected hard disk models you have in your system into the “model” variable of the script separated by a space. ioping needs to be installed too.
+I bought 2 of these drives as external “MyBook” drives for my backups on offer for ~£100 each. The external
+
+cases I sold on Ebay for £20 each. So £80 for 6TB is not bad
+
+In case someone is interested in my little script. Just fill in all the affected hard disk models you have in
+
+your system into the “model” variable of the script separated by a space. ioping needs to be installed too.
 
 #!/bin/bash
 
@@ -147,7 +153,11 @@ Fix WD Red 8 seconds to 300 seconds official:
 
 wd5741.exe -Dall
 
-I tried this on a WD red 8tb "hdparm -S 120 /dev/sdX" (X being your drive letter) (apm must be 254 as default) and that makes the drive spin down after 17 minutes. I tried a couple of other values, but couldnt find anything else working. I would like to spin down after 1,5 hours
+I tried this on a WD red 8tb "hdparm -S 120 /dev/sdX" (X being your drive letter) (apm must be
+
+254 as default) and that makes the drive spin down after 17 minutes. I tried a couple of other
+
+values, but couldnt find anything else working. I would like to spin down after 1,5 hours
 
 This method will use a utility called idle3ctl to alter the firmware value for the idle3 timer on WD hard drives
 
@@ -485,8 +495,11 @@ State: Peer in Cluster (Connected)
 root@server1:/#
 
 Next we create the share named testvol with two replicas (please note that the number
+
 of replicas is equal to the number of servers in this case because we want to set up mirroring)
+
 on server1.example.com and server2.example.com in the /data/testvol directory (this will be
+
 created if it doesn't exist):
 
 gluster volume create testvol replica 2 transport tcp server1.example.com:/data/testvol
@@ -516,6 +529,7 @@ It is possible that the above command tells you that the action was not successf
 root@server1:~# gluster volume start testvol
 
 Starting volume testvol has been unsuccessful
+
 root@server1:~#
 
 In this case you should check the output of...
@@ -547,6 +561,7 @@ root@server1:/#
 ... everything is fine, but if you don't get any output...
 
 root@server2:~# netstat -tap | grep glusterfsd
+
 root@server2:~#
 
 ... restart the GlusterFS daemon on the corresponding server (server1.example.com in this case):
@@ -562,7 +577,9 @@ netstat -tap | grep glusterfsd
 ... again on that server - it should now look like this:Advertisement
 
 root@server2:/# netstat -tap | grep glusterfsd
+
 tcp 0 0 *:49152 *:* LISTEN 7852/glusterfsd
+
 tcp 0 0 server2.example.c:49152 server2.example.c:65532 ESTABLISHED 7852/glusterfsd
 
 tcp 0 0 server2.example.c:49152 server1.example.c:65526 ESTABLISHED 7852/glusterfsd
@@ -620,6 +637,7 @@ volume set: success
 root@server1:/#
 
 Please note that it is possible to use wildcards for the IP addresses (like 192.168.*) and
+
 that you can specify multiple IP addresses separated by comma (e.g. 192.168.1.102,192.168.1.103).
 
 The volume info should now show the updated status:
@@ -653,7 +671,6 @@ auth.allow: 192.168.1.102
 performance.readdir-ahead: on
 
 root@server1:/#
-
  
 3 Setting up the GlusterFS Client
 
@@ -712,6 +729,7 @@ server1.example.com:/testvol 57G 21G 34G 39% /mnt/glusterfs
 root@client1:/#
 
 Instead of mounting the GlusterFS share manually on the client, you could modify /etc/fstab
+
 so that the share gets mounted automatically when the client boots.
 
 Open /etc/fstab and append the following line:
@@ -852,11 +870,15 @@ How to Create Your Own NAS With GlusterFS
 By Sarah Li Cain / Mar 17, 2015 / Linux
 
 GlusterFS is a system that provides network storage which has the ability to be made fault-tolerant,
+
 redundant and scalable. It’s a great option for applications that need access to large files, such as
+
 scientific grade storage solutions. What the file system does is aggregates and memory sources through
+
 a single global namespace into a pool of storage and it is accessible through multi-file level protocols.
 
 The great thing about GlusterFS is that it is very easy to use and maintain. Here’s how you can set up
+
 your own NAS with GlusterFS.
 
 What You Need:
@@ -870,13 +892,17 @@ What You Need:
 1. Set Up Your Network
 
 Your best bet is connecting GlusterFS to Gigabit Ethernet and a huge array of servers, plus storage devices.
+
 If you don’t have these on hand, two computers or VMs are usually sufficient, particularly if you are just
+
 getting the hang of it. Copmuter 1 = server, Computer 2 = client
 
 2. Install Your Server
 
 Glusterfs is included in the repository of many Linux distros. Before installation, you can first compare the
+
 version numbers between the website and your distro. Keep in mind you might have to manually update the clients.
+
 If you have a pretty recent version, you can install the server by typing (in Debian-based distro):
 
 sudo apt-get install glusterfs-server
@@ -908,6 +934,7 @@ Restart your machine and make sure the network is working. If it does, type in t
 gluster volume create testvol 192.168.0.100:/data
 
 Typing this will create a volume “testvol” which will be stored on the server. Your files will
+
 then be located in the “/data” directory which is in the root system and what GlusterFS considers a brick.
 
 To verify that it works, type:
@@ -939,7 +966,9 @@ Make sure it works before proceeding.
 5. Sharing It Over NFS
 
 More recent versions automatically give NFS access to volumes. You still need to add a portmap
+
 package to the server in order to make it work though. To do you this, all you need to do is to
+
 add a mount point:
 
 sudo mkdir /mnt/nfsgluster
@@ -955,6 +984,7 @@ in the normal way. For our example, add the line:
 192.168.0.100:7997:/testvol / mnt/nfstest nfs defaults,_netdev 0 0
 
 That’s it!
+
 Conclusion
 
 Once you’re set up, you can add a new server by following the above steps. Make sure you give your new
@@ -985,6 +1015,7 @@ https://burnhamforensics.com/2019/04/06/moosefs-build-and-installation-guide/
 Needed:
 
 4 CentOS servers of default storage (16-20GB) placed on your LAN
+
 2 CentOS servers with two HDDs (16-20GB & ~15GB) attached and placed on your LAN, keeping one of the drives un-configured during OS installation
     
 
@@ -1003,19 +1034,33 @@ https://www.reddit.com/r/linuxquestions/comments/9gs0bm/samba_vs_nfs_vs_sshfs/
 https://serverfault.com/questions/14577/what-network-file-sharing-protocol-has-the-best-performance-and-reliability
 
 
-I would advise against NFS. Simply put - we had a web server farm, with JBoss, Apache, Tomcat and Oracle all using NFS shares for common configuration files, and logging.
+I would advise against NFS. Simply put - we had a web server farm, with JBoss, Apache, Tomcat and Oracle all
 
-When the NFS share disappeared (admittedly a rare-ish occurrence) the whole thing just collapsed (predictable really, and I advised the 'devlopers' against this config time shortcut).
+using NFS shares for common configuration files, and logging.
 
-There seems to be an issue with the version of NFS we were using that, if the target disappeared during a write, the client would drop into a never ending wait loop, waiting for the NFS target to come back. Even if the NFS box reattached - the loop still did not end.
+When the NFS share disappeared (admittedly a rare-ish occurrence) the whole thing just collapsed (predictable
 
-We were using a mix of RHEL 3,4,5. Storage was on RHEL4, servers were on RHEL5, storage network was a separate lan, and not running on vlans.
+really, and I advised the 'devlopers' against this config time shortcut).
+
+There seems to be an issue with the version of NFS we were using that, if the target disappeared during a write,
+
+the client would drop into a never ending wait loop, waiting for the NFS target to come back. Even if the NFS
+
+box reattached - the loop still did not end.
+
+We were using a mix of RHEL 3,4,5. Storage was on RHEL4, servers were on RHEL5, storage network was a separate lan,
+
+and not running on vlans.
 
 If there is a load balanced front end, checking single storage - would this not bottleneck your system?
 
-Have you considered a read-only iSCSI connection to your storage, with an event driven script to move the uploaded file to the storage via ftp/scp when a file is uploaded?
+Have you considered a read-only iSCSI connection to your storage, with an event driven script to move the uploaded
 
-The only time I have implemented a successful centralised storage for multiple read heads was on an EMC storage array... All other cost effective attempts had their drawbacks.
+file to the storage via ftp/scp when a file is uploaded?
+
+The only time I have implemented a successful centralised storage for multiple read heads was on an EMC storage array...
+
+All other cost effective attempts had their drawbacks.
 
 For sftp with no encryption, use sshfs + socat
 
@@ -1044,19 +1089,29 @@ endru
 8111 silver badge11 bronze badge
 
     2
+    
     While this may theoretically solve the problem, it would be preferred tos
+    
     ummarize the link contents, and provide the link as reference – Canadian Luke Nov 30 '12 at 6:15
+    
     3
+    
     By default, socat TCP-LISTEN listens on all interfaces. To limit to one
+    
     specific network interface (e.g., localhost), use the ,bind=127.0.0.1 option.
+    
     To allow multiple connections to the server, add the ,fork option. Making a
+    
     read-only server? Add -R to the EXEC command. In the end, it will look like
+    
     this: socat TCP-LISTEN:7777,fork,bind=127.0.0.1 EXEC:'/usr/lib/sftp-server -R'
-    (on Arch Linux, I had to use /usr/lib/ssh/sftp-server instead). – Lekensteyn Mar 22 '14 at 15:51 
+    
+    (on Arch Linux, I had to use /usr/lib/ssh/sftp-server instead). – Lekensteyn Mar 22 '14 at 15:51
+    
 
 For a bit more security, your can also restrict the IP range with e.g. ,range=192.168.1.2/32, to only
-allow one particular machine to connect. – Robin Dinse Jun 11 '18 at 13:11
 
+allow one particular machine to connect. – Robin Dinse Jun 11 '18 at 13:11
 
 Order of encription from fast to slow:
 
@@ -1085,16 +1140,25 @@ From the sshd_config man page:
 excerpt
 
  Ciphers
-        Specifies the ciphers allowed for protocol version 2.  Multiple 
-        ciphers must be comma-separated.  The supported ciphers are 
-        “3des-cbc”, “aes128-cbc”, “aes192-cbc”, “aes256-cbc”, “aes128-ctr”, 
-        “aes192-ctr”, “aes256-ctr”, “aes128-gcm@openssh.com”, 
+
+        Specifies the ciphers allowed for protocol version 2.  Multiple
+	
+        ciphers must be comma-separated.  The supported ciphers are
+
+        “3des-cbc”, “aes128-cbc”, “aes192-cbc”, “aes256-cbc”, “aes128-ctr”,
+	
+        “aes192-ctr”, “aes256-ctr”, “aes128-gcm@openssh.com”,
+	
         “aes256-gcm@openssh.com”, “arcfour128”, “arcfour256”,
+	
         “arcfour”, “blowfish-cbc”, and “cast128-cbc”.  The default is:
 
             aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,
+	    
             aes128-gcm@openssh.com,aes256-gcm@openssh.com,
+	    
             aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,
+	    
             aes256-cbc,arcfour
 
 Incidentally, there is nothing wrong with your -o Ciphers=arcfour switches from what I can tell.
@@ -1174,7 +1238,9 @@ https://github.com/mibodhi/u-boot-kirkwood/issues/2
 https://github.com/mibodhi/u-boot-kirkwood
 
 CONFIG_EFI_PARTITION   GPT partition table, common when EFI is the
+
 				       bootloader.  Note 2TB partition limit; see
+				       
 				       disk/part_efi.c
 
 
@@ -1296,7 +1362,9 @@ Both OpenJDK and Oracle JDK are created and maintained currently by Oracle only.
 
 OpenJDK and Oracle JDK are implementations of the same Java specification passed the TCK (Java Technology Certification Kit).
 
-Most of the vendors of JDK are written on top of OpenJDK by doing a few tweaks to [mostly to replace licensed proprietary parts / replace with more high-performance items that only work on specific OS] components without breaking the TCK compatibility.
+Most of the vendors of JDK are written on top of OpenJDK by doing a few tweaks to (mostly to replace licensed proprietary
+
+parts / replace with more high-performance items that only work on specific OS) components without breaking the TCK compatibility.
 
 Many vendors implemented the Java specification and got TCK passed. For example, IBM J9, Azul Zulu, Azul Zing, and Oracle JDK.
 
@@ -1304,7 +1372,10 @@ Almost every existing JDK is derived from OpenJDK.
 
 As suggested by many, licensing is a change between JDKs.
 
-Starting with JDK 11 accessing the long time support Oracle JDK/Java SE will now require a commercial license. You should now pay attention to which JDK you're installing as Oracle JDK without subscription could stop working. !!!
+Starting with JDK 11 accessing the long time support Oracle JDK/Java SE will now require a commercial license.
+
+You should now pay attention to which JDK you're installing as Oracle JDK without subscription could stop working. !!!
+
 
 # US power get 240V if needed
 
@@ -1376,6 +1447,7 @@ HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation.
 Create a DWORD named RealTimeIsUniversal, and set its value to 1.
 
 Create a file named WindowsTimeFixUTC.reg with the following contents and then double
+
 click on it to merge the contents with the registry:
 
 Windows Registry Editor Version 5.00
@@ -1689,15 +1761,25 @@ RPi header	SPI flash
 
 Always connect all input pins of integrated circuits (not only flash chips).
 
-In general the other pins (usually pin 3 is /WP and pin 7 is /HOLD) should be connected to Vcc unless they are required to be floating or connected to GND (both extremely uncommon for SPI flash chips). Please consult the datasheet for the flash chip in question.
+In general the other pins (usually pin 3 is /WP and pin 7 is /HOLD) should be connected to Vcc unless they are
 
-If your flash chip is detected but your read/write/verify operations tend to fail, try to add decoupling capacitors (one 100nF and one 4.7uF ceramic capacitor is preferred) close to the flash chip's power pin.
+required to be floating or connected to GND (both extremely uncommon for SPI flash chips). Please consult the
+
+datasheet for the flash chip in question.
+
+If your flash chip is detected but your read/write/verify operations tend to fail, try to add decoupling capacitors
+
+(one 100nF and one 4.7uF ceramic capacitor is preferred) close to the flash chip's power pin.
 
 See Micron's TN-25-09: Layout Guidelines PCB Design Recommendations/VCC Power Supply Decoupling [1]
 
 Running flashrom
 
-Flashrom uses the Linux-native SPI driver, which is implemented by flashrom's linux_spi module. To use the RaspberryPi with flashrom, you have to specify that driver. You should always tell it at what speed the SPI bus should run; you specify that with the spispeed parameter (given in kHz). You also have to specify the Linux SPI device, e.g.
+Flashrom uses the Linux-native SPI driver, which is implemented by flashrom's linux_spi module. To use the RaspberryPi
+
+with flashrom, you have to specify that driver. You should always tell it at what speed the SPI bus should run; you specify
+
+that with the spispeed parameter (given in kHz). You also have to specify the Linux SPI device, e.g.
 
 flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=1000
 
@@ -1710,10 +1792,9 @@ https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/vi
 
 https://www.linuxquestions.org/questions/linux-virtualization-and-cloud-90/virt-install-error-host-does-not-support-any-virtualization-options-4175483456/
 
+```bash
 apt-get install -y qemu-kvm libvirt-clients libvirt-daemon-system
-
 apt-get install -y virt-manager
-
 virt-install \
    --name=windowsos \
    --os-type=windows \
@@ -1721,24 +1802,20 @@ virt-install \
    --disk path=/var/lib/libvirt/images/windowsos.img,size=20 \
    --cdrom=/dev/sr0 \
    --graphics spice --ram=2048
-
+```
 
 # tar extract a file/folder not all
 
 https://www.cyberciti.biz/faq/extracting-single-file-directory-from-tarball-2/
 
+```bash
 tar -xvf archive.tar  -C /extract-folder file-name
-
 tar -xvf archive.tar  -C /extract-folder folder-name
-
 tar -zxvf archive.tar.gz  -C /extract-folder file-name
-
 tar -zxvf archive.tar.gz  -C /extract-folder folder-name
-
 tar -jxvf archive.tar.bz2  -C /extract-folder file-name
-
 tar -jxvf archive.tar.bz2  -C /extract-folder folder-name
-
+```
 
 # tar list contents
 
@@ -1930,25 +2007,18 @@ https://github.com/LinearTapeFileSystem/ltfs/issues/153
 
 nano /usr/bin/icu-config
 
+```bash
 #!/bin/sh
-
 opts=$1
-
 case $opts in
-
   '--cppflags')
-  
-    echo '' ;;
-    
+  echo '' ;; 
   '--ldflags')
-  
     echo '-licuuc -licudata' ;;
-    
   *)
-  
     echo '/usr/lib/x86_64-linux-gnu/icu/pkgdata.inc' ;;
-    
 esac
+```
 
 chmod +x /usr/bin/icu-config
 
@@ -1959,18 +2029,18 @@ https://www.ubuntu18.com/ubuntu-change-ssh-port/
 
 https://forum.mxlinux.org/viewtopic.php?f=108&t=47652
 
+```bash
 su -
-
 sudo -s
-
 nano /etc/ssh/sshd_config
+```
 
 Port 22000
 
+```bash
 systemctl restart sshd
-
 /etc/init.d/ssh restart
-
+```
 
 # Test hard disk reliability before using it, deletes all data
 
@@ -2097,18 +2167,30 @@ Additional configuration steps
 
 Disable RPi on-board audio device snd-bcm2835
 
-On Raspbian the RPi on-board audio device snd-bcm2835 is enabled by default. When you run aplay -l you'll see two cards, the Cirrus card sndrpiwsp and the on-board card bcm2835.
+On Raspbian the RPi on-board audio device snd-bcm2835 is enabled by default. When you run aplay -l you'll see
+
+two cards, the Cirrus card sndrpiwsp and the on-board card bcm2835.
 
 
-If you don't need on-board audio you can disable it by removing (or commenting out) the dtparam=audio=on line from /boot/config.txt.
+If you don't need on-board audio you can disable it by removing (or commenting out) the dtparam=audio=on
+
+line from /boot/config.txt.
 
 #dtparam=audio=on
 
 Optionally: use fixed card number
 
-If you don't want to disable snd-bcm2835 or if you also have an USB audio device connected you might notice that the card numbers under which the drivers register will change. Sometimes the Cirrus card will card 0, sometimes on-board audio. The card number depends on which driver is registered first, which is purely random.
+If you don't want to disable snd-bcm2835 or if you also have an USB audio device connected you might notice that
 
-You can manually assign fixed card (slot/index) numbers using the slot option of the snd module. For example, if you want the Cirrus card always to be the first and on-board audio the second one, add the following line to your /etc/modprobe.d/cirrus.conf file:
+the card numbers under which the drivers register will change. Sometimes the Cirrus card will card 0, sometimes
+
+on-board audio. The card number depends on which driver is registered first, which is purely random.
+
+You can manually assign fixed card (slot/index) numbers using the slot option of the snd module. For example, if
+
+you want the Cirrus card always to be the first and on-board audio the second one, add the following line to your
+
+/etc/modprobe.d/cirrus.conf file:
 
 For kernel 4.9 add this line:
 
@@ -2372,7 +2454,9 @@ This is done by logging into the normal web administration GUI and then opening 
 
 http://<ip-of-nas>/r41773,/adv,/cgi-bin/remote_help-cgi?type=backdoor
 	
-The r41773 part is some number that changes by firmware revision but will be the same part as the URL you normally get when opening the administration GUI.
+The r41773 part is some number that changes by firmware revision but will be the same part as
+
+the URL you normally get when opening the administration GUI.
 
 Telnet to find root password
 
@@ -2492,13 +2576,12 @@ https://bitly.com/1sMwD7b as uenv.tar
 
 4) login as root and change directory to /e-data/xxxxxxxxx and extract all files in one folder
 
+```bash
 cd /e-data/xxxxxxxxx
-
 tar xf uboot.tar
-
 tar xzf tools.tar.gz
-
 tar xf as uenv.tar
+```
 
 5) as root remove the 3 archive files, copy all the files from /e-data/xxxxxxxxx/tools in
 
@@ -2506,19 +2589,15 @@ tar xf as uenv.tar
 
 /e-data/xxxxxxxxx to /tmp and change directory to /tmp
 
+```bash
 cd /e-data/xxxxxxxxx
-
 rm uboot.tar
-
 rm tools.tar.gz
-
 rm uenv.tar
-
 cp /e-data/xxxxxxxxx/tools/* /e-data/xxxxxxxxx/
-
 rmdir /e-data/xxxxxxxxx/tools/
-
 cp /e-data/xxxxxxxxx/* /tmp
+```
 
 6) save the current environment values as MAC network address, etc. will be lost !
 
@@ -2552,9 +2631,10 @@ fw_setenv preboot 'run preboot_nc'
 
 For safety check uboot has this info correct, if not or to be sure add to /boot/uEnv.txt
 
+```bash
 fw_setenv mtdparts 'xxxxxxxxx'
-
 fw_setenv ethaddr 'xx:xx:xx:xx:xx:xx'
+```
 
 Also check you add this info in the uboot environment:
 
@@ -2574,15 +2654,13 @@ https://archlinuxarm.org/forum/viewtopic.php?f=53&t=9823
 
 https://wiki.archlinux.org/index.php/Netconsole
 
+```bash
 fw_setenv preboot_nc 'setenv nc_ready 0; for pingstat in 1 2 3 4 5; do; sleep 1; if run if_netconsole; then setenv nc_ready 1; fi; done; if test $nc_ready -eq 1; then run start_netconsole; fi'
-
 fw_setenv preboot 'run preboot_nc'
-
 fw_setenv ipaddr    '192.168.1.xxx'
-
 fw_setenv serverip '192.168.1.yyy'
-
 fw_setenv netmask '255.255.255.0'
+```
 
 Not required to be used in this case:
 
@@ -2677,7 +2755,7 @@ Installing OpenMediaVault in your new NAS is really simple, you just have to add
 
 using the command (you can see this correctly by viewing raw text):
 
-
+```bash
 cat <<EOF >> /etc/apt/sources.list.d/openmediavault.list
 deb http://packages.openmediavault.org/public arrakis main
 # deb http://downloads.sourceforge.net/project/openmediavault/packages arrakis main
@@ -2689,10 +2767,11 @@ deb http://packages.openmediavault.org/public arrakis main
 # deb http://packages.openmediavault.org/public arrakis partner
 # deb http://downloads.sourceforge.net/project/openmediavault/packages arrakis partner
 EOF
-
+```
 
 Then run the following come to install the openmediavault software:
 
+```bash
 export LANG=C
 
 export DEBIAN_FRONTEND=noninteractive
@@ -2711,7 +2790,7 @@ apt-get --yes --auto-remove --show-upgraded \
     --option Dpkg::Options::="--force-confdef" \
     --option DPkg::Options::="--force-confold" \
     install postfix openmediavault
-    
+```
 Initialize the system and database:
 
 omv-initsystem
@@ -2766,24 +2845,26 @@ Maybe it is not eth0 and something else:
 
 https://wiki.debian.org/NetworkConfiguration#Using_DHCP_to_automatically_configure_the_interface
 
+```bash
 rm /etc/ssh/ssh_host*
-
 ssh-keygen -A
-
 apt-get update
-
 apt-get upgrade
+```
 
 If upgrade log has update-initramfs: Generating /boot/initrd.img-5.2.9-kirkwood-tld-1
 
+```bash
 cd /boot
 mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.2.9-kirkwood-tld-1 -d initrd.img-5.2.9-kirkwood-tld-1 uInitrd
+```
 
 Activate systemd:
 
 nano /boot/uEnv.txt
 
 Add line:
+
 custom_params=init=/bin/systemd
 
 
@@ -2911,6 +2992,7 @@ EVE Online is not easy as Alpha, you need Omega account which costs some money.
 
 But it is good for testing wine 64 bit functionality.
 
+```bash
 su -
 
 dpkg --add-architecture i386 && apt-get update && apt-get install -y wine && sync
@@ -2918,6 +3000,7 @@ dpkg --add-architecture i386 && apt-get update && apt-get install -y wine && syn
 apt-get install -y winetricks mono-complete fonts-wine ttf-mscorefonts-installer
 
 exit
+```
 
 Download EVE Online from www.eveonline.com (signup if not already)
 
@@ -2927,20 +3010,15 @@ Do not create 32 bit Wine prefix, leave it 64 bit.
 
 Do not disable d3d11 library - it is working fine in the default Wine package from Debian Buster.
 
+```bash
 winecfg
-
 winetricks d3dx9_36
-
 winetricks ddr=opengl multisampling=enabled orm=fbo videomemorysize=2048 strictdrawordering=enabled
-
 wine ~/Downloads/EveLauncher-1602194.exe
-
 mv ~/.wine/drive_c/EVE/ ~/
-
 cd EVE/
-
 wine eve.exe 
-
+```
 
 # Windows 10 Home, Pro, Enterprise, Enterprise LTSB can be left unactivated but only for trial period
 
@@ -3014,15 +3092,13 @@ deb-src http://deb.debian.org/debian buster-backports main contrib non-free
 
 CTRL+o, ENTER, CTRL+x
 
+```bash
 apt-get update -y
-
 apt-get -t buster-backports install linux-image-amd64
-
 apt-get -t buster-backports install firmware-linux-nonfree
-
 sync
-
 reboot
+```
 
 ccc - Run tasksel as root to install a Desktop environment
 
@@ -3030,25 +3106,22 @@ If you need to install another desktop than Gnome and Gnome is already installed
 
 https://unix.stackexchange.com/questions/110882/installing-and-uninstalling-gnome-on-debian/518850
 
+```bash
 rm /usr/share/xsessions/gnome.desktop 
-
 rm /usr/share/xsessions/openbox.desktop 
-
 aptitude purge `dpkg --get-selections | grep gnome | cut -f 1`
-
 aptitude -f install
-
 aptitude purge `dpkg --get-selections | grep deinstall | cut -f 1`
-
 aptitude -f install
-
 tasksel
+```
 
 In tasksel select Debian Desktop Environment and also the Desktop you want like MATE on LXDE
 
+```bash
 sync
-
 reboot
+```
 
 ddd - if you want, use https:/github.com/iugamarian/debianims to optimize the installation
 
@@ -3177,15 +3250,27 @@ Press the F10 key and select Yes to save the changes and exit the BIOS.
 
 https://askubuntu.com/questions/326662/which-partition-to-select-as-device-for-boot-loader-in-an-efi-mode-install
 
-While with BIOS/MBR systems you install to the MBR and almost never to a partition, with UEFI you always install to the efi partition. It actually should default to install to that partition anyway and you can only have one efi partition (with boot flag) per drive.
+While with BIOS/MBR systems you install to the MBR and almost never to a partition, with UEFI you always install to the efi partition.
 
-In your case installing grub to sda3 the efi partition is correct. You should see multiple folders for each system you have installed, in Ubuntu they are mounted at /boot/efi and on the drive you have ubuntu & Microsoft folders with boot files:
+It actually should default to install to that partition anyway and you can only have one efi partition (with boot flag) per drive.
+
+In your case installing grub to sda3 the efi partition is correct. You should see multiple folders for each system you have installed,
+
+in Ubuntu they are mounted at /boot/efi and on the drive you have ubuntu & Microsoft folders with boot files:
 
 /boot/efi/EFI/ubuntu/grubx64.efi /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi
 
-Grub2's os-prober has a bug and only creates BIOS boot entries which do not work with UEFI. You do not chainload to the Windows install like BIOS, but chain load to the efi partition. Boot-Repair can automatically create entries in 25_custom or you can manually add entries as shown in bug report to your 40_custom.
+Grub2's os-prober has a bug and only creates BIOS boot entries which do not work with UEFI. You do not chainload to the Windows install
 
-grub2's os-prober creates wrong style (BIOS) chain boot entry https://bugs.launchpad.net/ubuntu/+source/grub2/+bug/1024383 type of entry from Boot-Repair that should work. menuentry "Windows UEFI bkpbootmgfw.efi" { menuentry "Windows Boot UEFI loader" { Type of entry that does not work: 'Windows ...) (on /dev/sdXY)' Some info in Post #3 on cleaning up menus, if desired. http://ubuntuforums.org/showthread.php?t=2085530
+like BIOS, but chain load to the efi partition. Boot-Repair can automatically create entries in 25_custom or you can manually add entries
+
+as shown in bug report to your 40_custom.
+
+grub2's os-prober creates wrong style (BIOS) chain boot entry https://bugs.launchpad.net/ubuntu/+source/grub2/+bug/1024383 type of entry
+
+from Boot-Repair that should work. menuentry "Windows UEFI bkpbootmgfw.efi" { menuentry "Windows Boot UEFI loader" { Type of entry that
+
+does not work: 'Windows ...) (on /dev/sdXY)' Some info in Post #3 on cleaning up menus, if desired. http://ubuntuforums.org/showthread.php?t=2085530
 
 
 # Raspberry Pi VPN and iptables
@@ -3218,12 +3303,6 @@ https://somoit.net/windows/windows-cannot-shrink-volume-unmovable-files
 
 http://wiki.christophchamp.com/index.php?title=Dd_(command)
 
-https://en.wikipedia.org/wiki/Dd_(Unix)
-
-dd if=/dev/zero of=path/to/file bs=512 count=1 conv=notrunc
-
-The notrunc conversion option means do not truncate the output file — that is, if the output file already exists, just replace the specified bytes and leave the rest of the output file alone. Without this option, dd would create an output file 512 bytes long. 
-
 https://www.linux.com/tutorials/gnu-ddrescue-best-damaged-drive-rescue/
 
 https://help.uaudio.com/hc/en-us/articles/213195423-How-To-Disable-Fast-Startup-in-Windows-10
@@ -3243,6 +3322,16 @@ https://www.quora.com/If-you-clone-the-OS-hard-drive-will-Windows-require-a-new-
 https://www.tigraine.at/2014/01/04/how-to-upgrade-to-an-ssd-with-minimal-effort
 
 https://www.technibble.com/forums/threads/gnu-ddrescue-ridiculous-learning-curve.34594/
+
+https://en.wikipedia.org/wiki/Dd_(Unix)
+
+dd if=/dev/zero of=path/to/file bs=512 count=1 conv=notrunc
+
+The notrunc conversion option means do not truncate the output file — that is, if the output file already exists,
+
+just replace the specified bytes and leave the rest of the output file alone. Without this option, dd would create
+
+an output file 512 bytes long.
 
 In Windows 10 three steps are required to disable fast startup, GUI, Hybrid and CMD:
 
@@ -3322,13 +3411,12 @@ https://linoxide.com/linux-how-to/fix-error-locale-cannot-set-lc_all-to-default-
 
 https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System#Init_and_boot_configuration
 
+```bash
 su -
-
 echo "Europe/Bucharest" > /etc/timezone
-
 emerge --config sys-libs/timezone-data
-
 nano -w /etc/conf.d/keymaps
+```
 
 =====================
 
@@ -3336,9 +3424,10 @@ keymap="us"
 
 =====================
 
+```bash
 export LC_ALL=en_US.UTF-8
-
 nano  /etc/locale.gen
+```
 
 =====================
 
@@ -3346,13 +3435,12 @@ en_US.UTF-8 UTF-8
 
 =====================
 
+```bash
 locale-gen
-
 sync
-
 locale -a
-
 reboot
+```
 
 
 # Gentoo Raspberry Pi graphical login VNC
@@ -3706,14 +3794,31 @@ https://drive.google.com/open?id=1q9QpxAYUR4zCtuv1vRMk-Ihi6gXvwV2b
 
 https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1111742-debian-11-bullseye-cycle-prepares-to-begin-long-journey/page2
 
-Just to be clear though, experimental isn't a complete distribution. It's just an extra repository where maintainers can upload the latest stuff without immediately pushing it into unstable. It's meant for users of unstable who wants to pull in the latest of only some specific package. Recently I've used it for getting the latest mesa while Debian has been frozen these last few months, and it's great to have such a simple way to do that. Just don't try going into your apt sources list and change unstable to experimental. That won't work because experimental isn't an entire distribution in itself the way unstable and stable is. The way you do it is you have both unstable and experimental in your sources list, and whenever you want to install an experimental package you append '-t experimental' to apt, otherwise experimental packages will be ignored.
+Just to be clear though, experimental isn't a complete distribution. It's just an extra repository where
+
+maintainers can upload the latest stuff without immediately pushing it into unstable. It's meant for users
+
+of unstable who wants to pull in the latest of only some specific package. Recently I've used it for getting
+
+the latest mesa while Debian has been frozen these last few months, and it's great to have such a simple way
+
+to do that. Just don't try going into your apt sources list and change unstable to experimental. That won't
+
+work because experimental isn't an entire distribution in itself the way unstable and stable is. The way you
+
+do it is you have both unstable and experimental in your sources list, and whenever you want to install an
+
+experimental package you append '-t experimental' to apt, otherwise experimental packages will be ignored.
 
 Example if I want latest gnome-shell and mutter and already have added the repo to my sources
+
 Code:
 
 sudo apt -t experimental install gnome-shell mutter
 
-That way, nothing but gnome-shell and mutter will be from experimental. Everything else in my distribution will still be from unstable. 
+That way, nothing but gnome-shell and mutter will be from experimental. Everything else in my distribution
+
+will still be from unstable. 
 
 # android block phones
 
@@ -3726,15 +3831,37 @@ http://andauth.co/fdmcms
 
 https://btrfs.wiki.kernel.org/index.php/Using_Btrfs_with_Multiple_Devices#Adding_new_devices
 
+https://btrfs.wiki.kernel.org/index.php/FAQ
+
+https://btrfs.wiki.kernel.org/index.php/Status#Defrag
+
 https://wiki.archlinux.org/index.php/Btrfs#Preparation
 
 https://wiki.gentoo.org/wiki/Btrfs/System_Root_Guide
+
+https://btrfs.wiki.kernel.org/index.php/UseCases
 
 https://askubuntu.com/questions/32418/is-there-an-easier-way-to-chroot-than-bind-mounting
 
 https://bartsimons.me/ubuntu-linux-chroot-guide/
 
 https://unix.stackexchange.com/questions/405472/cannot-find-efi-directory-issue-with-grub-install
+
+For defrag and autodefrag to work very well, avoid making any of this: subvolumes, reflinks and compression.
+
+Caveat: since Linux 3.14-rc2, 3.13.4, 3.12.12 and 3.10.31 (which removed the snapshot-aware defragmentation)
+
+defragmenting a file which has a COW copy (either a snapshot copy or one made with cp --reflink or bcp) would
+
+produce two unrelated files. If you defragment a subvolume that had a snapshot, you would roughly double the
+
+disk usage, as the snapshot files would no longer be COW images of the originals.
+
+One would get this rather unexpected outcome when using defragment (together with "-c") to compress files
+
+with the hope of saving space. Note that this is the same behaviour as observed with any pre 3.9 kernel
+
+(which added snapshot-aware defragmentation). 
 
 -boot (netinst or cd or dvd) Debian GNU/Linux
 
@@ -3916,10 +4043,14 @@ tasksel --task-packages task-mate-desktop
 
 https://help.ubuntu.com/community/RootSudo#Graphical_sudo
 
-You can use pkexec on those flavours that support this option. As of 18.04, only Xubuntu supports this option by default, as shown in the following examples:
+You can use pkexec on those flavours that support this option. As of 18.04, only Xubuntu supports
 
+this option by default, as shown in the following examples:
+
+```bash
     pkexec thunar
     pkexec mousepad /etc/fstab
+```
 
 https://unix.stackexchange.com/questions/203136/how-do-i-run-gui-applications-as-root-by-using-pkexec
 
@@ -4019,13 +4150,12 @@ https://ubuntuforums.org/showthread.php?t=1289897
 
 On the Pi:
 
+```bash
 sudo -s
-
 raspi-config -> Interfacing options -> SSH -> Enable SSH -> TAB -> Finish
-
 apt install -y tightvncserver
-
 chown -R pi /home/pi
+```
 
 OR
 
@@ -4033,11 +4163,11 @@ chown pi:pi .Xauthority
 
 On the PC start tightvncserver on the Pi:
 
+```bash
 ssh pi@192.168.x.x
-
 tightvncserver :1 -geometry 800x600 -depth 24
-
 exit
+```
 
 On the PC graphical login on the Pi (server is already started):
 
@@ -4082,20 +4212,60 @@ https://pthree.org/2014/04/01/protect-against-bit-rot-with-parchive/
 
 https://news.ycombinator.com/item?id=13615978
 
-Thanks for the heads up but that's not the one. I posted it in 1998 or 1999 and I tried to find the exact Usenet archive link similar to the direct link for Larry Page's famous 1996 post on comp.lang.java
+Thanks for the heads up but that's not the one. I posted it in 1998 or 1999 and I tried to find the exact
 
-To go back to the article, the author mentions posting the files to newsgroup "alt.binaries.backup". With Usenet, there isn't exactly a contractual SLA (Service Level Agreement) for that group. It's a gentlemen's agreement between those commercial Usenet providers (and non-commercials ones like universities) to replicate messages. Maybe because I posted the message to my GTE/Verizon ISP's Usenet server meant that it only got replicated to a few peers and it "died".
+Usenet archive link similar to the direct link for Larry Page's famous 1996 post on comp.lang.java
 
-If my tiny text-based post which is 2 years newer than Larry Page's can't be recovered today, it doesn't give me lot of confidence to use Usenet as a backup solution. I have over 1 terabyte of photos, home videos, and tif scans of all my paper files. It's not appealing to chop that 1TB into a thousand PAR2 files with extra 20% redundant parity and posting it to alt.binaries.backup. That seems extremely fragile. Another commenter made a suggestion for Amazon's new personal "unlimited" cloud for $60/year. That seems much more reliable.
+To go back to the article, the author mentions posting the files to newsgroup "alt.binaries.backup". With
+
+Usenet, there isn't exactly a contractual SLA (Service Level Agreement) for that group. It's a gentlemen's
+
+agreement between those commercial Usenet providers (and non-commercials ones like universities) to replicate
+
+messages. Maybe because I posted the message to my GTE/Verizon ISP's Usenet server meant that it only got
+
+replicated to a few peers and it "died".
+
+If my tiny text-based post which is 2 years newer than Larry Page's can't be recovered today, it doesn't
+
+give me lot of confidence to use Usenet as a backup solution. I have over 1 terabyte of photos, home videos,
+
+and tif scans of all my paper files. It's not appealing to chop that 1TB into a thousand PAR2 files with extra
+
+20% redundant parity and posting it to alt.binaries.backup. That seems extremely fragile. Another commenter made
+
+a suggestion for Amazon's new personal "unlimited" cloud for $60/year. That seems much more reliable.
 
 
-> It's not appealing to chop that 1TB into a thousand PAR2 files with extra 20% redundant parity and posting it to alt.binaries.backup.
+> It's not appealing to chop that 1TB into a thousand PAR2 files with extra 20% redundant parity and posting it
 
-For a 1 TB archive with 20% redundancy, you're looking at a block size of at least 32 MB in each par2 file (due to the maximum block count of 32767 in the official implementation). Given that the article size limit for many news servers is roughly 1 MB, you're looking at even a single block getting split into 32 article posts. par2 programs typically will generate a series of files where the smallest files contain a single block and the largest files contain 50 or more blocks. The 50 block files will each get split into 1600 articles.
+to alt.binaries.backup.
 
-For par2 recovery to work even when articles are missing, you really want the recovery block size to be less than the article size limit, so that even if one or more articles are missing, the par2 archiver program can still read a subset of blocks from the incomplete recovery file and still use them for recovery. That means that the maximum archive size would be roughly 32 GB to keep the block size under the article size limit.
+For a 1 TB archive with 20% redundancy, you're looking at a block size of at least 32 MB in each par2 file (due to
 
-Going beyond that size means that it's less likely that the recovery file would be usable if some of the articles are missing. At 32 GB, if one article is missing from a 3 block recovery file, the software will still be able find 2 blocks in that file. But, if the archive size was 100 GB, then the block size would be a minimum of 3 MB and just missing 3 out of 9 articles that make up a 3 block recovery file would make the recovery file unusable.
+the maximum block count of 32767 in the official implementation). Given that the article size limit for many news
+
+servers is roughly 1 MB, you're looking at even a single block getting split into 32 article posts. par2 programs
+
+typically will generate a series of files where the smallest files contain a single block and the largest files
+
+contain 50 or more blocks. The 50 block files will each get split into 1600 articles.
+
+For par2 recovery to work even when articles are missing, you really want the recovery block size to be less than
+
+the article size limit, so that even if one or more articles are missing, the par2 archiver program can still read
+
+a subset of blocks from the incomplete recovery file and still use them for recovery. That means that the maximum
+
+archive size would be roughly 32 GB to keep the block size under the article size limit.
+
+Going beyond that size means that it's less likely that the recovery file would be usable if some of the articles
+
+are missing. At 32 GB, if one article is missing from a 3 block recovery file, the software will still be able find
+
+2 blocks in that file. But, if the archive size was 100 GB, then the block size would be a minimum of 3 MB and just
+
+missing 3 out of 9 articles that make up a 3 block recovery file would make the recovery file unusable.
 
 
 # e4defrag segfaults strlen.S on Debian Buster 10 i386 so use XFS or BTRFS instead for /
@@ -4134,7 +4304,11 @@ xfs_db -c frag -r /dev/sda1
 
 https://stackoverflow.com/questions/26429360/crc32-vs-crc32c
 
-BTRFS uses CRC32C with polynomial 0x1EDC6F41, hardware accelerated in newer CPUs and quite good for bitrot detection, if you also have RAID1 mirror to repair automatically after detection even if it's a whole 4 KB sector missing which BTRFS does.
+BTRFS uses CRC32C with polynomial 0x1EDC6F41, hardware accelerated in newer CPUs and quite good for
+
+bitrot detection, if you also have RAID1 mirror to repair automatically after detection even if it's
+
+a whole 4 KB sector missing which BTRFS does.
 
 https://news.ycombinator.com/item?id=8304217
 
@@ -4160,6 +4334,7 @@ https://askubuntu.com/questions/229770/how-do-i-show-the-current-amount-of-fragm
 
 https://serverfault.com/questions/896535/possible-to-see-btrfs-defrag-progress
 
+
 # BTRFS has complete toolset including defragmentation in Debian Install netinst Rescue Mode, XFS and e4defrag lack defragmentation and many others in Rescue Mode
 
 https://wiki.archlinux.org/index.php/Btrfs#Defragmentation
@@ -4176,7 +4351,9 @@ Swap files in Btrfs are supported since Linux 5.0
 
 Displaying used/free space
 
-General linux userspace tools such as df will inaccurately report free space on a Btrfs partition. It is recommended to use btrfs filesystem usage to query Btrfs partitions. For example:
+General linux userspace tools such as df will inaccurately report free space on a Btrfs partition.
+
+It is recommended to use btrfs filesystem usage to query Btrfs partitions. For example:
 
 btrfs filesystem usage /
 
@@ -4186,15 +4363,22 @@ Btrfs supports online defragmentation through the mount option autodefrag. To ma
 
 btrfs filesystem defragment -r /
 
-Using the above command without the -r switch will result in only the metadata held by the subvolume containing the directory being defragmented. This allows for single file defragmentation by simply specifying the path.
+Using the above command without the -r switch will result in only the metadata held by the subvolume containing
 
-Defragmenting a file which has a COW copy (either a snapshot copy or one made with cp --reflink or bcp) plus using the -c switch with a compression algorithm may result in two unrelated files effectively increasing the disk usage.
+the directory being defragmented. This allows for single file defragmentation by simply specifying the path.
+
+Defragmenting a file which has a COW copy (either a snapshot copy or one made with cp --reflink or bcp) plus using
+
+the -c switch with a compression algorithm may result in two unrelated files effectively increasing the disk usage.
 
 Parity RAID (RAID 5/6) code has multiple serious data-loss bugs in it.
 
 Bitrot protection (repair) available if you use well tested RAID 1 (mirror) or RAID 10 (mirror striped)
 
-Bitrot protection (repair) can be done if you use two partitions of the same size on the same one harddisk / ssd and put them in RAID 1 (mirror) or maybe even one partition with RAID1 made just inside it:
+Bitrot protection (repair) can be done if you use two partitions of the same size on the same one harddisk / ssd
+
+and put them in RAID 1 (mirror) or maybe even one partition with RAID1 made just inside it:
+
 
 # BTRFS No space left on device
 
@@ -4224,32 +4408,53 @@ https://www.complang.tuwien.ac.at/anton/btrfs-raid1.html
 https://seravo.fi/2016/perfect-btrfs-setup-for-a-server
 
 Installing RAID1 for BTRFS
-Debian does not support Btrfs RAID out of the box, so the way to go is to start to install BTRFS without RAID on one of the disk drives, leave the same space on a partition on the other drive(s), and then do
+Debian does not support Btrfs RAID out of the box, so the way to go is to start to install BTRFS without RAID
+
+on one of the disk drives, leave the same space on a partition on the other drive(s), and then do
 
 btrfs device add /dev/sdb3 /
+
 btrfs balance start -dconvert=raid1 -mconvert=raid1 /
 
 We also add "degraded" as file system option in fstab; e.g.:
 
 UUID=3d0ce18b-dc2c-4943-b765-b8a79f842b88 /               btrfs   degraded,strictatime        0       0
 
-btrfs device delete missing tells btrfs to remove the first device that is described by the filesystem metadata but not present when the FS was mounted.
+btrfs device delete missing tells btrfs to remove the first device that is described
+
+by the filesystem metadata but not present when the FS was mounted.
+
 ...
+
 For example if you have a raid1 layout with two devices, and a device fails, you must:
 
     mount in degraded mode.
+    
     add a new device.
+    
     remove the missing device.
 
 The UUID (check with blkid) is the same for both partitions in our RAID, so no need to specify devices.
+
 EFI and RAID1
-There is no support for RAID1 and EFI in Linux or Debian, so what we did was to have one EFI system partition (ESP) on each drive, let the Debian installer install the the EFI stub of grub on one of them, and then use dd to copy the contents of the ESP to the other ESP partition(s):
+
+There is no support for RAID1 and EFI in Linux or Debian, so what we did was to have one EFI system partition
+
+(ESP) on each drive, let the Debian installer install the the EFI stub of grub on one of them, and then use dd
+
+to copy the contents of the ESP to the other ESP partition(s):
 
 dd if=/dev/sda1 of=/dev/sdb1
 
-This has to be repeated every time the EFI partition changes, but it seems that this normally does not change, even when running update-grub. OTOH, it does not hurt to do the dd more often than necessary.
+This has to be repeated every time the EFI partition changes, but it seems that this normally does not change,
 
-We also needed to change /etc/grub.d/10_linux in different places than "The perfect Btrfs setup for a server" (which seems to be written for a BIOS/MBR system) indicates: Search for " ro " (two occurences), and prepend "rootflags=degraded". One of these lines becomes
+even when running update-grub. OTOH, it does not hurt to do the dd more often than necessary.
+
+We also needed to change /etc/grub.d/10_linux in different places than "The perfect Btrfs setup for a server"
+
+(which seems to be written for a BIOS/MBR system) indicates: Search for " ro " (two occurences), and prepend
+
+"rootflags=degraded". One of these lines becomes
 
 	linux	${rel_dirname}/${basename}.efi.signed root=${linux_root_device_thisversion} rootflags=degraded ro ${args}
 
@@ -4258,25 +4463,53 @@ In order for that to take effect, we had to
 update-grub
 
 What to do on a failed disk
-We disconnected one of the disks (while the system was offline, online would have been an interesting variant) to simulate a disk failure. Due to a bug in BTRFS, it degrades nicely on the first boot, but then becomes irreversibly read-only on the second boot. If you get there, the best option seems to be to copy the read-only file system to a fresh and writable file system (with e.g., tar or cpio). (We actually went as far as having the read-only file system with one of the two drives we used, so the bug is still there in Linux 4.11).
 
-You probably want to avoid these complications, and while you are still in your first boot, you can. What we did (with the other disk), is to convert it back from RAID1 to a single profile, then remove the failed device (which complains that it does not know the device, but still removes it).
+We disconnected one of the disks (while the system was offline, online would have been an interesting variant) to
+
+simulate a disk failure. Due to a bug in BTRFS, it degrades nicely on the first boot, but then becomes irreversibly
+
+read-only on the second boot. If you get there, the best option seems to be to copy the read-only file system to a
+
+fresh and writable file system (with e.g., tar or cpio). (We actually went as far as having the read-only file system
+
+with one of the two drives we used, so the bug is still there in Linux 4.11).
+
+You probably want to avoid these complications, and while you are still in your first boot, you can. What we did
+
+(with the other disk), is to convert it back from RAID1 to a single profile, then remove the failed device
+
+(which complains that it does not know the device, but still removes it).
 
 btrfs balance start -v -mconvert=dup -dconvert=single /
+
 btrfs device remove /dev/sdb3
+
 #now check that it has worked
+
 btrfs device usage /
+
 btrfs fi show
+
 btrfs fi usage
 
-We then shut down the system, plugged the replacement disk in (actually the disk we had earlier ruined by double degraded booting, after wiping the BTRFS partition), booted and then did the usual dance to turn the now-single BTRFS into a RAID1 again:
+We then shut down the system, plugged the replacement disk in (actually the disk we had earlier ruined by double
+
+degraded booting, after wiping the BTRFS partition), booted and then did the usual dance to turn the now-single
+
+BTRFS into a RAID1 again:
 
 btrfs device add /dev/sdb3 /
+
 btrfs balance start -dconvert=raid1 -mconvert=raid1 /
 
 As a result, we had a RAID1 again.
 
-If you wonder why we did not use btrfs replace: We would have to connect the new disk before the second reboot, which is not always practical. With the method above, once we have rebalanced the file system to a single one, we can reboot as often as we like to get the new drive online. 
+If you wonder why we did not use btrfs replace: We would have to connect the new disk before the second reboot,
+
+which is not always practical. With the method above, once we have rebalanced the file system to a single one,
+
+we can reboot as often as we like to get the new drive online. 
+
 
 # BTRFS scrub stopped half way not running but says it's running bug
 
@@ -4388,10 +4621,15 @@ https://isshoni.org/pi64pie
 # Laptop with defective main LCD and external LCD monitor broken band down side resize display
 
 ```bash
+
 #!/bin/bash
+
 xrandr --output LVDS-1 --off
+
 xrandr --output VGA-1 --panning 1280x1800
+
 xrandr --output VGA-1 --fb 1280x850
+
 ```
 
 Last command triggers errors but the resize takes place as required.
@@ -4617,6 +4855,7 @@ https://wiki.archlinux.org/index.php/User:Soloturn/Quick_Installation_guide_UEFI
 http://raspberrypimaker.com/cheap-quality-audio-raspberry-pi/
 
 I have the 3d sound, very good but has a red led near usb port that is annoying
+
 and can be removed, works the same without the light after.
 
 https://www.ebay.co.uk/itm/USB-To-3-5mm-Headphone-Jack-Stereo-Headset-3D-Sound-Card-Audio-Adapter-For-PC/311563006618?epid=1261136772&hash=item488a9a329a:g:QxoAAOSwP~tW39-l
@@ -4880,13 +5119,23 @@ youtube-dl -f best -ciw -o %(title)s.%(id)s.%(ext)s -v https://www.youtube.com/u
 
 https://fedoramagazine.org/how-to-get-firefox-looking-right-on-a-high-dpi-display-and-fedora/
 
-Enabling the high DPI mode in Firefox is actually pretty simple, it is just a matter of setting the layout.css.devPixelsPerPx value in about:config to a value of 2 (i.e. double the size).
+Enabling the high DPI mode in Firefox is actually pretty simple, it is just a matter of setting the
+
+layout.css.devPixelsPerPx value in about:config to a value of 2 (i.e. double the size).
+
 To do this, open up a new tab, and type about:config into the address bar, and press enter.
+
 Then use the search box in this page to find the key layout.css.devPixelsPerPx and then change the value from -1.0 to 2
 
-However, on closer inspection you will realise that the icons in the Firefox toolbar, while now the correct proportions, are now slightly fuzzy compared to the text. This is because the default Firefox theme ships bitmap icons that don’t work well with High DPI displays.
+However, on closer inspection you will realise that the icons in the Firefox toolbar, while now the correct proportions,
 
-The easiest way to fix this, and to make your Firefox fit that much better with the Fedora Workstation, is to install the GNOME Firefox theme. This theme uses scalable vector assets for the icons (SVGs) that look crisp and clean on a high DPI display.
+are now slightly fuzzy compared to the text. This is because the default Firefox theme ships bitmap icons that don’t work
+
+well with High DPI displays.
+
+The easiest way to fix this, and to make your Firefox fit that much better with the Fedora Workstation, is to install the
+
+GNOME Firefox theme. This theme uses scalable vector assets for the icons (SVGs) that look crisp and clean on a high DPI display.
 
 https://addons.mozilla.org/en-us/firefox/addon/adwaita/
 
@@ -4998,25 +5247,21 @@ For Wine 2.0 and onwards, DirectX 11 is getting supported. More on that later...
 
 # Windows or DOS first if it is found by grub:
 
+```bash
 apt-cache search dpkg-divert
-
 sudo -s
-
 apt-get install -y config-package-dev
-
 dpkg-divert --local --divert /etc/grub.d/09_os-prober --rename --add /etc/grub.d/30_os-prober
-
 update-grub
-
+```
 
 # Remove this divert (works to remove if bad name given to diverted file), go back to default:
 
+```bash
 sudo -s
-
 dpkg-divert --rename --remove /etc/grub.d/30_os-prober
-
 update-grub
-
+```
 
 # MPV better configuration in ~/.config/mpv/mpv.conf
 
@@ -5078,16 +5323,14 @@ programmer
 #
 
 # ... create a script to program fast (usage = sudo compavr (file without .c extension)):
+
+```bash
 touch compavr && chmod +x compavr && gedit compavr
-
 avr-gcc -mmcu=atmega32 -Wall -Os -o $1.elf $1.c
-
 avr-objcopy -j .text -j .data -O ihex $1.elf $1.hex
-
 avrdude -c avrusb500 -p atmega32 -u -U hfuse:w:0xc9:m -U lfuse:w:0xe3:m
-
 avrdude -c avrusb500 -p atmega32 -U flash:w:$1.hex
-
+```
 
 # Usbasp has failed for me, found a way to fix it:
 
@@ -5103,16 +5346,17 @@ It always keeps reset on the target chip - after program, to test, you need to r
 
 Compavr for atmega8 chip programmed with usbasp:
 
+```bash
 avr-gcc -mmcu=atmega8 -Wall -Os -o $1.elf $1.c
-
 avr-objcopy -j .text -j .data -O ihex $1.elf $1.hex
+```
 
 # Fuses are for fast external oscilator like 12MHz !!! Not internal.
 
+```bash
 avrdude -c usbasp -p atmega8 -u -U hfuse:w:0xc9:m -U lfuse:w:0xef:m
-
 avrdude -c usbasp -p atmega8 -U flash:w:$1.hex
-
+```
 
 0. Verify that you have a USBasp V2.0, and that it has a 12MHz crystal and an ATMEGA8 or ATMEGA8A MCU onboard. DO NOT CONNECT IT TO THE USB PORT OF YOUR COMPUTER.
 
@@ -5121,6 +5365,7 @@ avrdude -c usbasp -p atmega8 -U flash:w:$1.hex
 2. Connect the USBasp V2.0 to the USBtinyISP using a 10-pin ribbon cable
 
 Picture of pins:
+
 http://www.scienceprog.com/building-and-installing-usbasp-usb-programmer-of-avr-microcontrollers/
 
 Firmware:
@@ -5129,13 +5374,15 @@ http://blog.lincomatic.com/wp-content/uploads/2014/05/usbasp.atmega8.2011-05-28.
 
 Commands that work:
 
+```bash
 avrdude -c avrusb500 -p atmega8 -u -U hfuse:w:0xc9:m -U lfuse:w:0xef:m
-
 avrdude -c avrusb500 -p atmega8 -U flash:w:usbasp.atmega8.2011-05-28.hex
+```
 
 # other links
 
 https://eagleup.wordpress.com/tutorial-v4/     - google sketchup allows many 3d board models in eagle
+
 
 # connect to vnc with tunneling (the server behaves as running on the client)
 
@@ -5161,6 +5408,7 @@ xtightvncviewer -encodings "copyrect tight hextile" -quality 5 -compresslevel 5 
 
 (Raspberry Pi 2 CPU at 34 % at maximum, but that's also because of the program changing the image)
 
+
 # Copy files securely on the internet over ssh:
 
 From here to there a directory (-r means recursive):
@@ -5170,6 +5418,7 @@ scp -r /media/user/datadrive/videos root@IPTARGET:/media/pi/250gbdate/pi/
 From there to here, a file:
 
 scp root@IPTARGET:/media/pi/250gbdate/pi/file.tar.gz /media/user/ 
+
 
 # Autostart a program in LXDE
 
@@ -5188,19 +5437,15 @@ Drag and drop from the desktop in autostart.
 
 # Also check the newer samba2016 file in this folder
 
+```bash
 sudo -s
-
 apt-get install -y samba samba-common python-glade2 system-config-samba
-
 cp -pf /etc/samba/smb.conf /etc/samba/smb.conf.bak
-
 cat /dev/null  > /etc/samba/smb.conf
-
 systemctl stop apparmor
-
 systemctl disable apparmor
-
 firewall-cmd --add --service=samba
+```
 
 a) In terminal run (set password that Windows asks):
 
@@ -5212,11 +5457,11 @@ mkdir /media/pi/EXT4DATE/dan/sambasharefolder
 
 c) In terminal run:
 
+```bash
 chmod -R 0755 /media/pi/EXT4DATE/dan/sambasharefolder/
-
 chown -R pi:pi /media/pi/EXT4DATE/dan/sambasharefolder/
-
 chown pi:pi /media/pi/EXT4DATE/dan
+```
 
 d) nano /etc/samba/smb.conf
 
@@ -5309,15 +5554,17 @@ guest ok = no
 
 http://diantokam.blogspot.ro/2012/11/openwrt-samba-file-server.html
 
-Install samba36-server and luci-app-samba
+Install samba36-server and luci-app-samba as root:
 
-# opkg install samba36-server
-
-# opkg install luci-app-samba
+```bash
+opkg install samba36-server
+opkg install luci-app-samba
+```
 
 Edit /etc/config/samba
 
-# vi /etc/config/samba
+vi /etc/config/samba
+
 config samba
 
 option name 'OpenWrt'
@@ -5362,7 +5609,7 @@ option guest_ok 'yes'
 
 Edit /etc/passwd and add user diantokam,copy paste user nobody configuration, leave everything same as user nobody, except for user ID and group name.
 
-# vi /etc/passwd
+vi /etc/passwd
 
 root:$1$nvFplbd8$l05HR0mdTHcGprNaMg8QA1:0:0:root:/root:/bin/ash
 
@@ -5376,25 +5623,26 @@ diantokam:*:65535:65534:diantokam:/var:/bin/false
 
 Create password for user diantokam
 
-# passwd diantokam
+passwd diantokam
 
 Adding diantokam to samba user
 
-# smbpasswd -a diantokam
+smbpasswd -a diantokam
 
 Enable samba service on startup
 
-# /etc/init.d/samba enable
+/etc/init.d/samba enable
 
 To start samba service
 
-# /etc/init.d/samba start
+/etc/init.d/samba start
 
 To stop samba service
 
-# /etc/init.d/samba stop
+/etc/init.d/samba stop
 
 To accesses samba share from windows type \\samba_server_name on address bar, in my case it is \\openwrt
+
 
 # OpenWRT/LEDE Project - Samba Server 2018 firewalled only one ip allowed, also ssh and http (LuCI)
 
@@ -5412,30 +5660,20 @@ http://troy.jdmz.net/samba/fw/ - the ports used by Samba
 
 Allow only one ip to ssh and samba no matter wan or lan, edit /etc/firewall.user
 
+```bash
 iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 22 -j ACCEPT
-
 iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 80 -j ACCEPT
-
 iptables -A input_rule -p udp -s 192.168.1.101/32 --dport 137 -j ACCEPT
-
 iptables -A input_rule -p udp -s 192.168.1.101/32 --dport 138 -j ACCEPT
-
 iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 139 -j ACCEPT
-
 iptables -A input_rule -p tcp -s 192.168.1.101/32 --dport 445 -j ACCEPT
-
 iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
-
 iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 80 -j DROP
-
 iptables -A input_rule -p udp -s 0.0.0.0/0 --dport 137 -j DROP
-
 iptables -A input_rule -p udp -s 0.0.0.0/0 --dport 138 -j DROP
-
 iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 139 -j DROP
-
 iptables -A input_rule -p tcp -s 0.0.0.0/0 --dport 445 -j DROP
-
+```
 
 # Mounting samba shares
 
@@ -5453,15 +5691,20 @@ https://askubuntu.com/questions/33480/how-do-i-navigate-to-a-samba-location-ive-
 
 https://askubuntu.com/questions/33480/how-do-i-navigate-to-a-samba-location-ive-mounted-in-nautilus-on-the-command-li
 
-Upon adding myself to this group (sudo nano /etc/group, adding my name to the users line users:x:100:pi), I am now able to access the remote directories. My /etc/fstab file has these lines:
+Upon adding myself to this group (sudo nano /etc/group, adding my name to the users line users:x:100:pi),
+
+I am now able to access the remote directories. My /etc/fstab file has these lines:
 
 //xxx.220.131.233/user  /mnt/rua_user  cifs  username=abc,password=def 0 1
+
 //xxx.220.131.233/all   /mnt/rua_all   cifs  username=abc,password=def 0 1
 
 The rights on the folders look like this (ls -lh /mnt):
 
 drwxrwx---  8 1016 users 0 2011-03-08 11:14 rua_all
+
 drwxrwx--- 25 1016 users 0 2011-05-25 18:21 rua_user
+
 
 # Using switches ensures less or no sniffing of packets
 
