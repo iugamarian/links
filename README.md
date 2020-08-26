@@ -4,6 +4,8 @@ https://www.youtube.com/watch?v=jJ02kEETw70
 
 https://www.youtube.com/watch?v=vcRPNhLbhoc
 
+https://www.youtube.com/watch?v=8q8DHmA9puw
+
 
 # Voice recognition offline free software supporting already 10 languages, Apache License 2.0
 
