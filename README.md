@@ -1,3 +1,14 @@
+# Microsoft Active Signal Resolution issues
+
+https://answers.microsoft.com/en-us/windows/forum/windows_10-other_settings/incorrect-active-signal-resolution/9ff80937-8959-42bf-acc7-cca8a3bae441
+
+Intel Craphics Control Panel
+
+Home -> Display
+
+Selecting "Maintain Display Scaling" makes the Desktop Resolution be the same as Active Signal Resolution not different. Tested.
+
+
 # Youtube awk tutorial
 
 https://www.youtube.com/watch?v=jJ02kEETw70
