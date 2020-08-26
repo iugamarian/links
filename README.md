@@ -1,3 +1,10 @@
+# Youtube awk tutorial
+
+https://www.youtube.com/watch?v=jJ02kEETw70
+
+https://www.youtube.com/watch?v=vcRPNhLbhoc
+
+
 # Voice recognition offline free software supporting already 10 languages, Apache License 2.0
 
 https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1202341-mozilla-s-incredible-speech-to-text-engine-is-at-risk-following-layoffs/page2
