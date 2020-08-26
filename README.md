@@ -6,7 +6,7 @@ Intel Craphics Control Panel
 
 Home -> Display
 
-Selecting "Maintain Display Scaling" makes the Desktop Resolution be the same as Active Signal Resolution not different. Tested.
+Selecting "Maintain Display Scaling" and pressing Apply makes the Desktop Resolution be the same as Active Signal Resolution not different. Tested.
 
 
 # Youtube awk tutorial
