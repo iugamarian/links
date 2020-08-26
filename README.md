@@ -3093,9 +3093,10 @@ deb-src http://deb.debian.org/debian buster-backports main contrib non-free
 CTRL+o, ENTER, CTRL+x
 
 ```bash
-apt-get update -y
+apt-get update
 apt-get -t buster-backports install linux-image-amd64
 apt-get -t buster-backports install firmware-linux-nonfree
+apt-get -t buster-backports install btrfs-progs
 sync
 reboot
 ```
