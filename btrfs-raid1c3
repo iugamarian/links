@@ -1,0 +1,356 @@
+Need to have something like:
+
+kernel >= 5.5
+
+btrfs-progs >= 5.4
+
+Debian Bullseye (testing currently) has btrfs-progs 5.7 already and the kernel 5.7 but better check in each case:
+
+uname -a
+
+uname -r
+
+Create:
+
+Use the script available in this repository: preformat-drive-btrfs-ext4
+
+Format btrfs as raid1c3:
+
+mkfs.btrfs -d raid1c3 -m raid1c3 /dev/sda1 /dev/sdb1 /dev/sdc1
+
+btrfs fi show
+
+Copy uuid 448769e8-0230-4f22-aab1-707a066a1645
+
+mkdir /data/btrfs
+
+nano /etc/fstab
+
+UUID=448769e8-0230-4f22-aab1-707a066a1645 /data-btrfs btrfs defaults,noatime,autodefrag 0 0
+
+sync
+
+shutdown -r now
+
+btrfs fi show
+
+Label: none  uuid: 448769e8-0230-4f22-aab1-707a066a1645
+	Total devices 3 FS bytes used 4.08GiB
+	devid    1 size 2.73TiB used 6.01GiB path /dev/sda1
+	devid    2 size 2.73TiB used 6.01GiB path /dev/sdb1
+	devid    3 size 2.73TiB used 6.01GiB path /dev/sdc1
+
+Detect failed drives:
+
+btrfs fi show
+
+*** Some devices missing
+
+For raid1c3 with 1 failed drive will continue to be writable while it is still mounted.
+
+After reboot and being called by /etc/fstab entry it will not be mounted but boot will sometimes
+
+be completed and login can be done if root is on an ext4. Sometimes boot will hang.
+
+>>>>>>>So for root file system on btrfs it will not be able to boot at all because will not allow btrfs mount.
+
+After reconnecting the drive the btrfs will continue to not be mounted.
+
+There is a magic number inside the btrfs partition - to remove btrfs file system do this:
+
+wipefs --all -t btrfs /dev/sdc1
+
+This will not be enough sometimes and btrfs can see all data after replacing,
+
+so need to use the very long wait method:
+
+dd if=/dev/zero of=/dev/sdc bs=8M iflag=fullblock status=progress
+
+Compute at the displayed speed how fast it will finish and do something else in that time.
+
+For example 3 TB drive at 150 MB speed so 3000000/150=20000 seconds so 20000/3600=5.55 hours.
+
+Make a new partition table with preformat-drive-btrfs-ext4 this will give it another UUID as well.
+
+Comment entry for btrfs in /etc/fstab
+
+Reboot to make sda sdb sdc order be the same as later:
+
+shutdown -r now
+
+Try to mount degraded as sda1, sdb1 or sdc1
+
+mount -o degraded /dev/sda1 /data-btrfs
+
+Need to know devid of missing drive:
+
+btrfs fi show
+
+Label: none  uuid: 448769e8-0230-4f22-aab1-707a066a1645
+	Total devices 3 FS bytes used 4.08GiB
+	devid    1 size 2.73TiB used 6.01GiB path /dev/sda1
+	devid    2 size 2.73TiB used 6.01GiB path /dev/sdb1
+	*** Some devices missing
+
+
+The devid that is missing is not displayed. So 3. Also /dev/sdc is not displayed.
+
+lsblk
+
+Knowing devid of missing device and which device is new one when running lsblk:
+
+btrfs replace start 3 /dev/sdc1 /data-btrfs
+
+No need to add -B after start.
+
+Now there are two possibilities:
+
+1) btrfs finds the old data and the command finishes fast
+
+btrfs replace status /data-btrfs
+
+2) btrfs replaces the drive in 1 minute or 2
+
+btrfs replace status /data-btrfs
+
+The command will finish but while it is not finished running:
+
+btrfs fi show
+
+Label: none  uuid: 448769e8-0230-4f22-aab1-707a066a1645
+	Total devices 4 FS bytes used 4.08GiB
+	devid    0 size 2.73TiB used 6.01GiB path /dev/sdc1
+	devid    1 size 2.73TiB used 6.01GiB path /dev/sda1
+	devid    2 size 2.73TiB used 6.04GiB path /dev/sdb1
+	*** Some devices missing
+
+The devid is 0 instead of 3. No problem, after 2 minutes or more the replace will be
+complete and *** Some devices missing will not be displayed and the devid will be back to 3:
+
+btrfs fi show
+
+Label: none  uuid: 448769e8-0230-4f22-aab1-707a066a1645
+	Total devices 3 FS bytes used 4.08GiB
+	devid    1 size 2.73TiB used 6.01GiB path /dev/sda1
+	devid    2 size 2.73TiB used 6.04GiB path /dev/sdb1
+	devid    3 size 2.73TiB used 6.01GiB path /dev/sdc1
+
+This command it seems needs to finish for mount not degraded to work so actually 6.01GiB need to be written:
+
+btrfs filesystem balance
+
+Wait for it to display:
+
+Done [...]
+
+Unmount:
+
+umount /data-btrfs
+
+Uncomment entry for btrfs in /etc/fstab
+
+Reboot ( or mount -a ) so that btrfs is mounted by UUID by /etc/fstab and not degraded:
+
+sync
+
+shutdown -r now
+
+mount |grep btrfs
+
+btrfs fi show
+
+Done, hard drive replaced. Probably no unmount and reboot needed to do all this if SATA is hot swappable.
+
+
+
+
+
+
+
+
+
+
+===============================================================================
+Sources:
+
+https://serverfault.com/questions/606434/btrfs-deleting-a-volume
+
+
+
+I'd prefere wipefs -t btrfs /dev/sda1 /dev/sdb1 as suggested in official btrfs wiki. It's a bit hidden in the description of mkfs-option:
+
+    -f --force Forcibly overwrite the block devices when an existing filesystem is detected. By default, mkfs.btrfs will utilize libblkid to check for any known filesystem on the devices. Alternatively you can use the wipefs utility to clear the devices.
+
+share improve this answer
+answered Jun 19 '17 at 17:55
+user421075
+3111 bronze badge
+add a comment
+3
+
+wipefs --all -t btrfs /dev/sdc
+
+worked for me. I had to add --all to have sudo btrfs fi show turn up empty.
+
+    -a, --all
+
+    Erase all available signatures. The set of erased signatures can be restricted with the -t option.
+
+Array/Btrfs was created with sudo mkfs.btrfs --label btrfs_6TB_RAID1 --metadata raid1 --data raid1 /dev/sda /dev/sdb --force 
+
+
+1. Mount the btrfs with “-o degraded” option from existing good volume:
+
+# mount -o degraded /dev/xvdd /mnt/btrfs
+
+2. Replace the absent disk with the missing one:
+
+# btrfs replace start 2 /dev/xvdc /mnt/btrfs
+
+3. Balance the file system:
+
+# btrfs filesystem balance
+
+Maybe *** Some devices missing will still be displayed after repair
+
+https://stackoverflow.com/questions/22390676/how-to-get-rid-of-some-devices-missing-in-btrfs-after-reuse-of-devices
+
+
+I actually figured this out for myself. Maybe it will help someone else.
+
+I poked around in the code to see what was going on. When the btrfs filesystem show command is used to show all filesystems on all devices, it scans every device and partition in /proc/partitions. Each device and each partition is examined to see if there is a BTRFS "magic number" and associated valid root data structure found at 0x10040 offset from the beginning of the device or partition.
+
+I then used hexedit on a disk that was showing up wrong in my own situation and sure enough there was a BTRFS magic number (which is the ASCII string _BHRfS_M) there from my previous experiments.
+
+I simply nailed that magic number by overwriting a couple of the characters of the string with "**", also using hexedit, and the erroneous entries magically disappeared!
+
+
+If any error, please check the output of “dmesg”. You may also need to contact your support team if there are errors in dmesg.
+
+To wipe from disks that are NOT part of your wanted BTRFS FS, I found:
+
+How to clean up old superblock ? ... To actually remove the filesystem use:
+
+wipefs -o 0x10040 /dev/sda
+
+
+https://unix.stackexchange.com/questions/334228/btrfs-raid1-how-to-replace-a-disk-drive-that-is-physically-no-more-there
+
+eplace needs the filesystem to be mounted rw to operate.
+
+In a degraded BTRFS RAID1 filesytem, you have one and only one chance to mount the filesystem rw using -o degraded:
+
+       degraded
+           (default: off)
+
+           Allow mounts with less devices than the RAID profile constraints
+           require. A read-write mount (or remount) may fail when there are
+           too many devices missing, for example if a stripe member is
+           completely missing from RAID0.
+
+After rw mount, find the devid of the missing device:
+
+btrfs filesystem show /mountpoint
+
+Replace the missing with the new device:
+
+btrfs replace start -B <devid> /dev/new-disk /mountpoint
+
+Check the status:
+
+btrfs replace status /mountpoint
+
+replace will resume on reboot.
+share improve this answer
+edited Jan 26 '19 at 23:48
+answered Jan 26 '19 at 11:07
+Tom Hale
+17k1313 gold badges8484 silver badges163163 bronze badges
+
+    Did you read the accepted answer? The problem was within the code of Btrfs. Please delete your answer as it is not of any use in the context of the question. – Hans Deragon Jan 26 '19 at 14:01
+    1
+    @HansDeragon I think -o degraded has existed for some time... – Tom Hale Jan 26 '19 at 23:50
+    read the accepted answer. The authors of Brtfs admit that the code was missing the feature to replace the drive. -o degraded did not work. – Hans Deragon Jan 28 '19 at 15:41
+    4
+    Sorry this didn't help you, but I do hope it helps others coming via Google. – Tom Hale Jan 28 '19 at 20:35
+
+
+
+Add the new drive to the filesystem with btrfs device add /dev/sdd /mountpoint then remove the missing drive with btrfs dev del missing /mountpoint remounting the filesystem may be required before btrfs dev del missing will work.
+share improve this answer
+answered Jan 2 '17 at 5:30
+llua
+5,5611717 silver badges2222 bronze badges
+
+    1
+    Thank you for your response. I updated my question to inform you that I can only mount the Brtfs filesystem in RO, which does not allow me to perform any operation on it. – Hans Deragon Jan 2 '17 at 12:42
+    use the -o degraded option for mount – llua Jan 2 '17 at 15:46
+    1
+    Here is the command I used: mount -t btrfs -o ro,degraded,recovery,nosuid,nodev,nofail,x-gvfs-show /dev/disk/by-uuid/975bdbb3-9a9c-4a72-ad67-6cda545fda5e /mnt/brtfs-raid1-b If I remove 'ro' from the option, I cannot get the filesystem mounted. – Hans Deragon Jan 2 '17 at 16:01 
+
+Will btrfs rebalance (duplicate from the remaining good drive) the RAID automatically once the new drive is added and the other deleted? – rrauenza Feb 25 '18 at 4:39
+(I believe the answer is YES if my eyes believe what brtfs fi usage /mount is showing me ...) – rrauenza Feb 25 '18 at 4:41
+
+
+
+
+btrfs replace is indeed the thing to try, but there are two gotchas regarding its invocation: it will only show errors when you use -B (otherwise it'll exit with status 0, as if everything is fine, but you'll see "never started" when you check the status), and invalid parameters will throw unrelated errors.
+
+For example, I think my disk is fine but the RAID1 got out of sync somehow (probably a power outage during which the host survived, but the disks are not on backup power and might have come online at slightly different times). To check, when I power down disk B (while mounted), I can read data just fine. When I power down disk A instead (disk B is turned on, and the filesystem was already mounted) then I get errors and corrupt data. So clearly disk A is fine and disk B is corrupt. But disk B appears to function, so I want to re-use it and just rebuild. Therefore I want to replace /dev/diskB with /dev/diskB.
+
+When I used btrfs replace start -B /dev/diskB /dev/diskB /mnt/btrfs it showed me ERROR: ioctl(DEV_REPLACE_START) failed on "/mnt/btrfs": Invalid argument, <illegal result value>. So there is a problem with the mountpoint it seems, right? Nope, when I changed the first /dev/diskB to /dev/diskA, it just worked. The mistake was in the devices, not in the mountpoint.
+
+Similarly, I see the first argument (2) is kind of weird. Perhaps the error is wrong and it would work with a device in place of the 2?
+
+btrfs replace has two modes of operating: one where you use the broken device as first argument (after start -B or whatever), and a mode (if the first option is unavailable) where you use the working device to be copied from. In either case, the second argument is the disk you wish to use to rebuild with.
+
+Whether the filesystem is mounted read-only or read-write, does not seem to matter. That's why I suspect it's rejecting your arguments and giving you a wrong error, rather than the error being correct.
+
+
+https://unix.stackexchange.com/questions/334228/btrfs-raid1-how-to-replace-a-disk-drive-that-is-physically-no-more-there/496853#496853
+
+
+
+
+replace needs the filesystem to be mounted rw to operate.
+
+In a degraded BTRFS RAID1 filesytem, you have one and only one chance to mount the filesystem rw using -o degraded:
+
+       degraded
+           (default: off)
+
+           Allow mounts with less devices than the RAID profile constraints
+           require. A read-write mount (or remount) may fail when there are
+           too many devices missing, for example if a stripe member is
+           completely missing from RAID0.
+
+After rw mount, find the devid of the missing device:
+
+btrfs filesystem show /mountpoint
+
+Replace the missing with the new device:
+
+btrfs replace start -B <devid> /dev/new-disk /mountpoint
+
+Check the status:
+
+btrfs replace status /mountpoint
+
+replace will resume on reboot.
+
+
+===========================================
+
+On already existing non raid install high risk of not working:
+
+btrfs device add -f /dev/sdb1 /
+
+btrfs balance start -dconvert=raid1c3 -mconvert=raid1c3 /
+
+ERROR: error during balancing '/': Input/output error
+
+There may be more info in syslog - try dmesg | tail
+
+BTRFS warning (device sda1): csum failed root
+
+===========================================
