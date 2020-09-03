@@ -10,6 +10,10 @@ https://stackoverflow.com/questions/55186796/openjdk-builds-and-javaws-bin-file
 
 https://adoptopenjdk.net/icedtea-web.html
 
+https://openwebstart.com/download/
+
+https://en.wikipedia.org/wiki/Java_Web_Start
+
 Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-11
 
 folder (where the bin folder is a direct sub-folder). You may need Administrator privileges to
