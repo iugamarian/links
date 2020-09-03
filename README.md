@@ -6,6 +6,10 @@ https://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-window
 
 http://www.nhdeeds.com/instructions/HowToSetWindowsFileAssociationsToOpenJNLPFiles.html
 
+https://stackoverflow.com/questions/55186796/openjdk-builds-and-javaws-bin-file
+
+https://adoptopenjdk.net/icedtea-web.html
+
 Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-11
 
 folder (where the bin folder is a direct sub-folder). You may need Administrator privileges to
@@ -120,6 +124,22 @@ Double click the javaws application
 Click the OK button.
 
 Click the Close button.
+
+Please turn to icedtea-web project. It is independent project, and in one way or another,
+
+it is what all distros are packing as javaws - http://icedtea.classpath.org/wiki/IcedTea-Web
+
+What am I supposed to do in Windows? Just install the binaries from
+
+icedtea.wildebeest.org/download/icedtea-web-binaries/1.8/… and it will magically work with
+
+Red Hat's OpenJDK 11?
+
+Yes. that is exactly what you should do. Please note, icedtea-webmoved to githb, and is now
+
+cooperating with adoptpenjdk and karakun, to provide more friendly user expereince:
+
+github.com/adoptopenjdk/icedtea-web – judovana Jun 30 '19 at 10:30
 
 
 # Microsoft Active Signal Resolution issues
