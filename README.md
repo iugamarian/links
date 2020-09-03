@@ -4,6 +4,8 @@ https://openjdk.java.net/
 
 https://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows
 
+http://www.nhdeeds.com/instructions/HowToSetWindowsFileAssociationsToOpenJNLPFiles.html
+
 Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-11
 
 folder (where the bin folder is a direct sub-folder). You may need Administrator privileges to
@@ -45,6 +47,79 @@ If you want to uninstall - just undo the above steps.
 Note: You can also point JAVA_HOME to the folder of your JDK installations and then set the
 
 PATH variable to %JAVA_HOME%\bin. So when you want to change the JDK you change only the JAVA_HOME variable and leave PATH as it is.
+
+How to Set Windows File Associations to Open .JNLP Files
+Note:
+Each file type on your computer is associated with an application that runs it. Files of type JNLP are run by Java Web Start. It is possible for JNLP files to become associated with another application, causing it to open incorrectly. Because Java Web Start opens the search application, when the JNLP files are associated incorrectly, the search application cannot open.
+
+Document Details:
+To modify the file association to have JNLP files open with Java Web Start on a Windows XP, Windows 7/Windows Vista, Windows 8, or Windows 10 computer, follow the steps below:
+
+ 
+
+Windows 10:
+
+Go to the nhdeeds.com website, then click on Search County Records.
+
+Click to Accept Registry Disclaimer, then click the link to Launch the search application
+
+When prompted to open or save, choose save
+
+Navigate to the saved location to right-click on the saved .jnlp file and choose Open With
+
+Make sure there is a check-mark in the box that says Always use this app to open .jnlp files, then click More apps
+
+Scroll down to the bottom and select Look for another app on this PC
+
+Select the Java folder, (If you do not see Java, go back up one level to the c:/ drive and
+
+select Program Files(x86), then select the Java folder. If you do not have a Java folder here,
+
+you will want to go to www.java.com and download the latest version before continuing with these steps.)
+
+Double click the latest jre folder (example: jre7, jre1.8_191, etc)
+
+Double click the bin folder
+
+Double click the javaws application
+
+Click the Close button
+
+JNLP files will now open, by default, with Java Web Start
+
+Windows 7 and Vista:
+
+Click on Start and select Control Panel.
+
+In the top right corner of the Control Panel, select Category from the view by: pull down menu.
+
+Click the Programs link.
+
+Under Default Programs, click the Make a file type always open in a specific program link.
+
+Under the Name column, locate and select JNLP from the list of Extensions.
+
+Click the Change program button.
+
+From the Open With window, click the Browse... button..
+
+From the Open With... dialogue window, (This will typically open in the c:\Program Files directory)
+
+Select the Java folder, (If you do not see Java, go back up one level to the c:/ drive and select
+
+Program Files(x86), then select the Java folder. If you do not have a Java folder here, you will
+
+want to go to www.java.com and download the latest version before continuing with these steps.)
+
+Double click the latest jre folder (example: jre7, jre1.8_191, etc)
+
+Double click the bin folder
+
+Double click the javaws application
+
+Click the OK button.
+
+Click the Close button.
 
 
 # Microsoft Active Signal Resolution issues
