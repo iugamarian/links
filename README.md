@@ -5982,6 +5982,17 @@ avrdude -c usbasp -p atmega8 -u -U hfuse:w:0xc9:m -U lfuse:w:0xef:m
 avrdude -c usbasp -p atmega8 -U flash:w:$1.hex
 ```
 
+# Program the best USBASP firmware available on the internet, if it is already USBASP no need to program the fuses:
+
+https://github.com/iugamarian/usbasp/tree/1.06-alpha
+
+# Avoid cloning thye repository - it will not be 1.06-alpha activated an I do not now how to do that yet:
+
+Download zip, copy bin/firmware/usbasp-v1.06-alpha-2016-05-18/usbasp-v1.06-alpha-2016-05-18-atmega8.hex to home folder and:
+
+avrdude -c usbasp -p atmega8 -U flash:w:usbasp-v1.06-alpha-2016-05-18-atmega8.hex
+
+
 0. Verify that you have a USBasp V2.0, and that it has a 12MHz crystal and an ATMEGA8 or ATMEGA8A MCU onboard. DO NOT CONNECT IT TO THE USB PORT OF YOUR COMPUTER.
 
 1. Short the JP2 (self-programming) jumper.
