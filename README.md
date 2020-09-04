@@ -5986,7 +5986,7 @@ avrdude -c usbasp -p atmega8 -U flash:w:$1.hex
 
 https://github.com/iugamarian/usbasp/tree/1.06-alpha
 
-# Avoid cloning the repository - it will not be 1.06-alpha activated an I do not now how to do that yet:
+# Avoid cloning the repository - it will not be 1.06-alpha activated and I do not now how to do that yet:
 
 # Download zip,
 
