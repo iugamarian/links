@@ -1,3 +1,10 @@
+# NAS SATA expander
+
+https://conectica.ro/controlere/pci-express/pci-express-cu-8-porturi-sata-iii-delock-90391
+
+https://conectica.ro/controlere/pci-express/pci-express-cu-5-porturi-sata-iii-delock-90395
+
+
 # Open physics 4 volumes book
 
 http://www.openculture.com/2018/04/the-feynman-lectures-on-physics.html
