@@ -2,6 +2,8 @@
 
 https://www.msweet.org/pappl/
 
+https://github.com/sponsors/michaelrsweet
+
 
 # NAS SATA expander
 
