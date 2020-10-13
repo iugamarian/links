@@ -1,3 +1,8 @@
+# Alternative to the stagnant CUPS
+
+https://www.msweet.org/pappl/
+
+
 # NAS SATA expander
 
 https://conectica.ro/controlere/pci-express/pci-express-cu-8-porturi-sata-iii-delock-90391
