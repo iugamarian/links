@@ -1,3 +1,16 @@
+# BTRFS FI BALANCE IS DEPRECATED, PLEASE USE BTRFS BALANCE START
+
+https://serverfault.com/questions/519852/does-btrfs-balance-also-defragment-files
+
+balance will not defragment - if 11000 fragments still 11000 fragments better arranged
+
+defragment will not balance so much - the actual write of the defrag goes through the
+
+allocator which balances but will not complete the balance unless writing enough
+
+'btrfs filesystem balance' command is deprecated, please use 'btrfs balance start' command instead.
+
+
 # Alternative to the stagnant CUPS
 
 https://www.msweet.org/pappl/
