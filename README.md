@@ -1,3 +1,26 @@
+# Ubuntu do release upgrade
+
+https://linuxconfig.org/how-to-upgrade-ubuntu-to-20-10
+
+$ sudo apt update
+
+$ sudo apt upgrade
+
+$ sudo apt dist-upgrade
+
+$ sudo apt autoremove
+
+/etc/update-manager/release-upgrades
+
+Prompt=normal
+
+$ sudo do-release-upgrade
+
+y
+
+$ sudo reboot
+
+
 # BTRFS FI BALANCE IS DEPRECATED, PLEASE USE BTRFS BALANCE START
 
 https://serverfault.com/questions/519852/does-btrfs-balance-also-defragment-files
