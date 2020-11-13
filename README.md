@@ -1,3 +1,28 @@
+# Windows update use less resources automatically
+
+https://www.techiexpert.com/what-is-windows-modules-installer-how-to-enable-disable/
+
+Go to the “Run” by pressing the Windows key with R on your system.
+    
+Then, type the services.msc and click on the OK button.
+    
+Then search for the “Windows Module Installer.”
+    
+Then double click on the “Windows Module Installer” and choose the manual
+    
+from the dropdown. It is usually set to Automatic or even workload.
+    
+Now find and double click on the Windows update option.
+    
+Now a dialogue will appear, in that select the startup type to manual or even
+    
+disabled whatever option you have to choose, according to your preference.
+    
+Then click on OK
+    
+Then reboot your system, and then everything will be fine.
+    
+
 # Ubuntu do release upgrade
 
 https://linuxconfig.org/how-to-upgrade-ubuntu-to-20-10
