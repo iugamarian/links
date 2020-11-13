@@ -2,7 +2,7 @@
 
 https://www.techiexpert.com/what-is-windows-modules-installer-how-to-enable-disable/
 
-Go to the “Run” by pressing the Windows key with R on your system.
+1. Go to the “Run” by pressing the Windows key with R on your system.
     
 Then, type the services.msc and click on the OK button.
     
@@ -21,7 +21,25 @@ disabled whatever option you have to choose, according to your preference.
 Then click on OK
     
 Then reboot your system, and then everything will be fine.
-    
+
+2. Set your internet to connect as a metered connection
+
+Most of the people would recommend this as this would not let the system to take
+
+much of the consumption of the internet by the windows module installer worker,
+
+and thus there are high chances that it might stop using the high-performance
+
+resources of the CPU.
+
+You can do this by only going on to the Start > Settings > Network & Internet > Wi-Fi.
+
+Then click on the advanced button options.
+
+Then, in the last, select the set metered connection as “On.”
+
+If you are working on an ethernet connection, then it is better to set the updates with them manually.
+
 
 # Ubuntu do release upgrade
 
