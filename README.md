@@ -14,7 +14,7 @@ https://btrfs.wiki.kernel.org/index.php/SysadminGuide
 
 BTRFS reflinks are a smaller issue, but snapshots are a very big issue - starts using space for any small file change, kills ssd drives.
 
-This is very bad issue because IT CAN NOT BE DISABLED / KILLED ... maybe it can be by recompiling linux with BTRFS snapshot code removed from the source.
+This is very bad issue because IT CAN NOT BE DISABLED / KILLED ... maybe it can be by recompiling Linux with BTRFS snapshot code removed from the source.
 
 
 # BTRFS news October 2020
