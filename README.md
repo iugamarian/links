@@ -1,3 +1,22 @@
+# BTRFS most big issue to get rid of because many think it is "very good":
+
+# BTRFS snapshots are a complete disaster until about the year 2038, hard to disable, missing nosnapshots mount option
+
+https://simonbasle.github.io/2019/04/linux-where-has-my-space-gone/
+
+http://marc.merlins.org/perso/btrfs/post_2014-05-04_Fixing-Btrfs-Filesystem-Full-Problems.html
+
+https://lwn.net/Articles/579009/
+
+https://www.solaris-cookbook.eu/linux/btrfs-filling-filesystem-snapshots-apt-snapshot/
+
+https://btrfs.wiki.kernel.org/index.php/SysadminGuide
+
+BTRFS reflinks are a smaller issue, but snapshots are a very big issue - starts using space for any small file change, kills ssd drives.
+
+This is very bad issue because IT CAN NOT BE DISABLED / KILLED ... maybe it can be by recompiling linux with BTRFS snapshot code removed from the source.
+
+
 # BTRFS news October 2020
 
 https://www.spinics.net/lists/linux-btrfs/msg105967.html
