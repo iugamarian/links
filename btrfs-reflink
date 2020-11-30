@@ -1,0 +1,74 @@
+https://blog.ram.rachum.com/post/620335081764077568/symlinks-and-hardlinks-move-over-make-room-for
+
+ Symlinks and hardlinks, move over, make room for reflinks!
+
+If you’ve been around Linux for a while, you know about symlinks and hardlinks. You’ve used them and you know the differences between how each of them behaves. Besides being a useful filesystem tool, they’re also a favorite interview question, used to gauge a candidate’s familiarity with filesystems.
+
+What you might not know is that there’s also a thing called reflink. Right now it’s supported only on a handful of filesystems, such as Apple’s APFS, used on all Apple devices, XFS which is used on lots of Linux file-sharing servers, Btrfs,OCFS2, and Microsoft’s ReFS.
+
+If a symlink is a shortcut to another file, and a hardlink is a first-class pointer to the same inode as another file, what’s a reflink, and when is it useful?
+
+A reflink is a tool for doing copy-on-write on the filesystem.
+
+If you’ve heard the term copy-on-write before, I’m willing to bet that it was in the context of the Linux fork call. Let’s talk a bit about that.
+Copy-on-write when forking a process
+
+When you fork a process in Linux, the new process has a new copy of the old process’s memory. This is essential, because if the new process shared the old process’s memory, either process could crash if the other process was making an unexpected change to their shared memory. Therefore, Linux needs to make a copy.
+
+However, Linux is smart, and it knows better than to just make a naive copy. Making a naive copy could be a waste of memory, especially if your process has several gigabytes of memory allocated, and you’re forking lots of processes for small tasks. If Linux were to make naive copies, you could find yourself with an out-of-memory crash very quickly.
+
+When you fork a process, Linux uses copy-on-write to create the new process’s memory. This means that it holds off on making actual copies of the existing memory pages until the last possible moment; which means, the moment when the two processes start having different ideas on what the content of these memory pages should be. In other words, as soon as one of these processes start writing to these memory pages, Linux makes a copy of it, assigning the original page to the original process, and the new copy to the newly-forked process.
+
+This is a huge boon, because most of the time, the new process will either only be reading the memory, or not even that. So many copy actions are avoided thanks to this technique. The beauty part is that these shenanigans are completely transparent to the process, and to the developer who’s writing the logic that this process performs. The new process behaves as if it has its own copy of the parent’s memory pages, and the floor is being paved ahead of it as it walks forward, so to speak. It’ll never even know that copy-on-write was performed.
+
+Now we’re ready to talk about reflinks.
+Reflinks are copy-on-write for the filesystem
+
+If you read the section above, you already know 90% of what you need to know to understand and use reflinks.
+
+A reflink is a copy of a file, except that copy isn’t really created on the hard-drive until the last possible moment. Like the forking version, this logic is invisible. You could do a reflink of a 10 gigabyte file, and the new “copy” would be created immediately, because the 10 gigabytes wouldn’t really be duplicated. They’ll only be duplicated once you start modifying one of the copies.
+
+All the while, you could treat the reflink as if it was a completely legitimate copy of your original file.
+How do you create reflinks?
+
+On Linux, run the following:
+
+
+            $ cp --reflink old_file new_file
+          
+
+On Mac, there’s a different flag for some reason:
+
+
+            $ cp -c old_file new_file
+          
+
+If you’re creating reflinks programmatically, you could also use dedicated libraries such as this one for Python.
+When are reflinks useful?
+
+Here’s an example of where I’ve used reflinks for a client of mine years back. They had a tool for developers that takes their entire codebase and copies it into a Docker container to run tests on it. (Don’t ask.)
+
+That recursive copying took a while, and the developers couldn’t change their code in the meanwhile, or checkout any other branches, because then an inconsistent version of their code would be copied into the container. That was pretty annoying for me personally, because I was twiddling my thumbs whenever I started the test process.
+
+I figured, why not use reflinks?
+
+I wrote some Python code that creates reflinks to the code in a temporary folder, and then does a real copy from that temporary folder to the Docker container. The big advantage here is that as soon as the reflinks were created, I could modify the original code as much as I wanted, without affecting the tests.
+
+Fortunately, all the developers were using Macs in that company, so I knew I didn’t have to worry about filesystem support.
+How can reflinks go wrong?
+
+You might be thinking, “What happens if I create a reflink of a huge file, that’s bigger than the amount of space I have available on the harddrive?”
+
+I’ve never tried this, but here’s what I heard: The reflink will be created, but then you’ll get an error as soon as one of the copies will be changed, and an actual copy will need to be created. I haven’t tested this, but this is something you should take into account if you’re relying on reflinks in your business logic.
+#planetpython #programming #filesystems
+	
+Written on June 8th, 2020 by
+Ram Rachum
+
+I’m a software developer based in Israel, specializing in the Python programming language. I write about technology, programming, startups, Python, and any other thoughts that come to my mind.
+
+I’m sometimes available for freelance work in Python and Django. My expertise is in developing a product from scratch.
+
+
+http://marc.merlins.org/perso/btrfs/post_2014-05-21_My-Btrfs-Talk-at-Linuxcon-JP-2014.html
+
