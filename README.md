@@ -10,11 +10,31 @@ https://lwn.net/Articles/579009/
 
 https://www.solaris-cookbook.eu/linux/btrfs-filling-filesystem-snapshots-apt-snapshot/
 
+https://btrfs.wiki.kernel.org/index.php/Manpage/btrfs-subvolume
+
 https://btrfs.wiki.kernel.org/index.php/SysadminGuide
 
 BTRFS reflinks are a smaller issue, but snapshots are a very big issue - starts using space for any small file change, kills ssd drives.
 
-This is very bad issue because IT CAN NOT BE DISABLED / KILLED ... maybe it can be by recompiling Linux with BTRFS snapshot code removed from the source.
+This is very bad issue because it can not be disabled / killed ... maybe it can be by recompiling Linux with BTRFS snapshot code removed from the source.
+
+Good news - snapshots maybe can be avoided by not using subvolumes and only the top level volume and apps that try to snapshot see this as not acceptable:
+
+A freshly created filesystem is also a subvolume, called top-level, internally has an id 5. This subvolume cannot be removed or
+
+replaced by another subvolume. This is also the subvolume that will be mounted by default, unless the default subvolume has been
+
+changed (see subcommand set-default).
+
+A snapshot is simply a subvolume that shares its data (and metadata) with some other subvolume, using Btrfs's COW capabilities.
+
+Once a [writable] snapshot is made, there is no difference in status between the original subvolume, and the new snapshot subvolume.
+
+To roll back to a snapshot, unmount the modified original subvolume, use mv to rename the old subvolume to a temporary location, and
+
+then again to rename the snapshot to the original name. You can then remount the subvolume.
+
+At this point, the original subvolume may be deleted if wished. Since a snapshot is a subvolume, snapshots of snapshots are also possible. 
 
 
 # BTRFS news October 2020
