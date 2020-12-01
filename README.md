@@ -2,6 +2,10 @@
 
 # BTRFS snapshots are a complete disaster until about the year 2038, hard to disable, missing nosnapshots mount option
 
+https://mutschler.eu/install-guides
+
+https://discourse.destinationlinux.network/t/ubuntu-20-04-with-btrfs-luks-full-disk-encryption-including-boot-and-auto-apt-snapshots-with-timeshift/2022
+
 https://simonbasle.github.io/2019/04/linux-where-has-my-space-gone/
 
 http://marc.merlins.org/perso/btrfs/post_2014-05-04_Fixing-Btrfs-Filesystem-Full-Problems.html
