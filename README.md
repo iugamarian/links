@@ -4,6 +4,8 @@
 
 https://mutschler.eu/install-guides
 
+https://mutschler.eu/linux/install-guides/fedora-btrfs/
+
 https://discourse.destinationlinux.network/t/ubuntu-20-04-with-btrfs-luks-full-disk-encryption-including-boot-and-auto-apt-snapshots-with-timeshift/2022
 
 https://simonbasle.github.io/2019/04/linux-where-has-my-space-gone/
