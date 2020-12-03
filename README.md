@@ -1,3 +1,48 @@
+# BTRFS best mount options for flash and ssd
+
+http://arter97.blogspot.com/2017/07/experimenting-around-btrfs-on-android.html
+
+https://btrfs.wiki.kernel.org/index.php/Changelog#By_feature
+
+https://www.reddit.com/r/btrfs/comments/k24g5t/15tb_nvme_ssd_with_btrfs_optimisation/
+
+https://btrfs.wiki.kernel.org/index.php/Manpage/btrfs(5)
+
+https://forums.gentoo.org/viewtopic-t-834065-postdays-0-postorder-asc-start-25.html?sid=650a16a569b84ffe178c0fe0cc882dab
+
+noatime = avoid better than the default "relatime" option very many small writes for every very many small writes done
+
+ssd_spread = put all metadata and data in new free chunks, this will fragment a lot, "ssd" option only for metadata
+
+autodefrag = fix the mess done by ssd_spread by collecting many partial chunks and writing them as full chunks
+
+space_cache=v2 = avoid using the default space_cache version 1 and use the version 2, better for many TB filesystem, same for rest
+
+nospace_cache since: 3.2, space_cache=v1 and space_cache=v2 since 4.5, default: space_cache=v1
+
+On very large filesystems (many terabytes) and certain workloads, the performance of the v1 space cache may degrade drastically.
+
+The v2 implementation, which adds a new B-tree called the free space tree, addresses this issue. Once enabled, the v2 space cache
+
+will always be used and cannot be disabled unless it is cleared. Use clear_cache,space_cache=v1 or clear_cache,nospace_cache to do
+
+so. If v2 is enabled, kernels without v2 support will only be able to mount the filesystem in read-only mode. The btrfs(8) command
+
+currently only has read-only support for v2. A read-write command may be run on a v2 filesystem by clearing the cache, running the
+
+command, and then remounting with space_cache=v2.
+
+If a version is not explicitly specified, the default implementation will be chosen, which is v1.
+
+Avoid other options for the specified reason:
+
+compress* = if used in normal, raid 1, 10, 1c3, 1c4 too many failed reads do hang even if the other drives have a good copy
+
+ssd = tested by me as too slow on DRAM-less SSD and CF media, better use "ssd_spread" with "autodefrag" to reduce fragmentation
+
+discard = hangs the computer too often, better not use it and do a manual or weekly fstrim on all the mounts supporting fstrim
+
+
 # Best chroot on old Linux and new Linux
 
 https://wiki.archlinux.org/index.php/Install_Arch_Linux_from_existing_Linux
