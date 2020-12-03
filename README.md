@@ -63,6 +63,8 @@ chroot "$newroot"
 
 # Why ? Because in BTRFS defrag and autodefrag are not snapshot aware (yet) and if you have many snapshots all use the full space for each snapshot
 
+https://www.reddit.com/r/btrfs/comments/cr2blr/is_there_a_smart_defrag_tool_that_repairs/
+
 https://linux-btrfs.vger.kernel.narkive.com/OAihQu4D/options-for-ssd-autodefrag-etc
 
 https://mutschler.eu/install-guides
