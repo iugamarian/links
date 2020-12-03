@@ -1,6 +1,67 @@
+# Best chroot on old Linux and new Linux
+
+https://wiki.archlinux.org/index.php/Install_Arch_Linux_from_existing_Linux
+
+https://git.archlinux.org/arch-install-scripts.git/tree/arch-chroot.in
+
+https://www.archlinux.org/packages/extra/any/arch-install-scripts/
+
+https://wiki.archlinux.org/index.php/Chroot#Using_chroot
+
+Example for old Linux:
+
+While installing archlinux-2015.07.01-x86_64 from a Debian 7 host, the following error
+
+prevented both pacstrap and arch-chroot from working:
+
+pacstrap -i /mnt
+
+mount: mount point /mnt/dev/pts does not exist
+
+==> ERROR: failed to setup chroot /mnt
+
+Apparently, this is because these two scripts use a common function. chroot_setup()
+
+relies on newer features of util-linux, which are incompatible with Debian 7 userland
+
+The solution for pacstrap is to manually execute its various tasks, but use the regular
+
+procedure to mount the kernel filesystems on the target directory ("$newroot"):
+
+newroot=/mnt
+
+mkdir -m 0755 -p "$newroot"/var/{cache/pacman/pkg,lib/pacman,log} "$newroot"/{dev,run,etc}
+
+mkdir -m 1777 -p "$newroot"/tmp
+
+mkdir -m 0555 -p "$newroot"/{sys,proc}
+
+mount --bind "$newroot" "$newroot"
+
+mount -t proc /proc "$newroot/proc"
+
+mount --rbind /sys "$newroot/sys"
+
+mount --rbind /run "$newroot/run"
+
+mount --rbind /dev "$newroot/dev"
+
+pacman -r "$newroot" --cachedir="$newroot/var/cache/pacman/pkg" -Sy base base-devel ... ## add the packages you want
+
+cp -a /etc/pacman.d/gnupg "$newroot/etc/pacman.d/"       ## copy keyring
+
+cp -a /etc/pacman.d/mirrorlist "$newroot/etc/pacman.d/"  ## copy mirrorlist
+
+Instead of using arch-chroot for Installation guide#Chroot, simply use:
+
+chroot "$newroot"
+
+
 # BTRFS most big issue to get rid of because many think it is "very good":
 
 # BTRFS snapshots are a complete disaster until about the year 2038, hard to disable, missing nosnapshots mount option
+
+# Why ? Because in BTRFS defrag and autodefrag are not snapshot aware (yet) and if you have many snapshots all use the full space for each snapshot
 
 https://mutschler.eu/install-guides
 
