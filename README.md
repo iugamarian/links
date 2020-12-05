@@ -1,3 +1,10 @@
+# Find the most fragmented files on a file system
+
+http://www.infotinks.com/mostfragged/
+
+wget http://www.infotinks.com/scripts/mostfragged.sh
+
+
 # BTRFS best mount options for flash and ssd
 
 http://arter97.blogspot.com/2017/07/experimenting-around-btrfs-on-android.html
