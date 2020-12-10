@@ -1,0 +1,21 @@
+https://forum.doozan.com/read.php?2,12096
+
+cd /boot
+mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.8.3-kirkwood-tld-1 -d initrd.img-5.8.3-kirkwood-tld-1 uInitrd
+sync
+reboot
+ls
+mv /boot /boot-of-5.8.3
+cd /
+mkdir /boot
+cd /boot
+wget https://bitly.com/39QkgzI
+mv 39QkgzI linux-5.9.12-kirkwood-tld-1-bodhi.tar.bz2
+tar -xjf linux-5.9.12-kirkwood-tld-1-bodhi.tar.bz2
+tar -xf  linux-dtb-5.9.12-kirkwood-tld-1.tar
+dpkg -i linux-image-5.9.12-kirkwood-tld-1_1.0_armel.deb
+mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n Linux-5.9.12-kirkwood-tld-1 -d vmlinuz-5.9.12-kirkwood-tld-1 uImage
+mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.9.12-kirkwood-tld-1 -d initrd.img-5.9.12-kirkwood-tld-1 uInitrd
+sync
+sync
+reboot
