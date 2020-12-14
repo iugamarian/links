@@ -7,6 +7,8 @@ wget http://www.infotinks.com/scripts/mostfragged.sh
 
 # BTRFS best mount options for flash and ssd
 
+12-12-2020 https://linuxhint.com/btrfs-filesystem-beginner-guide/
+
 http://arter97.blogspot.com/2017/07/experimenting-around-btrfs-on-android.html
 
 https://btrfs.wiki.kernel.org/index.php/Changelog#By_feature
