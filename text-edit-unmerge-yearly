@@ -1,0 +1,106 @@
+#!/bin/bash
+# Example:
+# text-01.txt
+# 1
+# 2
+# 3
+# 4
+# 5
+# 6
+# 7
+# 8
+
+# text-02.txt
+# a
+# b
+# c
+# d
+# e
+# f
+# g
+# h
+
+
+# result-01-02.txt
+# 1
+# b
+# 3
+# d
+# 5
+# f
+# 7
+# h
+
+# result-zeros.txt
+# 0
+# 0
+# 0
+# 0
+# 0
+# 0
+# 0
+# 0
+
+###########################
+LASTLINEONE="0"
+LASTLINETWO="0"
+LASTLINETHREE="0"
+LASTLINEALL="0"
+TEXTONE="text-01.txt"
+TEXTTWO="text-02.txt"
+RESULTONETWO="result-01-02.txt"
+RESULTZEROS="result-zeros.txt"
+STRINGONE=""
+STRINGTWO=""
+STRINGTHREE=""
+LINE="1"
+if [ -f "$TEXTONE" ]
+then
+LASTLINEONE=`cat "$TEXTONE" | wc -l`
+else
+echo ""
+echo "text-01.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ -f "$TEXTTWO" ]
+then
+LASTLINETWO=`cat "$TEXTTWO" | wc -l`
+else
+echo ""
+echo "text-02.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINETWO" -lt "$LASTLINEONE" ]
+then
+echo ""
+echo "text-02.txt has less lines than text-01.txt. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINEONE" -lt "$LASTLINETWO" ]
+then
+echo ""
+echo "text-01.txt has less lines than text-02.txt. Exiting."
+echo ""
+exit
+fi
+# text-01.txt seems to have the same lines with text-02.txt
+LASTLINEALL=$((LASTLINEONE+1))
+rm "$RESULTONETWO"
+rm "$RESULTZEROS"
+while [ "$LINE" -lt "$LASTLINEALL" ]
+do
+LINEPLUS=$((LINE+1))
+STRINGONE=`cat "$TEXTONE" | sed -n "$LINE"p`
+STRINGTWO=`cat "$TEXTTWO" | sed -n "$LINEPLUS"p`
+echo "$STRINGONE" >> "$RESULTONETWO"
+echo "$STRINGTWO" >> "$RESULTONETWO"
+echo "0" >> "$RESULTZEROS"
+echo "0" >> "$RESULTZEROS"
+LINE=$((LINE+2))
+done
+echo ""
+echo "Done."
+echo ""
