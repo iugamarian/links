@@ -1,8 +1,38 @@
+# Steam Linux usage for games
+
+https://www.reddit.com/r/debian/comments/kacvgq/debian_has_nearly_5_of_linux_gamers_marketshare/
+
+
 # Write caching and sleep disable for disks in Linux
 
 https://blog.cpanel.com/disk-io-errors-troubleshooting-on-linux-servers/
 
 https://www.linux-magazine.com/Online/Features/Tune-Your-Hard-Disk-with-hdparm
+
+https://www.reddit.com/r/debian/comments/gh91uc/turn_off_hard_disk_when_inactive/
+
+Summary for HDD power management:
+
+sudo apt install hdparm
+Disable power management completely:
+
+sudo hdparm -B 255 -S 0 /dev/sdb
+-B => Get/set Advanced Power Management feature (apm)
+
+-S => Set the standby (spindown) timeout for the drive (spindown_time)
+
+Only disable power management for long periods of no activity to minimize spin up/down:
+
+sudo hdparm -W1 -B 127 -S 253 /dev/sdb
+APM summary: (-B xxx )
+
+1 - 127 = permit spin-down 128 - 254 = do not permit spin-down 255 = disable apm
+
+Spindown time: (-S xxx)
+
+0 = disabled 1..240 = multiples of 5 seconds (5 seconds to 20 minutes) 241..251 = 1..11 x 30 mins 252 = 21 mins 253 = vendor defined (8..12 hours)
+
+You can make this permanent by editing the /etc/hdparm.conf file
 
 Relics
 
