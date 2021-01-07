@@ -1,3 +1,14 @@
+# checksumming of disks different than btrfs checksumming
+
+https://raid.wiki.kernel.org/index.php/System2020
+
+https://daltondur.st/syno_btrfs_1/
+
+https://unix.stackexchange.com/questions/583527/dm-integrity-standalone-mapper-device-lost-after-reboot
+
+see files in this repository integrity-for-disk-1 and integrity-for-disk-2
+
+
 # Red Hat contributions
 
 https://fedoraproject.org/wiki/Red_Hat_contributions
