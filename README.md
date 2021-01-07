@@ -1,3 +1,17 @@
+# My AMD PC
+
+https://www.msi.com/Motherboard/support/B450M-PRO-M2-MAX
+
+BIOS updates being done
+
+
+# My Intel PC
+
+https://www.msi.com/Motherboard/support/Z170A-GAMING-M3
+
+BIOS updates stopped in 2018
+
+
 # Steam Linux usage for games
 
 https://www.reddit.com/r/debian/comments/kacvgq/debian_has_nearly_5_of_linux_gamers_marketshare/
