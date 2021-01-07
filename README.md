@@ -1,6 +1,61 @@
-# Write caching in Linux
+# Write caching and sleep disable for disks in Linux
 
 https://blog.cpanel.com/disk-io-errors-troubleshooting-on-linux-servers/
+
+https://www.linux-magazine.com/Online/Features/Tune-Your-Hard-Disk-with-hdparm
+
+Full Speed Ahead
+
+Many modern hard drives allow you to slow down the head movement. Although doing so will increase access times, it will also reduce the noise level. To find out whether your own hard drive offers this “acoustic mode,” you can use this command:
+
+hdparm -M /dev/sda
+If a number follows the equal sign, as shown in Figure 4 (bottom), the drive can be put into a quiet mode with:
+
+hdparm -M 128 /dev/sda
+To reach the highest speed, use the maximum value:
+
+hdparm -M 254 /dev/sda
+Values between 128 and 254 are allowed, resulting in a trade-off between noise level and speed. Incidentally, your Linux kernel must also support acoustic management, which should be the case for all current major distributions.
+
+Some CD and DVD drives turn out to be more like turbines: Their high-speed rotation can hinder audio/video enjoyment. The
+
+hdparm -E 4 /dev/sr0
+command will provide relief. The parameter 4 determines speed, and /dev/sr0 specifies the DVD drive. This example slows drive reading speed ninefold.
+
+Write-Back Caching
+
+With write-back caching, the hard drive first stores the data to be written in a buffer. In this way, it can accept data much faster, which in the end leads to a faster write speed. The
+
+hdparm -W /dev/sda
+command shows whether write-back caching is active with a 1 after the equals sign; otherwise, you can activate the function with the -W1 switch.
+
+If hdparm will not allow this change, you need to make sure that write-back caching has been activated in the BIOS. However, this function is not recommended for all situations: In the case of a power outage, the data in the buffer would be lost permanently.
+
+If a program sensitive to data loss – such as a database – is running on the system, you should turn off the write-back cache with the -W0 switch. Documentation for the PostgreSQL database even explicitly recommends that this be done.
+
+Live Wire
+
+If a hard disk or SSD doesn’t have anything to do for a certain period of time, it automatically enters sleep mode. This power-saving feature can be influenced with the -B parameter. Thus, using:
+
+hdparm -B255 /dev/sda
+would deactivate energy management; however, not all drives allow this.
+
+Instead of 255, values between 1 and 254 are allowed. A higher value means more power is used but also promises higher performance or speed. Values between 1 and 128 allow the drive to shut down, whereas values from 129 to 254 forbid that from happening.
+
+The most power can be saved with a value of 1; the highest rate of data transmission (I/O performance) is achieved with 254. You can call up the current value with:
+
+hdparm -B /dev/sda
+The specific effect the different values will have depends on the drive itself. However, you should keep in mind that too many shutdowns are not good for desktop hard drives: Each time it shuts off, the drive must park the heads, which increases wear and tear. Consequently, you shouldn’t wake your hard drive up every two seconds – which always takes more than two seconds to do.
+
+You can set how many seconds of idleness the hard drive should wait before it goes to sleep with the
+
+hdparm -S 128 /dev/sda
+switch; however, this value here is not in seconds but a number between 1 and 253. The hard drive multiplies this value by another. The value chosen in the example, 128, lies between 1 and 240, for which the drive uses a factor of five. Consequently, it would shut down after 640 seconds of idleness.
+
+From 241 and up, the multiplication factor increases steadily. At 251, the waiting period has increased to 5.5 hours. At 253, the value is preset by the manufacturer, usually between eight and 12 hours. The value 254 is left out; at 255, the drive will wait 21 minutes and 15 seconds. A value of 0 will deactivate sleep mode completely. To send the hard drive to sleep immediately, enter:
+
+hdparm -y /dev/sda
+With a capital Y, the drive will go into an even deeper state of sleep. Depending on the drive, the drive might only wake up from a deep sleep after a reset of the whole system.
 
 Turn on Write Caching
 Write caching collects data for multiple writes in a RAM cache before writing them permanently to the drive. Because it reduces the number of hard drive writes, it can improve performance in some scenarios. 
