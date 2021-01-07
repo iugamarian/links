@@ -6,6 +6,243 @@ I typically just shuck them right away and do the stress test via SATA.
 
 Btw: How do you stress test? I usually do badblocks -b 4096 -p 0 -s -t 0 -v -w DEVICE and an extended SMART test afterwards.
 
+# uBoot in Zyxel NSA320 NAS not supporting drives larger than 2TB for boot
+
+https://forum.doozan.com/read.php?3,12551,12779
+
+https://forum.doozan.com/read.php?3,12381,12890#msg-12890
+
+https://forum.doozan.com/read.php?3,12381,page=34
+
+https://forum.doozan.com/read.php?8,105959
+
+I know @bohdi isn't a fan of them but I have had some really good luck with hybrid MBR/GPT partition tables to allow older devices that boot from disk to use large drives without replacing u-boot.
+
+I've actually recently been testing some old orion5x devices from ~2007 with 4TB drives with surprisingly good results.
+
+I'm still working on the documentation but this includes the gdisk output used to convert an MBR to hybrid MBR/GPT that works with ancient versions of uboot as well as a link to a really good article that explains how hybrid partition tables work:
+
+https://github.com/1000001101000/Debian_on_Buffalo/wiki/Alternate-install-method-via-debootstrap-script#Post_install_steps
+
+http://ml.sequanux.org/pipermail/lacie-nas/2013-June/000503.html
+
+"boot Linux off a >2TB disk", which is essentially what U-Boot disk support is for, then that's wrong: disks bigger than
+
+2TB can perfectly be used for booting Linux from U-Boot. You just need to make sure you avoid loading the kernel and
+
+initrd from beyond the 2.1TB limit.
+
+https://forum.doozan.com/read.php?3,10710,10816
+
+You will need a GPT Hybrid. Period. Unless I am mistaken, uboot itself does not have GPT support at this time.
+
+https://forum.doozan.com/read.php?3,12381
+
+https://forum.doozan.com/read.php?3,93799,93839
+
+https://forum.doozan.com/read.php?2,76314,84339#msg-84339
+
+https://forum.doozan.com/read.php?2,76314,page=24
+
+Prerequisites:
+
+a. All HDD drives must be removed from the RS816/DS116 when starting the installation.
+
+b. Serial console must be connected during installation.
+
+c. All installation steps must be performed while login as root (sudo will not work).
+
+Steps:
+
+1. Log in as root.
+
+On another Linux box, or boot the RS816/DS116 into Debian USB rootfs (if you have installed it and running this box on USB).
+
+2. Prepare the HDD
+
+If installation is peformed on this box (running Debian USB rootfs), then insert the HDD into the 1st slot.
+
+If using another Linux box, then use USB adapter to connect it (if it does not have SATA slot).
+
+Assuming this HDD is assigned as /dev/sdb. For sanity, use the mount command to list all mount points,
+
+and observe that the HDD was not mounted automatically. If it was mounted automatically then umount it.
+
+Be extra careful here if using another Linux box to prepare the HDD. Ensure to see the disk you will wipe
+
+out is /dev/sdb. If the HDD drive was assigned a different drive letter, then adjust the drive letter accordingly
+
+in the next step and all following steps.
+
+2.a. Zero out the first 50MiB of the HDD
+
+dd if=/dev/zero of=/dev/sdb bs=1MiB count=50
+
+2.b. Create a single partition that starts at 50MiB using fdisk. Below is the proper way to create a GPT partition
+
+at 50MiB on a large HDD:
+
+fdisk /dev/sdb
+
+Command (m for help): g
+
+Command (m for help): n
+
+Partition number (1-128, default 1):
+
+First sector (2048-62533262, default 2048): 102400
+
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (102400-62533262, default 62533262):
+
+Command (m for help): w
+
+(Partition number and Last sector values are default).
+
+This partition will become /dev/sdb1.
+
+3. Create the rootfs on HDD
+
+3.a. Format this partition with ext3 (or ext4), and label it rootfs.
+
+mkfs.ext3 -L rootfs /dev/sdb1
+
+Note: If Ext4 was used, then the partition must be "finalized" immediately (lazy_itable_init=0).
+
+
+3.b. Install the rootfs Debian-5.2.9-mvebu-tld-1-rootfs-bodhi.tar.bz2 on this partition (see this thread for download link).
+
+Note: if installing on DS116 then replace the DTB name armada-385-synology-rs816.dtb with armada-385-synology-ds116.dtb.
+
+mount /dev/sdb1 /media/sdb1
+
+cd /media/sdb1
+
+tar -xjf Debian-5.2.9-mvebu-tld-1-rootfs-bodhi.tar.bz2
+
+sync
+
+cd /media/sdb1/boot
+
+cp -a zImage-5.2.9-mvebu-tld-1 zImage.fdt
+
+cat dts/armada-385-synology-rs816.dtb  >> zImage.fdt
+
+mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n Linux-5.2.9-mvebu-tld-1 -d zImage.fdt uImage
+
+sync
+
+3.c. Write uImage and uInitrd to raw sectors.
+
+cd /media/sdb1/boot
+
+dd if=uImage of=/dev/sdb bs=1MiB seek=10
+
+dd if=uInitrd of=/dev/sdb bs=1MiB seek=20
+
+sync
+
+If it is prepared on the RS816/DS116 then shutdown the box. If the HHD is prepared on another Linux box then unmount it.
+
+4. Booting with the HDD rootfs
+
+Note that if an SDD is used in this rootfs installation (instead of spinning rust HDD), it will take a long time to build
+
+up entropy in this kernel version and therefore Debian booting will be delayed for several minutes by OpenSSH. With HDD
+
+rootfs, it should be faster. To help making it boot as fast as it can, you can plug in a non-rootfs USB drive, or a USB
+
+gadget at this point.
+
+Attach the prepared HDD rootfs to the box 1st SATA slot. And remove any attached USB rootfs drive. Power up, interrupt
+
+u-boot at countdown. And execute
+
+setenv load_image_addr 0x02000000
+
+setenv load_initrd_addr 0x3000000
+
+setenv load_image 'echo loading uImage from raw HDD ...; scsi device 0; scsi read $load_image_addr 0x5000 0x2F00'
+
+setenv load_initrd 'echo loading uInitrd from raw HDD ...; scsi device 0; scsi read $load_initrd_addr 0xA000 0x4F00'
+
+setenv set_bootargs 'setenv bootargs "console=ttyS0,115200 root=LABEL=rootfs rootdelay=10 $mtdparts earlyprintk=serial"'
+
+setenv bootcmd_exec 'echo Booting Debian ...; run set_bootargs; setenv fdt_skip_update yes; setenv initrd_high 0xffffffff; run load_image; run load_initrd; bootm $load_image_addr $load_initrd_addr'
+
+setenv bootcmd 'scsi init; run bootcmd_exec; echo Booting Stock OS ...; run bootspi'
+
+DS116 Note: if the installation is performed on Synology DS116, the bootcmd needs to be set to activate the SATA power:
+
+setenv bootcmd 'mw.l f1018100 00008000; scsi init; run bootcmd_exec; echo Booting Stock OS ...; run bootspi'
+
+and then
+
+boot
+
+Observe the serial console log, it should boot all the way to the Debian prompt (with up to a few minute delay due to entropy).
+
+Log in using credential root/root.
+
+After successfully logged in, check the serial log to see if there is any error messages output by the kernel.
+
+5. In Debian, reboot the system.
+
+Now we have booted into the HDD rootfs once, so reboot the system and make it permanent.
+
+shutdown -r now
+
+
+6. Make HDD installation permanent
+
+Interrupt u-boot at countdown. And execute
+
+setenv load_image_addr 0x02000000
+
+setenv load_initrd_addr 0x3000000
+
+setenv load_image 'echo loading uImage from raw HDD ...; scsi device 0; scsi read $load_image_addr 0x5000 0x2F00'
+
+setenv load_initrd 'echo loading uInitrd from raw HDD ...; scsi device 0; scsi read $load_initrd_addr 0xA000 0x4F00'
+
+setenv set_bootargs 'setenv bootargs "console=ttyS0,115200 root=LABEL=rootfs rootdelay=10 $mtdparts earlyprintk=serial"'
+
+setenv bootcmd_exec 'echo Booting Debian ...; run set_bootargs; setenv fdt_skip_update yes; setenv initrd_high 0xffffffff; run load_image; run load_initrd; bootm $load_image_addr $load_initrd_addr'
+
+setenv bootcmd 'scsi init; run bootcmd_exec; echo Booting Stock OS ...; run bootspi'
+
+DS116 Note: if the installation is performed on Synology DS116, the bootcmd needs to be set to activate the SATA power:
+
+setenv bootcmd 'mw.l f1018100 00008000; scsi init; run bootcmd_exec; echo Booting Stock OS ...; run bootspi'
+
+and then
+
+saveenv
+
+reset
+
+Observe the serial console log, it should reboot all the way to the Debian prompt again. Log in as root/root.
+
+END of Installation.
+
+
+7. Post installation
+
+7.1. Personalize the system
+
+Follow the post install instruction in the rootfs Note1 to regenerate SSH key. And also read Note3 to see how to ensure the MAC address will be persistent.
+
+7.2. Using USB drives
+
+If another USB drive is plugged in during boot, this USB drive must not contain a rootfs and its partition must be labeled to something other than rootfs.
+
+The label rootfs must be solely used for the HDD partition to ensure successful booting.
+
+While the system is running, a USB rootfs can be plugged in and mounted as normally would be.
+
+If you have a USB rootfs already installed and running before, you can set it up to boot with this USB rootfs as a fallback rescue system
+
+(More changes in u-boot envs needed to do this) .
+
 
 # My AMD PC
 
