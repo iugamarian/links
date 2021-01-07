@@ -4,6 +4,41 @@ https://blog.cpanel.com/disk-io-errors-troubleshooting-on-linux-servers/
 
 https://www.linux-magazine.com/Online/Features/Tune-Your-Hard-Disk-with-hdparm
 
+Relics
+
+In the case of older hard drives with an IDE connector (also called PATA), you should take a look at the using_dma line in the identification output. With the help of DMA (Direct Memory Access) technology, the hard drive itself deposits data directly into main memory. If the respective flag is 0 (off), it will slow down the data transfer. Over the years, ever faster DMA standards have been introduced; the fastest possible can be activated with the command:
+
+hdparm -d1 /dev/hda
+On some very old systems, however, the DMA mode can cause problems. After activating it, you should therefore copy a few larger test files to the drive. If problems arise or the drive crashes, deactivate the DMA mode again with:
+
+hdparm -d0 /dev/hda
+Incidentally, modern SATA drives always use DMA.
+
+While the hard drive is transferring the requested data, the rest of the system can go about completing other tasks – but only if an on appears after unmaskirq in the identification info output. You can force this mode with the -u1 switch.
+
+Lasting Values
+
+After restarting the system, all changes made with hdparm are lost. To activate them permanently, the respective hdparm commands must be entered in the start scripts. How this is done depends on the distribution you are running, but usually the entry must be made in /etc/rc.local.
+
+Debian-based systems, on the other hand, read the /etc/hdparm.conf configuration file on system startup. In it is a section for each hard drive with the following format:
+
+/dev/sda {
+  ...
+}
+Modern Linux systems randomly allocate device names (sda, sdb). To assign the hdparm settings to a specific drive permanently, use its specific UUID:
+
+/dev/disk/by-id/ata-SAMSUNG_HD103SJ_S246J1RZB00034 {...}
+The settings belong between the curly braces. Each parameter has its own name. Acoustic management is set, for example, to the value of 128 with:
+
+acoustic_management = 128
+Which name belongs to which hdparm parameter is revealed by the comments at the top of the file.
+
+Conclusions
+
+Hdparm also includes many other parameters that can be quite dangerous. For example, many SSDs can be protected with a password, which can lead to data loss in some situations. It’s not a coincidence that the man page (man hdparm) warns about the dangers.
+
+Incidentally, hdparm is only one useful tool among many; for example, the smartmontools can determine the health status of a hard drive.
+
 Full Speed Ahead
 
 Many modern hard drives allow you to slow down the head movement. Although doing so will increase access times, it will also reduce the noise level. To find out whether your own hard drive offers this “acoustic mode,” you can use this command:
