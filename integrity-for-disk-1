@@ -1,0 +1,79 @@
+System2020
+This is a story about building a new gentoo home desktop/server. I have a moderately beefy PC at home, that I use as a fileserver and workstation, and that the family (including me) access with laptops.
+
+Contents [hide] 
+1 2018 - The hardware
+2 2020 - Setting up
+2.1 Initial setup
+2.2 dm-integrity
+2.3 mdadm
+2.4 pvcreate
+2.5 vgcreate
+2.6 lvcreate
+2.7 systemd
+2018 - The hardware
+Our existing system has an Athlon X3 processor, with two 3TB Seagate Barracudas, and 4 memory slots maxed out with 4 x 4GB DIMMs. I still had the system it replaced, an old Athlon Thunderbird in a nice case, so I bought a new motherboard, Ryzen processor, and 2 x 8GB ram. I also replaced the power supply, along with two new 4TB Seagate Ironwolves. And the system failed to boot!
+
+Fast forward to Spring 2020, and I took the computer to a shop, where they told me the motherboard was dud, and replaced it. They returned the original motherboard, and I was most miffed when I discovered it was still under warranty, RMA'd it, and Gigabyte confirmed that it was simply the CPU was newer than the motherboard and required a BIOS update - which is what I told the shop I suspected! So now I've got a working, spare mobo I didn't need.
+
+2020 - Setting up
+Initial setup
+Gentoo needs a host system to set it up, so I installed openSUSE on sda. The motherboard boot screen asked whether I wanted to set up EFI, which I didn't, so SUSE promptly installed bios grub. I then used gdisk to set up sdb. Okay, my setup may not be everyone's choice, but here goes ...
+
+sdb1 512MB EFI/Grub
+sdb2 64GB swap (my new mobo takes 4 x 16GB DIMMs)
+sdb3 1TB root
+sdb4 3TB home
+Okay, that adds up to a bit more than my 4TB drive, but we'll call that rounding error ...
+
+dm-integrity
+This was a trial-and-error game ... the man page told you everything you needed to know but not how to use it. Because it's not integrated into mdadm, it needs special treatment at boot time. I formatted and set up my partitions with
+
+integritysetup format /dev/sdb3
+integritysetup format /dev/sdb4
+integritysetup open /dev/sdb3 dm-sdb3
+integritysetup open /dev/sdb4 dm-sdb4
+Note that you cannot use the option --no-wipe. A shame because it takes absolutely ages to format the partition - even longer if your system decides to suspend because you're not doing anything on screen! This should be fixable, but I guess mdadm reads from the disk before writing, and that's a no-no with an uninitialised dm-integrity device.
+
+mdadm
+Now we create the arrays
+
+mdadm --create /dev/md/root --level=1 --raid-devices=2 /dev/mapper/dm-sdb3 missing
+mdadm --create /dev/md/home --level=1 --raid-devices=2 /dev/mapper/dm-sdb4 missing
+When you run mdadm, use the device names that you defined that appear in /dev/mapper, namely here /dev/mapper/dm-sdb3 and /dev/mapper/dm-sdb4.
+
+Note that these disappear on reboot, so you will need to edit the boot sequence to run integritysetup. Once they re-appear on boot, mdadm on my system found them with no further action on my part.
+
+pvcreate
+pvcreate /dev/md/root /dev/md/home
+This created my two lvm volumes.
+
+vgcreate
+vgcreate vg-root /dev/md/root
+vgcreate vg-home /dev/md/root
+Now I have my two volume groups. It's my choice to have two separate lvm groups, as I will have just one home, and want to use lvm to take snapshots. The root group is to allow me to play with distros etc.
+
+lvcreate
+lvcreate --name lv-gentoo --size 128G vg-root
+lvcreate --name lv-data --size 255T vg-home
+I now have my two volumes for my root and data partitions. Now for the gentoo install, but first work out how systemd works because it's a pain having to run "integritysetup open" every time I boot the system ...
+
+systemd
+My first experience of systemd (gentoo runs openRC). The first thing is to create a shell script that I put in /usr/local/bin
+
+#!/bin/bash
+# open device mapper targets
+integritysetup open /dev/sdb3 dm-sdb3
+integritysetup open /dev/sdb4 dm-sdb4
+and a systemd unit file I put in the same place
+
+[Unit]
+Before=mdmonitor.service
+[Service]
+ExecStart=/usr/local/bin/integritysetup.sh
+[Install]
+WantedBy=default.target
+Then we need to set up the service to run. Initially I made the mistake of linking my service file into /etc/systemd/system before I started it. Note that when I deleted it, systemctl deleted the file from /etc/systemd/system. I then copied it into /etc/systemd/system, but I suspect systemctl might do that for you.
+
+systemctl enable integritysetup.service
+At which point, when I rebooted the system, all my disks came back without needing manual intervention. Of course, that means a future project will be enabling mdadm to detect a dm-integrity/raid disk and enable it by itself.
