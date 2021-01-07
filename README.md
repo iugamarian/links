@@ -1,3 +1,12 @@
+# External hard drives
+
+https://www.reddit.com/r/DataHoarder/comments/kahvoj/i_made_80mm_fan_ducts_for_my_wd_elements/
+
+I typically just shuck them right away and do the stress test via SATA.
+
+Btw: How do you stress test? I usually do badblocks -b 4096 -p 0 -s -t 0 -v -w DEVICE and an extended SMART test afterwards.
+
+
 # My AMD PC
 
 https://www.msi.com/Motherboard/support/B450M-PRO-M2-MAX
