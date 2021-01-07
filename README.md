@@ -2,6 +2,14 @@
 
 https://www.reddit.com/r/debian/comments/kacvgq/debian_has_nearly_5_of_linux_gamers_marketshare/
 
+# When smartctl does not work on large hard drives and external USB hard drives
+
+USB bridge does not allow SMART data to be read
+
+add "-d sat" to smartctl options my dude
+
+This. Was wondering why smartctl wasn’t working on my Synology. This flag made it work and I can enable TLER on my shucked drive at each boot.
+
 
 # Write caching and sleep disable for disks in Linux
 
