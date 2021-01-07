@@ -1,4 +1,34 @@
-# checksumming of disks different than btrfs checksumming
+# Write caching in Linux
+
+https://blog.cpanel.com/disk-io-errors-troubleshooting-on-linux-servers/
+
+Turn on Write Caching
+Write caching collects data for multiple writes in a RAM cache before writing them permanently to the drive. Because it reduces the number of hard drive writes, it can improve performance in some scenarios. 
+
+Write caching can cause data loss if the server’s power is cut before the cache is written to the disk. Don’t activate write caching if you want to minimize the risk of data loss. 
+
+The hdparm utility can turn write caching on and off. It may not be installed by default on your server, but you can install it from CentOS’s core repository with:
+
+apt install hdparm
+The following command turns write caching on:
+
+hdparm -W1 /dev/sda
+To turn write caching off, use:
+
+hdparm -W0 /dev/sda
+Turn on Direct Memory Access
+Direct Memory Access (DMA) allows the server’s components to access its RAM directly, without going via the CPU.  It can significantly increase hard drive performance in some scenarios. 
+
+To enable DMA, run the following command, replacing /dev/hda with your hard drive:
+
+hdparm -d1 /dev/hda
+You can turn DMA off with:
+
+hdparm -d0 /dev/hda
+DMA isn’t available on all servers and, with virtual servers in particular, you may not be able to modify hard drive settings.
+
+
+# Checksumming of disks different than btrfs checksumming
 
 https://raid.wiki.kernel.org/index.php/System2020
 
