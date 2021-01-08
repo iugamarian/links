@@ -66,6 +66,13 @@ I typically just shuck them right away and do the stress test via SATA.
 
 Btw: How do you stress test? I usually do badblocks -b 4096 -p 0 -s -t 0 -v -w DEVICE and an extended SMART test afterwards.
 
+# uBoot SSD support
+
+https://forum.doozan.com/read.php?3,29179,29308
+
+Not all SSDs work with u-boot.
+
+
 # uBoot in Zyxel NSA320 NAS not supporting drives larger than 2TB for boot
 
 https://forum.doozan.com/read.php?3,12551,12779
