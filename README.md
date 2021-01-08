@@ -72,6 +72,36 @@ https://forum.doozan.com/read.php?3,29179,29308
 
 Not all SSDs work with u-boot.
 
+# Zyxel NSA320 increase performance
+
+https://linuxengineering.wordpress.com/2014/08/03/performance-tuning-with-pogoplug-v4/
+
+https://forum.doozan.com/read.php?2,25659
+
+Changed queue scheduler for the drives
+
+echo deadline > /sys/block/sda/queue/scheduler
+
+echo deadline > /sys/block/sdb/queue/scheduler
+
+cat /sys/block/sda/queue/scheduler
+
+noop [deadline] cfq
+
+cat /sys/block/sdb/queue/scheduler
+
+noop [deadline] cfq
+
+hdparm -Tt /dev/sda
+
+hdparm -Tt /dev/sdb
+
+time sh -c "dd if=/dev/zero of=testfile bs=100k count=1k && sync"
+
+time sh -c "dd if=/dev/zero of=testfile bs=1M count=1k && sync"
+
+time sh -c "dd if=testfile of=/dev/null bs=1M"
+
 
 # uBoot in Zyxel NSA320 NAS not supporting drives larger than 2TB for boot
 
