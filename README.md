@@ -1,3 +1,104 @@
+# Bash history search a specific command
+
+https://superuser.com/questions/7414/how-can-i-search-the-bash-history-and-rerun-a-command
+
+https://www.digitalocean.com/community/tutorials/how-to-use-bash-history-commands-and-expansions-on-a-linux-vps
+
+Searching through Bash History
+
+Although piping the history command through grep is definitely the easiest way of accomplishing some procedures,
+it isn’t ideal in many situations.
+
+Bash includes search functionality for its history. The typical way of utilizing this is through searching
+
+backwards in history (most recent results returned first) using the CTRL-r key combination.
+
+For instance, you can type CTRL-r, and begin typing part of the previous command. You only have to type out
+
+part of the command. If it matches an unwanted command instead, you can press CTRL-r again to see the next result.
+
+If you accidentally pass the command you wanted, you can move in the opposite direction by typing CTRL-s. This
+
+also can be useful if you’ve moved to a different point in your history using the keys in the last section and
+
+wish to search forward.
+
+Note: In many terminals, the CTRL-s is actually mapped to suspend the terminal session. This will intercept any
+
+attempts to pass CTRL-s to bash, and will “freeze” your terminal. To unfreeze, simply type CTRL-q to unsuspend
+
+the session.
+
+This suspend and resume feature is not needed in most modern terminals, and we can turn it off without any
+
+problem by typing:
+
+stty -ixon
+
+We should add this to our ~/.bashrc file to make this change permanent as well.
+
+If you try again, it should work as expected to allow you to search forwards.
+Searching after You’ve Typed Part of the Command
+
+A common scenario to find yourself in is to type in part of your command, and then realize that you have
+
+executed it previously and can search the history for it.
+
+The correct way of searching using what is already on your command line is to move your cursor to the beginning
+
+of the line with CTRL-a, call the reverse history with CTRL-r, paste the current line into the search with CTRL-y,
+
+and then using the CTRL-r again to search in reverse.
+
+For instance, suppose we want to update our package cache on an Ubuntu system. We’ve already typed this out
+
+recently, but we didn’t think about that until after we’ve typed the sudo in again:
+
+sudo
+
+At this point, we realize that this is an operation we’ve definitely done in the past day or so. We can hit:
+
+CTRL-a
+
+This moves our cursor to the beginning of the line.
+
+CTRL-r
+
+We call our reverse incremental history search. This has a side effect of copying all of the content on the command
+
+line that was after our cursor position. It puts this into a clipboard.
+
+CTRL-y
+
+We paste the command segments that we’d just copied from the command line into the search.
+
+CTRL-r
+
+We move backwards in our history, searching for commands containing the content we’ve just pasted.
+
+This might seem like a huge pain in the neck, but it’s actually not too bad when you get used to it. It is extremely
+
+helpful when you find yourself in that awkward position where you’ve typed out half of a complex command and know
+
+you’re going to need the history to finish the rest.
+
+To make it easier, you can think of this as a simpler, compound command:
+
+CTRL-aryr
+
+Getting Familiar with More Advanced History Expansion
+
+We’ve already touched on some of the most basic history expansion techniques that bash provides. Some of the ones
+
+we’ve covered so far are:
+
+    !!: Expand to the last command
+    
+    !n: Expand to command with history number “n”.
+    
+    !-n: Expand to command that was “n” number of commands before the current command in history.
+
+
 # Conectica.ro good products
 
 https://conectica.ro/alte-accesorii/mobile-rack/kit-montare-pentru-ssdhdd-25-in-bay-de-35-roline-16013009
