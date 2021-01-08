@@ -1,3 +1,42 @@
+# Conectica.ro good products
+
+https://conectica.ro/cabluri/cabluri-alimentare-interne/cablu-prelungitor-placa-de-baza-atx-24-pini-delock-82989
+
+https://conectica.ro/cabluri/cabluri-alimentare-interne/cablu-de-alimentare-ventilator-3-pini-t-m-reduction-of-rotation-speed-delock-83
+
+https://conectica.ro/cabluri/cabluri-usb/cablu-prelungitor-usb-20-t-m-18m-gembird-ccp-usb2-amaf-6
+
+https://conectica.ro/cabluri/cabluri-sata-esata-ide/cablu-date-sata-iii-6-gbs-dreptdrept-05m-rosu-value-11991550
+
+https://conectica.ro/cabluri/cabluri-alimentare-interne/cablu-alimentare-placa-pci-express-6-pini-delock-82315
+
+https://conectica.ro/cabluri/cabluri-alimentare-interne/cablu-alimentare-sata-15-pini-la-pci-express-6-pini-delock-82924
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-vga/adaptor-vga-15t-15m-delock-65250
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-usb/adaptor-usb-30-a-la-usb-tip-c-t-m-kur31-10
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-usb/adaptor-usb-c-30-la-usb-a-otg-t-m-20cm-gembird-a-otg-cmaf3-01
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-usb/adaptor-usb-31-tip-c-la-usb-30-a-otg-t-m-015m-value-11999030
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-ps-2/adaptor-usb-la-2-x-ps2-t-m-value-12991075
+
+https://conectica.ro/adaptoare-convertoare/bloc-terminal/adaptor-rca-tata-la-bloc-terminal-2-pini-delock-65417
+
+https://conectica.ro/adaptoare-convertoare/bloc-terminal/adaptor-rca-mama-la-bloc-terminal-2-pini-delock-65418
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-serial-paralel/adaptor-serial-9-pini-m-m-delock-65008
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-serial-paralel/adaptor-serial-9-pini-t-t-delock-65009
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-audio-video/adaptor-audio-jack-stereo-35mm-la-2-x-rca-m-t-20cm-delock-85806
+
+https://conectica.ro/adaptoare-convertoare/adaptoare-serial-paralel/adaptor-serial-9-pini-t-t-roline-12032025
+
+https://conectica.ro/periferice-pc/ventilatoare-sistem-coolere-solutii-de-racire/set-2-bucati-pad-termic-pentru-module-m2-ssd-delock-18287
+
+
 # JLCPCB has option to send by DHL in 1 week adding about 19$ shipping cost, test with this
 
 https://www.youtube.com/watch?v=YF0RkIQPZHQ
