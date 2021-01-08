@@ -1,5 +1,9 @@
 # Conectica.ro good products
 
+https://conectica.ro/alte-accesorii/mobile-rack/kit-montare-pentru-ssdhdd-25-in-bay-de-35-roline-16013009
+
+https://conectica.ro/alte-accesorii/mobile-rack/adaptor-pentru-hddssd-2535-in-bay-de-525-roline-16013010
+
 https://conectica.ro/cabluri/cabluri-alimentare-interne/cablu-prelungitor-placa-de-baza-atx-24-pini-delock-82989
 
 https://conectica.ro/cabluri/cabluri-alimentare-interne/cablu-de-alimentare-ventilator-3-pini-t-m-reduction-of-rotation-speed-delock-83
