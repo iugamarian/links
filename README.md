@@ -1,3 +1,20 @@
+# JLCPCB has option to send by DHL in 1 week adding about 19$ shipping cost, test with this
+
+https://www.youtube.com/watch?v=YF0RkIQPZHQ
+
+How to make 2000W amplifiers Circuit diagram at home
+
+JLCPCB Prototype for $2(Any Color): https://jlcpcb.com
+
+https://www.youtube.com/redirect?q=https%3A%2F%2Fjlcpcb.com&redir_token=QUFFLUhqbWhfY0FNQUh0a0YwWmZ6eUdLanRHSmd1Q041UXxBQ3Jtc0tuaDhEdjhzQUZpblNKOGk4bDJMWEpDZEwzZkpGVkRqNTJUTU5uWGxhbkhfVkZzR0trcjc1WVgydVJndzg4a0Qyc2ljTFQtcGt1Q3NqZHJ5eFZJS1B4b0MyX2NtekxYeGNSa1JXc29tQWNJd2lhX1hXNA%3D%3D&v=YF0RkIQPZHQ&event=video_description
+
+- Download Gerber File and Circuit: http://bit.ly/2E1C4Xl
+
+-  Website: http://bit.ly/32hjcNM
+
+Thank You for watching my video! please kindly assist me to like share and subscribe our channel for more video...
+
+
 # External hard drives
 
 https://www.reddit.com/r/DataHoarder/comments/kahvoj/i_made_80mm_fan_ducts_for_my_wd_elements/
