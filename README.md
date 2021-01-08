@@ -76,6 +76,65 @@ https://forum.doozan.com/read.php?3,12381,page=34
 
 https://forum.doozan.com/read.php?8,105959
 
+https://archlinuxarm.org/forum/viewtopic.php?f=58&t=14655
+
+https://uboot5.rssing.com/chan-9127255/all_p34.html
+
+https://forum.doozan.com/read.php?3,93799
+
+https://forum.doozan.com/read.php?3,76439,76584
+
+https://ubuntuforums.org/showthread.php?t=2411598
+
+https://www.linuxquestions.org/questions/debian-26/how-to-multiboot-on-usb-hard-drive-4175612008/page2.html
+
+[RESOLVED] GUID Partition Table Header signature is wrong: 0x0 != 0x5452415020494645
+
+When you boot up a Pogoplug which has a USB disk attached that is larger than 2TB you get these error messages:
+
+GPT: first_usable_lba incorrect: 22 > 0
+
+part_print_efi: *** ERROR: Invalid GPT ***
+
+GUID Partition Table Header signature is wrong: 0x0 != 0x5452415020494645
+
+part_print_efi: *** ERROR: Invalid Backup GPT ***
+
+and the Pogoplug will refuse to boot Linux from that disk. The only way that worked was to boot the Pogoplug from
+
+a smaller disk, even if the rootfs and other partitions were on a 2+TB disk. It is the /boot directory that must be
+
+readable by u-boot; the rootfs partition is read by the Linux, so it can be anywhere.
+
+The root cause of this problem is that the u-boot code does not have any support for disks larger than 2TB. These
+
+disks must be formatted with a GPT partition table, but the GPT is not the problem; the size of the disk is the problem.
+
+
+This update has been tested on several large disks, including 3TB and 8TB disks. Also tested with GPT formatted
+
+disks smaller than 2TB.
+
+Also in this patch are some changes that will improve the USB disk detection and let u-boot work with some USB
+
+disks that it failed on before.
+
+I have created a modified version of uboot.2017.07-tld-1....bodhi.tar, one for Pogo E02 and one for Pogo V4.
+
+Both kwb's and the patchfile are in one tarball. Flash this new uboot according to the instuctions here:
+
+https://forum.doozan.com/read.php?3,12381 At "A. Flashing Instruction:"
+
+Download link: https://www.dropbox.com/s/5ezx8dljw2kunm1/uboot.2017.07-bigdisk.tar.gz?dl=0
+
+(You can download without logging in or having an account.)
+
+Also attached to this post.
+
+The patchfile applies to this source: u-boot-kirkwood-2017.07-kirkwood-tld-1.zip
+
+Another article:
+
 I know @bohdi isn't a fan of them but I have had some really good luck with hybrid MBR/GPT partition tables to allow older devices that boot from disk to use large drives without replacing u-boot.
 
 I've actually recently been testing some old orion5x devices from ~2007 with 4TB drives with surprisingly good results.
