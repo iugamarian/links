@@ -1,11 +1,26 @@
 https://forum.doozan.com/read.php?2,12096
 
+Fix other issues:
+apt-get update
+apt-get upgrade -y
+apt-get install locales
+
+Update uInitrd for the current kernel (not this version here in your case most likely):
 cd /boot
 mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.8.3-kirkwood-tld-1 -d initrd.img-5.8.3-kirkwood-tld-1 uInitrd
 sync
 reboot
-ls
-mv /boot /boot-of-5.8.3
+
+dpkg-reconfigure locales
+apt-get dist-upgrade
+sync
+reboot
+
+Update uInitrd for the current kernel again if needed.
+
+Upgrade to the latest kernel (not this version here in your case most likely, read the news about latest kernel):
+
+mv /boot /boot-of-the-previous-kernel
 cd /
 mkdir /boot
 cd /boot
