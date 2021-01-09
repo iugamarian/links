@@ -1,5 +1,23 @@
 # Backup preserving permissions
 
+https://wiki.archlinux.org/index.php/Full_system_backup_with_tar
+
+tar -cvf /path/to/chosen/directory/etc-backup.tar.bz2 -I pbzip2 /etc
+
+Store etc-backup.tar.bz2 on one or more offline media, such as a USB stick, external hard drive, or CD-R.
+
+Occasionally verify the integrity of the backup process by comparing original files and directories with
+
+their backups. Possibly maintain a list of hashes of the backed up files to make the comparison quicker.
+
+Restore corrupted /etc files by extracting the etc-backup.tar.bz2 file in a temporary working directory,
+
+and copying over individual files and directories as needed. To restore the entire /etc directory with
+
+all its contents execute the following command as root:
+
+tar -xvf etc-backup.tar.bz2 -C /
+
 https://help.ubuntu.com/community/BackupYourSystem/TAR
 
 tar -cvpzf backup.tar.gz --exclude=/backup.tar.gz --one-file-system /
