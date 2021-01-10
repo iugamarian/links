@@ -1,3 +1,174 @@
+# NOIP on Linux
+
+https://www.togaware.com/linux/survivor/No_IP_Manual.html
+
+No-IP Manual Installation
+	
+contents previous up next index
+
+If the no-ip or noip2 package is not available then download the noip2 client to run on your local machine.
+
+The following guides us through the steps for running noip2 on your local machine.
+
+With appropraite setup this can run as a daemon and will forward your IP address to the DNS server to update
+
+your symbolic name for your host. The client can also automatically identify if your host is sitting behind a
+
+router and will do the right thing, by getting the IP address stored in the router (rather than the IP address
+
+of your host which is probably something like 192.168.0.2).
+
+To get the client:
+
+  $ wget http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
+  
+  $ tar xvf noip-duc-linux.tar.gz
+  
+  $ cd noip-2.1.9-1/
+  
+  $ make
+
+To test things as a normal user, create a local configuration:
+
+  $ ./noip2 -c CONFIG -C
+
+We are asked to enter the no-ip username and password, and there is also an option to run a command each time
+
+it is successfully updated.
+
+Then you can manually update the server with:
+
+  $ ./noip2 -c CONFIG -i <ipaddress>
+
+Then try it out (may take a little time to propagate for some hosts — my office machine takes up to 30 minutes
+
+but my home desktop is immediate):
+
+  $ ping kayon.redirectme.net
+
+It should get your home IP address.
+
+Then you can set it up as a daemon as root, using the supplied Debian script to stop and start the daemon. As root,
+
+compile the client as above, then do an install:
+
+  $ sudo make install
+
+This will copy the noip executable to /ust/local/bin. That program is then run with the -C option, and creating a
+
+temporary configuration file. You will be asked to supply your No-IP username (the email address you supplied on
+
+signing up) and password. The default update interval is 30 minutes, but you can change it if you like (I use 5
+
+minutes). The temporary configuration file is
+
+then copied to /usr/local/etc/no-ip2.conf.
+
+You can now simply run noip2 as root, without arguments, and, as a daemon, it will update the server. With
+
+option -S all currently running daemons will be listed. To kill one of the daemons use the -K option.
+
+To run the daemon automatically when the machine is booted place the following script into /etc/init.d/noip2:
+
+```bash
+#! /bin/sh
+# /etc/init.d/noip2
+
+# Supplied by no-ip.com
+# Modified for Debian GNU/Linux by Eivind L. Rygge <eivind@rygge.org>
+# Updated by David Courtney to not use pidfile 130130 for Debian 6.
+# Updated again by David Courtney to "LSBize" the script for Debian 7.
+
+### BEGIN INIT INFO
+# Provides:     noip2
+# Required-Start: networking
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start noip2 at boot time
+# Description: Start noip2 at boot time
+### END INIT INFO
+
+# . /etc/rc.d/init.d/functions  # uncomment/modify for your killproc
+
+DAEMON=/usr/local/bin/noip2
+NAME=noip2
+
+test -x $DAEMON || exit 0
+
+case "$1" in
+    start)
+    echo -n "Starting dynamic address update: "
+    start-stop-daemon --start --exec $DAEMON
+    echo "noip2."
+    ;;
+    stop)
+    echo -n "Shutting down dynamic address update:"
+    start-stop-daemon --stop --oknodo --retry 30 --exec $DAEMON
+    echo "noip2."
+    ;;
+
+    restart)
+    echo -n "Restarting dynamic address update: "
+    start-stop-daemon --stop --oknodo --retry 30 --exec $DAEMON
+    start-stop-daemon --start --exec $DAEMON
+    echo "noip2."
+    ;;
+
+    *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+exit 0
+```
+
+Make sure it is executable:
+
+  $ sudo chmod a+rx /etc/init.d/noip2
+
+Now you can start the daemon and check that it is running:
+
+  $ wajig start noip2
+  
+  $ sudo noip2 -S
+  
+  ```bash
+  1 noip2 process active. 
+
+  Process 7065, started as noip2
+  Using configuration from /usr/local/etc/no-ip2.conf
+  Last IP Address set 230.127.57.182
+  Account kayon.toga@togaware.com
+  configured for:
+          group ktware
+  Updating every 30 minutes via /dev/eth0 with NAT enabled.
+```
+
+On Debian 6, to have the daemon start and stop at boot and shutdown time create the following symbolic links:
+
+  $ cd /etc/rc2.d
+  
+  $ sudo ln -s ../init.d/noip2 S95noip2
+  
+  $ cd /etc/rc0.d
+  
+  $ sudo ln -s ../init.d/noip2 K05noip2
+
+On Debian 7, run the following command instead:
+
+  $ sudo update-rc.d -n noip2 defaults
+
+The -n switch causes the actions to be displayed but not executed so we can see what update-rc.d wants to do,
+
+without actually doing it. If you like what you see then we can do it for real:
+
+  $ sudo update-rc.d noip2 defaults
+
+Thanks to David Courtney for the information here (13 April 2014). 
+
+
 # Backup preserving permissions
 
 https://wiki.archlinux.org/index.php/Full_system_backup_with_tar
