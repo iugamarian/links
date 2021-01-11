@@ -1,3 +1,10 @@
+# See uBoot version
+
+https://forum.doozan.com/read.php?3,32420,32427
+
+grep -a --null-data U-Boot /dev/mtd0ro
+
+
 # NOIP on Linux
 
 https://www.togaware.com/linux/survivor/No_IP_Manual.html
