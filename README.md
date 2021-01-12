@@ -8,6 +8,10 @@ https://www.spinics.net/lists/linux-btrfs/msg106846.html
 
 https://www.reddit.com/r/btrfs/comments/gclmya/is_it_normal_for_a_2tb_drive_removal_to_take_days/
 
+https://wiki.tnonline.net/w/Btrfs/Space_Cache
+
+# clear cache must be called also when changing to space cache v2 or conversion is not complete
+
 btrfs device add/remove includes fs resize operation and a partial balance operation. Whereas btrfs replace has no resize,
 
 but is a variation on scrub. Device remove can be expensive in certain cases, that isn't easy to predict in advance. This
