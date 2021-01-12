@@ -1,3 +1,118 @@
+# Draw Network in LibreOffice Draw
+
+https://www.youtube.com/watch?v=4laWj95PimI
+
+
+# File system hacks to get more than 16 TB on 32 bit CPU or 64 bit CPU
+
+https://ma.ttias.be/how-to-increase-amount-of-disk-inodes-in-linux/
+
+https://www.tecmint.com/increase-disk-inode-number-in-linux/
+
+https://unix.stackexchange.com/questions/26598/how-can-i-increase-the-number-of-inodes-in-an-ext4-filesystem
+
+https://www.unix-ninja.com/p/Formatting_Ext4_volumes_beyond_the_16TB_limit
+
+https://blog.ronnyegner-consulting.de/2011/08/18/ext4-and-the-16-tb-limit-now-solved/
+
+https://forum.openmediavault.org/index.php?thread/6934-16tb-limit/
+
+https://www.raspberrypi.org/forums/viewtopic.php?t=222749
+
+https://askubuntu.com/questions/779754/how-do-i-resize-an-ext4-partition-beyond-the-16tb-limit
+
+https://www.reddit.com/r/DataHoarder/comments/9epidt/with_the_16tbfs_32bit_limit_if_i_have_40tb_of/
+
+EXT4 hack:
+
+Make sure (check uname -r) you are running a kernel that can properly handle 64bit ext4 filesystems
+
+you want to use a 4.4.x kernel or later (default Ubuntu 16 and above).
+
+Acquire e2fsprogs of at version 1.43 (2016-05-17) or greater
+
+# it will take more than 3GB RAM to run fsck on such a large ext4 filesystem !!!
+
+I would first remount it on a PC with sufficient memory before running fsck on an ext4-formatted 24TB RAID array.
+
+Ubuntu 18.04 (2018-04-26) ships with e2fsprogs 1.44.x (good!)
+
+Ubuntu 16.04 (2016-04-21) was released with e2fsprogs 1.42.12 (2014-08-25) - upgrade to a newer release or
+
+enable source package support and install a newer version manually
+
+It looked like the tools were creating the filesystem properly but getting some failures from further down the software stack !
+
+```bash
+tune2fs -O 64bit /dev/sdb1
+tune2fs 1.44.1 (24-Mar-2018)
+Please run "resize2fs -b /dev/sdb1" to enable 64-bit mode.
+
+resize2fs -b /dev/sdb1
+resize2fs 1.44.1 (24-Mar-2018)
+Convert the file system to 64 bits.
+The file system on /dev/sdb1 now has a size of 3662109119 blocks (4k).
+Finally, we enlarge the disk partition!
+
+resize2fs /dev/sdb1
+resize2fs 1.44.1 (24-Mar-2018)
+Resizing the file system on /dev/sdb1 to 7324303099 (4k) blocks.
+The file system on / dev / sdb1 now has a size of 7324303099 blocks (4k).
+```
+
+mke2fs -O 64bit,has_journal,extents,huge_file,flex_bg,uninit_bg,dir_nlink,extra_isize -i 4194304
+
+-i makes one inode every 4 KB, better than the probably default one inode every 16 KB
+
+For partitions with size in the hundreds or thousands of GB and average file size in the megabyte range,
+
+this usually results in a much too large inode number because the number of files created never reaches
+
+the number of inodes.
+
+This results in a waste of disk space, because all those unused inodes each take up 256 bytes on the
+
+filesystem (this is also set in /etc/mke2fs.conf but should not be changed). 256 * several millions = quite
+
+a few gigabytes wasted in unused inodes.
+
+To answer the original question, even though it is probably late for the questioner - yes,
+
+increasing EXT2/3 on LVM2 will also increase the inodes limit.
+
+Just had a partition of 1G size with 65k inodes limit. After
+
+```bash
+lvextend -L+1G /dev/vg/var
+umount /var
+resize2fs /dev/vg/var
+mount /var
+... my inodes limit is now 128k.
+```
+
+Wow, I was almost desperate, but found your answer and decided to try, and it worked. This should definitely be the accepted answer! Works for LVM as well as for virtual machines
+
+
+https://superuser.com/questions/622324/16tb-raid-10-on-windows-xp
+
+https://superuser.com/questions/1539020/why-32-bit-windows-can-maximum-have-16tb-page-file
+
+NTFS hack:
+
+maybe by increasing block size up to 16KB but only for 64 bit CPU
+
+
+https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=219525#p1348105
+
+BTRFS hack (needed on 32 bit, 64 bit is up to PB = 1024TB level):
+
+https://www.raspberrypi.org/forums/viewtopic.php?f=63&t=219525#p1348105
+
+I used a Pi 3B+ with an 8TB external USB drive formatted with BTRFS. It worked well, however, if I wanted to rebalance
+
+or dedupe the filesystem (so using btrfs-progs) I would first remount it on a PC with sufficient memory (min 4GB).
+
+
 # File system real maximum size - Redhat certified
 
 https://access.redhat.com/solutions/1532
