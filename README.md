@@ -1,6 +1,46 @@
-# BTRFS no more free space, can add temporary ramdisk to the filesystem to help start the balance
+# BTRFS no more free space, can add temporary ramdisk to the filesystem to help start the balance, use space_cache=v2
 
 https://ohthehugemanatee.org/blog/2019/02/11/btrfs-out-of-space-emergency-response/
+
+https://github.com/kdave/btrfs-progs/issues/295
+
+https://www.spinics.net/lists/linux-btrfs/msg106846.html
+
+https://www.reddit.com/r/btrfs/comments/gclmya/is_it_normal_for_a_2tb_drive_removal_to_take_days/
+
+btrfs device add/remove includes fs resize operation and a partial balance operation. Whereas btrfs replace has no resize,
+
+but is a variation on scrub. Device remove can be expensive in certain cases, that isn't easy to predict in advance. This
+
+topic has some up in a few threads in the upstream list.
+
+It could be a combination of several things going on at once, it could even be a bug or lack of optimization: many small
+
+files, a lot of free space fragmentation, other operations keeping the file system busy.
+
+One thing that (perhaps superficially) seems in common with the slow removal cases is the default space_cache (v1) is stored
+
+in data chunks. As the device removal is rebalancing, it implies writes to keep the space_cache updated. The newer space_cache v2
+
+is stored in metadata chunks as it's own dedicated tree, and is quite a lot more efficient. It's the inverse of the extent tree.
+
+It's possible to switch by one time use of mount -o clear_cache,space_cache=v2 which will also work with the remount option. Once
+
+this mount option is used, it sets a feature flag on the file system, and it will also use the v2 version on subsequent mounts by
+
+default. Switching to v2 might actually slow things down more at first until the new free space tree is created. Another option is
+
+to temporarily forgo use of the space cache clear_cache,nospace_cache also it can be used with remount. If v2 cache is cleared, so
+
+is its feature flag.
+
+What kernel btrfs-progs are you using? I don't know that this is at all related to the problem but (a) good idea to start tracking
+
+if it's version specific; (b) the space reporting has two weird items: Device unallocated:-1.26TiB, and Free space is into the
+
+stratosphere. Those seem like btrfs-progs bugs. Device removal, while initiated by user space tools, is actually handled primarily
+
+by kernel code.
 
 
 # Draw Network in LibreOffice Draw
