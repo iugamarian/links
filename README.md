@@ -1,3 +1,16 @@
+# File system real maximum size - Redhat certified
+
+https://access.redhat.com/solutions/1532
+
+btrfs = on 32 bit CPU limited by btrfs-progs to 8 TB
+
+ext4 = 16 TB, after this needs 64bit and metadata_csum option, is too slow and has large nodes
+
+gfs2 = 100 TB
+
+xfs = 100 TB
+
+
 # See uBoot version
 
 https://forum.doozan.com/read.php?3,32420,32427
