@@ -1303,6 +1303,10 @@ wget http://www.infotinks.com/scripts/mostfragged.sh
 
 # BTRFS best mount options for flash and ssd
 
+https://linuxnatives.net/2016/perfect-btrfs-setup-for-a-server
+
+https://forum.odroid.com/viewtopic.php?t=25871
+
 https://www.techrepublic.com/article/how-to-rebalance-your-btrfs-filesystem-on-your-linux-data-center-servers/
 
 12-12-2020 https://linuxhint.com/btrfs-filesystem-beginner-guide/
@@ -1316,6 +1320,8 @@ https://www.reddit.com/r/btrfs/comments/k24g5t/15tb_nvme_ssd_with_btrfs_optimisa
 https://btrfs.wiki.kernel.org/index.php/Manpage/btrfs(5)
 
 https://forums.gentoo.org/viewtopic-t-834065-postdays-0-postorder-asc-start-25.html?sid=650a16a569b84ffe178c0fe0cc882dab
+
+RAM requirements example: 68TB btrfs array uses about 1.7GB of RAM at any given time for normal operations.
 
 noatime = avoid better than the default "relatime" option very many small writes for every very many small writes done
 
