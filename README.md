@@ -10,7 +10,63 @@ https://www.reddit.com/r/btrfs/comments/gclmya/is_it_normal_for_a_2tb_drive_remo
 
 https://wiki.tnonline.net/w/Btrfs/Space_Cache
 
+https://www.spinics.net/lists/linux-btrfs/msg101839.html
+
 # clear cache must be called also when changing to space cache v2 or conversion is not complete
+
+```bash
+On 6/1/20 7:52 PM, David Sterba wrote:
+> On Thu, May 28, 2020 at 11:04:07PM +0200, Hans van Kranenburg wrote:
+>> Hi,
+>>
+>> On 5/27/20 4:12 AM, Chris Murphy wrote:
+>>> What are the implications of not clearing v1 before enabling v2?
+>>>
+>>> From btrfs insp dump-t, I still see the v1 bitmaps present:
+>>>
+>>> root tree
+>>> leaf 6468501504 items 42 free space 9246 generation 22 owner ROOT_TREE
+>>> leaf 6468501504 flags 0x1(WRITTEN) backref revision 1
+>>> ...
+>>>     item 30 key (FREE_SPACE UNTYPED 22020096) itemoff 11145 itemsize 41
+>>>         location key (256 INODE_ITEM 0)
+>>>         cache generation 17 entries 0 bitmaps 0
+>>>     item 31 key (FREE_SPACE UNTYPED 1095761920) itemoff 11104 itemsize 41
+>>>         location key (257 INODE_ITEM 0)
+>>>         cache generation 17 entries 0 bitmaps 0
+>>> ...
+>>>
+>>>
+>>> And later the free space tree:
+>>>
+>>> free space tree key (FREE_SPACE_TREE ROOT_ITEM 0)
+>>> leaf 6471073792 items 39 free space 15196 generation 22 owner FREE_SPACE_TREE
+>>> leaf 6471073792 flags 0x1(WRITTEN) backref revision 1
+>>> fs uuid 3c464210-08c7-4cf0-b175-e4b781ebea19
+>>> chunk uuid f1d18732-7c3d-401c-8637-e7d4d9c7a0b8
+>>>     item 0 key (1048576 FREE_SPACE_INFO 4194304) itemoff 16275 itemsize 8
+>>>         free space info extent count 2 flags 0
+>>>     item 1 key (1048576 FREE_SPACE_EXTENT 16384) itemoff 16275 itemsize 0
+>>>         free space extent
+>>>     item 2 key (1081344 FREE_SPACE_EXTENT 4161536) itemoff 16275 itemsize 0
+>>>         free space extent
+>>> ...
+>>>
+>>> I was surprised there's no warning when I use space_cache=v2 without
+>>> first clearing v1.
+>>
+>> It's just sitting there, occupying some space, doing nothing.
+> 
+> Hm that's not ideal, right? There's support in btrfs check,
+> "btrfs check --clear-space-cache v1", but it needs unmounted filesystem.
+> I don't remember if that was discussed when v2 was introduced, but it
+> seems strange. As we want to make v2 default soon, the conversion should
+> work without such surprises.
+
+I guess the most straightforward thing to do would be to execute a copy
+of this remove space cache v1 code before creating the v2 tree when
+mounting first time with v2 enabled.
+```
 
 btrfs device add/remove includes fs resize operation and a partial balance operation. Whereas btrfs replace has no resize,
 
