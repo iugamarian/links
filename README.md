@@ -1,3 +1,8 @@
+# BTRFS no more free space, can add temporary ramdisk to the filesystem to help start the balance
+
+https://ohthehugemanatee.org/blog/2019/02/11/btrfs-out-of-space-emergency-response/
+
+
 # Draw Network in LibreOffice Draw
 
 https://www.youtube.com/watch?v=4laWj95PimI
