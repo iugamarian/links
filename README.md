@@ -3,6 +3,17 @@
 https://www.youtube.com/user/CinemaSins
 
 
+# BTRFS patch to fix speed regression with small files in Linux 5.10
+
+https://lore.kernel.org/linux-btrfs/5618514ccb0d1e823fe5ae41b3da6e1e76ddd792.1610057243.git.josef@toxicpanda.com/
+
+https://www.spinics.net/lists/linux-btrfs/msg109159.html
+
+Mon, Jan 04, 2021
+
+Not sure if accepted yet.
+
+
 # BTRFS no more free space, can add temporary ramdisk to the filesystem to help start the balance, use space_cache=v2
 
 https://ohthehugemanatee.org/blog/2019/02/11/btrfs-out-of-space-emergency-response/
