@@ -16,6 +16,10 @@ Not sure if accepted yet.
 
 # BTRFS no more free space, can add temporary ramdisk to the filesystem to help start the balance, use space_cache=v2
 
+https://www.reddit.com/r/btrfs/comments/klrcr7/debian_for_btrfs/
+
+https://0xstubs.org/tag/space_cache/
+
 https://ohthehugemanatee.org/blog/2019/02/11/btrfs-out-of-space-emergency-response/
 
 https://github.com/kdave/btrfs-progs/issues/295
