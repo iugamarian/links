@@ -8,6 +8,58 @@ https://www.youtube.com/user/CinemaSins
 https://github.com/maharmstone/btrfs
 
 
+# BTRFS replace vs add and delete
+
+https://www.reddit.com/r/btrfs/comments/4ll108/what_is_the_functional_difference_between_btrfs/
+
+Situation: A six disk RAID5/6 array with a completely failed disk. The failed disk is removed and an identical
+replacement drive is plugged in.
+
+Here I have two options for replacing the disk, assuming the old drive is device 6 in the superblock and the
+
+replacement disk is /dev/sda. Note that -r was included for the replace in the title for clarity but is only
+
+required if a failing disk is still present in the system. If the drive is missing it will be automatic.
+
+btrfs replace start 6 /dev/sda /mnt
+This will start a rebuild of the array using the new drive, copying data that would have been on device 6 to the
+
+new drive from the parity data.
+
+btrfs add /dev/sda /mnt && btrfs device delete missing /mnt
+This adds a new device (the replacement disk) to the array and dev delete missing appears to trigger a rebalance
+
+before deleting the missing disk from the array. The end result appears to be identical to option 1.
+
+A few weeks back I recovered an array with a failed drive using option 2 because option 1 caused a kernel panic.
+
+I later discovered that this was not (just) a failed drive but some other failed hardware that I've yet to start
+
+diagnosing. The drives are in a new server now and I am currently rebuilding the array with option 1, which is
+
+believe is the "more correct" way to replace a bad drive in an array.
+
+Both work, but option 1 seems to be slower so I'm curious what the functional differences are between the two.
+
+I thought the replace would be faster as I assumed it would need to read fewer blocks since instead of a complete
+
+rebalance it's just rebuilding a drive from parity data.
+
+# on RAID1 you won't be able the get below 2 drives, hence you're pretty much obliged to use the "replace" command.
+
+I don't know about RAID5/6, but from my experience on RAID1, when rebuilding using "replace", the system seems to
+
+still rely on the failing drives when it can. At least, running iostat during the rebuild showed that the failing
+
+drive was very much active. My guess is the same as yours: instead or re-balancing the whole array or reading from
+
+the whole array, replace will simply focus on the data that need to be copied/rebuilt. I'd think it's nice to be
+
+able to avoid rebalancing, as I've seen those takes days and days in normal maintenance situations.
+
+In your case, maybe option1 takes longer because there's a lot of corrupted blocks on the failing drive?
+
+
 # BTRFS patch to fix speed regression with small files in Linux 5.10 proposed in January 4 2021
 
 https://www.unixsheikh.com/articles/battle-testing-data-integrity-verification-with-zfs-btrfs-and-mdadm-dm-integrity.html
