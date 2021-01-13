@@ -2,8 +2,23 @@
 
 https://www.youtube.com/user/CinemaSins
 
+# Web browsers privacy
+
+https://www.unixsheikh.com/articles/choose-your-browser-carefully.html
+
+
+# apt-file search to which package a file belongs to
+
+https://www.unixsheikh.com/tutorials/what-package-does-that-file-belong-to.html
+
 
 # Git used for backup notes and small files
+
+https://www.unixsheikh.com/tutorials/diff-and-patch.html
+
+https://www.unixsheikh.com/tutorials/git-bare-vs-non-bare-repositories.html
+
+https://www.unixsheikh.com/tutorials/how-to-create-a-new-and-empty-branch-in-git.html
 
 https://www.unixsheikh.com/tutorials/make-the-current-commit-the-initial-commit-in-a-git-repository.html
 
