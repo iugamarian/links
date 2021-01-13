@@ -3,7 +3,31 @@
 https://www.youtube.com/user/CinemaSins
 
 
-# BTRFS patch to fix speed regression with small files in Linux 5.10
+# BTRFS patch to fix speed regression with small files in Linux 5.10 proposed in January 4 2021
+
+https://www.unixsheikh.com/articles/battle-testing-data-integrity-verification-with-zfs-btrfs-and-mdadm-dm-integrity.html
+
+https://www.linuxjournal.com/content/btrfs-centos-living-loopback
+
+https://www.funtoo.org/BTRFS_Fun
+
+https://linux.slashdot.org/story/20/10/24/0146258/slashdot-asks-how-do-you-feel-about-btrfs
+
+https://docs.cumulusnetworks.com/knowledge-base/Configuration-and-Usage/Storage/When-to-Rebalance-BTRFS-Partitions/
+
+https://computingforgeeks.com/working-with-btrfs-filesystem-in-linux/
+
+https://chrisirwin.ca/posts/btrfs-presentation/
+
+https://www.spinics.net/lists/linux-btrfs/msg45732.html
+
+https://fedoraproject.org/wiki/Changes/BtrfsByDefault
+
+https://wiki.archlinux.org/index.php/btrfs
+
+https://wiki.gentoo.org/wiki/Btrfs/en
+
+https://btrfs.wiki.kernel.org/index.php/Manpage/btrfs-check
 
 https://lore.kernel.org/linux-btrfs/5618514ccb0d1e823fe5ae41b3da6e1e76ddd792.1610057243.git.josef@toxicpanda.com/
 
