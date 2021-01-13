@@ -3,6 +3,13 @@
 https://www.youtube.com/user/CinemaSins
 
 
+# Git used for backup notes and small files
+
+https://www.unixsheikh.com/tutorials/make-the-current-commit-the-initial-commit-in-a-git-repository.html
+
+https://www.unixsheikh.com/articles/my-favorite-note-taking-method.html
+
+
 # WinBTRFS
 
 https://github.com/maharmstone/btrfs
