@@ -1,3 +1,8 @@
+# Gentoo desktop install with EFI
+
+https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide
+
+
 # SSHFS for Windows
 
 https://github.com/billziss-gh/sshfs-win
