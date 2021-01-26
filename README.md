@@ -1,3 +1,10 @@
+# Display file system information, written in Bash
+
+https://github.com/dylanaraps/neofetch
+
+Neofetch is a command-line system information tool writtten in Bash 3.2+
+
+
 # Gentoo desktop install with EFI
 
 https://wiki.gentoo.org/wiki/User:Sakaki/Sakaki%27s_EFI_Install_Guide
