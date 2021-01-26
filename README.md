@@ -2,7 +2,11 @@
 
 https://github.com/dylanaraps/neofetch
 
+https://github.com/KittyKatt/screenFetch
+
 Neofetch is a command-line system information tool writtten in Bash 3.2+
+
+screenFetch is a Bash Screenshot Information Tool
 
 
 # Gentoo desktop install with EFI
