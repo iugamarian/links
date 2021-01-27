@@ -1,3 +1,8 @@
+# Better electric engine magnetic and reluctance force combination
+
+https://www.youtube.com/watch?v=esUb7Zy5Oio
+
+
 # CD, DVD, BluRay on Debian
 
 https://www.reddit.com/r/debian/comments/l4o8ol/what_do_i_need_in_debian_10_to_rip_audio_cds_to/
