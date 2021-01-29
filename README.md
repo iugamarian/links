@@ -1,3 +1,8 @@
+# Sound on NAS by USB
+
+https://forum.doozan.com/read.php?2,112104,114844#msg-114844
+
+
 # Netconsole information found:
 
 https://doncharisma.org/2013/09/22/build-your-own-pro-nas-seagate-goflex-net-with-debian-linux-raid1-and-openmediavault/
