@@ -8,28 +8,34 @@ On the Kirkwood device:
 	
 # serverip is the machine that you will monitor on, ipaddres is the address of your GoFlex Net
 # my Ubuntu machine I use to monitor is 10.10.10.203 and my GoFlex Net is 10.10.10.231
-bash'''
+```bash
 fw_setenv serverip 10.10.10.203
 fw_setenv ipaddr 10.10.10.231
 fw_setenv if_netconsole 'ping $serverip'
 fw_setenv start_netconsole 'setenv ncip $serverip; setenv bootdelay 10; setenv stdin nc; setenv stdout nc; setenv stderr nc; version;'
 fw_setenv preboot 'run if_netconsole start_netconsole'
-'''
+```
 
 On the desktop machine (Ubuntu – 10.10.10.203)
-	
+
+```bash
 nc -u -l 6666 &
 nc -u 10.10.10.231
+```
 
 You’ll need to reboot in order for these settings to take effect. I’ve got into the habit of doing this :
 	
 # for some linux installations
+```bash
 sync
 shutdown -h now
- 
+```
+
 # or on some other linux installations
+```bash
 sync
 halt
+```
 
 Reason for doing this is to make sure any cached data is written to disk and propertly shutdown the operating system.
 
