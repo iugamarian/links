@@ -7,12 +7,13 @@ apt-get install locales
 
 Update uInitrd for the current kernel (not this version here in your case most likely):
 cd /boot
-mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.8.3-kirkwood-tld-1 -d initrd.img-5.8.3-kirkwood-tld-1 uInitrd
+mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.10.7-kirkwood-tld-1 -d initrd.img-5.10.7-kirkwood-tld-1 uInitrd
 sync
 reboot
 
 dpkg-reconfigure locales
 apt-get dist-upgrade
+apt-get remove flash-kernel
 sync
 reboot
 
@@ -20,6 +21,24 @@ Update uInitrd for the current kernel again if needed.
 
 Upgrade to the latest kernel (not this version here in your case most likely, read the news about latest kernel):
 
+# For Linux 5.10.7 (not 5.10.8 that has the btrfs regression patch):
+
+mv /boot /boot-of-the-previous-kernel
+cd /
+mkdir /boot
+cd /boot
+wget https://bitly.com/3ssNMTb
+mv 3ssNMTb linux-5.10.7-kirkwood-tld-1-bodhi.tar.bz2
+tar -xjf linux-5.10.7-kirkwood-tld-1-bodhi.tar.bz2
+tar -xf  linux-dtb-5.10.7-kirkwood-tld-1.tar
+dpkg -i linux-image-5.10.7-kirkwood-tld-1_1.0_armel.deb
+mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n Linux-5.10.7-kirkwood-tld-1 -d vmlinuz-5.10.7-kirkwood-tld-1 uImage
+mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.10.7-kirkwood-tld-1 -d initrd.img-5.10.7-kirkwood-tld-1 uInitrd
+sync
+sync
+reboot
+
+# For Linux 5.9.12 (no btrfs regression issue but more unsecure and using about 50 MB to 100 MB more RAM):
 mv /boot /boot-of-the-previous-kernel
 cd /
 mkdir /boot
