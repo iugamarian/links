@@ -1,3 +1,10 @@
+# List of some SMR and PMR drives
+
+https://www.reddit.com/r/buildapc/comments/fjqfk3/handy_guide_of_popular_smrpmr_hdds/
+
+https://rml527.blogspot.com/
+
+
 # Sound on NAS by USB
 
 https://forum.doozan.com/read.php?2,112104,114844#msg-114844
