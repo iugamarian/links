@@ -1,3 +1,8 @@
+# Very good UPS for "home"
+
+https://www.aten.com/global/en/products/energy-intelligence-pduupsracks/professional-online-ups/ol3000lv/
+
+
 # List of some SMR and PMR drives
 
 https://www.reddit.com/r/buildapc/comments/fjqfk3/handy_guide_of_popular_smrpmr_hdds/
