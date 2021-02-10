@@ -4,6 +4,8 @@ https://www.raspberrypi.org/blog/the-journey-to-raspberry-silicon/
 
 https://www.cnx-software.com/2021/02/03/open-hardware-raspberry-pi-pico-vga-sd-card-and-audio-demo-board-to-support-qvga-video-playback/
 
+https://shop.pimoroni.com/products/pico-audio-pack
+
 
 # Very good UPS for "home"
 
