@@ -2,6 +2,10 @@
 
 https://www.raspberrypi.org/blog/the-journey-to-raspberry-silicon/
 
+# Raspberry Pi Pico music player capability
+
+https://www.youtube.com/watch?v=kt6NDIUtX6I
+
 https://www.cnx-software.com/2021/02/03/open-hardware-raspberry-pi-pico-vga-sd-card-and-audio-demo-board-to-support-qvga-video-playback/
 
 https://shop.pimoroni.com/products/pico-audio-pack
