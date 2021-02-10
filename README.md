@@ -1,3 +1,8 @@
+# Verilog introduction
+
+https://www.raspberrypi.org/blog/the-journey-to-raspberry-silicon/
+
+
 # Very good UPS for "home"
 
 https://www.aten.com/global/en/products/energy-intelligence-pduupsracks/professional-online-ups/ol3000lv/
