@@ -2,6 +2,9 @@
 
 https://www.raspberrypi.org/blog/the-journey-to-raspberry-silicon/
 
+https://www.raspberrypi.org/blog/machine-learning-and-depth-estimation-using-raspberry-pi/
+
+
 # Raspberry Pi Pico music player capability
 
 https://www.youtube.com/watch?v=kt6NDIUtX6I
