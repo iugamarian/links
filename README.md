@@ -1,3 +1,10 @@
+# Boost audio volume by about double for a video file, good conversion quality
+
+https://www.youtube.com/watch?v=WggnimaFYYk
+
+ffmpeg -i videoclip.mp4 -vcodec copy -af "volume=20dB" videoclip-20db.mp4
+
+
 # Verilog introduction
 
 https://www.raspberrypi.org/blog/the-journey-to-raspberry-silicon/
