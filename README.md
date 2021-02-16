@@ -1,3 +1,8 @@
+# Unraid forum post with JMB585 listed as good
+
+https://forums.unraid.net/topic/102010-recommended-controllers-for-unraid-last-updated-022021/
+
+
 # Boost audio volume by about double for a video file, good conversion quality
 
 https://www.youtube.com/watch?v=WggnimaFYYk
