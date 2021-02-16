@@ -2,6 +2,12 @@
 
 https://forums.unraid.net/topic/102010-recommended-controllers-for-unraid-last-updated-022021/
 
+https://www.emag.ro/adaptor-pci-express-orico-pes5-5-port-uri-sata3-0-pes5-bk/pd/DRGMLDMBM
+
+https://shopee.tw/PCIE-%E8%BD%89-5-%E5%8F%A3-SATA-3.0-%E6%93%B4%E5%B1%95%E5%8D%A1(JMB585)-%E6%93%B4%E5%85%85%E5%8D%A1-%E6%9C%80%E5%BE%8C6%E7%B5%84%E4%B8%8D%E5%86%8D%E9%80%B2%E8%B2%A8-i.3932269.4538042218
+
+https://shopee.tw/m.2-nvme-to-5-port-sata-JMB585-JMS585-%E6%9C%80%E5%BE%8C%E4%B8%80%E7%B5%84-i.3932269.4238043181
+
 
 # Boost audio volume by about double for a video file, good conversion quality
 
