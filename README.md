@@ -1,3 +1,8 @@
+# PC Power supply quality
+
+https://linustechtips.com/topic/1116640-psucultists-psu-tier-list/
+
+
 # Debian search for files and files in packages
 
 https://wiki.debian.org/WhereIsIt
