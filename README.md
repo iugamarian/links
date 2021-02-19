@@ -1,3 +1,8 @@
+# Debian search for files and files in packages
+
+https://wiki.debian.org/WhereIsIt
+
+
 # Unraid forum post with JMB585 listed as good
 
 https://forums.unraid.net/topic/102010-recommended-controllers-for-unraid-last-updated-022021/
