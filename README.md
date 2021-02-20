@@ -2,6 +2,8 @@
 
 https://www.cyrius.com/debian/kirkwood/sheevaplug/boot/
 
+http://davidegironi.blogspot.com/2018/12/debian-and-openmediavault-on-zyxtel.html
+
 
 # PC Power supply quality
 
