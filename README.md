@@ -5,6 +5,15 @@ https://www.cyrius.com/debian/kirkwood/sheevaplug/boot/
 http://davidegironi.blogspot.com/2018/12/debian-and-openmediavault-on-zyxtel.html
 
 
+#Building a Kernel for Marvell Kirkwood
+
+https://shallowsky.com/linux/sheevaplug-kernel.html
+
+https://forum.doozan.com/read.php?2,56769
+
+https://kernel-team.pages.debian.net/kernel-handbook/ch-common-tasks.html#s-common-official
+
+
 # PC Power supply quality
 
 https://linustechtips.com/topic/1116640-psucultists-psu-tier-list/
