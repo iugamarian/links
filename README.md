@@ -25,6 +25,30 @@ https://raspberrypi.stackexchange.com/questions/192/how-do-i-cross-compile-the-k
 
 https://nishkadg.github.io/2019/07/25/make-cross.html
 
+https://unix.stackexchange.com/questions/416233/how-to-add-locales-to-a-chrooted-system-programmatically
+
+https://askubuntu.com/questions/1062171/dpkg-deb-error-paste-subprocess-was-killed-by-signal-broken-pipe
+
+Enter chroot every time forcing C locale to avoid tex-common errors:
+
+LC_ALL=C chroot /the/chroot/directory /bin/bash -l
+
+Before cross compiling try to install gcc-10 for armel
+
+apt install -y gcc-10:armel
+
+apt-get build-dep -a armel linux
+
+dpkg -i --force-overwrite /var/cache/apt/archives/cpp-10_10.2.1-6_armel.deb
+
+apt-get install -y libgmp10:armel libisl23:armel libmpc3:armel libmpfr6:armel libzstd1:armel zlib1g:armel
+
+apt-get install -f
+
+New error:
+
+gcc-10:armel but it is not installable
+
 
 # PC Power supply quality
 
