@@ -53,9 +53,29 @@ apt-get install -y libgmp10:armel libisl23:armel libmpc3:armel libmpfr6:armel li
 
 apt-get install -f
 
-New error:
+apt-get purge python* && apt-get autoclean && apt-get autoremove
 
-gcc-10:armel but it is not installable
+apt-get install -f
+
+apt-get build-dep linux
+
+adduser user
+
+su user
+
+cd
+
+apt-get source linux
+
+cd linux-*
+
+patch -p1 <../linux-*.patch
+
+The bodhi kernel config is a good point to start:
+
+cp ../config-* .config
+
+dpkg-buildpackage -us -uc -b -target-arch armel
 
 
 # PC Power supply quality
