@@ -29,6 +29,8 @@ https://unix.stackexchange.com/questions/416233/how-to-add-locales-to-a-chrooted
 
 https://askubuntu.com/questions/1062171/dpkg-deb-error-paste-subprocess-was-killed-by-signal-broken-pipe
 
+https://wiki.debian.org/Multiarch/CrossDependencies
+
 Enter chroot every time forcing C locale to avoid tex-common errors:
 
 LC_ALL=C chroot /the/chroot/directory /bin/bash -l
