@@ -9,6 +9,8 @@ http://davidegironi.blogspot.com/2018/12/debian-and-openmediavault-on-zyxtel.htm
 
 https://forum.doozan.com/read.php?2,26733,26733
 
+https://wiki.debian.org/MultiarchCrossToolchainBuild
+
 http://www.armadeus.org/wiki/index.php?title=Kernel-with-device-tree
 
 https://forum.doozan.com/read.php?2,110719
