@@ -9,6 +9,8 @@ http://davidegironi.blogspot.com/2018/12/debian-and-openmediavault-on-zyxtel.htm
 
 https://forum.doozan.com/read.php?2,26733,26733
 
+https://serverfault.com/questions/350876/setlocale-error-with-chroot
+
 https://shallowsky.com/linux/sheevaplug-kernel.html
 
 https://forum.doozan.com/read.php?2,56769
