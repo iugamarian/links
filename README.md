@@ -5,13 +5,23 @@ https://www.cyrius.com/debian/kirkwood/sheevaplug/boot/
 http://davidegironi.blogspot.com/2018/12/debian-and-openmediavault-on-zyxtel.html
 
 
-#Building a Kernel for Marvell Kirkwood
+# Building a Kernel for Marvell Kirkwood
+
+https://forum.doozan.com/read.php?2,26733,26733
 
 https://shallowsky.com/linux/sheevaplug-kernel.html
 
 https://forum.doozan.com/read.php?2,56769
 
 https://kernel-team.pages.debian.net/kernel-handbook/ch-common-tasks.html#s-common-official
+
+https://wiki.debian.org/CrossCompiling
+
+https://www.itdev.co.uk/blog/building-linux-kernel-cross-compiling-beaglebone-black
+
+https://raspberrypi.stackexchange.com/questions/192/how-do-i-cross-compile-the-kernel-on-a-ubuntu-host
+
+https://nishkadg.github.io/2019/07/25/make-cross.html
 
 
 # PC Power supply quality
