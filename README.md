@@ -11,6 +11,8 @@ https://forum.doozan.com/read.php?2,26733,26733
 
 https://wiki.debian.org/MultiarchCrossToolchainBuild
 
+https://unix.stackexchange.com/questions/172500/how-to-cross-build-a-debian-package
+
 http://www.armadeus.org/wiki/index.php?title=Kernel-with-device-tree
 
 https://forum.doozan.com/read.php?2,110719
@@ -75,7 +77,7 @@ The bodhi kernel config is a good point to start:
 
 cp ../config-* .config
 
-dpkg-buildpackage -us -uc -b -target-arch armel
+dpkg-buildpackage -us -uc -b --target-arch armel
 
 
 # PC Power supply quality
