@@ -13,6 +13,10 @@ https://unix.stackexchange.com/questions/387640/why-both-make-clean-and-make-mrp
 
 https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel
 
+https://www.debian.org/releases/jessie/mips/ch08s06.html.en
+
+https://wiki.debian.org/KernelFAQ
+
 *** The source tree is not clean, please run 'make mrproper'
 
 If you copy your kernel config .config to the root, that is what causes the issue.
@@ -20,6 +24,7 @@ If you copy your kernel config .config to the root, that is what causes the issu
 There should not be a .config file at the source root.
 
 You have to run fakeroot debian/rules editconfigs instead and edit the config file for the proper arch.
+
 
 # Building a Kernel for Marvell Kirkwood
 
