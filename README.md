@@ -5,6 +5,22 @@ https://www.cyrius.com/debian/kirkwood/sheevaplug/boot/
 http://davidegironi.blogspot.com/2018/12/debian-and-openmediavault-on-zyxtel.html
 
 
+# Ubuntu and Debian strange kernel build issue
+
+https://askubuntu.com/questions/596120/cant-build-ubuntu-kernel-why-does-make-mrproper-get-rid-of-debian-directory
+
+https://unix.stackexchange.com/questions/387640/why-both-make-clean-and-make-mrproper-are-used
+
+https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel
+
+*** The source tree is not clean, please run 'make mrproper'
+
+If you copy your kernel config .config to the root, that is what causes the issue.
+
+There should not be a .config file at the source root.
+
+You have to run fakeroot debian/rules editconfigs instead and edit the config file for the proper arch.
+
 # Building a Kernel for Marvell Kirkwood
 
 https://forum.doozan.com/read.php?2,26733,26733
