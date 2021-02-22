@@ -30,6 +30,8 @@ You have to run fakeroot debian/rules editconfigs instead and edit the config fi
 
 https://forum.doozan.com/read.php?2,26733,26733
 
+https://debian-handbook.info/browse/stable/sect.kernel-compilation.html
+
 https://wiki.debian.org/MultiarchCrossToolchainBuild
 
 https://unix.stackexchange.com/questions/172500/how-to-cross-build-a-debian-package
@@ -99,6 +101,28 @@ The bodhi kernel config is a good point to start:
 cp ../config-* .config
 
 dpkg-buildpackage -us -uc -b --target-arch armel
+
+Or better and looking the way bodhi does it due to having tld in the name and compile working fine on the device:
+
+https://www.kernel.org/
+
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.17.tar.xz
+
+tar xf linux-5.10.17.tar.xz
+
+cd linux-5.10.17
+
+patch -p1 <../linux-*.patch
+
+cp ../config-* .
+
+mv config-* .config
+
+make deb-pkg
+
+And now it seems to be compiling without errors on the actual device. Good.
+
+Need to sort out why the chroot method on amd64 has python3.9:armel and python3.9-minimal:armel not installable issues
 
 
 # PC Power supply quality
