@@ -66,6 +66,8 @@ https://wiki.debian.org/Multiarch/CrossDependencies
 
 https://wiki.debian.org/Distcc
 
+https://wiki.archlinux.org/index.php/Distcc
+
 Enter chroot every time forcing C locale to avoid tex-common errors:
 
 LC_ALL=C chroot /the/chroot/directory /bin/bash -l
