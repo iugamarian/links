@@ -32,6 +32,8 @@ https://forum.doozan.com/read.php?2,26733,26733
 
 https://debian-handbook.info/browse/stable/sect.kernel-compilation.html
 
+https://help.ubuntu.com/community/Kernel/Compile
+
 https://wiki.debian.org/MultiarchCrossToolchainBuild
 
 https://unix.stackexchange.com/questions/172500/how-to-cross-build-a-debian-package
@@ -61,6 +63,8 @@ https://unix.stackexchange.com/questions/416233/how-to-add-locales-to-a-chrooted
 https://askubuntu.com/questions/1062171/dpkg-deb-error-paste-subprocess-was-killed-by-signal-broken-pipe
 
 https://wiki.debian.org/Multiarch/CrossDependencies
+
+https://wiki.debian.org/Distcc
 
 Enter chroot every time forcing C locale to avoid tex-common errors:
 
@@ -124,6 +128,92 @@ And now it seems to be compiling without errors on the actual device. Good.
 
 Need to sort out why the chroot method on amd64 has python3.9:armel and python3.9-minimal:armel not installable issues
 
+Speeding Up the Build
+
+Use distcc and, if you're rebuilding often, ccache. A good overview of using distcc on a debian-based system is availabl
+
+at http://myrddin.org/howto/using-distcc-with-debian. If you have AMD64 machines available on your local area network,
+
+they can still participate in building 32-bit code; distcc seems to handle that automatically. However, with distcc
+
+taking over all compiles by default, you will need to set HOSTCC so that when kernel builds want to use the compiler
+
+on the host itself, they don't end up distributing jobs to the 64-bit server. If you fail to do that, you'll get
+
+link-compatibility failures between 64-bit and 32-bit code. My make-kpkg command, with /usr/lib/ccache at the head
+
+of my $PATH, looks like:
+
+```bash
+MAKEFLAGS="HOSTCC=/usr/bin/gcc CCACHE_PREFIX=distcc" make-kpkg --rootcmd fakeroot --initrd --append-to-version=-suspend2 kernel-image kernel-headers kernel-source
+```
+
+Distcc
+
+It's unknown to me if the archive accepts packages built using this method, but it can be useful when building "local"
+
+packages for low-performance semi-embedded devices, where you have access to multiple identical machines.
+
+First on one machine, lets call it master, we install the usual build tools. Then install the packages distcc and ccache.
+
+On all the slaves, you should install distcc and g++ (if you will ever only compile c code, you can install only gcc instead).
+
+On all slaves, edit their /etc/default/distcc and set STARTDISTCC to true, ALLOWEDNETS to your sub-network (i.e. "192.168.37.0/24"),
+
+and LISTENER to the LAN interface (i.e. "192.168.37.27"). If you want to use avahi, let ZEROCONF be true. You don't need to do this
+
+modification on the master, as we don't want to use that server for actual remote building. After modification don't forget to start the daemons.
+
+If you dont want to use avahi, then on the master, add all the IP:s to $HOME/.distcc/hosts.
+
+Even though you can use distcc without ccache I recommend this combination, as you can easly hook distcc to the call of ccache.
+
+Now we create two scripts in /usr/local/bin:
+
+First /usr/local/bin/distbuild:
+
+```bash
+export MAKE="/usr/local/bin/distmake"
+export DISTCC_HOSTS="+zeroconf"
+export CCACHE_PREFIX="distcc"
+export DISTCC_JOBS=`distcc -j`
+export CC="ccache gcc"
+export CXX="ccache g++"
+
+echo "Building with $DISTCC_JOBS parallel jobs on following servers:"
+for server in `distcc --show-hosts`; do
+                server=$(echo $server | sed 's/:.*//')
+                echo -e "\t$server"
+done
+
+BCMD="debuild -rfakeroot"
+EXTRA_FLAGS="-eCC -eCXX -eCCACHE_PREFIX -eMAKE -eDISTCC_HOSTS -eDISTCC_JOBS"
+if [ -d .svn ]; then
+                BCMD="svn-buildpackage --svn-builder $BCMD"
+fi
+echo $BCMD $EXTRA_FLAGS $@
+$BCMD $EXTRA_FLAGS $@
+```
+
+And again, if you don't want to use zeroconf, don't export DISTCC_HOSTS with "+zeroconf". The SVN check I added to easily use same command on both normal builds as subversion builds.
+
+Second we need a make (/usr/local/bin/makebuild) wrapper, as debhelper might choke otherwise:
+
+```bash
+make --jobs=${DISTCC_JOBS:-1} "$@"
+```
+
+Now we can build package as following:
+
+```bash
+$ bbuild -uc -us -tc
+Building with 16 parallel jobs on following servers:
+        192.168.37.42
+        192.168.37.30
+        192.168.37.25
+        192.168.37.27
+debuild -rfakeroot -eCC -eCXX -eCCACHE_PREFIX -eMAKE -eDISTCC_HOSTS -eDISTCC_JOBS -uc -us
+```
 
 # PC Power supply quality
 
