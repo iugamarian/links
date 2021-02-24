@@ -14,6 +14,40 @@ https://forum.doozan.com/read.php?3,28129
 
 https://forum.doozan.com/read.php?3,34153
 
+https://forum.doozan.com/read.php?3,23727
+
+https://forum.doozan.com/read.php?3,14398,14398
+
+https://forum.doozan.com/read.php?8,33041,33042
+
+https://forum.doozan.com/read.php?3,32666,32667
+
+https://forum.doozan.com/read.php?2,88619,110334
+
+https://forum.doozan.com/read.php?8,25874,27941
+
+https://forum.doozan.com/read.php?2,36030,40969
+
+https://gist.github.com/koczaj/a20ed52c969a8d0612986ca576067876
+
+https://unix.stackexchange.com/questions/389961/how-to-create-zimage
+
+http://lacie-nas.org/doku.php?id=making_kernel_with_dtb
+
+https://forum.doozan.com/read.php?2,49474
+
+https://forum.doozan.com/read.php?2,115714,115714
+
+https://forum.doozan.com/read.php?3,25120
+
+https://forum.doozan.com/read.php?2,22623
+
+https://forum.doozan.com/read.php?3,25144,25145#msg-25145
+
+make zImage
+
+And zImage seems to be built in the kernel source when running make deb-dpkg
+
 The dtb files from /boot/dts are exactly the same as the ones from /usr/lib/linux* and source-folder/debian/usr/lib/linux*
 
 Possible issue - I forgot to install the linux headers for 5.10.7 before compiling and it was using previous 5.10.13 from apt-get source.
