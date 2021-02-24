@@ -341,6 +341,8 @@ https://doncharisma.org/2013/09/22/build-your-own-pro-nas-seagate-goflex-net-wit
 
 http://davidegironi.blogspot.com/2018/12/debian-and-openmediavault-on-zyxtel.html#.YBRdGNaxXJE
 
+https://forum.doozan.com/read.php?3,14,14
+
 On the Kirkwood device:
 	
 # serverip is the machine that you will monitor on, ipaddres is the address of your GoFlex Net
