@@ -378,6 +378,42 @@ halt
 
 Reason for doing this is to make sure any cached data is written to disk and propertly shutdown the operating system.
 
+Success, thank you! Actually that exact command got me an error message, but that led me to a post (from you,
+
+of course) telling another noob that there were actually (at least) two netconsole/netcat programs, which led me to the
+
+magic combo that seems to work for me:
+
+nc.traditional -l -u -p 6666 &
+
+nc.traditional -u -p 6666 192.168.222.168 6666
+
+I thought I was just doing this to have a rescue plan in place in case something goes wrong, but in fact the console output
+
+from both my E02 and my Mobile have a few lines in them that look like something wrong. But I'll dig around and see what I
+
+can find out about them before I bug you in another thread.
+
+Thanks once again.
+
+On Ubuntu the netcat version is important.
+
+I am always just using:
+
+nc -lu 192.168.1.35 6666
+
+Only this single line. And it reliably enables monitoring and interactivity with the connected GoFlexNet for me.
+
+Tip for who use nc in Windows 10(or 7, 8, 8.1).
+
+As you all know, Windows blocked ping for security reasons. And netconsole would not start before server responds.
+
+So you must allow it before use nc.
+
+Open Windows Power Shell (as an administrator) or cmd (as an administrator), and run this command.
+
+netsh advfirewall firewall add rule name="ICMP Allow" protocol=icmpv4:8,any dir=in action=allow
+
 
 # Better electric engine magnetic and reluctance force combination
 
