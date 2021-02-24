@@ -1,5 +1,33 @@
 # Uboot not booting fresh good compiled kernel
 
+Solution found and reported:
+
+https://forum.doozan.com/read.php?2,100879
+
+I see two more possible reasons why a kernel will not boot:
+
+-a file is too fragmented and uBoot may not be able to read too fragmented files
+
+-a file is to the right of a huge partition and uBoot may not be able to read that far
+
+My current solution:
+
+mkdir /oldboot01
+
+mv /boot /oldboot01
+
+cp -r /oldboot01/boot /
+
+Try boot, if ok stop.
+
+mkdir /oldboot02
+
+mv /boot /oldboot02
+
+cp -r /oldboot02/boot /
+
+Try boot, if ok stop. If not ok this is probably not a fragmented or right of huge partition issue.
+
 https://forum.doozan.com/read.php?2,89449
 
 https://forum.doozan.com/read.php?3,87849,87959#msg-87959
