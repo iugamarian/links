@@ -1,3 +1,24 @@
+# Uboot not booting fresh good compiled kernel
+
+https://forum.doozan.com/read.php?2,89449
+
+https://forum.doozan.com/read.php?3,87849,87959#msg-87959
+
+https://forum.doozan.com/read.php?3,38889
+
+https://forum.doozan.com/read.php?2,38444
+
+https://forum.doozan.com/read.php?3,14931,15252
+
+https://forum.doozan.com/read.php?3,28129
+
+https://forum.doozan.com/read.php?3,34153
+
+The dtb files from /boot/dts are exactly the same as the ones from /usr/lib/linux* and source-folder/debian/usr/lib/linux*
+
+Possible issue - I forgot to install the linux headers for 5.10.7 before compiling and it was using previousl 5.10.13 from apt-get source.
+
+
 # Undersatnding uBoot
 
 https://www.cyrius.com/debian/kirkwood/sheevaplug/boot/
