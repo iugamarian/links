@@ -52,6 +52,8 @@ The dtb files from /boot/dts are exactly the same as the ones from /usr/lib/linu
 
 Possible issue - I forgot to install the linux headers for 5.10.7 before compiling and it was using previous 5.10.13 from apt-get source.
 
+https://unix.stackexchange.com/questions/270390/how-to-reduce-the-size-of-the-initrd-when-compiling-your-kernel
+
 
 # Undersatnding uBoot
 
