@@ -1,26 +1,110 @@
 # Avoid having to keep ssh session to kirkwood device while compiling
 
-https://forums.grsecurity.net/viewtopic.php?f=3&t=3585
+https://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-ssh-session#:~:text=Press%20Ctrl%20%2D%20A%20then%20Ctrl,the%20output%20of%20your%20process.
 
-make deb-pkg &
+You should look for modern alternatives like tmux.
 
-jobs
+tmux is superior to screen for many reasons, here are just some examples:
 
-ps -ef| make
+Windows can be moved between session and even linked to multiple sessions
 
-ps -ef| task-number
+Windows can be split horizontally and vertically into panes
 
-exit
+Support for UTF-8 and 256 colour terminals
 
-come back later
-jobs
- 
-ps -ef| make
+Sessions can be controlled from the shell without the need to enter a session
 
-ps -ef| task-number
-```bash
-[1]+  Done                    fakeroot make deb-pkg
-```
+Basic Functionality
+
+To get the same functionality as explained in the answer recommending screen,
+
+you would need to do the following:
+
+ssh into the remote machine
+
+start tmux by typing tmux into the shell
+
+start the process you want inside the started tmux session
+
+leave/detach the tmux session by typing Ctrl+b and then d
+
+You can now safely log off from the remote machine, your process will keep running
+
+inside tmux. When you come back again and want to check the status of your process
+
+you can use tmux attach to attach to your tmux session.
+
+If you want to have multiple sessions running side-by-side, you should name each
+
+session using Ctrl+b and $. You can get a list of the currently running sessions
+
+using tmux list-sessions, now attach to a running session with command tmux
+
+attach-session -t <session-name>.
+
+tmux can do much more advanced things than handle a single window in a single session.
+
+For more information have a look in man tmux or the tmux GitHub page. In particular,
+
+here's an FAQ about the main differences between screen and tmux.
+
+Option 1: nohup
+
+The best way is often the simplest.
+
+nohup long-running-command &
+
+It was made specifically for this, it even logs stdout to nohup.log.
+
+man nohup
+
+Option 2: bg + disown
+
+ctrl+z
+
+bg
+
+disown -h
+
+If you want to "background" already running tasks, then Ctrl+Z then run bg to put your most
+
+recent suspended task to background, allowing it to continue running. disown will keep the
+
+process running after you log out. The -h flag prevents hangup.
+
+screen and others can do it, but that's not what they're for. I recommend nohup for tasks you
+
+know you are going to leave behind and bg for tasks you're already running and don't want to re-start.
+
+Keep in mind, both are bash specific. If you're not using bash, then the commands could be different.
+
+I would recommend to do disown -h
+
+You could do that by using screen.
+
+Type man screen to find out more or read this screen man page.
+
+Simple scenario:
+
+ssh into your remote box. Type screen Then start the process you want.
+
+Press Ctrl-A then Ctrl-D. This will "detach" your screen session but leave your processes running. You can now log out of the remote box.
+
+If you want to come back later, log on again and type screen -r This will "resume" your screen session, and you can see the output of your process.
+
+I will usually name my screen sessions using screen -S name to make it easier to connect to the correct one later.
+
+Personally, I'm working on a box without any package control software. After spending about half an hour building dependencies
+
+for TMUX (which I personally have experience with and like) from source, it became clear that screen was the better and simpler
+
+solution for me. TL;DR: the optimal solution to this problem depends on the use case, the machine, and how much time you have to
+
+get set up. Thanks for this answer :)
+
+Combination with screen -S before leave and screen -r when coming back is amazing!
+
+It is also helpful to use screen -list to list all active screens when you'd like to resume a screen in the future. You can use screen -r XXXXX to resume screen with id XXXXX. 
 
 
 # Fix having to answer new .config questions when compiling kernel
