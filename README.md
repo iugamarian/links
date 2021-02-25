@@ -1,3 +1,8 @@
+# A good PC Power supply
+
+https://aphnetworks.com/reports/corsair-cv550-550w
+
+
 # Avoid having to keep ssh session to kirkwood device while compiling
 
 https://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-ssh-session#:~:text=Press%20Ctrl%20%2D%20A%20then%20Ctrl,the%20output%20of%20your%20process.
