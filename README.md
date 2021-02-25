@@ -2,6 +2,41 @@
 
 https://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-ssh-session#:~:text=Press%20Ctrl%20%2D%20A%20then%20Ctrl,the%20output%20of%20your%20process.
 
+https://unix.stackexchange.com/questions/45913/is-there-a-way-to-redirect-nohup-output-to-a-log-file-other-than-nohup-out
+
+GNU coreutils nohup man page indicates that you can use normal redirection:
+
+If standard input is a terminal, redirect it from /dev/null. If standard output is a terminal, append output to
+
+'nohup.out' if possible, '$HOME/nohup.out' otherwise. If standard error is a terminal, redirect it to standard
+
+output. To save output to FILE, use 'nohup COMMAND > FILE'.
+
+Edit: I didn't read your link at first; you may have a different version of nohup, although this
+
+section suggests that you can still use normal redirection:
+
+
+ nohup.out          The output file of the nohup execution if
+ 
+                    standard  output is a terminal and if the
+		    
+                    current directory is writable.
+		    
+You can redirect standard output and standard error to different files:
+
+nohup myprogram > myprogram.out 2> myprogram.err
+
+or to the same file:
+
+nohup myprogram > myprogram.out 2>&1
+
+And this isn't specific to GNU utilities, the behavior is specified by POSIX.
+
+It doesn't seem to work. It redirect the output of nohup command rather the output of myprogram.
+
+Redirection should take place before the trailing & character
+
 You should look for modern alternatives like tmux.
 
 tmux is superior to screen for many reasons, here are just some examples:
