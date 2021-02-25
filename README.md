@@ -1,3 +1,42 @@
+# Fix having to answer new .config questions when compiling kernel
+
+https://serverfault.com/questions/116299/automatically-answer-defaults-when-doing-make-oldconfig-on-a-kernel-tree
+
+https://stackoverflow.com/questions/4178526/what-does-make-oldconfig-do-exactly-in-the-linux-kernel-makefile
+
+Use the command :
+
+```bash
+yes "" | make oldconfig
+```
+
+The 'yes' command repeatedly output a line with all specified string, or 'y' by default.
+
+So, you can use it to simply "press enter", which will result in using the defaults value for the 'make oldconfig' command.
+
+Ahh, I didn't know the 'yes' command could output any string.
+
+This should be the correct answer:
+
+make olddefconfig
+
+is what you want. From the help (make help in the kernel source dir)
+
+olddefconfig - Same as silentoldconfig but sets new symbols to their default value
+
+Before you run make oldconfig, you need to copy a kernel configuration file from an older kernel into the root directory of the new kernel.
+
+You can find a copy of the old kernel configuration file on a running system at /boot/config-3.11.0. Alternatively, kernel source code has configs in linux-3.11.0/arch/x86/configs/{i386_defconfig / x86_64_defconfig}
+
+If your kernel source is located at /usr/src/linux:
+
+```bash
+cd /usr/src/linux
+cp /boot/config-VERSION .config
+make oldconfig
+```
+
+
 # Uboot not booting fresh good compiled kernel
 
 Solution found and reported:
