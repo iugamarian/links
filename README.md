@@ -1,3 +1,28 @@
+# Avoid having to keep ssh session to kirkwood device while compiling
+
+https://forums.grsecurity.net/viewtopic.php?f=3&t=3585
+
+make deb-pkg &
+
+jobs
+
+ps -ef| make
+
+ps -ef| task-number
+
+exit
+
+come back later
+jobs
+ 
+ps -ef| make
+
+ps -ef| task-number
+```bash
+[1]+  Done                    fakeroot make deb-pkg
+```
+
+
 # Fix having to answer new .config questions when compiling kernel
 
 https://serverfault.com/questions/116299/automatically-answer-defaults-when-doing-make-oldconfig-on-a-kernel-tree
