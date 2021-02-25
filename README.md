@@ -4,6 +4,76 @@ https://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-
 
 https://unix.stackexchange.com/questions/45913/is-there-a-way-to-redirect-nohup-output-to-a-log-file-other-than-nohup-out
 
+The solution I choose:
+
+Configure things before running the long time command:
+
+Try to fix the Debian packages mixup:
+
+```bash
+apt-get autoremove
+apt-get clean
+apt-get update
+apt-get upgrade -y
+apt-get dist-upgrade -y
+apt-get autoremove
+apt-get clean
+apt-get build-dep linux
+# apt-get install -f
+reboot
+```
+Create a user to compile because root compile can get errors that it is not recommended to compile as root:
+
+```bash
+adduser user
+```
+
+Get from /boot the config and for bodhi kernel the patch in the user home folder as user (point at the end is needed):
+
+```bash
+su user
+cd
+cp /boot/config* .
+cp /boot/linux*patch .
+```
+
+From kernel.org choose a kernel version tarball (close to the latest bodhi version) and get it as user:
+
+```bash
+cd
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.18.tar.xz
+```
+
+Process it for the long command as user:
+
+```bash
+cd
+tar xf linux-5.10.18.tar.xz
+cd linux-5.10.18
+patch -p1 <../linux*patch
+cp ../config* .config
+make oldconfig
+# Answer any questions or for no questions and using defaults use make olddefconfig
+```
+
+Start the long command as user and exit:
+
+```bash
+nohup make deb-pkg >../compile-log-5-10-18 2>&1 &
+exit
+```
+
+As root you can check if the command is running at what it is reporting and what files are being put one folder up:
+
+```bash
+ps -ef|grep make
+tail /home/user/compile-log-5-10-18
+ls /home/user
+```
+
+You can exit all terminal sessions and ssh sessions and come back to check the status later as root.
+
+
 GNU coreutils nohup man page indicates that you can use normal redirection:
 
 If standard input is a terminal, redirect it from /dev/null. If standard output is a terminal, append output to
