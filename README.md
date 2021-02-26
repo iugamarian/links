@@ -3,7 +3,7 @@
 https://aphnetworks.com/reports/corsair-cv550-550w
 
 
-# Avoid having to keep ssh session to kirkwood device while compiling
+# Avoid having to keep ssh session to kirkwood device while compiling a kernel, tested
 
 https://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-ssh-session#:~:text=Press%20Ctrl%20%2D%20A%20then%20Ctrl,the%20output%20of%20your%20process.
 
@@ -78,6 +78,32 @@ ls /home/user
 
 You can exit all terminal sessions and ssh sessions and come back to check the status later as root.
 
+When the compile is done, as root do:
+
+```bash
+mv /boot /the-old-boot-good
+mkdir /boot
+cp /home/user/*.deb /boot
+cd /boot
+dpkg -i *.deb
+cp vmlinuz-5.10.18-kirkwood-tld-1 zImage-5.10.17-kirkwood-tld-1
+mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n Linux-5.10.18-kirkwood-tld-1 -d vmlinuz-5.10.18-kirkwood-tld-1 uImage
+mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.10.18-kirkwood-tld-1 -d initrd.img-5.10.18-kirkwood-tld-1 uInitrd
+# Often the dts files sha256sum is the same hash for different kernels, but they are also in /usr/lib for each installed kernel:
+mkdir dts
+cp /usr/lib/linux-image-5.10.18-kirkwood-tld-1/* dts
+# Sometimes uImage is written directly in the ext4 journal or something and uboot can not read it, orange LED blinking, here is my workaround:
+cd /
+mv /boot /the-5-10-18-boot-uimage-not-seen-maybe
+mkdir /boot
+# Copying many files fast at once makes uboot very happy for some reason, tested that booting is often working ok after this:
+cp -r /the-5-10-18-boot-uimage-not-seen-maybe/* /boot
+rm -rf /the-5-10-18-boot-uimage-not-seen-maybe
+sync
+sync
+sync
+shutdown -r now
+```
 
 GNU coreutils nohup man page indicates that you can use normal redirection:
 
