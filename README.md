@@ -1,3 +1,16 @@
+# BTRFS install and use issues
+
+https://askubuntu.com/questions/1189770/how-do-i-install-and-configure-btrfs-for-desktop-use-on-two-mirrored-drives
+
+https://askubuntu.com/questions/1276281/does-ubuntu-installer-preserve-btrfs-home-subvolume-while-installing-to-the
+
+https://askubuntu.com/questions/1204802/where-are-my-btrfs-subvolumes
+
+https://askubuntu.com/questions/1128347/change-btrfs-filesystem-block-size-while-migrating-ubuntu-18-10-environment-to-l
+
+Installing on existing BTRFS partition asking for legacy grub install on UEFI booted installer triggers error. Strange.
+
+
 # A good PC Power supply
 
 https://aphnetworks.com/reports/corsair-cv550-550w
