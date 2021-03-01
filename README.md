@@ -1,3 +1,14 @@
+# GNU programs for editing binary
+
+https://www.phoronix.com/forums/forum/software/programming-compilers/1241287-gnu-poke-1-0-released-for-poking-at-binary-data
+
+https://radare.gitbooks.io/radare2book/content/
+
+
+# Ubuntu started as UEFI will have install error at grub-install when trying to install as legacy
+
+Just noted this.
+
 # BTRFS install and use issues
 
 https://askubuntu.com/questions/1189770/how-do-i-install-and-configure-btrfs-for-desktop-use-on-two-mirrored-drives
