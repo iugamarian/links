@@ -108,38 +108,43 @@ Create a user to compile because root compile can get errors that it is not reco
 adduser user
 ```
 
-Get from /boot the config and for bodhi kernel the patch in the user home folder as user (point at the end is needed):
+Get from /boot the config and for bodhi kernel the patch in the user home folder as user
+
+download the bodhi kernel from https://forum.doozan.com/read.php?2,12096
+
+and the point at the end of the cp commands is needed, it means "current folder":
 
 ```bash
 su user
 cd
-cp /boot/config* .
-cp /boot/linux*patch .
+cp /boot/config-* .
+cp /boot/linux-*patch .
 ```
 
 From kernel.org choose a kernel version tarball (close to the latest bodhi version) and get it as user:
 
 ```bash
 cd
-wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.18.tar.xz
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.20.tar.xz
 ```
 
 Process it for the long command as user:
 
 ```bash
 cd
-tar xf linux-5.10.18.tar.xz
-cd linux-5.10.18
+tar xf linux-5.10.20.tar.xz
+cd linux-5.10.20
 patch -p1 <../linux*patch
 cp ../config* .config
 make oldconfig
 # Answer any questions or for no questions and using defaults use make olddefconfig
+# KCMP should be "y" on arm also because on x86 it is already "y": https://lwn.net/Articles/845448/
 ```
 
 Start the long command as user and exit:
 
 ```bash
-nohup make deb-pkg >../compile-log-5-10-18 2>&1 &
+nohup make deb-pkg >../compile-log-5-10-20 2>&1 &
 exit
 ```
 
@@ -147,7 +152,7 @@ As root you can check if the command is running at what it is reporting and what
 
 ```bash
 ps -ef|grep make
-tail /home/user/compile-log-5-10-18
+tail /home/user/compile-log-5-10-20
 ls /home/user
 ```
 
@@ -161,19 +166,19 @@ mkdir /boot
 cp /home/user/*.deb /boot
 cd /boot
 dpkg -i *.deb
-cp vmlinuz-5.10.18-kirkwood-tld-1 zImage-5.10.17-kirkwood-tld-1
-mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n Linux-5.10.18-kirkwood-tld-1 -d vmlinuz-5.10.18-kirkwood-tld-1 uImage
-mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.10.18-kirkwood-tld-1 -d initrd.img-5.10.18-kirkwood-tld-1 uInitrd
+cp vmlinuz-5.10.20-kirkwood-tld-1 zImage-5.10.20-kirkwood-tld-1
+mkimage -A arm -O linux -T kernel -C none -a 0x00008000 -e 0x00008000 -n Linux-5.10.20-kirkwood-tld-1 -d vmlinuz-5.10.20-kirkwood-tld-1 uImage
+mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n initramfs-5.10.20-kirkwood-tld-1 -d initrd.img-5.10.20-kirkwood-tld-1 uInitrd
 # Often the dts files sha256sum is the same hash for different kernels, but they are also in /usr/lib for each installed kernel:
 mkdir dts
-cp /usr/lib/linux-image-5.10.18-kirkwood-tld-1/* dts
+cp /usr/lib/linux-image-5.10.20-kirkwood-tld-1/* dts
 # Sometimes uImage is written directly in the ext4 journal or something and uboot can not read it, orange LED blinking, here is my workaround:
 cd /
-mv /boot /the-5-10-18-boot-uimage-not-seen-maybe
+mv /boot /the-5-10-20-boot-uimage-not-seen-maybe
 mkdir /boot
 # Copying many files fast at once makes uboot very happy for some reason, tested that booting is often working ok after this:
-cp -r /the-5-10-18-boot-uimage-not-seen-maybe/* /boot
-rm -rf /the-5-10-18-boot-uimage-not-seen-maybe
+cp -r /the-5-10-20-boot-uimage-not-seen-maybe/* /boot
+rm -rf /the-5-10-20-boot-uimage-not-seen-maybe
 sync
 sync
 sync
