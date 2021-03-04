@@ -1,4 +1,36 @@
-# SAS to SATA
+# JMB585 issues
+
+https://github.com/openzfs/zfs/issues/4713
+
+https://serverfault.com/questions/876750/mdadm-marks-hdd-faulty-even-though-its-in-pristine-health
+
+https://wiki.unraid.net/index.php/Hardware_Compatibility#PCI_SATA_Controllers
+
+https://www.jeffgeerling.com/blog/2020/building-fastest-raspberry-pi-nas-sata-raid
+
+First check the SATA cable is not the issue (no, really, some SATA 2 cables have issues used as SATA 3)
+
+Just wanted to let you guys know that I think I've come across a temporary fix until I've figured this out completely.
+
+You need to compile your own kernel, but change ./include/linux/blkdev.h:884, which should look like this:
+
+#define BLK_MIN_SG_TIMEOUT	(7 * HZ)
+This constant is the absolute minimum lifetime a SCSI command gets to do its thing and the default setting of
+
+7 seconds is just too short for most hard drives to spin up. I've now set it to (45 * HZ) which should give
+
+even md-raid operations that trigger a staggered spin-up of several drives enough time to finish.
+
+The downside of this is that you might get an unresponsive/laggy system in case of a broken drive that cannot
+
+complete any commands anymore.
+
+However, since this constant was last changed in git in 2007 (when SGv3 was added for Linux 2.4 and 2.5), I
+
+doubt that this is actually the source of this problem. I'm going to keep looking some more.
+
+
+# SAS to SATA not supporting SSD trim
 
 https://forums.unraid.net/topic/101979-help-with-sata-card/
 
