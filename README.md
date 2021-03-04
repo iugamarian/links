@@ -1,5 +1,7 @@
 # JMB585 issues
 
+https://github.com/geerlingguy/raspberry-pi-pcie-devices/issues/85
+
 https://github.com/openzfs/zfs/issues/4713
 
 https://serverfault.com/questions/876750/mdadm-marks-hdd-faulty-even-though-its-in-pristine-health
