@@ -1,3 +1,20 @@
+# SAS to SATA
+
+https://forums.unraid.net/topic/101979-help-with-sata-card/
+
+https://www.ebay.com/itm/Dell-H310-6Gbps-SAS-HBA-w-LSI-9211-8i-P20-IT-Mode-for-ZFS-unRAID-FreeNAS-/274222786586#shpCntId
+
+https://conectica.ro/cabluri/cabluri-scsi-sas/cablu-mini-sas-sff-8087-la-4-x-sata-unghi-05m-delock-85686
+
+https://www.amazon.com/gp/product/B0735M1VNY/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&psc=1
+
+Dell H310 uses the same chip and is a clone of the 9211-8i
+
+By the way, with these cards that have Mini SAS connectors, you need forward breakout cables that have
+
+one SFF-8087 mini SAS to 4 SATA cables.  My card takes two of those.
+
+
 # GNU programs for editing binary
 
 https://www.phoronix.com/forums/forum/software/programming-compilers/1241287-gnu-poke-1-0-released-for-poking-at-binary-data
