@@ -1,3 +1,53 @@
+# Resize partition properly:
+
+https://moreless.medium.com/extend-partition-and-file-system-on-raspberr-a48af9e90858
+
+https://raspberrypi.stackexchange.com/questions/4943/how-to-resize-an-image-file-before-writing-to-sd-card
+
+https://elinux.org/RPi_Resize_Flash_Partitions
+
+umount /dev/sda2
+
+Command (m for help): p
+Disk /dev/sda: 
+Device     Boot    Start        End    Sectors   Size Id Type
+/dev/sda1
+/dev/sda2
+
+Command (m for help): d
+Partition number (1,2, default 2): 
+
+Partition 2 has been deleted.
+
+Command (m for help): n
+Partition type
+   p   primary (1 primary, 0 extended, 3 free)
+   e   extended (container for logical partitions)
+Select (default p): 
+
+Using default response p.
+Partition number (2-4, default 2): 
+Enter
+Enter
+
+Created a new partition 2 of type 'Linux' and of size 879,8 GiB.
+Partition #2 contains a ext4 signature.
+
+Do you want to remove the signature? [Y]es/[N]o: N
+
+Command (m for help): w
+
+reboot
+
+umount /dev/sda2
+
+e2fsck -fy /dev/sda2
+
+resize2fs /dev/sda2
+
+reboot
+
+
 # JMB585 issues
 
 https://github.com/geerlingguy/raspberry-pi-pcie-devices/issues/85
