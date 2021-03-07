@@ -7767,6 +7767,14 @@ reboot
 
 # AND PROTECT IT from too many authentification failures from internet wit iptables before year 2020 or nftables from year 2020
 
+http://dev1galaxy.org/viewtopic.php?id=2889
+
+https://forum.doozan.com/read.php?2,20609,20799
+
+https://wiki.archlinux.org/index.php/nftables
+
+https://wiki.nftables.org/wiki-nftables/index.php/Intervals
+
 apt-get install -y nftables
 
 nano /etc/nftables.conf
@@ -7844,6 +7852,31 @@ We can have:
 - does not display text, it was not run, rules are not applied in the linux kernel
 
 - display some text (the contents of /etc/nftables.conf and optional counter), it was run and rules are applied in the linux kernel
+
+You can just edit /etc/init.d/ssh to make sure it starts before ssh
+
+```bash
+[...]
+case "$1" in
+  start)
+        /bin/sleep 5
+        check_privsep_dir
+        check_for_no_start
+        check_dev_null
+        log_daemon_msg "Starting OpenBSD Secure Shell server" "sshd" || true
+        /usr/sbin/nft -f /etc/nftables.conf
+        /bin/sleep 3
+[...]
+```
+
+or put it in /etc/rc.local
+
+```bash
+[...]
+/usr/sbin/nft -f /etc/nftables.conf
+[...]
+```
+
 
 The old method with iptables, not recommended to be used after the year 2020:
 
