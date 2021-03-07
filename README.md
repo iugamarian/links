@@ -7765,23 +7765,100 @@ reboot
 
 # Fast Raspberry Pi remote desktop not on the same display:
 
-# AND PROTECT IT from too many authentification failures from internet
+# AND PROTECT IT from too many authentification failures from internet wit iptables before year 2020 or nftables from year 2020
+
+apt-get install -y nftables
+
+nano /etc/nftables.conf
+
+```bash
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+	chain input {
+		type filter hook input priority 0;
+		ip saddr 192.168.1.2-192.168.1.254 tcp dport 22 accept
+		ip saddr 192.168.1.2-192.168.1.254 tcp dport 9091 accept
+		tcp dport 22 drop
+		tcp dport 9091 drop
+	}
+	chain forward {
+		type filter hook forward priority 0;
+	}
+	chain output {
+		type filter hook output priority 0;
+	}
+}
+```
+
+How the nftables should be called for the config to be applied:
+
+/usr/sbin/nft -f /etc/nftables.conf
+
+How the nftables should be called for showing the current status:
+
+/usr/sbin/nft list ruleset
+
+Systemd enable, disable, mask:
+
+systemctl enable nftables.service
+systemctl disable nftables.service
+systemctl mask nftables.service
+
+Syvinit (not using Systemd) install the startup script:
+
+```bash
+cp /usr/share/doc/nftables/examples/sysvinit/nftables.init /etc/init.d/
+mv /etc/init.d/nftables.init /etc/init.d/nftables
+chmod +x /etc/init.d/nftables
+# ps will not show nft running, so check it was run with:
+# /etc/init.d/nftables status
+```
+
+The /etc/init.d/nftables checks that /usr/sbin/nft was run with this:
+
+```bash
+do_status()
+{
+        # Return
+        #   0 if no rules
+        #   1 if rules
+        if [ "$($BIN list ruleset 2>/dev/null | wc -l)" = "0" ] ; then
+                return 0
+        fi
+
+        return 1
+}
+```
+
+So when running:
+
+```bash
+/usr/sbin/nft list ruleset
+```
+
+We can have:
+
+- does not display text, it was not run, rules are not applied in the linux kernel
+
+- display some text (the contents of /etc/nftables.conf and optional counter), it was run and rules are applied in the linux kernel
+
+The old method with iptables, not recommended to be used after the year 2020:
 
 https://www.cyberciti.biz/tips/linux-iptables-how-to-specify-a-range-of-ip-addresses-or-ports.html
 
 https://serverfault.com/questions/161401/how-to-allow-a-range-of-ips-with-iptables
 
+```bash
 sudo -s
-
 iptables -A INPUT -p tcp -m iprange --src-range 192.168.1.2-192.168.1.254 --dport 22 -j ACCEPT
-
 iptables -A INPUT -p tcp -m iprange --src-range 192.168.1.2-192.168.1.254 --dport 5901 -j ACCEPT
-
 iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
-
 iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 5901 -j DROP
-
-exit
+exit 0
+```
 
 https://raspberrypi.stackexchange.com/questions/28149/tightvnc-connection-refused
 
