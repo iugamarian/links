@@ -1,3 +1,8 @@
+# Gentoo optimised for AVX year 2011+ install variant:
+
+https://gentoox.cryptohash.nl/
+
+
 # Resize partition properly:
 
 https://moreless.medium.com/extend-partition-and-file-system-on-raspberr-a48af9e90858
