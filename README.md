@@ -1,3 +1,36 @@
+# Editing initramfs scripts example for BTRFS raid1 boot:
+
+https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1243275-btrfs-will-finally-strongly-discourage-you-when-creating-raid5-raid6-arrays/page4
+
+there is some bug in either btrfs, udev or the initramfs script in atleast Ubuntu 20.04 because on new servers
+
+that I've set up with BTRFS in RAID1 on the boot drive they very often end up in the initramfs console during
+
+boot due to not being able to find a root device.
+
+dmesg tells that btrfs wines that it cannot find the UUID_SUB of the other drive. So far I "fixed" it by adding
+
+this to "/usr/share/initramfs-tools/scripts/local"
+
+Code:
+```bash
+local_mount_root()
+{
+        ...
+
+       /usr/bin/sleep 5s
+       modprobe btrfs
+       /bin/btrfs device scan
+
+       # Mount root
+       # shellcheck disable=SC2086
+       mount ${roflag} ${FSTYPE:+-t "${FSTYPE}"} ${ROOTFLAGS} "${ROOT}" "${rootmnt?}"
+```
+So that we allow 5 seconds for both drives to spin up before we scan for devices. Googling around for the same error told me that other people had experienced the same problem due to "/usr/lib/udev/rules.d/64-btrfs.rules" being missing which tells udev to wait for all drives to spin up before BTRFS is run but that didn't help it for me (and I did check that this udev rule was added to the initramfs).
+
+Never ever had this problem when using BTRFS in RAID1 for partitions mounted after boot, only when used as the root partition.
+
+
 # Gentoo optimised for AVX year 2011+ install variant:
 
 https://gentoox.cryptohash.nl/
