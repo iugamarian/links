@@ -35,6 +35,8 @@ Never ever had this problem when using BTRFS in RAID1 for partitions mounted aft
 
 https://gentoox.cryptohash.nl/
 
+https://en.wikipedia.org/wiki/Interprocedural_optimization#WPO_and_LTO
+
 
 # Resize partition properly:
 
