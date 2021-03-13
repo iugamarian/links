@@ -1,3 +1,89 @@
+# Ask apt to not update some packages, no matter the version:
+
+https://www.tecmint.com/disable-lock-blacklist-package-updates-ubuntu-debian-apt/
+
+```bash
+Blacklist a Package Update using APT Autoremove File
+
+Another way to blacklist a package from installation is to update its entry in one of the files contained in /etc/apt/apt.conf.d/ directory which is 01autoremove.
+
+Sample file is shown below:
+
+APT
+{
+  NeverAutoRemove
+  {
+        "^firmware-linux.*";
+        "^linux-firmware$";
+  };
+
+  VersionedKernelPackages
+  {
+        # linux kernels
+        "linux-image";
+        "linux-headers";
+        "linux-image-extra";
+        "linux-signed-image";
+        # kfreebsd kernels
+        "kfreebsd-image";
+        "kfreebsd-headers";
+        # hurd kernels
+        "gnumach-image";
+        # (out-of-tree) modules
+        ".*-modules";
+        ".*-kernel";
+        "linux-backports-modules-.*";
+        # tools
+        "linux-tools";
+  };
+
+  Never-MarkAuto-Sections
+  {
+        "metapackages";
+        "restricted/metapackages";
+        "universe/metapackages";
+        "multiverse/metapackages";
+        "oldlibs";
+        "restricted/oldlibs";
+        "universe/oldlibs";
+        "multiverse/oldlibs";
+  };
+};
+
+Now, for blacklisting any package, just need to enter its name in Never-MarkAuto-Sections. Just enter the name of the package at the end in Never-MarkAuto-Section and Save and Close the file. This would block apt for searching for further updates of that package.
+
+For example, to blacklist a package from being update add the entry as shown:
+
+Never-MarkAuto-Sections
+  {
+        "metapackages";
+        "restricted/metapackages";
+        "universe/metapackages";
+        "multiverse/metapackages";
+        "oldlibs";
+        "restricted/oldlibs";
+        "universe/oldlibs";
+        "multiverse/oldlibs";
+        "apache2*";
+  };
+};
+
+Custom Package Selection for Update
+
+Another alternative for this is to choose what you want to update. The apt tool gives you freedom to choose what you want to update, but for this you should have knowledge about what all packages are available for up-gradation.
+
+For such a thing, following set of commands can prove to be helpful:
+
+a. To List what packages have updates pending.
+
+# apt-get -u -V upgrade
+
+b. To install only selective packages.
+
+# apt-get --only-upgrade install <package-name>
+```
+
+
 # Editing initramfs scripts example for BTRFS raid1 boot:
 
 https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1243275-btrfs-will-finally-strongly-discourage-you-when-creating-raid5-raid6-arrays/page4
