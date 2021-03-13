@@ -5,7 +5,9 @@ https://www.tecmint.com/disable-lock-blacklist-package-updates-ubuntu-debian-apt
 ```bash
 Blacklist a Package Update using APT Autoremove File
 
-Another way to blacklist a package from installation is to update its entry in one of the files contained in /etc/apt/apt.conf.d/ directory which is 01autoremove.
+Another way to blacklist a package from installation is to update its entry in one of
+
+the files contained in /etc/apt/apt.conf.d/ directory which is 01autoremove.
 
 Sample file is shown below:
 
@@ -50,7 +52,11 @@ APT
   };
 };
 
-Now, for blacklisting any package, just need to enter its name in Never-MarkAuto-Sections. Just enter the name of the package at the end in Never-MarkAuto-Section and Save and Close the file. This would block apt for searching for further updates of that package.
+Now, for blacklisting any package, just need to enter its name in Never-MarkAuto-Sections.
+
+Just enter the name of the package at the end in Never-MarkAuto-Section and Save and Close
+
+the file. This would block apt for searching for further updates of that package.
 
 For example, to blacklist a package from being update add the entry as shown:
 
@@ -70,7 +76,11 @@ Never-MarkAuto-Sections
 
 Custom Package Selection for Update
 
-Another alternative for this is to choose what you want to update. The apt tool gives you freedom to choose what you want to update, but for this you should have knowledge about what all packages are available for up-gradation.
+Another alternative for this is to choose what you want to update. The apt tool gives
+
+you freedom to choose what you want to update, but for this you should have knowledge
+
+about what all packages are available for up-gradation.
 
 For such a thing, following set of commands can prove to be helpful:
 
