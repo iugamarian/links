@@ -17,7 +17,7 @@ Never-MarkAuto-Sections
         "firmware-*";
   };
 ```
-This will avoid updating (by Software Updater, apt, apt-get aptitude) any firmware and:
+This will avoid updating (by Software Updater, apt, apt-get, aptitude, maybe Synaptic too) any firmware and:
 
 ```bash
 #       "linux-5.8*";
