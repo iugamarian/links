@@ -3,7 +3,7 @@
 https://www.tecmint.com/disable-lock-blacklist-package-updates-ubuntu-debian-apt/
 
 ```bash
-# My solution: edit Never-MarkAuto-Sections in the file /etc/apt/apt.conf.d/01autoremove
+# My tested solution: edit Never-MarkAuto-Sections in the file /etc/apt/apt.conf.d/01autoremove
 
 Never-MarkAuto-Sections
   {
@@ -13,15 +13,22 @@ Never-MarkAuto-Sections
 	"restricted/metapackages";
 	"universe/metapackages";
 	"multiverse/metapackages";
-	"linux-image-*";
-	"linux-headers-*";
-	"linux-libc-dev*";
-	"linux-generic-*";
-	"linux-modules-*";
-	"linux-image-unsigned-*";
+        "linux-*";
+        "firmware-*";
   };
 ```
+This will avoid updating (by Software Updater, apt, apt-get aptitude) any firmware and:
 
+```bash
+#       "linux-5.8*";
+#       "linux-firmware-*";
+#       "linux-image-*";
+#       "linux-headers-*";
+#       "linux-libc-dev*";
+#       "linux-generic-*";
+#       "linux-modules-*";
+#       "linux-image-unsigned-*";
+```
 
 ```bash
 Blacklist a Package Update using APT Autoremove File
