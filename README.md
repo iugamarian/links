@@ -7978,7 +7978,34 @@ flush ruleset
 
 table inet filter {
 	chain input {
+		type filter hook input priority 0; policy accept;
+		ip saddr 192.168.1.2-192.168.1.254 tcp dport 22 accept
+		ip saddr 192.168.1.2-192.168.1.254 tcp dport 9091 accept
+		tcp dport 22 drop
+		tcp dport 9091 drop
+	}
+	chain forward {
+		type filter hook forward priority 0; policy accept;
+	}
+	chain output {
+		type filter hook output priority 0; policy accept;
+	}
+}
+
+```
+
+or
+
+```bash
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+	chain input {
 		type filter hook input priority 0;
+#		iif lo accept
+#		iif eth0 accept
 		ip saddr 192.168.1.2-192.168.1.254 tcp dport 22 accept
 		ip saddr 192.168.1.2-192.168.1.254 tcp dport 9091 accept
 		tcp dport 22 drop
