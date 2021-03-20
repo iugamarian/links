@@ -1,3 +1,19 @@
+# Disable IPV6 if can not do it  at boot
+
+https://itsfoss.com/disable-ipv6-ubuntu-linux/
+```bash
+nano /etc/rc.local
+sysctl -w net.ipv6.conf.all.disable_ipv6=1
+sysctl -w net.ipv6.conf.default.disable_ipv6=1
+sysctl -w net.ipv6.conf.lo.disable_ipv6=1
+
+or nano /etc/sysctl.conf
+net.ipv6.conf.all.disable_ipv6=1
+net.ipv6.conf.default.disable_ipv6=1
+net.ipv6.conf.lo.disable_ipv6=1
+```
+
+
 # Test open ports on Linux
 
 https://www.journaldev.com/34113/opening-a-port-on-linux#list-all-open-ports
