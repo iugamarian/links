@@ -1,3 +1,8 @@
+# Test open ports on Linux
+
+https://www.journaldev.com/34113/opening-a-port-on-linux#list-all-open-ports
+
+
 # Ask apt to not update some packages, no matter the version:
 
 https://www.tecmint.com/disable-lock-blacklist-package-updates-ubuntu-debian-apt/
