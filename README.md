@@ -1,4 +1,11 @@
-# Disable IPV6 if can not do it  at boot
+# Find your public IP address from command line
+
+https://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
+
+host myip.opendns.com resolver1.opendns.com
+
+
+# Disable IPV6 if can not do it at boot
 
 https://itsfoss.com/disable-ipv6-ubuntu-linux/
 ```bash
