@@ -1,3 +1,33 @@
+# Very large kernel compile folder issues (more than 15 GB)
+
+https://lwn.net/Articles/744507/
+
+My current solution:
+
+Need to use a computer with 16 GB RAM, better 32 GB RAM, sometimes debug deb package will fail, not really needed
+
+```bash
+# /tmp needs to be already in tmpfs done from /etc/fstab
+# btrfs-progs needs to be installed
+free -m
+mount -o remount,size=14500M /tmp
+dd if=/dev/zero of=/tmp/containerbtrfs bs=1M count=14000
+mkfs.btrfs /tmp/containerbtrfs
+mount -t btrfs -o compress-force=zstd,autodefrag /tmp/containerbtrfs /mnt
+mkdir /mnt/user
+chown user:user /mnt/user
+# as user use /mnt/user for compiling the kernel
+# see that maybe the no space failure happened at *-dbg*.deb
+# copy the .deb files except for the *-dbg*.deb to the home folder
+cd
+umount /mnt
+sync
+reboot
+```
+
+The HDD/SSD LED of the computer will flash a lot - do not worry, make only reads headers and libraries, no writes to HDD/SSD
+
+
 # Find your public IP address from command line
 
 https://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
