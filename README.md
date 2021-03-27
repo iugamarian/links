@@ -27,6 +27,32 @@ reboot
 
 The HDD/SSD LED of the computer will flash a lot - do not worry, make only reads headers and libraries, no writes to HDD/SSD
 
+Possible second solution:
+
+https://www.debian.org/doc/manuals/debian-kernel-handbook/ch-common-tasks.html
+
+https://superuser.com/questions/925079/compile-linux-kernel-deb-pkg-target-without-generating-dbg-package
+
+Change directory to the linux source and do:
+
+```bash
+scripts/config --disable DEBUG_INFO
+```
+
+Debuginfo is only needed if you plan to use binary object tools like crash, kgdb, and SystemTap on the kernel.
+
+Disk space requirements:
+
+Building binary packages for a single kernel flavour requires up to 15 GB space in the package directory and 300 MB in /tmp (or $TMPDIR).
+
+Building with debug info disabled requires about 2 GB and 25 MB respectively.
+
+You can disable debug info by changing the value of debug-info to false in debian/config/defines (or debian/config/arch/defines in older package versions).
+
+Building all binary packages for i386 or amd64 currently requires about 50 GB space in the package directory.
+
+Other architectures with fewer drivers will require less space.
+
 
 # Find your public IP address from command line
 
