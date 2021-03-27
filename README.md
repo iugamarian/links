@@ -35,11 +35,13 @@ https://superuser.com/questions/925079/compile-linux-kernel-deb-pkg-target-witho
 
 https://askubuntu.com/questions/609900/what-is-the-best-config-file-for-kernel-compilation
 
-Change directory to the linux source and do:
+After the .config file is edited or copied, change directory to the linux source and do:
 
 ```bash
 scripts/config --disable DEBUG_INFO
 ```
+
+Lines with DEBUG_INFO are commented not set.
 
 Debuginfo is only needed if you plan to use binary object tools like crash, kgdb, and SystemTap on the kernel.
 
