@@ -33,6 +33,8 @@ https://www.debian.org/doc/manuals/debian-kernel-handbook/ch-common-tasks.html
 
 https://superuser.com/questions/925079/compile-linux-kernel-deb-pkg-target-without-generating-dbg-package
 
+https://askubuntu.com/questions/609900/what-is-the-best-config-file-for-kernel-compilation
+
 Change directory to the linux source and do:
 
 ```bash
