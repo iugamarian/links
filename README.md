@@ -4,6 +4,24 @@ http://www.aschroder.com/2015/01/generating-barcode-numbers-and-ean-barcode-artw
 
 https://www.reddit.com/r/Inkscape/comments/adkvtn/help_with_barcode_extension/
 
+Inkscape:
+
+the Barcode Extension generates a group of rectangles and text;
+
+you must ungroup everything, then 'Union'
+
+after that your 'Difference' operation should work as expected
+
+alternatively you can use the barcode as a mask:
+
+combine the barcode with a rectangle the size of the object you want to mask;
+
+make the barcode black and the rectangle white;
+
+group everything and put on top of the target;
+
+with a rightclick 'Set Mask'
+
 
 # Very large kernel compile folder issues (more than 15 GB)
 
