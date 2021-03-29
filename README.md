@@ -4,6 +4,10 @@ http://www.aschroder.com/2015/01/generating-barcode-numbers-and-ean-barcode-artw
 
 https://www.reddit.com/r/Inkscape/comments/adkvtn/help_with_barcode_extension/
 
+https://bytescout.com/blog/2014/03/codabar-barcode-history-and-purpose.html
+
+Codabar seems the best barcode to be used.
+
 Inkscape:
 
 the Barcode Extension generates a group of rectangles and text;
