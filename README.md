@@ -1,3 +1,8 @@
+# Open source barcode generators
+
+http://www.aschroder.com/2015/01/generating-barcode-numbers-and-ean-barcode-artwork-with-gnu-barcode/
+
+
 # Very large kernel compile folder issues (more than 15 GB)
 
 https://lwn.net/Articles/744507/
