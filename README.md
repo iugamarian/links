@@ -2,6 +2,8 @@
 
 http://www.aschroder.com/2015/01/generating-barcode-numbers-and-ean-barcode-artwork-with-gnu-barcode/
 
+https://www.reddit.com/r/Inkscape/comments/adkvtn/help_with_barcode_extension/
+
 
 # Very large kernel compile folder issues (more than 15 GB)
 
