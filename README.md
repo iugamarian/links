@@ -1,3 +1,12 @@
+# Change compile architecture when running ./configure
+
+https://github.com/lucasjones/cpuminer-multi/issues/89
+
+```bash
+CFLAGS="-march=native" ./configure
+```
+
+
 # Open source barcode generators
 
 http://www.aschroder.com/2015/01/generating-barcode-numbers-and-ean-barcode-artwork-with-gnu-barcode/
@@ -6,7 +15,9 @@ https://www.reddit.com/r/Inkscape/comments/adkvtn/help_with_barcode_extension/
 
 https://bytescout.com/blog/2014/03/codabar-barcode-history-and-purpose.html
 
-Codabar seems the best barcode to be used.
+Codabar seems very good barcode to be used, it is old.
+
+Code 128 seems very good barcode to be used, less thin lines so less rick for small lines to not be printed well, it is new.
 
 Inkscape:
 
