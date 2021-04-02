@@ -17,7 +17,7 @@ https://bytescout.com/blog/2014/03/codabar-barcode-history-and-purpose.html
 
 Codabar seems very good barcode to be used, it is old.
 
-Code 128 seems very good barcode to be used, less thin lines so less rick for small lines to not be printed well, it is new.
+Code 128 seems very good barcode to be used, less thin lines so less risk for small lines to not be printed well, it is new.
 
 Inkscape:
 
