@@ -8,13 +8,17 @@ https://community.mellanox.com/s/article/understanding-the-iommu-linux-grub-file
 
 /etc/default/grub
 
-GRUB_CMDLINE_LINUX="iommu=soft"
+GRUB_CMDLINE_LINUX="iommu=pt"
 
 or yo can cut quiet splash from default and put it there
 
 and update grub config by execute
 
 sudo update-grub
+
+soft = dmesg says iommu is not working
+
+pt = dmesg says iommu and AMD Vi are ok
 
 
 # Change compile architecture when running ./configure
