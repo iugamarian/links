@@ -1,3 +1,22 @@
+# Linux boot AMD Vi error fix
+
+https://stackoverflow.com/questions/62827591/amd-vi-unable-to-read-write-to-iommu-coun-problem-loading-x-509-certificate
+
+https://forums.linuxmint.com/viewtopic.php?t=329742
+
+https://community.mellanox.com/s/article/understanding-the-iommu-linux-grub-file-configuration
+
+/etc/default/grub
+
+GRUB_CMDLINE_LINUX="iommu=soft"
+
+or yo can cut quiet splash from default and put it there
+
+and update grub config by execute
+
+sudo update-grub
+
+
 # Change compile architecture when running ./configure
 
 https://github.com/lucasjones/cpuminer-multi/issues/89
