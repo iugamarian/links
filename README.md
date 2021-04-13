@@ -1,3 +1,10 @@
+# RTS game for Linux
+
+https://www.beyondallreason.info/
+
+https://wz2100.net/news/version-4-0-0/
+
+
 # Linux boot AMD Vi error fix
 
 https://stackoverflow.com/questions/62827591/amd-vi-unable-to-read-write-to-iommu-coun-problem-loading-x-509-certificate
