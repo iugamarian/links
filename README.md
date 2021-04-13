@@ -4,6 +4,10 @@ https://www.beyondallreason.info/
 
 https://wz2100.net/news/version-4-0-0/
 
+https://www.beyondallreason.info/news/tips-for-supreme-commander-total-planetary-annihilation-players-to-quickly-grasp-bar-gameplay
+
+https://zero-k.info/Forum/Thread/32569?page=1
+
 
 # Linux boot AMD Vi error fix
 
