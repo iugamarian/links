@@ -1874,7 +1874,7 @@ be burned one at a time to disc.
 
 To Split During Creation
 
-bash```
+```bash
 tar -cvpz <put options here> / | split -d -b 3900m - /name/of/backup.tar.gz. 
 ```
 
@@ -1896,7 +1896,7 @@ tar -cvpz <put options here> / | split -d -b 3900m - /name/of/backup.tar.gz.
 
 To Split After Creation
 
-bash```
+```bash
 split -d -b 3900m /path/to/backup.tar.gz /name/of/backup.tar.gz. 
 ```
 
@@ -1908,7 +1908,7 @@ Reconstructing the complete archive is easy, first cd into the directory holding
 
 to write all the archives into one and send over standard output to tar to extract to the specified directory.
 
-bash```
+```bash
 cat *tar.gz* | tar -xvpzf - -C /  
 ```
 
