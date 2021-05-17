@@ -1,3 +1,8 @@
+# Western Digital PR4100 installing Debian
+
+https://community.wd.com/t/debian-linux-on-the-my-cloud-pr4100-pr2100/217141
+
+
 # RTS game for Linux
 
 https://www.beyondallreason.info/
