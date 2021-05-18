@@ -1,3 +1,17 @@
+# Fix video resample, reduce soap opera effect:
+
+~/.config/mpv/mpv.conf
+
+video-sync=display-resample
+interpolation=yes
+tscale=box
+tscale-window=kaiser
+tscale-clamp=0.0
+Problem solved!
+
+https://www.youtube.com/watch?v=AUipoxcYtas
+
+
 # Western Digital PR4100 installing Debian
 
 https://community.wd.com/t/debian-linux-on-the-my-cloud-pr4100-pr2100/217141
