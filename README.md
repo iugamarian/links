@@ -1,13 +1,32 @@
+# Ceph Dashboard
+
+https://www.youtube.com/watch?v=RUBMj5ORbe4
+
+3 servers minimum, more servers means more healing and balancing and can set better redundancy:
+
+Best to use of Failure Domain = Server => if server off, redundancy
+
+Redundancy with Erasure Coding:
+
+3 servers raid 5 like  =  EC 2+1   =  66% efficient, 1 server can fail
+
+4 servers raid 6 bad like  =  EC 2+2   =  50% efficient, 2 servers can fail (so better than mirror)
+
+6 servers raid 6 good like  =  EC 4+2  =  66% efficient, 2 servers can fail (so better than mirror, raid 5 efficient)
+
+
 # Fix video resample, reduce soap opera effect:
 
 ~/.config/mpv/mpv.conf
 
+```bash
 video-sync=display-resample
 interpolation=yes
 tscale=box
 tscale-window=kaiser
 tscale-clamp=0.0
 Problem solved!
+```
 
 https://www.youtube.com/watch?v=AUipoxcYtas
 
