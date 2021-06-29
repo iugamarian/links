@@ -4,6 +4,14 @@ https://conectica.ro/controlere/pci-express/pci-express-cu-5-porturi-sata-iii-de
 
 https://www.esus-it.com/product-eng-68111-Delock-5xSATA-JMicron-JMB585-PCI-Express-x4-Card-low-profile-Hot-Swap.html
 
+# Better JMB585 with cooler, tested ok
+
+https://conectica.ro/controlere/pci-express/pci-express-cu-5-porturi-sata-iii-delock-90498
+
+https://www.aliexpress.com/item/1005002909164201.html?spm=a2g0o.productlist.0.0.5c34b0309f2qpl&algo_pvid=193af219-a179-4d5e-ae87-64d6383e4388&algo_exp_id=193af219-a179-4d5e-ae87-64d6383e4388-34
+
+https://www.delock.com/produkte/N_90498/merkmale.html?setLanguage=ro
+
 
 # Ceph Dashboard
 
