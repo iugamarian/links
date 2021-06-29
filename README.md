@@ -1,4 +1,6 @@
-# Good JMB585 but needs cooler on chip
+# Good JMB585 but needs cooler on chip, good reviews without cooler
+
+https://conectica.ro/controlere/pci-express/pci-express-cu-5-porturi-sata-iii-delock-90395
 
 https://www.esus-it.com/product-eng-68111-Delock-5xSATA-JMicron-JMB585-PCI-Express-x4-Card-low-profile-Hot-Swap.html
 
