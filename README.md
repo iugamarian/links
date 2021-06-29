@@ -1,3 +1,8 @@
+# Good JMB585 but needs cooler on chip
+
+https://www.esus-it.com/product-eng-68111-Delock-5xSATA-JMicron-JMB585-PCI-Express-x4-Card-low-profile-Hot-Swap.html
+
+
 # Ceph Dashboard
 
 https://www.youtube.com/watch?v=RUBMj5ORbe4
