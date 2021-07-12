@@ -1,3 +1,44 @@
+# PS4 Pro upgrade to SSD
+
+https://www.youtube.com/watch?v=z3onXlsJwnc
+
+1. Connect your external hard drive to the PS4 Pro.  Make sure it is large enough to copy all your data.
+
+Then, power on your system.  Go to settings, System, backup and restore.  Select backup PS4.
+
+ Then, press X to add a check mark for saving applications.  Your PS4 Pro will restart and copy all your data.
+
+This process might take a few hours depending on how many game saves and other large files you have.
+
+2. Make sure the PS4 Pro is powered down and unplugged.  Pull down the cover tab on the back side of the PS4 Pro.
+
+Remove the screw holding the hard drive tray and slide it out.  Now, remove the four screws holding the hard drive
+
+to the mounting bracket.  Once that's done, place your Kingston A400 SSD in the mounting bracket and tighten the four screws.  
+
+3. Attach the SSD to the PS4 Pro by replacing the screw and slide the cover tab back on.
+
+4. After the drive has been replaced the system software must be reinstalled.  Using a computer, go to the Playstation website
+
+to download the latest system software.  Your USB drive will need at least 1GB of free space to download the file.
+
+5. On your USB drive create a folder called PS4.  Inside that folder, create another folder named Update.  Save the file into your
+
+new folder with the filename ps4update.pup.  
+
+6. Now, go back to your PS4 Pro and make sure it's powered off.  Insert the USB drive into your PS4 Pro, then press and hold the
+
+power button for 7 seconds.  Select Initialize PS4 Pro, Reinstall System Software, and follow the on-screen instructions. 
+
+7. Connect the external hard drive with your saved data.  Then go to System, Backup and Restore, then select Restore PS4 Pro
+
+and select your backup file. 
+
+In speed tests we were able to load Death Stranding from the Kingston SSD in 48 seconds while a standard hard drive finished in
+
+1 minute and 10 seconds, saving you 31% of your time.
+
+
 # USB protocol overview
 
 https://www.youtube.com/watch?v=wdgULBpRoXk
