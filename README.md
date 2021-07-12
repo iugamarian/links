@@ -2,6 +2,10 @@
 
 https://www.youtube.com/watch?v=z3onXlsJwnc
 
+https://www.playstation.com/en-ro/support/hardware/ps4/system-software/
+
+https://www.playstation.com/en-ro/support/hardware/reinstall-playstation-system-software-safe-mode/
+
 1. Connect your external hard drive to the PS4 Pro.  Make sure it is large enough to copy all your data.
 
 Then, power on your system.  Go to settings, System, backup and restore.  Select backup PS4.
