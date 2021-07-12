@@ -1,3 +1,8 @@
+# USB protocol overview
+
+https://www.youtube.com/watch?v=wdgULBpRoXk
+
+
 # Good JMB585 but needs cooler on chip, good reviews without cooler
 
 https://conectica.ro/controlere/pci-express/pci-express-cu-5-porturi-sata-iii-delock-90395
