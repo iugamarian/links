@@ -1,3 +1,8 @@
+# Linux reduce thrashing very good
+
+https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1267300-le9-strives-to-make-linux-very-usable-on-systems-with-small-amounts-of-ram
+
+
 # PS4 Pro upgrade to SSD
 
 https://www.youtube.com/watch?v=z3onXlsJwnc
