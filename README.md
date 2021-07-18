@@ -184,36 +184,86 @@ group everything and put on top of the target;
 with a rightclick 'Set Mask'
 
 
-# Very large kernel compile folder issues (more than 15 GB)
+# Very large kernel compile folder issues (more than 20 GB used)
 
 https://lwn.net/Articles/744507/
 
-My current solution:
+My current solution is to compile using the computer RAM.
 
-Need to use a computer with 16 GB RAM, better 32 GB RAM, sometimes debug deb package will fail, not really needed
+Need to use a computer with 64 GB RAM, sometimes debug deb package will fail, not really needed.
+
+For example, as root, prepare compile environment for the user "pi":
 
 ```bash
-# /tmp needs to be already in tmpfs done from /etc/fstab
-# btrfs-progs needs to be installed
-free -m
-mount -o remount,size=14500M /tmp
-dd if=/dev/zero of=/tmp/containerbtrfs bs=1M count=14000
+#!/bin/bash
+# Check to see if running as root
+echo -e "\nChecking for root."
+if [ `id -u` != 0 ]; then
+	echo ""
+    echo "Not root."
+	echo ""
+    echo -e "Need to be run as root.\n"
+	echo ""
+    echo "Try 'sudo -s' then the script."
+    echo ""
+    exit 1
+else
+    echo ""
+    echo "Root."
+    echo ""
+        echo "Wait..."
+    echo ""
+fi
+# Increasing /tmp size to 40000 MB
+mount -o remount,size=40000M /tmp
+# Creating 37000 MB file in /tmp so allowing about up to 3GB tmp free space
+dd if=/dev/zero of=/tmp/containerbtrfs bs=1M count=37000
 mkfs.btrfs /tmp/containerbtrfs
 mount -t btrfs -o compress-force=zstd,autodefrag /tmp/containerbtrfs /mnt
-mkdir /mnt/user
-chown user:user /mnt/user
-# as user use /mnt/user for compiling the kernel
+mkdir /mnt/pi
+chown pi:pi /mnt/pi
+echo "Kernel compile environment ready, as user pi use working dir /mnt/pi."
+exit 0
+
+# as user use /mnt/pi for compiling the kernel
+
 # see that maybe the no space failure happened at *-dbg*.deb
 # copy the .deb files except for the *-dbg*.deb to the home folder
-cd
-umount /mnt
-sync
-reboot
 ```
 
-The HDD/SSD LED of the computer will flash a lot - do not worry, make only reads headers and libraries, no writes to HDD/SSD
+As user "pi", download, unpack and read at the end how to compile for example Linux 5.10.50:
 
-Possible second solution:
+```bash
+#!/bin/bash
+cd /mnt/pi
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.10.50.tar.xz
+tar xf linux-5.10.50.tar.xz
+echo ""
+echo "Done unpacking. Read at the end of this file for how to compile."
+echo ""
+# cd linux-5.10.50
+# cp /boot/config-(largest-version) .config
+# make oldconfig
+# The next command will take a few hours to complete:
+
+# make deb-pkg
+
+# mkdir /home/pi/linux-debs-5-10-50
+# cp *.deb /home/pi/linux-debs-5-10-50
+# cd
+# From all of this, only /home/pi/linux-debs-5-10-50 will be left on the permanent storage:
+# umount /mnt
+# sync
+# sleep 10
+# reboot
+```
+
+
+The HDD/SSD LED of the computer will flash a lot - do not worry, make only reads a lot of headers
+
+and libraries, does not write almost anything to the HDD / SSD
+
+Second solution is to disable debug information, wich decreases compile time and total size a lot:
 
 https://www.debian.org/doc/manuals/debian-kernel-handbook/ch-common-tasks.html
 
