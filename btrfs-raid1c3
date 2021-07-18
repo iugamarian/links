@@ -162,11 +162,36 @@ btrfs fi show
 Done, hard drive replaced. Probably no unmount and reboot needed to do all this if SATA is hot swappable.
 
 
+===============================================================================
+Sources:
+
+https://www.reddit.com/r/linuxadmin/comments/5q7sbm/btrfs_device_stats_show_error_but_scrub_show_no/
 
 
 
+Checking for errors detected by the BTRFS crc32c and resetting the error counters:
 
+I'm having trouble understanding the stats of my btrfs fs.
+Setup: 8 drives in raid 10.
+I just finish btrfs scrub on the device and it show no error. However, when I do
+btrfs device stats <$mount_point>
+I get some error on /dev/sda
+# btrfs device stats /dev/sda
+[/dev/sda].write_io_errs   301970
+[/dev/sda].read_io_errs    0
+[/dev/sda].flush_io_errs   14
+[/dev/sda].corruption_errs 88277
+[/dev/sda].generation_errs 0
 
+In the man page clearly state that btrfs device stats will update during a scrub run.
+When my btrfs scrub shows no errors I expect the stats to show no error as well.
+other device sdb ~ sdh have 0 errors. So what does that mean? is /dev/sda bad?
+
+Do a
+btrfs device stats -z <$mount_point>
+Then scrub your disk and check the stats again. The stats are persistent and updated during use and scrubs.
+[[[ The -z option ]]] will print out the stats and zero them. A fresh scrub after that will give you an
+idea of the device health. A SMART device scan would show more.
 
 
 
