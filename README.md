@@ -188,6 +188,8 @@ with a rightclick 'Set Mask'
 
 https://lwn.net/Articles/744507/
 
+https://blog.programster.org/btrfs-cheatsheet
+
 My current solution is to compile using the computer RAM.
 
 Need to use a computer with 64 GB RAM, sometimes debug deb package will fail, not really needed.
