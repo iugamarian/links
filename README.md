@@ -1,3 +1,12 @@
+# Aptitude safe upgrade
+
+https://askubuntu.com/questions/117088/aptitude-safe-upgrade-equivalence-with-apt-get
+
+https://askubuntu.com/questions/201706/how-can-i-make-apt-get-upgrade-the-kernel-similarly-to-aptitude?rq=1
+
+https://askubuntu.com/questions/1743/is-aptitude-still-considered-superior-to-apt-get?noredirect=1&lq=1
+
+
 # Linux reduce thrashing very good
 
 https://www.phoronix.com/forums/forum/phoronix/latest-phoronix-articles/1267300-le9-strives-to-make-linux-very-usable-on-systems-with-small-amounts-of-ram
