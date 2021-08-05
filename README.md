@@ -1,3 +1,12 @@
+# NFSV4.2 ans Stunnel
+
+https://www.linuxjournal.com/content/encrypting-nfsv4-stunnel-tls
+
+https://www.stunnel.org/
+
+https://github.com/zilexa/Homeserver/
+
+
 # Aptitude safe upgrade
 
 https://askubuntu.com/questions/117088/aptitude-safe-upgrade-equivalence-with-apt-get
