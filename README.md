@@ -3688,6 +3688,25 @@ github.com/adoptopenjdk/icedtea-web – judovana Jun 30 '19 at 10:30
 
 # Microsoft Active Signal Resolution issues
 
+https://themonitormonitor.com/what-is-gpu-scaling-how-to-enable-or-disable-it/
+
+Exact steps needed each time to change the Active Signal Resolution for Intel GPU:
+	    
+============================================
+	    
+- select Display Resolution from Windows Settings
+	    
+- Start - search for "Intel UHD Graphics Control Panel" and open it
+	    
+- select Display
+	    
+- select Maintain Display Scaling
+	    
+- click Apply - the Active Signal Resolution will be set to the Display Resolution
+	    
+============================================
+
+
 https://answers.microsoft.com/en-us/windows/forum/windows_10-other_settings/incorrect-active-signal-resolution/9ff80937-8959-42bf-acc7-cca8a3bae441
 
 Intel Craphics Control Panel
