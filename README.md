@@ -1,9 +1,24 @@
+# Cheap 4 bay NAS with acceptable performance, 5.x kernel is not 100% working yet, 3.x kernel
+
+# provided by Freescale is working ok, just need boot from USB, firmware remains untouched
+
+https://www.emag.ro/network-storage-zyxel-personal-cloud-storage-dual-core-1-2ghz-1gb-ddr3-4-bay-3-x-usb-3-0-nas542-eu0101f/pd/DSWDJ3BBM/
+
+https://www.zyxel.com/uk/en/products_services/4-Bay-Personal-Cloud-Storage-NAS542/
+
+https://www.zyxel.com/uk/en/products_services/4-Bay-Personal-Cloud-Storage-NAS542/specifications
+
+https://andre.blaatschaap.be/2021/04/zyxel-nas542-openmediavault-installation-part-1/
+
+https://github.com/Bonstra/linux-ls1024a
+
+
 # Best Ur-Quan Masters High Definition maybe ?
 
 https://github.com/Serosis/UQM-MegaMod
 
 
-# NFSV4.2 ans Stunnel
+# NFSV4.2 and Stunnel
 
 https://www.linuxjournal.com/content/encrypting-nfsv4-stunnel-tls
 
