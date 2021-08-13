@@ -1,6 +1,15 @@
-# Cheap 4 bay NAS with acceptable performance, 5.x kernel is not 100% working yet, 3.x kernel
+# List_of_common_misconceptions
 
-# provided by Freescale is working ok, just need boot from USB, firmware remains untouched
+https://xkcd.com/843/
+
+https://en.wikipedia.org/wiki/List_of_common_misconceptions
+
+
+# Cheap 4 bay NAS with acceptable performance, 5.x kernel is
+
+# not 100% working yet, 3.x kernel provided by Freescale is
+
+# working ok, just need boot from USB, firmware is untouched
 
 https://www.emag.ro/network-storage-zyxel-personal-cloud-storage-dual-core-1-2ghz-1gb-ddr3-4-bay-3-x-usb-3-0-nas542-eu0101f/pd/DSWDJ3BBM/
 
@@ -16,6 +25,8 @@ https://github.com/Bonstra/linux-ls1024a
 # Best Ur-Quan Masters High Definition maybe ?
 
 https://github.com/Serosis/UQM-MegaMod
+
+For the ending, need to also see it with no 3DO movies and original voices.
 
 
 # NFSV4.2 and Stunnel
