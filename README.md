@@ -1,3 +1,138 @@
+# PDF to PNG, PDF to image
+
+https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image
+
+Inkscape
+
+GIMP
+
+You can use pdftoppm to convert a PDF to a PNG:
+
+pdftoppm input.pdf outputname -png
+
+This will output each page in the PDF using the format outputname-01.png,
+
+with 01 being the index of the page.
+
+Converting a single page of the PDF
+
+pdftoppm input.pdf outputname -png -f {page} -singlefile
+
+Change {page} to the page number. It's indexed at 1, so -f 1 would be the first page.
+
+
+Specifying the converted image's resolution
+
+The default resolution for this command is 150 DPI. Increasing it will result in both
+
+a larger file size and more detail.
+
+To increase the resolution of the converted PDF, add the options -rx {resolution}
+
+and -ry {resolution}. For example:
+
+pdftoppm input.pdf outputname -png -rx 300 -ry 300
+
+It's a bit easier to write -r 300 instead of specifying the x and y resolutions
+
+independently when you want to set them to the same value.
+
+or
+
+Install imagemagick.
+
+Using a terminal where the PDF is located:
+
+For the full document:
+
+convert -density 150 input.pdf -quality 90 output.png
+
+For a single page:
+
+convert -density 150 input.pdf[888] -quality 90 output.png
+
+Whereby:
+
+PNG, JPG or (virtually) any other image format can be chosen.
+
+-density xxx will set the DPI to xxx (common are 150 and 300).
+
+-quality xxx will set the compression to xxx for PNG, JPG and MIFF file
+
+formates (100 means no compression).
+
+[888] will convert only the 889th page to PNG (zero-based
+
+numbering so [0] is the 1st page).
+
+All other options (such as trimming, grayscale, etc.) can be
+
+viewed on the website of Image Magic.
+
+or
+
+The currently accepted answer does the job but results in an output which
+
+is larger in size and suffers from quality loss.
+
+The method in the answer given here results in an output which is comparable
+
+in size to the input and doesn't suffer from quality loss.
+
+TLDR - Use pdfimages : pdfimages -j input.pdf output
+
+Quoting the linked answer:
+
+It's not clear what you mean by "quality loss". That could mean a lot of different
+
+things. Could you post some samples to illustrate? Perhaps cut the same section out
+
+of the poor quality and good quality versions (as a PNG to avoid further quality loss).
+
+Perhaps you need to use -density to do the conversion at a higher dpi:
+
+convert -density 300 file.pdf page_%04d.jpg
+(You can prepend -units PixelsPerInch or -units
+  PixelsPerCentimeter if necessary. My copy defaults to ppi.)
+
+Update: As you pointed out, gscan2pdf (the way you're using it) is just a wrapper for
+
+pdfimages (from poppler). pdfimages does not do the same thing that convert
+
+does when given a PDF as input.
+
+convert takes the PDF, renders it at some resolution, and uses the resulting bitmap
+
+as the source image.
+
+pdfimages looks through the PDF for embedded bitmap images and exports each one to a
+
+file. It simply ignores any text or vector drawing commands in the PDF.
+
+As a result, if what you have is a PDF that's just a wrapper around a series of bitmaps,
+
+pdfimages will do a much better job of extracting them, because it gets you the raw data
+
+at its original size. You probably also want to use the -j option to pdfimages, because
+
+a PDF can contain raw JPEG data. By default, pdfimages converts everything to PNM format,
+
+and converting JPEG > PPM > JPEG is a lossy process.
+
+So, try
+
+pdfimages -j file.pdf page
+You may or may not need to follow that with a convert to .jpg step (depending on what
+
+bitmap format the PDF was using).
+
+I tried this command on a PDF that I had made myself from a sequence of JPEG images.
+
+The extracted JPEGs were byte-for-byte identical to the source images.
+
+You can't get higher quality than that.
+
+
 # List_of_common_misconceptions
 
 https://xkcd.com/843/
