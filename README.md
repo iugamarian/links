@@ -1,3 +1,12 @@
+# Wayland info
+
+https://arewewaylandyet.com/
+
+https://wiki.debian.org/Wayland
+
+https://wiki.archlinux.org/title/Wayland
+
+
 # PDF to PNG, PDF to image
 
 https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image
