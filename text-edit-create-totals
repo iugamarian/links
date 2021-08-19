@@ -1,0 +1,207 @@
+#!/bin/bash
+# Example:
+
+# good.txt
+# first row ignored
+# 1
+# empty
+# 2
+# empty
+# 3
+# empty
+# 4
+# empty
+
+# good-and-ng.txt
+# first row ignored
+# a
+# empty
+# b
+# empty
+# c
+# empty
+# d
+# empty
+
+# ng.txt
+# first row ignored
+# empty
+# m
+# empty
+# n
+# empty
+# o
+# empty
+# p
+
+# part-desc.txt
+# first row ignored
+# part01
+# desc01
+# part02
+# desc02
+# part03
+# desc03
+# part04
+# desc04
+
+# And the results are result-*.txt
+
+# result-part.txt
+# part01
+# part02
+# part03
+# part04
+
+# result-desc.txt
+# desc01
+# desc02
+# desc03
+# desc04
+
+# the files good.txt, good-and-ng.txt, ng.txt
+# are just made from something like
+
+# number
+# empty
+# number
+# empty
+# number
+# empty
+# number
+# empty
+
+# to something like
+
+# number
+# number
+# number
+# number
+
+# So:
+
+# result-good.txt
+# result-good-and-ng.txt
+# result-ng.txt
+
+###########################
+LASTLINEONE="0"
+LASTLINETWO="0"
+LASTLINETHREE="0"
+LASTLINEFOUR="0"
+LASTLINEALL="0"
+TEXTONE="part-desc.txt"
+TEXTTWO="good.txt"
+TEXTTHREE="good-and-ng.txt"
+TEXTFOUR="ng.txt"
+RESULTPART="result-part.txt"
+RESULTDESC="result-desc.txt"
+RESULTGOOD="result-good.txt"
+RESULTGANG="result-good-and-ng.txt"
+RESULTNG="result-ng.txt"
+STRINGONE=""
+STRINGTWO=""
+STRINGTHREE=""
+STRINGFOUR=""
+STRINGFIVE=""
+LINE="1"
+if [ -f "$TEXTONE" ]
+then
+LASTLINEONE=`cat "$TEXTONE" | wc -l`
+else
+echo ""
+echo "part-desc.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ -f "$TEXTTWO" ]
+then
+LASTLINETWO=`cat "$TEXTTWO" | wc -l`
+else
+echo ""
+echo "good.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ -f "$TEXTTHREE" ]
+then
+LASTLINETHREE=`cat "$TEXTTHREE" | wc -l`
+else
+echo ""
+echo "good-and-ng.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ -f "$TEXTFOUR" ]
+then
+LASTLINEFOUR=`cat "$TEXTFOUR" | wc -l`
+else
+echo ""
+echo "ng.txt not found. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINETWO" -lt "$LASTLINEONE" ]
+then
+echo ""
+echo "good.txt has less lines than part-desc.txt. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINETHREE" -lt "$LASTLINEONE" ]
+then
+echo ""
+echo "good-and-ng.txt has less lines than part-desc.txt. Exiting."
+echo ""
+exit
+fi
+if [ "$LASTLINEFOUR" -lt "$LASTLINEONE" ]
+then
+echo ""
+echo "ng.txt has less lines than part-desc.txt. Exiting."
+echo ""
+exit
+fi
+
+
+# all texts "seem" to have the same lines as part-desc.txt
+# [[[ not implemented a complete check for this time ]]]
+LASTLINEALL=$((LASTLINEONE+1))
+rm "$RESULTPART"
+rm "$RESULTDESC"
+rm "$RESULTGOOD"
+rm "$RESULTGANG"
+rm "$RESULTNG"
+# Ignoring value LINE="1" because that is the column description
+LINE="2"
+while [ "$LINE" -lt "$LASTLINEALL" ]
+do
+# TEXTONE="part-desc.txt"
+# TEXTTWO="good.txt"
+# TEXTTHREE="good-and-ng.txt"
+# TEXTFOUR="ng.txt"
+# RESULTPART="result-part.txt"
+# RESULTDESC="result-desc.txt"
+# RESULTGOOD="result-good.txt"
+# RESULTGANG="result-good-and-ng.txt"
+# RESULTNG="result-ng.txt"
+# First row - part, good, good-and-ng
+STRINGONE=`cat "$TEXTONE" | sed -n "$LINE"p`
+STRINGTHREE=`cat "$TEXTTWO" | sed -n "$LINE"p`
+STRINGFOUR=`cat "$TEXTTHREE" | sed -n "$LINE"p`
+# Second row - desc, ng
+LINE=$((LINE+1))
+STRINGTWO=`cat "$TEXTONE" | sed -n "$LINE"p`
+STRINGFIVE=`cat "$TEXTFOUR" | sed -n "$LINE"p`
+# Key in the results for this pass
+echo "$STRINGONE" >> "$RESULTPART"
+echo "$STRINGTWO" >> "$RESULTDESC"
+echo "$STRINGTHREE" >> "$RESULTGOOD"
+echo "$STRINGFOUR" >> "$RESULTGANG"
+echo "$STRINGFIVE" >> "$RESULTNG"
+# Make raedy for the first row next time
+LINE=$((LINE+1))
+done
+echo ""
+echo "Done."
+echo ""
