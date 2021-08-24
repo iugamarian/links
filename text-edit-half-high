@@ -1,0 +1,55 @@
+!/bin/bash
+# Example:
+
+# high.txt
+# first row ignored
+# 1
+# empty
+# 2
+# empty
+# 3
+# empty
+# 4
+# empty
+
+# result-half-high.txt
+# 1
+# 2
+# 3
+# 4
+
+LASTLINEONE="0"
+LASTLINEALL="0"
+TEXTONE="high.txt"
+RESULT="result-half-high.txt"
+STRINGONE=""
+LINE="1"
+if [ -f "$TEXTONE" ]
+then
+LASTLINEONE=`cat "$TEXTONE" | wc -l`
+else
+echo ""
+echo "high.txt not found. Exiting."
+echo ""
+exit
+fi
+LASTLINEALL=$((LASTLINEONE+1))
+rm "$RESULT"
+# Ignoring value LINE="1" because that is the column description
+LINE="2"
+while [ "$LINE" -lt "$LASTLINEALL" ]
+do
+# TEXTONE="high.txt"
+# RESULT="result-half-high.txt"
+# First row - item
+STRINGONE=`cat "$TEXTONE" | sed -n "$LINE"p`
+# Second row - nothing
+LINE=$((LINE+1))
+# Key in the results for this pass
+echo "$STRINGONE" >> "$RESULT"
+# Make ready for the first row next time
+LINE=$((LINE+1))
+done
+echo ""
+echo "Done."
+echo ""
