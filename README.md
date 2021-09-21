@@ -1,3 +1,8 @@
+# Good motion detector for smartphone
+
+https://securitycamera.cz/en/
+
+
 # Wayland info
 
 https://arewewaylandyet.com/
