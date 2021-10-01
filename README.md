@@ -1,3 +1,20 @@
+# ATEN KVM Over IP run Java Client in Ubuntu / Debian
+
+https://wiki.debian.org/Java
+
+apt-get install default-jre libcanberra-gtk-module
+
+Download the Java Client from the actual device web login Download tab
+
+cd Downloads
+
+java -jar JavaClient.jar
+
+If you get errors try an older openjdk version and completely
+
+uninstall with Synaptic any newer openjdk packages search openjdk
+
+
 # Good motion detector for smartphone
 
 https://securitycamera.cz/en/
