@@ -1,3 +1,8 @@
+# Debian donations best link
+
+https://www.spi-inc.org/projects/debian/
+
+
 # ATEN KVM Over IP run Java Client in Ubuntu / Debian
 
 https://wiki.debian.org/Java
