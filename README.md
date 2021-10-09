@@ -1,3 +1,12 @@
+# Windows 11 install on unsupported CPU
+
+https://www.howtogeek.com/759925/how-to-install-windows-11-on-an-unsupported-pc/
+
+https://docs.microsoft.com/ro-ro/windows-hardware/design/minimum/supported/windows-11-supported-intel-processors
+
+https://www.msi.com/Motherboard/support/z170a-gaming-m3#support-main-block-qvl
+
+
 # Debian donations best link
 
 https://www.spi-inc.org/projects/debian/
