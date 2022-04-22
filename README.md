@@ -9476,7 +9476,11 @@ https://spit.mixtape.moe/view/73ac8ca5
 
 https://github.com/mpv-player/mpv/issues/5711
 
-hwdec=vaapi
+https://www.mail-archive.com/ubuntu-bugs@lists.ubuntu.com/msg5999126.html
+
+hwdec=drm
+
+# hwdec=vaapi
 
 gpu-context=x11egl
 
@@ -9502,9 +9506,11 @@ https://www.reddit.com/r/nhl_games/comments/5ea3an/increasing_cachereadahead_in_
 
 # sudo apt install -y ffmpeg mesa-va-drivers vainfo
 
-hwdec=vaapi
+hwdec=drm
 
-vo=vaapi
+# hwdec=vaapi
+
+# vo=vaapi
 
 save-position-on-quit
 
