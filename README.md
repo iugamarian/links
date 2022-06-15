@@ -1,3 +1,47 @@
+# Using badblocks on harddisks from 18 TB up
+
+https://www.reddit.com/r/DataHoarder/comments/kejp08/wd_18tb_badblocks_error_value_too_large/
+
+badblocks -b 8192 -wsv /dev/sdd
+
+You should be able to badblocks the first half of the blocks, then the next half. Something like:
+
+sudo badblocks -wsv -b 4096 /dev/sdb 2197291008 0
+
+and after that completes...
+
+sudo badblocks -wsv -b 4096 /dev/sdb 4394582016 2197291009
+
+Found this solution here: https://superuser.com/questions/692912/is-there-a-way-to-restart-badblocks and
+
+tried it myself. Seems to be working.
+
+Wow. Seems like a really outdated software if badblocks can't handle current hard drives without hacks
+
+like that. I mean it still can't handle new HDDs even with the bigger 4k block sizes? Nobody has bothered
+
+implementing more than 32 bit support?
+
+Can anybody recommend any replacement software that can do what badblocks can but is still maintained?
+
+GNU Units sez:
+
+You have: 4 KiB * (2**32 - 1)
+
+You want: TB
+	* 17.592186
+
+What a problem to have...
+
+Try -b 8192? If there are problems with using a block size larger than the physical disk, you'll have to
+
+get the source code for badblocks and patch it to use 64-bit integers.
+
+If you *really* want to try your luck, you can specify a larger block size for testing, i.e.
+
+badblocks -b 16384. But I wouldn't really trust badblocks on large devices; it wasn't designed for this purpose.
+
+
 # Windows 11 install on unsupported CPU
 
 https://www.howtogeek.com/759925/how-to-install-windows-11-on-an-unsupported-pc/
