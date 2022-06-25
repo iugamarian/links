@@ -5409,6 +5409,20 @@ https://superuser.com/questions/494432/force-windows-8-to-use-utc-when-dealing-w
 
 https://itectec.com/ubuntu/ubuntu-clock-time-is-off-on-dual-boot/
 
+=======================================================================================
+
+In the year 2022 tested very quick time clock solution:
+
+In Linux do:
+
+apt-get remove --purge ntp
+
+Date and Time Settings -> Set Time Zone to: Scoresbysund, Greenland = UTC +00
+
+In Windows no change, do a time sync from Adjust Date and Time.
+
+=======================================================================================
+
 Linux time be like Windows:
 
 timedatectl set-local-rtc 1 --adjust-system-clock
