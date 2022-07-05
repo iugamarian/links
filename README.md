@@ -1,3 +1,10 @@
+# Probably very good DNS, used by OpenWRT
+
+DNS 1: 208.67.222.222
+
+DNS 2: 208.67.220.220
+
+
 # Using badblocks on harddisks from 18 TB up
 
 https://www.reddit.com/r/DataHoarder/comments/kejp08/wd_18tb_badblocks_error_value_too_large/
