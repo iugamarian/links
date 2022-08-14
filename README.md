@@ -1,3 +1,24 @@
+# TP4056 with protection
+
+https://www.youtube.com/watch?v=cTzu8LSSqVY
+
+https://www.best-microcontroller-projects.com/tp4056.html
+
+https://www.ebay.co.uk/itm/182591733703
+
+Conclusion:
+
+TP4056 with DW01 protection = undervoltage protection works at 2.84 V, allow again at 2.9V ==> good
+
+TP4056 with DW01 protection = no overvoltage protection, just when at 4.23 V will try to keep
+
+and not charge over 4.23V ==> NEED TO ADD BMS BALANCE BOARD to balance at 4.2V, preferably 20 ohm, 10 ohm
+
+so need use 4S balance board to do pull 20 ohm at 4.20 V at balancer 1 ----- add another 20 ohm at 4.21 V at balancer 3,
+
+disabled balancer 2 and 4 due to we need to use in parallel and they are in series so 1 on 2 off 3 on 4 off = parallel ok 1, 3
+
+
 # Probably very good DNS, used by OpenWRT
 
 DNS 1: 208.67.222.222
