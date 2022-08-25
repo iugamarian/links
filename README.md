@@ -1,8 +1,11 @@
 # Microphone on speaker for sound tests
 
 sudo apt-get install -y pavucontrol
+
 pactl load-module module-loopback latency_msec=50
+
 pactl unload-module module-loopback
+
 alsamixer Mic boost down to zero to reduce peaks
 
 
