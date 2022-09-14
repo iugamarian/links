@@ -1,3 +1,14 @@
+# Fix u-Boot 2022 issues in rootfs
+
+apt-get install libubootenv-tool
+
+fw_printenv
+
+fw_setenv  load_dtb_addr 0x2c00000
+
+fw_printenv
+
+
 # Microphone on speaker for sound tests
 
 sudo apt-get install -y pavucontrol
