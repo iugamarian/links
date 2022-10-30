@@ -1,3 +1,18 @@
+# A Teamviewer good competittor
+
+https://www.jupiterbroadcasting.com/show/office-hours/14/
+
+https://rustdesk.com/
+
+A remote desktop software, the open source TeamViewer alternative, works out of the box,
+ 
+no configuration required. You have full control of your data, with no concerns about security.
+ 
+You can use our public rendezvous/relay server, or self-hosting, or write your own server.
+
+Win, Mac, Linux, Android, iOS   -   Wow !
+
+
 # Fix u-Boot 2022 issues in rootfs
 
 apt-get install libubootenv-tool
