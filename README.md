@@ -1,4 +1,4 @@
-# A Teamviewer good competittor
+# A TeamViewer good competitor
 
 https://www.jupiterbroadcasting.com/show/office-hours/14/
 
