@@ -1,3 +1,10 @@
+# Delete C:\hiberfil.sys
+
+https://www.howtogeek.com/howto/15140/what-is-hiberfil.sys-and-how-do-i-delete-it/
+
+powercfg -h off
+
+
 # A TeamViewer good competitor
 
 https://www.jupiterbroadcasting.com/show/office-hours/14/
