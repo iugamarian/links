@@ -1,3 +1,12 @@
+# Very advanced AVR program in C for electronic components measurement
+
+https://github.com/madires/Transistortester-Warehouse
+
+https://www.ebay.co.uk/itm/275033471098
+
+"Transistor Inductor-Capacitor ESR Meter MG328 Digital LCD Tester"
+
+
 # Delete C:\hiberfil.sys
 
 https://www.howtogeek.com/howto/15140/what-is-hiberfil.sys-and-how-do-i-delete-it/
