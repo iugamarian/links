@@ -1,3 +1,10 @@
+# Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
+
+https://www.microsoft.com/en-us/microsoft-teams/download-app
+
+MSTeamsSetup_c_l_.exe
+
+
 # Very advanced AVR program in C for electronic components measurement
 
 https://github.com/madires/Transistortester-Warehouse
