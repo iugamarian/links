@@ -1,3 +1,8 @@
+# Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/what-is-abstraction-in-programming-for-beginners/
+
+
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
 https://www.microsoft.com/en-us/microsoft-teams/download-app
