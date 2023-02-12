@@ -2,6 +2,8 @@
 
 https://www.freecodecamp.org/news/what-is-abstraction-in-programming-for-beginners/
 
+https://www.freecodecamp.org/news/learn-to-code-book/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
