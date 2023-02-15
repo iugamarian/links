@@ -4,6 +4,12 @@ https://www.freecodecamp.org/news/what-is-abstraction-in-programming-for-beginne
 
 https://www.freecodecamp.org/news/learn-to-code-book/
 
+https://realpython.com/bulk-file-rename-tool-python/
+
+https://www.freecodecamp.org/news/python-bytes-to-string-how-to-convert-a-str-to-bytes-and-back-again/
+
+https://www.freecodecamp.org/news/how-to-scrape-multiple-web-pages-using-python/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
