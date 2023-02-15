@@ -10,6 +10,8 @@ https://www.freecodecamp.org/news/python-bytes-to-string-how-to-convert-a-str-to
 
 https://www.freecodecamp.org/news/how-to-scrape-multiple-web-pages-using-python/
 
+https://www.freecodecamp.org/news/vim-language-and-motions-explained/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
