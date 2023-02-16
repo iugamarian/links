@@ -12,6 +12,8 @@ https://www.freecodecamp.org/news/how-to-scrape-multiple-web-pages-using-python/
 
 https://www.freecodecamp.org/news/vim-language-and-motions-explained/
 
+https://www.youtube.com/watch?v=PDtlYNfo5zE
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
