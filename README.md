@@ -20,6 +20,8 @@ https://www.freecodecamp.org/news/python-code-examples-simple-python-program-exa
 
 https://www.freecodecamp.org/news/code-google-docs-with-flutter/
 
+https://cybersecuritynews.com/linux-firewall-iptables/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
