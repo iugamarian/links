@@ -24,6 +24,8 @@ https://cybersecuritynews.com/linux-firewall-iptables/
 
 https://www.freecodecamp.org/news/learn-algorithms-and-data-structures-in-python/
 
+https://www.freecodecamp.org/news/grep-command-in-linux-usage-options-and-syntax-examples/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
