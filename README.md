@@ -32,6 +32,8 @@ https://superfastpython.com/python-asyncio/
 
 https://www.freecodecamp.org/news/how-to-create-stunning-qr-codes-with-python/
 
+https://www.freecodecamp.org/news/how-to-unhide-a-row-or-column-in-excel-or-unhide-all-rows-and-columns/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
