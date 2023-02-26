@@ -38,6 +38,8 @@ https://www.freecodecamp.org/news/introduction-to-linux/
 
 https://www.freecodecamp.org/news/full-stack-development-with-mongodb-java-and-react/
 
+https://www.freecodecamp.org/news/have-fun-building-react-apps/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
