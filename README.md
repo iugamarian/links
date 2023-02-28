@@ -63,6 +63,8 @@ https://www.freecodecamp.org/news/download-trim-mp3-from-youtube-with-python/
 
 https://www.freecodecamp.org/news/how-to-write-unit-tests-for-python-functions/
 
+https://www.freecodecamp.org/news/create-a-arcade-style-shooting/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
