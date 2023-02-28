@@ -1,3 +1,20 @@
+# GarriGPT test btrfs
+
+https://www.garri.ai/
+
+Yes, incorrect or missing metadata can lead to I/O errors. It is important to check the drive's health to ensure that the errors are not being caused by a hardware issue.
+
+https://serverfault.com/questions/960860/cannot-shrink-btrfs-filesystem-although-there-is-still-data-and-metadata-space-l
+
+https://zonedstorage.io/docs/linux/fs
+
+https://unix.stackexchange.com/questions/589226/how-to-recover-from-io-error
+
+https://bugzilla.redhat.com/show_bug.cgi?id=1212922
+
+https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-recovery-cannot-start-file-system-errors
+
+
 # Important concept: abstraction in programming
 
 https://www.freecodecamp.org/news/what-is-abstraction-in-programming-for-beginners/
