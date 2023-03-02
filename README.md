@@ -69,6 +69,8 @@ https://www.freecodecamp.org/news/how-to-build-mobile-apps-with-flutter/
 
 https://www.freecodecamp.org/news/tailwindcss-vs-nextui-how-to-choose-a-ui-framework/
 
+https://www.freecodecamp.org/news/code-alphazero-machine-learning-algorithm/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
