@@ -75,6 +75,8 @@ https://www.freecodecamp.org/news/javascript-modules/
 
 https://www.freecodecamp.org/news/how-to-create-a-csv-file-in-python/
 
+https://www.freecodecamp.org/news/linux-server-tutorial/
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
