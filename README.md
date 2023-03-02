@@ -77,6 +77,18 @@ https://www.freecodecamp.org/news/how-to-create-a-csv-file-in-python/
 
 https://www.freecodecamp.org/news/linux-server-tutorial/
 
+https://www.freecodecamp.org/news/python-vs-c-plus-plus-time-complexity-analysis/
+
+https://www.youtube.com/@freecodecamp
+
+https://www.youtube.com/@AOSNote
+
+https://www.youtube.com/@LearnCantrill
+
+https://www.youtube.com/@DevOpsDirective
+
+https://www.youtube.com/@TechWorldwithNana
+
 
 # Get the Teams on the left until April 2023, then make new account using new mail for the new Teams Free
 
