@@ -28,6 +28,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/how-to-submit-a-form-with-javascript/
+
 https://en.wikipedia.org/wiki/Bjarne_Stroustrup
 
 https://www.freecodecamp.org/news/what-is-abstraction-in-programming-for-beginners/
