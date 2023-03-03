@@ -4,6 +4,8 @@ https://pyoflife.com/effective-python-pdf/
 
 https://pyoflife.com/python-crash-course-pdf/
 
+https://data-flair.training/blogs/python-project-ideas/
+
 
 # GarriGPT test btrfs
 
