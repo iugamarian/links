@@ -6,6 +6,8 @@ https://pyoflife.com/python-crash-course-pdf/
 
 https://data-flair.training/blogs/python-project-ideas/
 
+https://www.freecodecamp.org/news/why-learn-python-and-how-to-get-started/
+
 
 # GarriGPT test btrfs
 
@@ -25,6 +27,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://en.wikipedia.org/wiki/Bjarne_Stroustrup
 
 https://www.freecodecamp.org/news/what-is-abstraction-in-programming-for-beginners/
 
