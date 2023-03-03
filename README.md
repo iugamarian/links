@@ -1,3 +1,10 @@
+# Interesting Python site
+
+https://pyoflife.com/effective-python-pdf/
+
+https://pyoflife.com/python-crash-course-pdf/
+
+
 # GarriGPT test btrfs
 
 https://www.garri.ai/
