@@ -1,5 +1,7 @@
 # Interesting Python site
 
+https://www.youtube.com/watch?v=DLZGJP2DE_w&list=PL_F6CGhw_bUc-DYm2Keeoi1bp9kHBcNVo&index=1
+
 https://pyoflife.com/effective-python-pdf/
 
 https://pyoflife.com/python-crash-course-pdf/
@@ -49,6 +51,16 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/public-apis-for-developers/
+
+https://www.freecodecamp.org/news/setting-a-static-ip-in-ubuntu-linux-ip-address-tutorial/
+
+https://www.freecodecamp.org/news/git-branching-commands-explained/
+
+https://www.freecodecamp.org/news/css-bold-how-to-bold-text-in-html-with-font-weight/
+
+
 
 https://www.freecodecamp.org/news/html-for-beginners/
 
