@@ -8,6 +8,28 @@ https://data-flair.training/blogs/python-project-ideas/
 
 https://www.freecodecamp.org/news/why-learn-python-and-how-to-get-started/
 
+https://www.youtube.com/c/Freecodecamp
+
+https://www.youtube.com/c/TraversyMedia/videos
+
+https://www.youtube.com/c/WebDevSimplified
+
+https://www.youtube.com/c/programmingwithmosh
+
+https://www.youtube.com/c/codeSTACKr
+
+https://www.youtube.com/c/AniaKub%C3%B3w
+
+https://www.youtube.com/c/JavaScriptMastery
+
+https://www.youtube.com/c/DevEd/videos
+
+https://www.youtube.com/c/OnlineTutorials4Designers
+
+https://www.youtube.com/c/TheCoderCoder
+
+https://www.freecodecamp.org/news/orchestrate-an-etl-data-pipeline-with-apache-airflow/
+
 
 # GarriGPT test btrfs
 
@@ -27,6 +49,10 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/html-for-beginners/
+
+https://www.freecodecamp.org/news/python-gui-development-using-pyside6-and-qt/
 
 https://www.freecodecamp.org/news/what-does-d-mean-in-regex/
 
