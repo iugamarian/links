@@ -1,6 +1,8 @@
 # Interesting Python site
 
-https://www.youtube.com/watch?v=DLZGJP2DE_w&list=PL_F6CGhw_bUc-DYm2Keeoi1bp9kHBcNVo&index=1
+https://www.youtube.com/watch?v=ZtvLP2OjpF8&list=PL_F6CGhw_bUc-DYm2Keeoi1bp9kHBcNVo&index=1
+
+https://www.youtube.com/watch?v=DLZGJP2DE_w&list=PL_F6CGhw_bUc-DYm2Keeoi1bp9kHBcNVo&index=2
 
 https://pyoflife.com/effective-python-pdf/
 
