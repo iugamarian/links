@@ -1,5 +1,11 @@
 # Interesting Python site
 
+https://microsoft.github.io/Data-Science-For-Beginners/#/
+
+https://www.freecodecamp.org/news/how-to-market-your-new-project-incorporate-design-create-a-landing-page-and-get-your-users-97812fd9dd4d/
+
+https://www.freecodecamp.org/news/how-to-strip-trailing-whitespace-in-python/
+
 https://medium.com/coders-camp/230-machine-learning-projects-with-python-5d0c7abf8265
 
 https://www.youtube.com/watch?v=ZtvLP2OjpF8&list=PL_F6CGhw_bUc-DYm2Keeoi1bp9kHBcNVo&index=1
@@ -55,6 +61,48 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://github.com/getify/You-Dont-Know-JS
+
+https://github.com/denysdovhan/wtfjs
+
+https://github.com/wesbos/JavaScript30
+
+https://github.com/ryanmcdermott/clean-code-javascript
+
+https://github.com/lydiahallie/javascript-questions
+
+https://github.com/metagrover/ES6-for-humans
+
+https://github.com/verekia/js-stack-from-scratch
+
+https://github.com/trekhleb/javascript-algorithms
+
+https://www.youtube.com/watch?v=7S_tz1z_5bA
+
+https://www.youtube.com/watch?v=p28piYY_wv8
+
+https://www.youtube.com/watch?v=rTNR7vDQDD8
+
+https://www.youtube.com/watch?v=EZolJ4lNiYc
+
+https://www.youtube.com/watch?v=apGV9Kg7ics
+
+https://www.youtube.com/watch?v=tuJqH3AV0e8
+
+https://www.youtube.com/watch?v=y8IQb4ofjDo&list=PLqq-6Pq4lTTZSKAFG6aCDVDP86Qx4lNas
+
+https://www.youtube.com/watch?v=6iCHf7OZn6c&list=PL6Zs6LgrJj3tDXv8a_elC6eT_4R5gfX4d
+
+https://www.youtube.com/watch?v=rZ41y93P2Qo&list=PL9gnSGHSqcnr_DxHsP7AW9ftq0AtAyYqJ
+
+https://www.youtube.com/watch?v=5_5oE5lgrhw&list=PLu0W_9lII9ahIappRPN0MCAgtOu3lQjQi
+
+https://www.youtube.com/watch?v=p0LPfK_oNCM
+
+https://www.youtube.com/watch?v=oYXivKMSEqM
+
+https://www.youtube.com/playlist?list=PLmCsXDGbJHdibOx6axScPiuHA8ftsrmut
 
 https://www.freecodecamp.org/news/public-apis-for-developers/
 
