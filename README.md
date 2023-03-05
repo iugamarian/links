@@ -1,5 +1,7 @@
 # Interesting Python site
 
+https://medium.com/coders-camp/230-machine-learning-projects-with-python-5d0c7abf8265
+
 https://www.youtube.com/watch?v=ZtvLP2OjpF8&list=PL_F6CGhw_bUc-DYm2Keeoi1bp9kHBcNVo&index=1
 
 https://www.youtube.com/watch?v=DLZGJP2DE_w&list=PL_F6CGhw_bUc-DYm2Keeoi1bp9kHBcNVo&index=2
@@ -62,7 +64,7 @@ https://www.freecodecamp.org/news/git-branching-commands-explained/
 
 https://www.freecodecamp.org/news/css-bold-how-to-bold-text-in-html-with-font-weight/
 
-
+https://www.freecodecamp.org/news/how-to-build-a-table-of-contents-component/
 
 https://www.freecodecamp.org/news/html-for-beginners/
 
