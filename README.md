@@ -1,5 +1,17 @@
 # Interesting Python site
 
+https://www.freecodecamp.org/news/how-to-write-unit-tests-in-react/
+
+https://www.freecodecamp.org/news/digital-connectivity-internet-and-iot-explained/
+
+https://www.freecodecamp.org/news/learn-wireshark-computer-networking/
+
+https://www.freecodecamp.org/news/how-to-sort-a-list-in-java/
+
+https://www.youtube.com/watch?v=i7vOAcUo5iA
+
+https://www.freecodecamp.org/news/college-algebra-course-with-python-code/
+
 https://microsoft.github.io/Data-Science-For-Beginners/#/
 
 https://www.freecodecamp.org/news/how-to-market-your-new-project-incorporate-design-create-a-landing-page-and-get-your-users-97812fd9dd4d/
