@@ -74,6 +74,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/html-css-tutorial-build-a-recipe-website/
+
 https://www.freecodecamp.org/news/write-unit-tests-using-react-testing-library/
 
 https://github.com/getify/You-Dont-Know-JS
