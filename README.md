@@ -74,6 +74,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/how-does-a-vpn-work/
+
 https://www.freecodecamp.org/news/fastapi-helps-you-develop-apis-quickly/
 
 https://www.freecodecamp.org/news/spell-check-on-your-linux-terminal/
