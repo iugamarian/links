@@ -74,6 +74,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.theinsaneapp.com/2020/12/free-data-science-books-pdf.html
+
 https://medium.com/@stepencleary
 
 https://www.freecodecamp.org/news/how-to-set-smart-goals-you-can-achieve/
