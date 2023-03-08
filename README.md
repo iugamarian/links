@@ -74,6 +74,18 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/fastapi-helps-you-develop-apis-quickly/
+
+https://www.freecodecamp.org/news/spell-check-on-your-linux-terminal/
+
+https://www.freecodecamp.org/news/learn-algorithms-and-data-structures-in-python/
+
+https://www.freecodecamp.org/news/what-is-a-full-stack-developer-full-stack-engineer-guide/
+
+https://www.freecodecamp.org/news/command-line-for-beginners/
+
+https://www.freecodecamp.org/news/linux-networking-commands-for-beginners/
+
 https://www.theinsaneapp.com/2020/12/free-data-science-books-pdf.html
 
 https://medium.com/@stepencleary
