@@ -74,6 +74,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/sql-tips-save-time-write-simpler-queries/
+
+https://www.freecodecamp.org/news/using-scanf-in-c/
+
+https://www.freecodecamp.org/news/chat-gpt-and-secure-coding/
+
 https://www.freecodecamp.org/news/rest-vs-graphql-apis/
 
 https://www.freecodecamp.org/news/how-does-a-vpn-work/
