@@ -74,6 +74,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/how-to-use-conditional-statements-if-else-elif-in-python/
+
+https://www.freecodecamp.org/news/the-business-of-technology-research-5-10/
+
+https://www.freecodecamp.org/news/testing-and-debugging-sql-queries-with-python/
+
 https://www.freecodecamp.org/news/sql-tips-save-time-write-simpler-queries/
 
 https://www.freecodecamp.org/news/using-scanf-in-c/
