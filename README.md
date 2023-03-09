@@ -74,6 +74,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/static-variables-in-java/
+
 https://www.freecodecamp.org/news/how-to-use-conditional-statements-if-else-elif-in-python/
 
 https://www.freecodecamp.org/news/the-business-of-technology-research-5-10/
