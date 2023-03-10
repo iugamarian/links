@@ -1,5 +1,7 @@
 # Interesting Python site
 
+https://www.freecodecamp.org/news/how-to-use-loops-in-python/
+
 https://www.freecodecamp.org/news/how-to-write-unit-tests-in-react/
 
 https://www.freecodecamp.org/news/digital-connectivity-internet-and-iot-explained/
