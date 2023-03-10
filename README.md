@@ -74,6 +74,10 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/how-to-make-clickable-svg-map-html-css/
+
+https://www.freecodecamp.org/news/binary-search-in-java-algorithm-example/
+
 https://www.freecodecamp.org/news/static-variables-in-java/
 
 https://www.freecodecamp.org/news/how-to-use-conditional-statements-if-else-elif-in-python/
