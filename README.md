@@ -74,6 +74,10 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/learn-web-development-from-harvard-university-cs50/
+
+https://youtu.be/vzGllw18DkA
+
 https://www.freecodecamp.org/news/how-to-make-clickable-svg-map-html-css/
 
 https://www.freecodecamp.org/news/binary-search-in-java-algorithm-example/
