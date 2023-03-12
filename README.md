@@ -7,6 +7,10 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/python-iterate-over-dictionary-how-to-loop-through-a-dict/
+
+https://www.freecodecamp.org/news/how-to-remove-duplicate-data-in-sql/
+
 https://www.freecodecamp.org/news/how-to-use-loops-in-python/
 
 https://www.freecodecamp.org/news/how-to-write-unit-tests-in-react/
