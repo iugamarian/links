@@ -11,6 +11,8 @@ https://www.freecodecamp.org/news/python-iterate-over-dictionary-how-to-loop-thr
 
 https://www.freecodecamp.org/news/how-to-remove-duplicate-data-in-sql/
 
+https://www.freecodecamp.org/news/how-to-read-and-write-data-to-a-sql-database-using-python/
+
 https://www.freecodecamp.org/news/how-to-use-loops-in-python/
 
 https://www.freecodecamp.org/news/how-to-write-unit-tests-in-react/
