@@ -7,6 +7,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/machine-learning-with-python-and-sql/
+
 https://www.freecodecamp.org/news/python-iterate-over-dictionary-how-to-loop-through-a-dict/
 
 https://www.freecodecamp.org/news/how-to-remove-duplicate-data-in-sql/
@@ -88,6 +90,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/learn-latex-full-course/
+
+https://www.freecodecamp.org/news/how-do-i-make-regex-optional-specify-optional-pattern-in-regular-expressions/
+
+https://www.freecodecamp.org/news/reacting-to-actions-with-javascript/
 
 https://www.freecodecamp.org/news/learn-web-development-from-harvard-university-cs50/
 
