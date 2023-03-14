@@ -7,6 +7,10 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/common-errors-in-python-and-how-to-fix-them/
+
+https://www.freecodecamp.org/news/common-date-functions-in-sql-with-examples/
+
 https://www.freecodecamp.org/news/machine-learning-with-python-and-sql/
 
 https://www.freecodecamp.org/news/python-iterate-over-dictionary-how-to-loop-through-a-dict/
