@@ -91,6 +91,10 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://towardsdatascience.com/fundamentals-of-statistics-for-data-scientists-and-data-analysts-69d93a05aae7
+
+https://www.freecodecamp.org/news/asynchronous-programming-in-javascript/
+
 https://www.freecodecamp.org/news/learn-latex-full-course/
 
 https://www.freecodecamp.org/news/how-do-i-make-regex-optional-specify-optional-pattern-in-regular-expressions/
