@@ -11,6 +11,8 @@ https://www.freecodecamp.org/news/pip-upgrade-and-how-to-update-pip-and-python/
 
 https://www.freecodecamp.org/news/how-to-create-a-marker-in-matplotlib/
 
+https://www.freecodecamp.org/news/how-to-change-legend-fontsize-in-matplotlib/
+
 https://www.freecodecamp.org/news/common-errors-in-python-and-how-to-fix-them/
 
 https://www.freecodecamp.org/news/common-date-functions-in-sql-with-examples/
