@@ -7,6 +7,10 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/pip-upgrade-and-how-to-update-pip-and-python/
+
+https://www.freecodecamp.org/news/how-to-create-a-marker-in-matplotlib/
+
 https://www.freecodecamp.org/news/common-errors-in-python-and-how-to-fix-them/
 
 https://www.freecodecamp.org/news/common-date-functions-in-sql-with-examples/
@@ -94,6 +98,10 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/how-to-build-a-simple-login-app-with-flutter/
+
+https://medium.com/@stepencleary/kubernetes-the-easy-way-b1bc97731749
 
 https://towardsdatascience.com/fundamentals-of-statistics-for-data-scientists-and-data-analysts-69d93a05aae7
 
