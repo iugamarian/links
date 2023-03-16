@@ -7,6 +7,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/how-to-round-a-float-in-pandas/
+
 https://www.freecodecamp.org/news/temperature-converter-calculator-with-python/
 
 https://www.freecodecamp.org/news/mock-data-science-job-interview/
@@ -104,6 +106,10 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/learn-react-18-with-redux-toolkit/
+
+https://www.freecodecamp.org/news/coursera-free-online-courses-6d84cdb30da/
 
 https://www.freecodecamp.org/news/how-to-build-a-simple-login-app-with-flutter/
 
