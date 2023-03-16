@@ -7,6 +7,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/temperature-converter-calculator-with-python/
+
 https://www.freecodecamp.org/news/mock-data-science-job-interview/
 
 https://www.freecodecamp.org/news/pip-upgrade-and-how-to-update-pip-and-python/
