@@ -7,6 +7,12 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/lambda-sort-list-in-python/
+
+https://docs.python-guide.org/starting/installation/
+
+https://www.freecodecamp.org/news/sql-database-app-with-windows-gui/
+
 https://www.freecodecamp.org/news/how-to-change-color-in-matplotlib
 
 https://www.freecodecamp.org/news/automating-report-generation-from-sql-databases-using-python/
