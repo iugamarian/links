@@ -7,6 +7,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/python-range-function-example/
+
 https://www.freecodecamp.org/news/python-program-examples-simple-code-examples-for-beginners/
 
 https://www.freecodecamp.org/news/how-to-round-a-float-in-pandas/
