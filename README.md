@@ -7,6 +7,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/python-program-examples-simple-code-examples-for-beginners/
+
 https://www.freecodecamp.org/news/how-to-round-a-float-in-pandas/
 
 https://www.freecodecamp.org/news/temperature-converter-calculator-with-python/
@@ -106,6 +108,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/method-overloading-and-overriding-in-java/
 
 https://www.freecodecamp.org/news/learn-react-18-with-redux-toolkit/
 
