@@ -7,6 +7,10 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/how-to-change-color-in-matplotlib
+
+https://www.freecodecamp.org/news/automating-report-generation-from-sql-databases-using-python/
+
 https://www.freecodecamp.org/news/python-range-function-example/
 
 https://www.freecodecamp.org/news/python-program-examples-simple-code-examples-for-beginners/
