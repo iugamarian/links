@@ -7,6 +7,10 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/pyscript-python-front-end-framework/
+
+https://www.freecodecamp.org/news/learn-django-by-building-a-marketplace/
+
 https://www.freecodecamp.org/news/lambda-sort-list-in-python/
 
 https://docs.python-guide.org/starting/installation/
