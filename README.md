@@ -125,6 +125,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/free-react-course-2022/
+
 https://www.freecodecamp.org/news/complete-guide-to-css-grid/
 
 https://www.freecodecamp.org/news/binary-search-in-c-algorithm-example/
