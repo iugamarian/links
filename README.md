@@ -7,6 +7,10 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/create-a-platformer-game-with-python/
+
+https://www.freecodecamp.org/news/use-openai-gymnasium-for-reinforcement-learning/
+
 https://www.freecodecamp.org/news/pyscript-python-front-end-framework/
 
 https://www.freecodecamp.org/news/learn-django-by-building-a-marketplace/
@@ -124,6 +128,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/javascript-basics-strings-arrays-objects/
 
 https://www.freecodecamp.org/news/free-react-course-2022/
 
