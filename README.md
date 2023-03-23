@@ -7,6 +7,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/crm-app-development-with-django-python-and-mysql/
+
 https://www.freecodecamp.org/news/create-a-platformer-game-with-python/
 
 https://www.freecodecamp.org/news/use-openai-gymnasium-for-reinforcement-learning/
