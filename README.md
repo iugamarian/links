@@ -7,6 +7,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://quickref.me/python
+
 https://www.freecodecamp.org/news/crm-app-development-with-django-python-and-mysql/
 
 https://www.freecodecamp.org/news/create-a-platformer-game-with-python/
@@ -130,6 +132,36 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://dockerlabs.collabnix.com/docker/cheatsheet/
+
+https://cheatography.com/davechild/cheat-sheets/linux-command-line/
+
+https://vim.rtorr.com/
+
+https://angular.io/guide/cheatsheet
+
+https://devhints.io/vue
+
+https://upmostly.com/ultimate-reactjs-cheat-sheet
+
+https://nerdcave.com/tailwind-cheat-sheet
+
+https://devhints.io/sass
+
+https://htmlcheatsheet.com/css/
+
+https://htmlcheatsheet.com/
+
+https://www.sqltutorial.org/sql-cheat-sheet/
+
+https://devhints.io/bash
+
+https://htmlcheatsheet.com/js/
+
+https://cheatography.com/itsellej/cheat-sheets/git-commands/
+
+https://www.freecodecamp.org/news/create-an-animated-physics-game-with-javascript/
 
 https://www.freecodecamp.org/news/javascript-basics-strings-arrays-objects/
 
