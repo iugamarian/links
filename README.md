@@ -9,6 +9,10 @@ Sign-in with Google
 
 https://quickref.me/python
 
+https://www.freecodecamp.org/news/dataframe-to-csv-how-to-save-pandas-dataframes-by-exporting/
+
+https://www.freecodecamp.org/news/sql-where-contains-string-substring-query-example/
+
 https://www.freecodecamp.org/news/crm-app-development-with-django-python-and-mysql/
 
 https://www.freecodecamp.org/news/create-a-platformer-game-with-python/
@@ -132,6 +136,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/scroll-animations-with-javascript-intersection-observer-api/
 
 https://www.freecodecamp.org/news/git-squash-commits/
 
