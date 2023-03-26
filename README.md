@@ -133,6 +133,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/git-squash-commits/
+
 https://www.freecodecamp.org/news/undo-git-add-how-to-remove-added-files-in-git/
 
 https://dockerlabs.collabnix.com/docker/cheatsheet/
