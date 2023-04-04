@@ -1,3 +1,8 @@
+# Brief history of Open Source
+
+https://www.freecodecamp.org/news/brief-history-of-open-source/
+
+
 # Music in public domain
 
 https://www.epidemicsound.com
