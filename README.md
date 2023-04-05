@@ -144,6 +144,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/upload-files-with-html/
+
+https://www.freecodecamp.org/news/next-vs-react/
+
+https://www.freecodecamp.org/news/encryption-at-rest/
+
 https://www.freecodecamp.org/news/google-dorking-for-pentesters-a-practical-tutorial/
 
 https://www.freecodecamp.org/news/frontend-web-development-in-depth-project-tutorial/
