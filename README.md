@@ -12,6 +12,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/python-split-string-how-to-split-a-string-into-a-list-or-array-in-python/
+
 https://quickref.me/python
 
 https://www.freecodecamp.org/news/dataframe-to-csv-how-to-save-pandas-dataframes-by-exporting/
@@ -141,6 +143,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/google-dorking-for-pentesters-a-practical-tutorial/
+
+https://www.freecodecamp.org/news/frontend-web-development-in-depth-project-tutorial/
+
+https://www.freecodecamp.org/news/how-to-truncate-text-with-css-javascript/
 
 https://www.freecodecamp.org/news/create-full-stack-app-with-nextjs13-and-firebase/
 
