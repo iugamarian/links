@@ -144,6 +144,10 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/create-a-personal-website-with-next-js-13-sanity-io-tailwindcss-and-typescript/
+
+https://www.freecodecamp.org/news/what-is-http/
+
 https://www.freecodecamp.org/news/upload-files-with-javascript/
 
 https://www.freecodecamp.org/news/upload-files-with-html/
