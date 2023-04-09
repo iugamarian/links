@@ -12,6 +12,22 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.youtube.com/watch?v=_uQrJ0TkZlc
+
+https://www.youtube.com/watch?v=_GikMdhAhv0
+
+https://www.youtube.com/watch?v=Z1Yd7upQsXY
+
+https://www.youtube.com/watch?v=VchuKL44s6E
+
+https://www.youtube.com/watch?v=WGJJIrtnfpk
+
+https://www.youtube.com/watch?v=JJmcL1N2KQs
+
+https://www.freecodecamp.org/news/learn-algorithms-and-data-structures-in-python/
+
+https://www.freecodecamp.org/news/free-machine-learning-course-10-hourse/
+
 https://www.freecodecamp.org/news/python-split-string-how-to-split-a-string-into-a-list-or-array-in-python/
 
 https://quickref.me/python
@@ -143,6 +159,10 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/building-a-real-time-chat-app-with-reactjs-and-firebase/
+
+https://www.freecodecamp.org/news/how-to-use-basic-git-and-github-commands/
 
 https://www.freecodecamp.org/news/create-a-personal-website-with-next-js-13-sanity-io-tailwindcss-and-typescript/
 
