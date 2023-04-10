@@ -160,6 +160,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/starting-and-excelling-in-data-analytics/
+
+https://www.freecodecamp.org/news/what-is-ci-cd/
+
+https://www.freecodecamp.org/news/chatgpt-react-course/
+
 https://www.freecodecamp.org/news/building-a-real-time-chat-app-with-reactjs-and-firebase/
 
 https://www.freecodecamp.org/news/how-to-use-basic-git-and-github-commands/
