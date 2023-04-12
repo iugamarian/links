@@ -2,6 +2,8 @@
 
 https://www.freecodecamp.org/news/brief-history-of-open-source/
 
+https://www.freecodecamp.org/news/the-history-of-ai/
+
 
 # Music in public domain
 
