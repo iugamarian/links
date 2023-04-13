@@ -14,6 +14,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/convert-lists-to-arrays-and-back-in-python/
+
 https://www.youtube.com/watch?v=_uQrJ0TkZlc
 
 https://www.youtube.com/watch?v=_GikMdhAhv0
