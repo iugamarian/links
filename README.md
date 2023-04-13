@@ -162,6 +162,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/public-apis-for-developers/
+
+https://www.freecodecamp.org/news/network-architecture-basics/
+
+https://www.freecodecamp.org/news/how-to-remove-a-package-in-anaconda/
+
 https://www.freecodecamp.org/news/html-for-beginners/
 
 https://www.freecodecamp.org/news/starting-and-excelling-in-data-analytics/
