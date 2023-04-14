@@ -164,6 +164,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/how-to-create-a-linkedin-clone/
+
 https://www.freecodecamp.org/news/public-apis-for-developers/
 
 https://www.freecodecamp.org/news/network-architecture-basics/
