@@ -14,6 +14,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://towardsdatascience.com/how-to-predict-a-variable-sinusoid-in-python-4a21404dc061
+
 https://www.freecodecamp.org/news/convert-lists-to-arrays-and-back-in-python/
 
 https://www.youtube.com/watch?v=_uQrJ0TkZlc
@@ -163,6 +165,18 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.youtube.com/watch?v=bMknfKXIFA8
+
+https://www.youtube.com/watch?v=a_7Z7C_JCyo
+
+https://www.freecodecamp.org/news/learn-next-js-tutorial/
+
+https://www.youtube.com/watch?v=KjY94sAKLlw
+
+https://www.freecodecamp.org/news/improve-your-javascript-skills-by-coding-a-card-game/
+
+https://www.youtube.com/watch?v=Bj6lC93JMi0
 
 https://www.freecodecamp.org/news/how-devops-works/
 
