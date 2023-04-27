@@ -166,6 +166,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/build-an-interactive-accordion-component-with-react-and-gsap/
+
 https://www.freecodecamp.org/news/server-side-rendering-javascript/
 
 https://www.youtube.com/watch?v=bMknfKXIFA8
