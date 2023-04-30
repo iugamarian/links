@@ -1,3 +1,32 @@
+# Risky fix for Youtube
+
+https://stackoverflow.com/questions/75495800/error-unable-to-extract-uploader-id-youtube-discord-py
+
+https://stackoverflow.com/questions/75608323/how-do-i-solve-error-externally-managed-environment-everytime-i-use-pip3
+
+https://askubuntu.com/questions/1381100/no-longer-able-to-download-youtube-using-youtube-dl-how-do-i-fix-this-problem
+
+python3 -m pip install --force-reinstall https://github.com/yt-dlp/yt-dlp/archive/master.tar.gz --break-system-packages
+
+Use this command to call:
+
+yt-dlp
+
+How I found out the command:
+
+apt-get install pipx
+
+pipx install yt_dlp
+
+Note: yt-dlp was already on your PATH at /usr/local/bin/yt-dlp
+
+  installed package yt-dlp 2023.3.4, installed using Python 3.11.2
+  
+  These apps are now globally available:
+
+  yt-dlp
+
+
 # Brief history of Open Source
 
 https://www.freecodecamp.org/news/brief-history-of-open-source/
