@@ -48,6 +48,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/create-stardew-valley-using-python-and-pygame/
+
 https://towardsdatascience.com/how-to-predict-a-variable-sinusoid-in-python-4a21404dc061
 
 https://www.freecodecamp.org/news/convert-lists-to-arrays-and-back-in-python/
