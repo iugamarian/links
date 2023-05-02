@@ -1,3 +1,8 @@
+# Remove added files in Git
+
+https://www.freecodecamp.org/news/undo-git-add-how-to-remove-added-files-in-git/
+
+
 # Risky fix for Youtube
 
 https://stackoverflow.com/questions/75495800/error-unable-to-extract-uploader-id-youtube-discord-py
