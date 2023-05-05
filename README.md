@@ -202,6 +202,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/harvard-cs50/
+
 https://www.freecodecamp.org/news/build-a-heroku-clone-provision-infrastructure-programmatically/
 
 https://www.freecodecamp.org/news/build-an-interactive-accordion-component-with-react-and-gsap/
