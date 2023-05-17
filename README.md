@@ -202,6 +202,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/javascript-dom/
+
 https://www.freecodecamp.org/news/how-to-learn-different-tech-stacks/
 
 https://www.freecodecamp.org/news/3d-react-webgi-threejs-course/
