@@ -48,6 +48,14 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/pandas-count-rows-how-to-get-the-number-of-rows-in-a-dataframe/
+
+https://www.freecodecamp.org/news/learn-django-by-building-a-marketplace/
+
+https://www.freecodecamp.org/news/computer-basics-beginners/
+
+https://www.freecodecamp.org/news/code-a-reddit-clone-with-react-and-firebase/
+
 https://www.freecodecamp.org/news/create-stardew-valley-using-python-and-pygame/
 
 https://towardsdatascience.com/how-to-predict-a-variable-sinusoid-in-python-4a21404dc061
