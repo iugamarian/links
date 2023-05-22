@@ -210,6 +210,14 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/how-to-get-a-remote-developer-job/
+
+https://www.freecodecamp.org/news/state-management-in-react-props-vs-context-api/
+
+https://www.freecodecamp.org/news/370-online-courses-with-real-college-credit-that-you-can-access-for-free-4fec5a28646/
+
+https://www.freecodecamp.org/news/introduction-to-linux-part-2/
+
 https://www.freecodecamp.org/news/javascript-dom/
 
 https://www.freecodecamp.org/news/how-to-learn-different-tech-stacks/
