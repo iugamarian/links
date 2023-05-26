@@ -212,6 +212,16 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/use-django-to-code-a-chatgpt-clone/
+
+https://www.freecodecamp.org/news/learn-golang-handbook/
+
+https://www.freecodecamp.org/news/what-exactly-is-node-guide-for-beginners/
+
+https://www.freecodecamp.org/news/how-to-copy-a-directory-in-linux-with-the-cp-command/
+
+https://www.freecodecamp.org/news/stream-file-uploads-to-s3-object-storage-and-reduce-costs/
+
 https://www.freecodecamp.org/news/how-to-get-a-remote-developer-job/
 
 https://www.freecodecamp.org/news/state-management-in-react-props-vs-context-api/
