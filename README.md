@@ -212,6 +212,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/how-to-use-rabbitmq-with-nodejs/
+
 https://www.freecodecamp.org/news/use-django-to-code-a-chatgpt-clone/
 
 https://www.freecodecamp.org/news/learn-golang-handbook/
