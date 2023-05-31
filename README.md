@@ -48,6 +48,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://www.freecodecamp.org/news/debugging-like-competitive-programmers/
+
 https://www.freecodecamp.org/news/chatgpt-course-use-the-openai-api-to-create-five-projects/
 
 https://www.freecodecamp.org/news/pandas-count-rows-how-to-get-the-number-of-rows-in-a-dataframe/
