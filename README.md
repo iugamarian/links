@@ -214,6 +214,14 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/build-a-beginner-friendly-javascript-application/
+
+https://www.freecodecamp.org/news/html-page-elements/
+
+https://www.freecodecamp.org/news/guide-to-javascript-promises/
+
+https://www.freecodecamp.org/news/how-to-simplify-database-operations-using-mysql-stored-procedures/
+
 https://www.freecodecamp.org/news/how-to-use-rabbitmq-with-nodejs/
 
 https://www.freecodecamp.org/news/use-django-to-code-a-chatgpt-clone/
