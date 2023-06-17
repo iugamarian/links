@@ -48,6 +48,8 @@ Sign-in with Google
 
 # Interesting Python site
 
+https://drive.google.com/drive/folders/18bugg6hBkODmGWDTa1T4v-W9uoCiLOHm
+
 https://www.freecodecamp.org/news/debugging-like-competitive-programmers/
 
 https://www.freecodecamp.org/news/chatgpt-course-use-the-openai-api-to-create-five-projects/
@@ -213,6 +215,8 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 
 # Important concept: abstraction in programming
+
+https://www.freecodecamp.org/news/what-is-a-full-stack-developer-full-stack-engineer-guide/
 
 https://www.freecodecamp.org/news/build-a-beginner-friendly-javascript-application/
 
