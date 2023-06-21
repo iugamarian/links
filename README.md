@@ -216,6 +216,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/how-to-secure-your-mern-stack-application/
+
+https://www.freecodecamp.org/news/how-to-write-clean-code/
+
+https://www.freecodecamp.org/news/caching-in-react/
+
 https://www.freecodecamp.org/news/what-is-a-full-stack-developer-full-stack-engineer-guide/
 
 https://www.freecodecamp.org/news/build-a-beginner-friendly-javascript-application/
