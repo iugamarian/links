@@ -350,6 +350,8 @@ https://dockerlabs.collabnix.com/docker/cheatsheet/
 
 https://cheatography.com/davechild/cheat-sheets/linux-command-line/
 
+https://www.freecodecamp.org/news/what-every-software-engineer-should-know/
+
 https://vim.rtorr.com/
 
 https://angular.io/guide/cheatsheet
