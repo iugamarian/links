@@ -216,6 +216,12 @@ https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/linux-reco
 
 # Important concept: abstraction in programming
 
+https://www.freecodecamp.org/news/binary-search-in-java-algorithm-example/
+
+https://www.freecodecamp.org/news/introduction-to-linux/
+
+https://www.freecodecamp.org/news/build-a-full-stack-application-using-chatgpt/
+
 https://www.freecodecamp.org/news/java-unit-testing/
 
 https://www.freecodecamp.org/news/how-to-secure-your-mern-stack-application/
