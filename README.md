@@ -6,6 +6,14 @@ https://www.freecodecamp.org/news/javascript-concepts-to-know-before-learning-re
 
 https://www.freecodecamp.org/news/apis-for-beginners/
 
+https://www.freecodecamp.org/news/use-apis-to-practice-coding-skills/
+
+https://www.freecodecamp.org/news/debugging-like-competitive-programmers/
+
+https://www.freecodecamp.org/news/learn-react-router-6-full-course/
+
+https://www.freecodecamp.org/news/supercharged-studying-with-python-anki-chatgpt/
+
 
 # Risky fix for Youtube
 
