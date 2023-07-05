@@ -16,6 +16,8 @@ https://www.freecodecamp.org/news/supercharged-studying-with-python-anki-chatgpt
 
 https://www.freecodecamp.org/news/how-to-get-started-with-docker-using-nodejs/
 
+https://www.freecodecamp.org/news/what-is-tailwind-css-a-beginners-guide/
+
 
 # Risky fix for Youtube
 
