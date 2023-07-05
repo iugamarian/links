@@ -14,6 +14,8 @@ https://www.freecodecamp.org/news/learn-react-router-6-full-course/
 
 https://www.freecodecamp.org/news/supercharged-studying-with-python-anki-chatgpt/
 
+https://www.freecodecamp.org/news/how-to-get-started-with-docker-using-nodejs/
+
 
 # Risky fix for Youtube
 
