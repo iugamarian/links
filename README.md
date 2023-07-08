@@ -18,6 +18,14 @@ https://www.freecodecamp.org/news/how-to-get-started-with-docker-using-nodejs/
 
 https://www.freecodecamp.org/news/what-is-tailwind-css-a-beginners-guide/
 
+https://www.freecodecamp.org/news/n-plus-one-query-problem/
+
+https://www.freecodecamp.org/news/how-to-come-up-with-coding-project-ideas/
+
+https://www.freecodecamp.org/news/what-is-one-to-many-relationship-in-django/
+
+https://www.freecodecamp.org/news/convolutional-neural-networks-course-for-beginners/
+
 
 # Risky fix for Youtube
 
