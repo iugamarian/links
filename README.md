@@ -2,6 +2,8 @@
 
 https://www.freecodecamp.org/news/lightweight-linux-distributions-for-your-pc/
 
+https://www.freecodecamp.org/news/how-to-write-more-efficient-javascript-conditions/
+
 https://www.freecodecamp.org/news/master-api-testing-with-postman/
 
 https://www.freecodecamp.org/news/undo-git-add-how-to-remove-added-files-in-git/
