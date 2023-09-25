@@ -1,5 +1,9 @@
 # Remove added files in Git
 
+https://www.freecodecamp.org/news/rust-tutorial-authentication-server/
+
+https://www.freecodecamp.org/news/git-and-github-workflow-for-open-source/
+
 https://www.freecodecamp.org/news/lightweight-linux-distributions-for-your-pc/
 
 https://www.freecodecamp.org/news/how-to-write-more-efficient-javascript-conditions/
