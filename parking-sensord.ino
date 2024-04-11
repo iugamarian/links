@@ -14,17 +14,23 @@
  **************************************************************/
 
 //  Definition of trigger, echo, beep pins and other constants
-#define trigger      2
-#define  echo         3
+#define onetrigger      2
+#define oneecho         3
 #define beep        11
-#define beep_start 60
-#define min_distance  20
+#define beep_start 120
+#define min_distance  10
+
+//  Add a second sensor (to have 1 in the front and 1 in the back)
+// #define twotrigger      4
+// #define twoecho         5
 
 // Definition of sound speed (centimetres / microsecond)
 #define c 0.0343
 
 //  Definition of the variables
-long tempo;
+long computedtempo;
+long onetempo;
+// long twotempo;
 long approachdelay;
 float pastspaceone = 100;
 float pastspacetwo = 100;
@@ -33,9 +39,11 @@ float space;
 
 void setup() {
   // Definition of input and output
-  pinMode(trigger, OUTPUT);
-  pinMode(echo,  INPUT);
+  pinMode(onetrigger, OUTPUT);
+  pinMode(oneecho,  INPUT);
   pinMode(beep, OUTPUT);
+  // pinMode(twotrigger, OUTPUT);
+  // pinMode(twoecho,  INPUT);
 
   // Serial communication initialisation  (optional)
   Serial.begin(9600);
@@ -43,19 +51,28 @@ void setup() {
 
 void loop() {
   // Before measurement,  the trigger is set to low level
-  digitalWrite(trigger, LOW);
+  digitalWrite(onetrigger, LOW);
+  // digitalWrite(twotrigger, LOW);
   delayMicroseconds(5);
 
   // Send one pulse (trigger goes high level for 10 microseconds)
-  digitalWrite(trigger,  HIGH);
+  digitalWrite(onetrigger,  HIGH);
+  // digitalWrite(twotrigger,  HIGH);
   delayMicroseconds(10);
-  digitalWrite(trigger, LOW);
+  digitalWrite(onetrigger, LOW);
+  // digitalWrite(twotrigger, LOW);
 
   //  Reading echo, via pulseIn, which returns the duration of the impuse (in microseconds)
   // The acquired data is then divided by 2 (forward and backward)
-  tempo =  pulseIn(echo, HIGH) / 2;
+  onetempo =  pulseIn(oneecho, HIGH) / 2;
+  // twotempo =  pulseIn(twoecho, HIGH) / 2;
   // Computation of distance in centimetres
-  presentspace  = tempo * c;
+  computedtempo = onetempo;
+  // if (twotempo < onetempo) {
+  // computedtempo = twotempo;
+  // } 
+
+  presentspace  = computedtempo * c;
   space = ((pastspaceone + pastspacetwo + presentspace) / 3);
   pastspaceone = pastspacetwo;
   pastspacetwo = presentspace;
@@ -72,7 +89,7 @@ void loop() {
     //  Below min_distance cm it emits a continuous sound
     if (space > min_distance)  {
       noTone(beep); 
-      approachdelay = ((((space * space) / 10) + 30) / 2);
+      approachdelay = ((((space * space) / 10) + 30) / 3);
       delay(approachdelay);
     }
   } 
