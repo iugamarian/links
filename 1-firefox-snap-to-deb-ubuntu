@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Run as root with Firefox closed to remove Firefox snap and install Firefox deb
+# https://ubuntushell.com/install-firefox-deb-package/
+
+snap remove firefox
+sync
+
+wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null
+
+echo '
+Package: *
+Pin: origin packages.mozilla.org
+Pin-Priority: 1000
+' | tee /etc/apt/preferences.d/mozilla
+
+apt update
+apt install firefox
+sync
+
+# Tested for snap not working but for deb working chache to tmpfs if in ~/.cache/ the folder "mozilla" is deleted and put a soft link mozilla -> /run/user/1000
